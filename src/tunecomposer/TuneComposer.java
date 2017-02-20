@@ -3,23 +3,27 @@
  */
 package tunecomposer;
 
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.io.IOException;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * This JavaFX app lets the user play scales.
+ * This JavaFX application lets the user play scales.
  * @author Janet Davis 
  * @author SOLUTION - PROJECT 1
  * @since January 26, 2017
  */
 public class TuneComposer extends Application {
-    
-
     
     /**
      * Construct the scene and start the application.
@@ -31,7 +35,7 @@ public class TuneComposer extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("TuneComposer.fxml"));
         Scene scene = new Scene(root);
         
-        primaryStage.setTitle("Scale Player");
+        primaryStage.setTitle("Tune Composer");
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest((WindowEvent we) -> {
             System.exit(0);
@@ -39,6 +43,16 @@ public class TuneComposer extends Application {
         primaryStage.show();
     }
 
+    @FXML
+    public void gridClick(MouseEvent e){
+        int yCoordinate = (int)e.getY();
+        int xCoordinate = (int)e.getX();
+        System.out.println(xCoordinate + ", " + yCoordinate);
+
+    };
+    
+    
+    
     /**
      * Launch the application.
      * @param args the command line arguments are ignored
