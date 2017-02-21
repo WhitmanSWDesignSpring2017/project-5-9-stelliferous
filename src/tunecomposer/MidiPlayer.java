@@ -105,6 +105,7 @@ public class MidiPlayer
     public void play()
     {
         // this next line should be unnecessary, but seems to be needed
+        sequencer.setTickPosition(0);
         sequencer.setTempoInBPM(beatsPerMinute);
         sequencer.start();
     }
