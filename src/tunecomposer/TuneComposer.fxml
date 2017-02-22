@@ -8,161 +8,166 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.TuneComposer">
+<BorderPane onKeyPressed="#handleHotKeyAction" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.TuneComposer">
    <center>
-      <ScrollPane>
+      <ScrollPane fx:id="compositionScroll">
          <content>
-            <GridPane fx:id="compsitionGrid" gridLinesVisible="true" onMouseClicked="#gridClick" prefHeight="1280.0" prefWidth="2000.0" styleClass="compositionPane" stylesheets="@tunecomposer.css">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-
-              </rowConstraints>
-            </GridPane>
+            <StackPane fx:id="rectStackPane">
+               <children>
+                  <GridPane fx:id="compsitionGrid" gridLinesVisible="true" onMouseClicked="#gridClick" onMouseDragged="#gridClick" prefHeight="1280.0" prefWidth="2000.0" styleClass="compositionPane" stylesheets="@tunecomposer.css">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+      
+                          </rowConstraints>
+                  </GridPane>
+               </children>
+            </StackPane>
          </content>
       </ScrollPane>
    </center>
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar onKeyTyped="#handleHotKeyAction" BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem fx:id="ExitButton" mnemonicParsing="false" text="Exit" />
+              <MenuItem fx:id="ExitButton" mnemonicParsing="false" onAction="#handleExitAction" text="Exit" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Action">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Play" />
-              <MenuItem mnemonicParsing="false" text="Stop" />
+                  <MenuItem fx:id="PlayButton" mnemonicParsing="false" onAction="#handlePlayAction" text="Play" />
+              <MenuItem fx:id="StopButton" mnemonicParsing="false" onAction="#handleStopAction" text="Stop" />
             </items>
           </Menu>
         </menus>
