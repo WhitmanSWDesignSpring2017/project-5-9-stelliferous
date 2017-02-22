@@ -1,6 +1,4 @@
-/*
- * CS 300-A, 2017S
- */
+/* CS 300-A, 2017S */
 package tunecomposer;
 
 import java.io.IOException;
@@ -13,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.scene.input.KeyCode;
@@ -36,10 +33,10 @@ public class TuneComposer extends Application {
     public MidiPlayer MidiComposition = new MidiPlayer(100,60);
     
     //sets, volume, duration, channel, and trackIndex for the MidiPlayer's notes
-    final int volume = 50;
+    final int volume = 120;
     final int duration = 100;
-    final int channel = 0;
-    final int trackIndex = 0;
+    final int channel = 4;
+    final int trackIndex = 1;
     
     final KeyCombination playKey = new KeyCodeCombination(KeyCode.P, 
             KeyCombination.CONTROL_DOWN);
@@ -54,7 +51,8 @@ public class TuneComposer extends Application {
      * @throws java.io.IOException
      */
     @Override
-    public void start(Stage primaryStage) throws IOException {                
+    public void start(Stage primaryStage) throws IOException {
+        MidiComposition.clear();
         Parent root = FXMLLoader.load(getClass().getResource("TuneComposer.fxml"));
         Scene scene = new Scene(root);
         
@@ -93,6 +91,7 @@ public class TuneComposer extends Application {
     @FXML
     public void handlePlayAction(ActionEvent e){
         System.out.println("Playing");
+        MidiComposition.stop();
         MidiComposition.play();
     }
     
@@ -106,6 +105,7 @@ public class TuneComposer extends Application {
     public void handleHotKeyAction(KeyEvent e){
         if (playKey.match(e)){
             System.out.println("Control P");
+            MidiComposition.stop();
             MidiComposition.play();
         } else if (stopKey.match(e)){
             System.out.println("Control S");
