@@ -38,12 +38,6 @@ public class TuneComposer extends Application {
     final int channel = 4;
     final int trackIndex = 1;
     
-    final KeyCombination playKey = new KeyCodeCombination(KeyCode.P, 
-            KeyCombination.CONTROL_DOWN);
-    final KeyCombination stopKey = new KeyCodeCombination(KeyCode.S, 
-            KeyCombination.CONTROL_DOWN);
-    final KeyCombination exitKey = new KeyCodeCombination(KeyCode.Q, 
-            KeyCombination.CONTROL_DOWN);
     
     /**
      * Construct the scene and start the application.
@@ -80,7 +74,7 @@ public class TuneComposer extends Application {
         rect.setHeight(10);
         rect.setWidth(20);
         rect.setFill(Color.BLACK);
-        rectStackPane.getChildren().add(rect);
+        rectStackPane.getChildren().add(rect); //Somehow we need to implement making the rectangles disappear when note is finished playing.
     };
 
     @FXML
@@ -99,21 +93,6 @@ public class TuneComposer extends Application {
     public void handleStopAction(ActionEvent e){
         System.out.println("Stopping");
         MidiComposition.stop();
-    }
-    
-    @FXML
-    public void handleHotKeyAction(KeyEvent e){
-        if (playKey.match(e)){
-            System.out.println("Control P");
-            MidiComposition.stop();
-            MidiComposition.play();
-        } else if (stopKey.match(e)){
-            System.out.println("Control S");
-            MidiComposition.stop();
-        } else if (exitKey.match(e)){
-            System.out.println("Control Q");
-            System.exit(0);
-        }
     }
     
     

@@ -4,13 +4,14 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<BorderPane onKeyPressed="#handleHotKeyAction" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.TuneComposer">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.TuneComposer">
    <center>
       <ScrollPane fx:id="compositionScroll">
          <content>
@@ -157,17 +158,26 @@
       </ScrollPane>
    </center>
    <top>
-      <MenuBar onKeyTyped="#handleHotKeyAction" BorderPane.alignment="CENTER">
+      <MenuBar BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem fx:id="ExitButton" mnemonicParsing="false" onAction="#handleExitAction" text="Exit" />
+              <MenuItem fx:id="ExitButton" mnemonicParsing="false" onAction="#handleExitAction" text="Exit">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Action">
             <items>
-                  <MenuItem fx:id="PlayButton" mnemonicParsing="false" onAction="#handlePlayAction" text="Play" />
-              <MenuItem fx:id="StopButton" mnemonicParsing="false" onAction="#handleStopAction" text="Stop" />
+                  <MenuItem fx:id="PlayButton" mnemonicParsing="false" onAction="#handlePlayAction" text="Play">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+              <MenuItem fx:id="StopButton" mnemonicParsing="false" onAction="#handleStopAction" text="Stop">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
             </items>
           </Menu>
         </menus>
