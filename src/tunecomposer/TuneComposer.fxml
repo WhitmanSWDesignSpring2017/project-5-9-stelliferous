@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.TuneComposer">
    <center>
@@ -152,6 +153,7 @@
       
                           </rowConstraints>
                   </GridPane>
+                  <Rectangle fx:id="redline" arcHeight="5.0" arcWidth="5.0" fill="RED" height="1280.0" stroke="RED" strokeType="INSIDE" width="1.0" x="-1000.0" y="0.0" />
                </children>
             </StackPane>
          </content>

@@ -11,15 +11,13 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
+import javafx.animation.TranslateTransition;
+import javafx.animation.AnimationTimer;
+import javafx.animation.Interpolator;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 /**
  * This JavaFX application lets the user play scales.
@@ -32,12 +30,18 @@ public class TuneComposer extends Application {
     //creates a MidiPlayer object with 100 ticks/beat, 1 beat/second
     public MidiPlayer MidiComposition = new MidiPlayer(100,60);
     
+    
     //sets, volume, duration, channel, and trackIndex for the MidiPlayer's notes
     final int volume = 120;
     final int duration = 100;
     final int channel = 4;
     final int trackIndex = 1;
     
+    //refers to the end of the current notes
+    public int endcomp;
+    
+    //constructs the TranslateTransition for use later in animation of redline
+    public TranslateTransition lineTrans = new TranslateTransition();
     
     /**
      * Construct the scene and start the application.
@@ -49,17 +53,24 @@ public class TuneComposer extends Application {
         MidiComposition.clear();
         Parent root = FXMLLoader.load(getClass().getResource("TuneComposer.fxml"));
         Scene scene = new Scene(root);
-        
         primaryStage.setTitle("Tune Composer");
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest((WindowEvent we) -> {
             System.exit(0);
         });        
         primaryStage.show();
+//        redlineAnim();
     }
     
     @FXML StackPane rectStackPane;
-    
+    @FXML Rectangle redline;
+
+    /**
+     * Creates a rectangle at the point clicked and adds a note to the composition
+     * based on the coordinates of the point clicked.
+     * @param e
+     * @throws IOException
+     */
     @FXML 
     public void gridClick(MouseEvent e) throws IOException{
         int yCoordinate = (int)e.getY();
@@ -69,37 +80,72 @@ public class TuneComposer extends Application {
         MidiComposition.addNote(yPitch, volume, xCoordinate,
                                     duration, channel, trackIndex);  
         Rectangle rect = new Rectangle();
-        rect.setTranslateX(xCoordinate-1000+9);
+        rect.setTranslateX(xCoordinate-1000+50);
         rect.setTranslateY((yCoordinate/10)*10-640+5);
         rect.setHeight(10);
-        rect.setWidth(20);
-        rect.setFill(Color.BLACK);
-        rectStackPane.getChildren().add(rect); //Somehow we need to implement making the rectangles disappear when note is finished playing.
+        rect.setWidth(100);
+        rect.setFill(Color.DEEPSKYBLUE);
+        rect.setStroke(Color.BLACK);
+        rectStackPane.getChildren().add(rect);
+        if (endcomp < (xCoordinate + 100)*10) {
+            endcomp = ((xCoordinate + 100)*10);
+            System.out.println("End tick is " + endcomp); //defines new end of the composition
+        }
     };
 
+    /**
+     * Exits the program.
+     * @param e
+     */
     @FXML
     public void handleExitAction(ActionEvent e){
         System.exit(0);
     }
     
+    /**
+     * Stops current playing composition, plays the composition from the
+     * start and resets the red line to be visible and play from start of animation.
+     * @param e
+     */
     @FXML
     public void handlePlayAction(ActionEvent e){
         System.out.println("Playing");
         MidiComposition.stop();
         MidiComposition.play();
+        lineTrans.playFromStart();
+        redline.setVisible(true);
     }
     
+    /**
+     * Stops the player from playing, and sets the red line to be invisible.
+     * @param e
+     */
     @FXML
     public void handleStopAction(ActionEvent e){
         System.out.println("Stopping");
         MidiComposition.stop();
+        redline.setVisible(false);
     }
     
-    
-    public void initialize(URL location, ResourceBundle resources) {
-    // TODO Auto-generated method stub
-
-}
+    /**
+     * Initializes FXML and assigns animation to the redline FXML shape.
+     */
+    public void initialize() {
+        lineTrans.setNode(redline);
+        lineTrans.setDuration(Duration.seconds(20));
+        lineTrans.setFromX(-1000);
+        lineTrans.setToX(1000);
+        lineTrans.setInterpolator(Interpolator.LINEAR);
+        lineTrans.play();
+        new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (lineTrans.getCurrentTime().toMillis() > (endcomp)){
+                    redline.setVisible(false);
+                }
+            }
+        }.start();
+    }
     /**
      * Launch the application.
      * @param args the command line arguments are ignored
