@@ -37,6 +37,15 @@ public class TuneComposer extends Application {
     final int channel = 4;
     final int trackIndex = 1;
     
+    //Defines bounds of the composition pane being used in the page
+    final int paneWidth = 2000;
+    final int paneHeight = 1280;
+    //Defines coordinates based on the center of the page 
+    final int toLeft = -(paneWidth/2);
+    final int toRight = (paneWidth/2);
+    //Provides centering for the y-coordinate on mouseclick
+    final int centerY = -(paneHeight/2);
+    
     //refers to the end of the current notes
     public int endcomp;
     
@@ -76,12 +85,12 @@ public class TuneComposer extends Application {
         int yCoordinate = (int)e.getY();
         int yPitch = 127-yCoordinate/10;
         int xCoordinate = (int)e.getX();
-        System.out.println(xCoordinate + ", " + yCoordinate + ": "+yPitch);
+//        System.out.println(xCoordinate + ", " + yCoordinate + ": "+yPitch);
         MidiComposition.addNote(yPitch, volume, xCoordinate,
                                     duration, channel, trackIndex);  
         Rectangle rect = new Rectangle();
-        rect.setTranslateX(xCoordinate-1000+50);
-        rect.setTranslateY((yCoordinate/10)*10-640+5);
+        rect.setTranslateX(xCoordinate+toLeft+50);
+        rect.setTranslateY((yCoordinate/10)*10+centerY+5);
         rect.setHeight(10);
         rect.setWidth(100);
         rect.setFill(Color.DEEPSKYBLUE);
@@ -89,7 +98,7 @@ public class TuneComposer extends Application {
         rectStackPane.getChildren().add(rect);
         if (endcomp < (xCoordinate + 100)*10) {
             endcomp = ((xCoordinate + 100)*10);
-            System.out.println("End tick is " + endcomp); //defines new end of the composition
+//            System.out.println("End tick is " + endcomp); //defines new end of the composition
         }
     };
 
@@ -132,11 +141,10 @@ public class TuneComposer extends Application {
      */
     public void initialize() {
         lineTrans.setNode(redline);
-        lineTrans.setDuration(Duration.seconds(20));
-        lineTrans.setFromX(-1000);
-        lineTrans.setToX(1000);
+        lineTrans.setDuration(Duration.seconds(paneWidth/100));
+        lineTrans.setFromX(toLeft);
+        lineTrans.setToX(toRight);
         lineTrans.setInterpolator(Interpolator.LINEAR);
-        lineTrans.play();
         new AnimationTimer() {
             @Override
             public void handle(long now) {
