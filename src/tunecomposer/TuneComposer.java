@@ -32,24 +32,24 @@ import javafx.scene.paint.Color;
 public class TuneComposer extends Application {
 
     //creates a MidiPlayer object with 100 ticks/beat, 1 beat/second
-    public MidiPlayer MidiComposition = new MidiPlayer(100,60);
+    private MidiPlayer MidiComposition = new MidiPlayer(100,60);
 
     //sets, volume, duration, channel, and trackIndex for the MidiPlayer's notes
-    final int volume = 120;
-    final int duration = 100;
-    final int channel = 4;
-    final int trackIndex = 1;
+    final int VOLUME = 120;
+    final int DURATION = 100;
+    final int CHANNEL = 4;
+    final int TRACK_INDEX = 1;
     
     //Defines bounds of the composition pane being used in the page
-    final int paneWidth = 2000;
-    final int paneHeight = 1280;
+    final int PANE_WIDTH = 2000;
+    final int PANE_HEIGHT = 1280;
     
     //Defines coordinates based on the center of the page 
-    final int toLeft = -(paneWidth/2);
-    final int toRight = (paneWidth/2);
+    final int TO_LEFT = -(PANE_WIDTH/2);
+    final int TO_RIGHT = (PANE_WIDTH/2);
     
     //Provides centering for the y-coordinate on mouseclick
-    final int centerY = -(paneHeight/2);
+    final int CENTER_Y = -(PANE_HEIGHT/2);
     
     //refers to the end of the current notes
     public int endcomp;
@@ -58,7 +58,7 @@ public class TuneComposer extends Application {
     public TranslateTransition lineTransition = new TranslateTransition();
     
     //creates a list to store created rectangles, that they may be later erased
-    private final ArrayList rect_list = new ArrayList();
+    private final ArrayList RECT_LIST = new ArrayList();
 
     
     /**
@@ -107,20 +107,20 @@ public class TuneComposer extends Application {
         int xCoordinate = (int)e.getX();
         
         //adds a note to the Midi Composition based on user's click input
-        MidiComposition.addNote(yPitch, volume, xCoordinate,
-                                    duration, channel, trackIndex);  
+        MidiComposition.addNote(yPitch, VOLUME, xCoordinate,
+                                    DURATION, CHANNEL, TRACK_INDEX);  
         
         //creates, places, and formats a rectangle where the user clicks
         Rectangle rect = new Rectangle();
-        rect.setTranslateX(xCoordinate+toLeft+50);
-        rect.setTranslateY((yCoordinate/10)*10+centerY+5);
+        rect.setTranslateX(xCoordinate+TO_LEFT+50);
+        rect.setTranslateY((yCoordinate/10)*10+CENTER_Y+5);
         rect.setHeight(10);
         rect.setWidth(100);
         rect.setFill(Color.DEEPSKYBLUE);
         rect.setStroke(Color.BLACK);
         
         //adds rectangle to the list of rectangles, that they may be cleared
-        rect_list.add(rect);
+        RECT_LIST.add(rect);
         
         //adds on-click rectangle to the stackPane
         rectStackPane.getChildren().add(rect);
@@ -143,7 +143,7 @@ public class TuneComposer extends Application {
      * start and resets the red line to be visible and play from start of animation.
      * Note: alteration in MidiPlayer.java play() method makes playing from
      * the start in this manner possible.
-     * @param e , on user click
+     * @param e  on user click
      */
     @FXML
     private void handlePlayAction(ActionEvent e){
@@ -154,7 +154,7 @@ public class TuneComposer extends Application {
     
     /**
      * Stops the player from playing, and sets the red line to be invisible.
-     * @param e , on user click
+     * @param e  on user click
      */
     @FXML
     private void handleStopAction(ActionEvent e){
@@ -166,11 +166,11 @@ public class TuneComposer extends Application {
      * Clears all rectangles from the screen
      * Clears the Midi Composition off all notes
      * Indicates that the end of the composition is now '0' (no comp)
-     * @param e , on user click
+     * @param e  on user click
      */
     @FXML 
     private void handleClearAction(ActionEvent e){
-        rectStackPane.getChildren().removeAll(rect_list);
+        rectStackPane.getChildren().removeAll(RECT_LIST);
         endcomp = 0;
         MidiComposition.clear();
     }
@@ -183,9 +183,9 @@ public class TuneComposer extends Application {
     public void initialize() {
         // assigns animation to red line, sets duration and placement
         lineTransition.setNode(redline);
-        lineTransition.setDuration(Duration.seconds(paneWidth/100));
-        lineTransition.setFromX(toLeft);
-        lineTransition.setToX(toRight);
+        lineTransition.setDuration(Duration.seconds(PANE_WIDTH/100));
+        lineTransition.setFromX(TO_LEFT);
+        lineTransition.setToX(TO_RIGHT);
         lineTransition.setInterpolator(Interpolator.LINEAR);
         
         //checks to see if the composition is over, removes red line

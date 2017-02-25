@@ -29,7 +29,7 @@
                             prefHeight="1280.0" 
                             prefWidth="2000.0" >
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" 
+                        <ColumnConstraints hgrow="SOMETIMES" 
                                          minWidth="10.0" 
                                          prefWidth="100.0" />
                     </columnConstraints>
@@ -161,8 +161,8 @@
                       <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
                       <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
                       <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                    </rowConstraints>
-                    </GridPane>
+                    </rowConstraints> 
+                    </GridPane> 
                     <Rectangle fx:id="redline" 
                              visible="false" 
                              fill="RED" 
@@ -174,70 +174,70 @@
                              height="1280.0"  
                              x="-1000.0" 
                              y="0.0" />
-               </children>
-            </StackPane>
-         </content>
-      </ScrollPane>
-   </center>
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu text="File">
-            <items>
-              <MenuItem fx:id="ExitButton" 
-                        onAction="#handleExitAction" 
-                        text="Exit">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" 
-                                            code="Q" 
+                    </children>
+                </StackPane>
+            </content>
+        </ScrollPane>
+    </center>
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu text="File">
+                    <items>
+                        <MenuItem fx:id="ExitButton" 
+                                onAction="#handleExitAction" 
+                                text="Exit">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" 
+                                                    code="Q" 
+                                                    control="DOWN" 
+                                                    meta="UP" 
+                                                    shift="UP" 
+                                                    shortcut="UP"/>
+                            </accelerator>
+                        </MenuItem>
+                    </items>
+                </Menu>
+                <Menu text="Action">
+                    <items>
+                        <MenuItem fx:id="PlayButton" 
+                                  onAction="#handlePlayAction" 
+                                  text="Play">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" 
+                                                code="P" 
+                                                control="DOWN" 
+                                                meta="UP" 
+                                                shift="UP" 
+                                                shortcut="UP"/>
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem fx:id="StopButton" 
+                                onAction="#handleStopAction" 
+                                text="Stop">
+                            <accelerator>
+                                    <KeyCodeCombination alt="UP" 
+                                            code="S" 
                                             control="DOWN" 
                                             meta="UP" 
                                             shift="UP" 
                                             shortcut="UP"/>
-                     </accelerator>
-              </MenuItem>
-            </items>
-          </Menu>
-          <Menu text="Action">
-            <items>
-                  <MenuItem fx:id="PlayButton" 
-                            onAction="#handlePlayAction" 
-                            text="Play">
-                    <accelerator>
-                        <KeyCodeCombination alt="UP" 
-                                            code="P" 
-                                            control="DOWN" 
-                                            meta="UP" 
-                                            shift="UP" 
-                                            shortcut="UP"/>
-                     </accelerator>
-                  </MenuItem>
-              <MenuItem fx:id="StopButton" 
-                        onAction="#handleStopAction" 
-                        text="Stop">
-                <accelerator>
-                    <KeyCodeCombination alt="UP" 
-                                        code="S" 
-                                        control="DOWN" 
-                                        meta="UP" 
-                                        shift="UP" 
-                                        shortcut="UP"/>
-                </accelerator>
-              </MenuItem>
-              <MenuItem onAction="#handleClearAction" 
-                        text="Clear" >
-                    <accelerator>
-                        <KeyCodeCombination alt="UP" 
+                                    </accelerator>
+                        </MenuItem>
+                        <MenuItem onAction="#handleClearAction" 
+                                    text="Clear" >
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" 
                                             code="C" 
                                             control="DOWN" 
                                             meta="UP" 
                                             shift="UP" 
                                             shortcut="UP"/>
-                    </accelerator>
-              </MenuItem>
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </top>
+                            </accelerator>
+                        </MenuItem>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
 </BorderPane>
