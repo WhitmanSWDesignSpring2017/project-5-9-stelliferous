@@ -210,6 +210,12 @@
                                         meta="UP" shift="UP" shortcut="UP"/>
                 </accelerator>
               </MenuItem>
+              <MenuItem onAction="#handleClearAction" text="Clear" >
+                    <accelerator>
+                        <KeyCodeCombination alt="UP" code="C" control="DOWN" 
+                                            meta="UP" shift="UP" shortcut="UP"/>
+                    </accelerator>
+              </MenuItem>
             </items>
           </Menu>
         </menus>

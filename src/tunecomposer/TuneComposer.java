@@ -2,6 +2,7 @@
 package tunecomposer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,8 +30,7 @@ public class TuneComposer extends Application {
 
     //creates a MidiPlayer object with 100 ticks/beat, 1 beat/second
     public MidiPlayer MidiComposition = new MidiPlayer(100,60);
-    
-    
+
     //sets, volume, duration, channel, and trackIndex for the MidiPlayer's notes
     final int volume = 120;
     final int duration = 100;
@@ -40,9 +40,11 @@ public class TuneComposer extends Application {
     //Defines bounds of the composition pane being used in the page
     final int paneWidth = 2000;
     final int paneHeight = 1280;
+    
     //Defines coordinates based on the center of the page 
     final int toLeft = -(paneWidth/2);
     final int toRight = (paneWidth/2);
+    
     //Provides centering for the y-coordinate on mouseclick
     final int centerY = -(paneHeight/2);
     
@@ -51,6 +53,10 @@ public class TuneComposer extends Application {
     
     //constructs the TranslateTransition for use later in animation of redline
     public TranslateTransition lineTransition = new TranslateTransition();
+    
+    //creates a list to store created rectangles, that they may be later erased
+    private final ArrayList rect_list = new ArrayList();
+
     
     /**
      * Construct the scene and start the application.
@@ -106,6 +112,9 @@ public class TuneComposer extends Application {
         rect.setFill(Color.DEEPSKYBLUE);
         rect.setStroke(Color.BLACK);
         
+        //adds rectangle to the list of rectangles, that they may be cleared
+        rect_list.add(rect);
+        
         //adds on-click rectangle to the stackPane
         rectStackPane.getChildren().add(rect);
         if (endcomp < (xCoordinate + 100)*10) {
@@ -114,7 +123,7 @@ public class TuneComposer extends Application {
     };
 
     /**
-     * Exits the program.
+     * Exits the program upon user clicking the typical 'close' 
      * @param e
      */
     @FXML
@@ -125,6 +134,8 @@ public class TuneComposer extends Application {
     /**
      * Stops current playing composition, plays the composition from the
      * start and resets the red line to be visible and play from start of animation.
+     * Note: alteration in MidiPlayer.java play() method makes playing from
+     * the start in this manner possible.
      * @param e
      */
     @FXML
@@ -143,6 +154,19 @@ public class TuneComposer extends Application {
     public void handleStopAction(ActionEvent e){
         MidiComposition.stop();
         redline.setVisible(false);
+    }
+    
+    /**
+     * Clears all rectangles from the screen
+     * Clears the Midi Composition off all notes
+     * Indicates that the end of the composition is now '0' (no comp)
+     * @param e 
+     */
+    @FXML 
+    public void handleClearAction(ActionEvent e){
+        rectStackPane.getChildren().removeAll(rect_list);
+        endcomp = 0;
+        MidiComposition.clear();
     }
     
     /**

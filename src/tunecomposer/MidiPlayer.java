@@ -1,5 +1,6 @@
 /*
  * CS 300-A, 2017S
+ * Note: altered play() method so that it always starts at the beginning
  */
 package tunecomposer;
 
@@ -104,8 +105,9 @@ public class MidiPlayer
      */
     public void play()
     {
-        // this next line should be unnecessary, but seems to be needed
+        //altered library class below; starts playing at beginning of comp.
         sequencer.setTickPosition(0);
+        // this next line should be unnecessary, but seems to be needed
         sequencer.setTempoInBPM(beatsPerMinute);
         sequencer.start();
     }
