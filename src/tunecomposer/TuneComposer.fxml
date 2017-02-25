@@ -18,9 +18,18 @@
          <content>
             <StackPane fx:id="rectStackPane">
                <children>
-                  <GridPane fx:id="compsitionGrid" gridLinesVisible="true" onMouseClicked="#gridClick" onMouseDragged="#gridClick" prefHeight="1280.0" prefWidth="2000.0" styleClass="compositionPane" stylesheets="@tunecomposer.css">
+                  <GridPane fx:id="compsitionGrid" 
+                            stylesheets="@tunecomposer.css"
+                            styleClass="compositionPane" 
+                            onMouseClicked="#gridClick" 
+                            onMouseDragged="#gridClick"
+                            gridLinesVisible="true"  
+                            prefHeight="1280.0" 
+                            prefWidth="2000.0" >
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" 
+                                         minWidth="10.0" 
+                                         prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
@@ -150,10 +159,19 @@
                       <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
                       <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
                       <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-      
-                          </rowConstraints>
-                  </GridPane>
-                  <Rectangle fx:id="redline" arcHeight="5.0" arcWidth="5.0" fill="RED" height="1280.0" stroke="RED" strokeType="INSIDE" visible="false" width="1.0" x="-1000.0" y="0.0" />
+                    </rowConstraints>
+                    </GridPane>
+                    <Rectangle fx:id="redline" 
+                             arcHeight="5.0" 
+                             arcWidth="5.0" 
+                             fill="RED" 
+                             height="1280.0" 
+                             stroke="RED" 
+                             strokeType="INSIDE" 
+                             visible="false" 
+                             width="1.0" 
+                             x="-1000.0" 
+                             y="0.0" />
                </children>
             </StackPane>
          </content>
@@ -162,24 +180,36 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu text="File">
             <items>
-              <MenuItem fx:id="ExitButton" mnemonicParsing="false" onAction="#handleExitAction" text="Exit">
+              <MenuItem fx:id="ExitButton" 
+                        onAction="#handleExitAction" 
+                        text="Exit">
                      <accelerator>
-                        <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator></MenuItem>
+                        <KeyCodeCombination alt="UP" code="Q" control="DOWN" 
+                                            meta="UP" shift="UP" shortcut="UP"/>
+                     </accelerator>
+              </MenuItem>
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Action">
+          <Menu text="Action">
             <items>
-                  <MenuItem fx:id="PlayButton" mnemonicParsing="false" onAction="#handlePlayAction" text="Play">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator></MenuItem>
-              <MenuItem fx:id="StopButton" mnemonicParsing="false" onAction="#handleStopAction" text="Stop">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator></MenuItem>
+                  <MenuItem fx:id="PlayButton" 
+                            onAction="#handlePlayAction" 
+                            text="Play">
+                    <accelerator>
+                        <KeyCodeCombination alt="UP" code="P" control="DOWN" 
+                                            meta="UP" shift="UP" shortcut="UP"/>
+                     </accelerator>
+                  </MenuItem>
+              <MenuItem fx:id="StopButton" 
+                        onAction="#handleStopAction" 
+                        text="Stop">
+                <accelerator>
+                    <KeyCodeCombination alt="UP" code="S" control="DOWN" 
+                                        meta="UP" shift="UP" shortcut="UP"/>
+                </accelerator>
+              </MenuItem>
             </items>
           </Menu>
         </menus>

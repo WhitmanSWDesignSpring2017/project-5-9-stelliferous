@@ -50,7 +50,7 @@ public class TuneComposer extends Application {
     public int endcomp;
     
     //constructs the TranslateTransition for use later in animation of redline
-    public TranslateTransition lineTrans = new TranslateTransition();
+    public TranslateTransition lineTransition = new TranslateTransition();
     
     /**
      * Construct the scene and start the application.
@@ -59,19 +59,25 @@ public class TuneComposer extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        MidiComposition.clear();
+        //loads fxml file, places in a new scene, which is placed in the stage
         Parent root = FXMLLoader.load(getClass().getResource("TuneComposer.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setTitle("Tune Composer");
         primaryStage.setScene(scene);
+        
+        //closes the program when the window is closed
         primaryStage.setOnCloseRequest((WindowEvent we) -> {
             System.exit(0);
         });        
+        
+        //displays the stage
         primaryStage.show();
-//        redlineAnim();
     }
     
+    //makes available StackPane in which the user can click to add notes
     @FXML StackPane rectStackPane;
+    
+    //makes available the redLine which designates place in the composition 
     @FXML Rectangle redline;
 
     /**
@@ -82,12 +88,16 @@ public class TuneComposer extends Application {
      */
     @FXML 
     public void gridClick(MouseEvent e) throws IOException{
+        //finds x and y coordinates within the gridPane where the user's clicked
         int yCoordinate = (int)e.getY();
         int yPitch = 127-yCoordinate/10;
         int xCoordinate = (int)e.getX();
-//        System.out.println(xCoordinate + ", " + yCoordinate + ": "+yPitch);
+        
+        //adds a note to the Midi Composition based on user's click input
         MidiComposition.addNote(yPitch, volume, xCoordinate,
                                     duration, channel, trackIndex);  
+        
+        //creates, places, and formats a rectangle where the user clicks
         Rectangle rect = new Rectangle();
         rect.setTranslateX(xCoordinate+toLeft+50);
         rect.setTranslateY((yCoordinate/10)*10+centerY+5);
@@ -95,10 +105,11 @@ public class TuneComposer extends Application {
         rect.setWidth(100);
         rect.setFill(Color.DEEPSKYBLUE);
         rect.setStroke(Color.BLACK);
+        
+        //adds on-click rectangle to the stackPane
         rectStackPane.getChildren().add(rect);
         if (endcomp < (xCoordinate + 100)*10) {
             endcomp = ((xCoordinate + 100)*10);
-//            System.out.println("End tick is " + endcomp); //defines new end of the composition
         }
     };
 
@@ -118,10 +129,9 @@ public class TuneComposer extends Application {
      */
     @FXML
     public void handlePlayAction(ActionEvent e){
-        System.out.println("Playing");
         MidiComposition.stop();
         MidiComposition.play();
-        lineTrans.playFromStart();
+        lineTransition.playFromStart();
         redline.setVisible(true);
     }
     
@@ -131,7 +141,6 @@ public class TuneComposer extends Application {
      */
     @FXML
     public void handleStopAction(ActionEvent e){
-        System.out.println("Stopping");
         MidiComposition.stop();
         redline.setVisible(false);
     }
@@ -140,15 +149,18 @@ public class TuneComposer extends Application {
      * Initializes FXML and assigns animation to the redline FXML shape.
      */
     public void initialize() {
-        lineTrans.setNode(redline);
-        lineTrans.setDuration(Duration.seconds(paneWidth/100));
-        lineTrans.setFromX(toLeft);
-        lineTrans.setToX(toRight);
-        lineTrans.setInterpolator(Interpolator.LINEAR);
+        // assigns animation to red line, sets duration and placement
+        lineTransition.setNode(redline);
+        lineTransition.setDuration(Duration.seconds(paneWidth/100));
+        lineTransition.setFromX(toLeft);
+        lineTransition.setToX(toRight);
+        lineTransition.setInterpolator(Interpolator.LINEAR);
+        
+        //checks to see if the composition is over, removes red line
         new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (lineTrans.getCurrentTime().toMillis() > (endcomp)){
+                if (lineTransition.getCurrentTime().toMillis() > (endcomp)){
                     redline.setVisible(false);
                 }
             }
