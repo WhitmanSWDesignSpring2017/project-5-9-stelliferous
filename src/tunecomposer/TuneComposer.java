@@ -96,7 +96,7 @@ public class TuneComposer extends Application {
      * @throws IOException
      */
     @FXML 
-    public void gridClick(MouseEvent e) throws IOException{
+    private void gridClick(MouseEvent e) throws IOException{
         //finds x and y coordinates within the gridPane where the user's clicked
         int yCoordinate = (int)e.getY();
         int yPitch = 127-yCoordinate/10;
@@ -130,7 +130,7 @@ public class TuneComposer extends Application {
      * @param e
      */
     @FXML
-    public void handleExitAction(ActionEvent e){
+    private void handleExitAction(ActionEvent e){
         System.exit(0);
     }
     
@@ -142,7 +142,7 @@ public class TuneComposer extends Application {
      * @param e
      */
     @FXML
-    public void handlePlayAction(ActionEvent e){
+    private void handlePlayAction(ActionEvent e){
         MidiComposition.stop();
         MidiComposition.play();
         lineTransition.playFromStart();
@@ -154,7 +154,7 @@ public class TuneComposer extends Application {
      * @param e
      */
     @FXML
-    public void handleStopAction(ActionEvent e){
+    private void handleStopAction(ActionEvent e){
         MidiComposition.stop();
         redline.setVisible(false);
     }
@@ -166,7 +166,7 @@ public class TuneComposer extends Application {
      * @param e 
      */
     @FXML 
-    public void handleClearAction(ActionEvent e){
+    private void handleClearAction(ActionEvent e){
         rectStackPane.getChildren().removeAll(rect_list);
         endcomp = 0;
         MidiComposition.clear();
