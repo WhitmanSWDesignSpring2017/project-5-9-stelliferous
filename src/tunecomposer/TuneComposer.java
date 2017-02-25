@@ -1,24 +1,24 @@
 /* CS 300-A, 2017S */
 package tunecomposer;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.StackPane;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.scene.input.MouseEvent;
+import java.io.IOException;
+import java.util.ArrayList;
+import javafx.scene.shape.Rectangle;
 import javafx.animation.TranslateTransition;
+import javafx.util.Duration;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
 
 /**
  * This JavaFX application lets the user compose tunes by clicking!
@@ -63,6 +63,9 @@ public class TuneComposer extends Application {
     
     /**
      * Construct the scene and start the application.
+     * Loads GUI/layout from the TuneComposer.fxml into a scene, which
+     * is placed inside the primary Stage. Program terminates when the user
+     * hits the close button. Stage is shown.
      * @param primaryStage the stage for the main window
      * @throws java.io.IOException
      */
@@ -91,8 +94,9 @@ public class TuneComposer extends Application {
 
     /**
      * Creates a rectangle at the point clicked and adds a note to the composition
-     * based on the coordinates of the point clicked.
-     * @param e
+     * based on the coordinates of the point clicked. Adds that rectangle
+     * to a list, for clearing them in the future.
+     * @param e occurs on mouse click event
      * @throws IOException
      */
     @FXML 
@@ -127,7 +131,7 @@ public class TuneComposer extends Application {
 
     /**
      * Exits the program upon user clicking the typical 'close' 
-     * @param e
+     * @param e on user click
      */
     @FXML
     private void handleExitAction(ActionEvent e){
@@ -139,11 +143,10 @@ public class TuneComposer extends Application {
      * start and resets the red line to be visible and play from start of animation.
      * Note: alteration in MidiPlayer.java play() method makes playing from
      * the start in this manner possible.
-     * @param e
+     * @param e , on user click
      */
     @FXML
     private void handlePlayAction(ActionEvent e){
-        MidiComposition.stop();
         MidiComposition.play();
         lineTransition.playFromStart();
         redline.setVisible(true);
@@ -151,7 +154,7 @@ public class TuneComposer extends Application {
     
     /**
      * Stops the player from playing, and sets the red line to be invisible.
-     * @param e
+     * @param e , on user click
      */
     @FXML
     private void handleStopAction(ActionEvent e){
@@ -163,7 +166,7 @@ public class TuneComposer extends Application {
      * Clears all rectangles from the screen
      * Clears the Midi Composition off all notes
      * Indicates that the end of the composition is now '0' (no comp)
-     * @param e 
+     * @param e , on user click
      */
     @FXML 
     private void handleClearAction(ActionEvent e){
@@ -173,7 +176,9 @@ public class TuneComposer extends Application {
     }
     
     /**
-     * Initializes FXML and assigns animation to the redline FXML shape.
+     * Initializes FXML and assigns animation to the redline FXML shape. 
+     * (with location, duration, and speed). Removes red line when the
+     * composition has finished playing
      */
     public void initialize() {
         // assigns animation to red line, sets duration and placement
@@ -187,7 +192,9 @@ public class TuneComposer extends Application {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
+                // if current time is over the total composition time...
                 if (lineTransition.getCurrentTime().toMillis() > (endcomp)){
+                    // make the red line invisible
                     redline.setVisible(false);
                 }
             }
