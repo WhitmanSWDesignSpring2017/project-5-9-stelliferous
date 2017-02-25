@@ -21,9 +21,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 /**
- * This JavaFX application lets the user play scales.
+ * This JavaFX application lets the user compose tunes by clicking!
  * @author Janet Davis 
- * @author SOLUTION - PROJECT 1
+ * @author Eric Hsu
+ * @author Ben Adams
+ * @author Will Mullins
+ * @author Tyler Maule
  * @since January 26, 2017
  */
 public class TuneComposer extends Application {

@@ -8,7 +8,7 @@ and open the template in the editor.
     Author     : tmaule
 */
 
-/* Determines background and border color of Tune Composition pane */
+/* Determines background color of Tune Composition pane */
 .compositionPane {
     -fx-background-color: linear-gradient(#f2368d, #7FFFD4);
 }
