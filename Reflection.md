@@ -14,7 +14,7 @@ Because this is still a relatively small, simple program, we felt that a single 
 >Explain what, if anything, in your solution is inelegant and why you didn't make it elegant 
 >(for example, maybe you didn't have time or the knowledge to fix it).
 
-There's always more refactoring (renaming, javadoc additions, reorganizing) that can be done, but the existence of a due date limited how much we could increase the elegance in that regard. Changing the MidiPlayer.java wasn't recommended, but it was the most efficient and clear way to make our program function in the way we desired (with our limited knowledge of Midi, Sequencers, etc) 
+There's always more refactoring (renaming, javadoc additions, reorganizing) that can be done, but the existence of a due date limited how much we could increase the elegance in that regard. Changing the MidiPlayer.java wasn't recommended, but it was the most efficient and clear way to make our program function in the way we desired (with our limited knowledge of Midi, Sequencers, etc). We could have found another way to make the grey lines appear, but using a GridPane solely in FXML limited the amount of layout that TuneComposer.java had to handle; even though the GridPane required many lines of code, they're simple, maintainable, and readable, more so than would be creating another node in TuneComposer.
 
 >Finally, describe how your team collaborated on the project. What did you do together? What did you do separately? 
 >What did each team member contribute? Optionally, include a brief team retrospective: What is one thing you did well as a team? What is one thing you could have improved?
