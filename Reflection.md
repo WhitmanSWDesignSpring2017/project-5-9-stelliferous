@@ -1,7 +1,7 @@
 *Team Tweb Project 3 Reflection*
 
->Give a concise overview of your design. How did you divide the code into classes and methods? <
->How does your design for Project 3 differ from your design(s) for Project 2?<
+>Give a concise overview of your design. How did you divide the code into classes and methods? 
+>How does your design for Project 3 differ from your design(s) for Project 2?
 
 Our design is fairly simple, handling events and running the program in JavaFX, providing most of the GUI (except for rectangles and red lines) with FXML, and adding just a few lines of CSS. Our Project 3 design differs from Project 2 in that we handle some elements of the display/GUI through our JavaFX code, to allow greater user interaction. We did change the MidiPlayer.java file, so that the play() method plays the composition from the beginning.
 
