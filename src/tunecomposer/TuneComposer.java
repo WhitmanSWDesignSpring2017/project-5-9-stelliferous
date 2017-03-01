@@ -122,11 +122,9 @@ public class TuneComposer extends Application {
         rect.setHeight(10);
         rect.setWidth(100);
         rect.setFill(rectColor);
-        rect.setStroke(Color.BLACK);
+        rect.setStroke(Color.CRIMSON);
         rect.setStrokeWidth(2);
         
-        //adds rectangle to the list of rectangles, that they may be cleared
-        RECT_LIST.add(rect);
         
         rect.setOnMouseClicked((MouseEvent mouseEvent) -> {
             if ((SELECTED_NOTES.indexOf(rect)!= -1) && (mouseEvent.isControlDown())){
@@ -144,6 +142,17 @@ public class TuneComposer extends Application {
                 System.out.println("click"+rect.getX());
             }
         });
+        
+        if (!e.isControlDown()){
+            RECT_LIST.forEach((e1) -> {
+                        e1.setStroke(Color.BLACK);
+            });
+            SELECTED_NOTES.clear();
+        }
+        
+        //adds rectangle to the list of rectangles, that they may be cleared
+        RECT_LIST.add(rect);
+        SELECTED_NOTES.add(rect);
         
         //adds on-click rectangle to the stackPane
         rectStackPane.getChildren().add(rect);
