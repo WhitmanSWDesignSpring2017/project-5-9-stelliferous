@@ -1,37 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.111" 
-            xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="tunecomposer.TuneComposer">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.TuneComposer">
    <center>
       <ScrollPane fx:id="compositionScroll">
          <content>
             <StackPane fx:id="rectStackPane">
                <children>
-                  <GridPane fx:id="compsitionGrid" 
-                            onMouseClicked="#gridClick" 
-                            onMouseDragged="#gridClick"
-                            stylesheets="@tunecomposer.css"
-                            styleClass="compositionPane" 
-                            gridLinesVisible="true"  
-                            prefHeight="1280.0" 
-                            prefWidth="2000.0" >
+                  <GridPane fx:id="compsitionGrid" gridLinesVisible="true" onMouseClicked="#gridClick" onMouseDragged="#gridClick" prefHeight="1280.0" prefWidth="2000.0" styleClass="compositionPane" stylesheets="@tunecomposer.css">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" 
-                                         minWidth="10.0" 
-                                         prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
@@ -163,17 +156,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
                     </rowConstraints> 
                     </GridPane> 
-                    <Rectangle fx:id="redline" 
-                             visible="false" 
-                             fill="RED" 
-                             stroke="RED" 
-                             strokeType="INSIDE" 
-                             arcHeight="5.0" 
-                             arcWidth="5.0" 
-                             width="1.0"
-                             height="1280.0"  
-                             x="-1000.0" 
-                             y="0.0" />
+                    <Rectangle fx:id="redline" arcHeight="5.0" arcWidth="5.0" fill="RED" height="1280.0" stroke="RED" strokeType="INSIDE" visible="false" width="1.0" x="-1000.0" y="0.0" />
                     </children>
                 </StackPane>
             </content>
@@ -184,55 +167,28 @@
             <menus>
                 <Menu text="File">
                     <items>
-                        <MenuItem fx:id="ExitButton" 
-                                onAction="#handleExitAction" 
-                                text="Exit">
+                        <MenuItem fx:id="ExitButton" onAction="#handleExitAction" text="Exit">
                             <accelerator>
-                                <KeyCodeCombination alt="UP" 
-                                                    code="Q" 
-                                                    control="DOWN" 
-                                                    meta="UP" 
-                                                    shift="UP" 
-                                                    shortcut="UP"/>
+                                <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                             </accelerator>
                         </MenuItem>
                     </items>
                 </Menu>
                 <Menu text="Action">
                     <items>
-                        <MenuItem fx:id="PlayButton" 
-                                  onAction="#handlePlayAction" 
-                                  text="Play">
+                        <MenuItem fx:id="PlayButton" onAction="#handlePlayAction" text="Play">
                             <accelerator>
-                                <KeyCodeCombination alt="UP" 
-                                                code="P" 
-                                                control="DOWN" 
-                                                meta="UP" 
-                                                shift="UP" 
-                                                shortcut="UP"/>
+                                <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                             </accelerator>
                         </MenuItem>
-                        <MenuItem fx:id="StopButton" 
-                                onAction="#handleStopAction" 
-                                text="Stop">
+                        <MenuItem fx:id="StopButton" onAction="#handleStopAction" text="Stop">
                             <accelerator>
-                                    <KeyCodeCombination alt="UP" 
-                                            code="S" 
-                                            control="DOWN" 
-                                            meta="UP" 
-                                            shift="UP" 
-                                            shortcut="UP"/>
+                                    <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                                     </accelerator>
                         </MenuItem>
-                        <MenuItem onAction="#handleClearAction" 
-                                    text="Clear" >
+                        <MenuItem onAction="#handleClearAction" text="Clear">
                             <accelerator>
-                                <KeyCodeCombination alt="UP" 
-                                            code="C" 
-                                            control="DOWN" 
-                                            meta="UP" 
-                                            shift="UP" 
-                                            shortcut="UP"/>
+                                <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                             </accelerator>
                         </MenuItem>
                     </items>
@@ -240,4 +196,25 @@
             </menus>
         </MenuBar>
     </top>
+   <left>
+      <VBox spacing="50.0" BorderPane.alignment="CENTER">
+         <children>
+            <RadioButton mnemonicParsing="false" selected="true" text="Piano">
+               <toggleGroup>
+                  <ToggleGroup fx:id="instruments" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Harpsichord" toggleGroup="$instruments" />
+            <RadioButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Marimba" toggleGroup="$instruments" />
+            <RadioButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Organ" toggleGroup="$instruments" />
+            <RadioButton layoutX="10.0" layoutY="28.0" mnemonicParsing="false" text="Accordion" toggleGroup="$instruments" />
+            <RadioButton layoutX="10.0" layoutY="46.0" mnemonicParsing="false" text="Guita" toggleGroup="$instruments" />
+            <RadioButton layoutX="10.0" layoutY="46.0" mnemonicParsing="false" text="Violin" toggleGroup="$instruments" />
+            <RadioButton layoutX="10.0" layoutY="64.0" mnemonicParsing="false" text="French Horn" toggleGroup="$instruments" />
+         </children>
+         <BorderPane.margin>
+            <Insets top="10.0" />
+         </BorderPane.margin>
+      </VBox>
+   </left>
 </BorderPane>
