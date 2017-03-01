@@ -18,7 +18,7 @@ import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
-import javafx.scene.control.ToggleGroup;
+import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
 import javax.sound.midi.ShortMessage;
 
@@ -62,7 +62,9 @@ public class TuneComposer extends Application {
     public TranslateTransition lineTransition = new TranslateTransition();
     
     //creates a list to store created rectangles, that they may be later erased
-    private final ArrayList RECT_LIST = new ArrayList();
+    private final ArrayList<Rectangle> RECT_LIST = new ArrayList<>();
+    
+    private final ArrayList<Rectangle> SELECTED_NOTES = new ArrayList<>();
 
     /**
      * Construct the scene and start the application.
@@ -121,9 +123,22 @@ public class TuneComposer extends Application {
         rect.setWidth(100);
         rect.setFill(rectColor);
         rect.setStroke(Color.BLACK);
+        rect.setStrokeWidth(2);
         
         //adds rectangle to the list of rectangles, that they may be cleared
         RECT_LIST.add(rect);
+        
+        rect.setOnMouseClicked((MouseEvent mouseEvent) -> {
+            if(!mouseEvent.isControlDown()){
+                RECT_LIST.forEach((e1) -> {
+                    e1.setStroke(Color.BLACK);
+                });
+                SELECTED_NOTES.clear();
+            }
+            SELECTED_NOTES.add(rect);
+            rect.setStroke(Color.CRIMSON);
+            System.out.println("click"+rect.getX());
+        });
         
         //adds on-click rectangle to the stackPane
         rectStackPane.getChildren().add(rect);
@@ -140,7 +155,7 @@ public class TuneComposer extends Application {
     private void handleExitAction(ActionEvent e){
         System.exit(0);
     }
-    
+                
     /**
      * Stops current playing composition, plays the composition from the
      * start and resets the red line to be visible and play from start of animation.
@@ -202,10 +217,7 @@ public class TuneComposer extends Application {
         channel = 2;
         rectColor = Color.LIGHTGOLDENRODYELLOW;
     }
-    
-    //http://java-buddy.blogspot.com/2013/07/javafx-drag-and-move-something.html
-    // for dragging methods;
-    
+   
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
      * (with location, duration, and speed). Removes red line when the

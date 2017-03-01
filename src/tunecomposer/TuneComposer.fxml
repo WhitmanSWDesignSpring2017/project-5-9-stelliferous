@@ -24,7 +24,7 @@
          <content>
             <StackPane fx:id="rectStackPane">
                <children>
-                  <GridPane fx:id="compsitionGrid" gridLinesVisible="true" onMouseClicked="#gridClick" onMouseDragged="#gridClick" prefHeight="1280.0" prefWidth="2000.0" styleClass="compositionPane" stylesheets="@tunecomposer.css">
+                  <GridPane fx:id="compsitionGrid" gridLinesVisible="true" onMouseClicked="#gridClick" prefHeight="1280.0" prefWidth="2000.0" styleClass="compositionPane" stylesheets="@tunecomposer.css">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
