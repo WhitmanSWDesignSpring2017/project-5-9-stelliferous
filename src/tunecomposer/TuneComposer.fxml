@@ -6,6 +6,8 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.BorderPane?>
@@ -194,27 +196,59 @@
                     </items>
                 </Menu>
             </menus>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
         </MenuBar>
     </top>
    <left>
-      <VBox spacing="50.0" BorderPane.alignment="CENTER">
-         <children>
-            <RadioButton mnemonicParsing="false" selected="true" text="Piano">
-               <toggleGroup>
-                  <ToggleGroup fx:id="instruments" />
-               </toggleGroup>
-            </RadioButton>
-            <RadioButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Harpsichord" toggleGroup="$instruments" />
-            <RadioButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Marimba" toggleGroup="$instruments" />
-            <RadioButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Organ" toggleGroup="$instruments" />
-            <RadioButton layoutX="10.0" layoutY="28.0" mnemonicParsing="false" text="Accordion" toggleGroup="$instruments" />
-            <RadioButton layoutX="10.0" layoutY="46.0" mnemonicParsing="false" text="Guita" toggleGroup="$instruments" />
-            <RadioButton layoutX="10.0" layoutY="46.0" mnemonicParsing="false" text="Violin" toggleGroup="$instruments" />
-            <RadioButton layoutX="10.0" layoutY="64.0" mnemonicParsing="false" text="French Horn" toggleGroup="$instruments" />
-         </children>
+      <TabPane BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets top="10.0" />
          </BorderPane.margin>
-      </VBox>
+         <tabs>
+            <Tab closable="false" text="Instruments">
+               <content>
+                  <VBox spacing="50.0">
+                     <children>
+                        <RadioButton mnemonicParsing="false" onAction="#handlePianoAction" selected="true" text="Piano" textFill="#6ca103">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="instrumentsRadioButton" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleHarpsichordAction" text="Harpsichord" textFill="#59ee27" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Marimba" textFill="#07721f" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Organ" textFill="#11ffb0" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="28.0" mnemonicParsing="false" text="Accordion" textFill="#00d4f5" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="46.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="73.0" text="Guitar" textFill="#0084ff" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="46.0" mnemonicParsing="false" text="Violin" textFill="#1745ff" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="64.0" mnemonicParsing="false" text="French Horn" textFill="#7102f0" toggleGroup="$instrumentsRadioButton" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </Tab>
+            <Tab closable="false" text="Sound Effects">
+              <content>
+                  <VBox spacing="50.0">
+                     <children>
+                        <RadioButton mnemonicParsing="false" text="Echoes" textFill="RED" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton mnemonicParsing="false" text="Choir" textFill="#ff6f00" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton mnemonicParsing="false" text="Rain" textFill="#979650" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton mnemonicParsing="false" text="Soundtrack" textFill="#727272" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton mnemonicParsing="false" text="Goblins" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton mnemonicParsing="false" text="SciFi" textFill="#570000" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton mnemonicParsing="false" text="Applause" textFill="#654800" toggleGroup="$instrumentsRadioButton" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+                     </padding>
+                  </VBox>
+              </content>
+            </Tab>
+         </tabs>
+      </TabPane>
    </left>
 </BorderPane>
