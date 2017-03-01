@@ -129,15 +129,20 @@ public class TuneComposer extends Application {
         RECT_LIST.add(rect);
         
         rect.setOnMouseClicked((MouseEvent mouseEvent) -> {
-            if(!mouseEvent.isControlDown()){
-                RECT_LIST.forEach((e1) -> {
-                    e1.setStroke(Color.BLACK);
-                });
-                SELECTED_NOTES.clear();
+            if ((SELECTED_NOTES.indexOf(rect)!= -1) && (mouseEvent.isControlDown())){
+                SELECTED_NOTES.remove(rect);
+                rect.setStroke(Color.BLACK);
+            } else if (SELECTED_NOTES.indexOf(rect) == -1){
+                if(!mouseEvent.isControlDown()){
+                    RECT_LIST.forEach((e1) -> {
+                        e1.setStroke(Color.BLACK);
+                    });
+                    SELECTED_NOTES.clear();
+                }
+                SELECTED_NOTES.add(rect);
+                rect.setStroke(Color.CRIMSON);
+                System.out.println("click"+rect.getX());
             }
-            SELECTED_NOTES.add(rect);
-            rect.setStroke(Color.CRIMSON);
-            System.out.println("click"+rect.getX());
         });
         
         //adds on-click rectangle to the stackPane
