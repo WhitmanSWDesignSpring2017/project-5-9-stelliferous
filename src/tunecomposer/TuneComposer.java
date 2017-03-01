@@ -18,6 +18,7 @@ import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
 import javax.sound.midi.ShortMessage;
 
@@ -63,7 +64,6 @@ public class TuneComposer extends Application {
     //creates a list to store created rectangles, that they may be later erased
     private final ArrayList RECT_LIST = new ArrayList();
 
-    
     /**
      * Construct the scene and start the application.
      * Loads GUI/layout from the TuneComposer.fxml into a scene, which
@@ -202,6 +202,9 @@ public class TuneComposer extends Application {
         channel = 2;
         rectColor = Color.LIGHTGOLDENRODYELLOW;
     }
+    
+    //http://java-buddy.blogspot.com/2013/07/javafx-drag-and-move-something.html
+    // for dragging methods;
     
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
