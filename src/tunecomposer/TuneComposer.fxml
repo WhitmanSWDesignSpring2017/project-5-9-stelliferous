@@ -211,7 +211,7 @@
                <content>
                   <VBox spacing="50.0">
                      <children>
-                        <RadioButton mnemonicParsing="false" onAction="#handlePianoAction" selected="true" text="Piano" textFill="#6ca103">
+                        <RadioButton mnemonicParsing="false" onAction="#handlePianoAction" selected="true" text="Piano" textFill="OLIVEDRAB">
                            <toggleGroup>
                               <ToggleGroup fx:id="instrumentsRadioButton" />
                            </toggleGroup>
@@ -238,7 +238,7 @@
                         <RadioButton mnemonicParsing="false" text="Choir" textFill="#ff6f00" toggleGroup="$instrumentsRadioButton" />
                         <RadioButton mnemonicParsing="false" text="Rain" textFill="#979650" toggleGroup="$instrumentsRadioButton" />
                         <RadioButton mnemonicParsing="false" text="Soundtrack" textFill="#727272" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton mnemonicParsing="false" text="Goblins" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton mnemonicParsing="false" onAction="#handleGoblinsAction" text="Goblins" toggleGroup="$instrumentsRadioButton" />
                         <RadioButton mnemonicParsing="false" text="SciFi" textFill="#570000" toggleGroup="$instrumentsRadioButton" />
                         <RadioButton mnemonicParsing="false" text="Applause" textFill="#654800" toggleGroup="$instrumentsRadioButton" />
                      </children>

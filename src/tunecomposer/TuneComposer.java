@@ -19,6 +19,7 @@ import javafx.util.Duration;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
 import javafx.scene.paint.Color;
+import javax.sound.midi.ShortMessage;
 
 /**
  * This JavaFX application lets the user compose tunes by clicking!
@@ -37,8 +38,10 @@ public class TuneComposer extends Application {
     //sets, volume, duration, channel, and trackIndex for the MidiPlayer's notes
     final int VOLUME = 120;
     final int DURATION = 100;
-    final int CHANNEL = 4;
     final int TRACK_INDEX = 1;
+    int channel = 0;
+
+    Color rectColor = Color.OLIVEDRAB;
     
     //Defines bounds of the composition pane being used in the page
     final int PANE_WIDTH = 2000;
@@ -108,7 +111,7 @@ public class TuneComposer extends Application {
         
         //adds a note to the Midi Composition based on user's click input
         MidiComposition.addNote(yPitch, VOLUME, xCoordinate,
-                                    DURATION, CHANNEL, TRACK_INDEX);  
+                                    DURATION, channel, TRACK_INDEX);  
         
         //creates, places, and formats a rectangle where the user clicks
         Rectangle rect = new Rectangle();
@@ -116,7 +119,7 @@ public class TuneComposer extends Application {
         rect.setTranslateY((yCoordinate/10)*10+CENTER_Y+5);
         rect.setHeight(10);
         rect.setWidth(100);
-        rect.setFill(Color.DEEPSKYBLUE);
+        rect.setFill(rectColor);
         rect.setStroke(Color.BLACK);
         
         //adds rectangle to the list of rectangles, that they may be cleared
@@ -173,6 +176,31 @@ public class TuneComposer extends Application {
         rectStackPane.getChildren().removeAll(RECT_LIST);
         endcomp = 0;
         MidiComposition.clear();
+    }
+    
+    @FXML
+    private void handlePianoAction(ActionEvent e){
+                System.out.println("piano");
+
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 0, 0, 0, 0, TRACK_INDEX);
+        channel = 0;
+        rectColor = Color.OLIVEDRAB;
+    }
+    
+    @FXML
+    private void handleHarpsichordAction(ActionEvent e){
+        System.out.println("harp");
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 1, 6, 0, 0, TRACK_INDEX);
+        channel = 1;
+        rectColor = Color.FLORALWHITE;
+    }
+    
+    @FXML
+    private void handleGoblinsAction(ActionEvent e){
+        System.out.println("gob");
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 2, 101, 0, 0, TRACK_INDEX);
+        channel = 2;
+        rectColor = Color.LIGHTGOLDENRODYELLOW;
     }
     
     /**
