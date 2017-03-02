@@ -12,13 +12,17 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
 import java.io.IOException;
+import static java.lang.Math.abs;
 import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
+import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+import javax.sound.midi.ShortMessage;
 
 /**
  * This JavaFX application lets the user compose tunes by clicking!
@@ -37,8 +41,10 @@ public class TuneComposer extends Application {
     //sets, volume, duration, channel, and trackIndex for the MidiPlayer's notes
     final int VOLUME = 120;
     final int DURATION = 100;
-    final int CHANNEL = 4;
     final int TRACK_INDEX = 1;
+    int channel = 0;
+
+    Color rectColor = Color.OLIVEDRAB;
     
     //Defines bounds of the composition pane being used in the page
     final int PANE_WIDTH = 2000;
@@ -58,9 +64,15 @@ public class TuneComposer extends Application {
     public TranslateTransition lineTransition = new TranslateTransition();
     
     //creates a list to store created rectangles, that they may be later erased
-    private final ArrayList RECT_LIST = new ArrayList();
-
+    private final ArrayList<Rectangle> RECT_LIST = new ArrayList<>();
     
+    private final ArrayList<Rectangle> SELECTED_NOTES = new ArrayList<>();
+    
+    int yEffective = 0;
+    int xEffective = 0;
+            Rectangle me = new Rectangle();
+
+
     /**
      * Construct the scene and start the application.
      * Loads GUI/layout from the TuneComposer.fxml into a scene, which
@@ -100,27 +112,56 @@ public class TuneComposer extends Application {
      * @throws IOException
      */
     @FXML 
-    private void gridClick(MouseEvent e) throws IOException{
+    private void gridPress(MouseEvent e) throws IOException{
         //finds x and y coordinates within the gridPane where the user's clicked
         int yCoordinate = (int)e.getY();
+        yEffective = (yCoordinate/10)*10+CENTER_Y+5;
         int yPitch = 127-yCoordinate/10;
         int xCoordinate = (int)e.getX();
+         xEffective = xCoordinate+TO_LEFT+50;
         
         //adds a note to the Midi Composition based on user's click input
         MidiComposition.addNote(yPitch, VOLUME, xCoordinate,
-                                    DURATION, CHANNEL, TRACK_INDEX);  
+                                    DURATION, channel, TRACK_INDEX);  
         
         //creates, places, and formats a rectangle where the user clicks
         Rectangle rect = new Rectangle();
-        rect.setTranslateX(xCoordinate+TO_LEFT+50);
-        rect.setTranslateY((yCoordinate/10)*10+CENTER_Y+5);
+        rect.setTranslateX(xEffective);
+        rect.setTranslateY(yEffective);
         rect.setHeight(10);
         rect.setWidth(100);
-        rect.setFill(Color.DEEPSKYBLUE);
-        rect.setStroke(Color.BLACK);
+        rect.setFill(rectColor);
+        rect.setStroke(Color.CRIMSON);
+        rect.setStrokeWidth(2);
+        
+        
+        rect.setOnMouseClicked((MouseEvent mouseEvent) -> {
+            if ((SELECTED_NOTES.indexOf(rect)!= -1) && (mouseEvent.isControlDown())){
+                SELECTED_NOTES.remove(rect);
+                rect.setStroke(Color.BLACK);
+            } else if (SELECTED_NOTES.indexOf(rect) == -1){
+                if(!mouseEvent.isControlDown()){
+                    RECT_LIST.forEach((e1) -> {
+                        e1.setStroke(Color.BLACK);
+                    });
+                    SELECTED_NOTES.clear();
+                }
+                SELECTED_NOTES.add(rect);
+                rect.setStroke(Color.CRIMSON);
+                System.out.println("click"+rect.getX());
+            }
+        });
+        
+        if (!e.isControlDown()){
+            RECT_LIST.forEach((e1) -> {
+                        e1.setStroke(Color.BLACK);
+            });
+            SELECTED_NOTES.clear();
+        }
         
         //adds rectangle to the list of rectangles, that they may be cleared
         RECT_LIST.add(rect);
+        SELECTED_NOTES.add(rect);
         
         //adds on-click rectangle to the stackPane
         rectStackPane.getChildren().add(rect);
@@ -128,6 +169,30 @@ public class TuneComposer extends Application {
             endcomp = ((xCoordinate + 100)*10);
         }
     };
+    
+    @FXML
+    private void gridDrag(MouseEvent w){
+        rectStackPane.getChildren().remove(me);
+        int currentX = (int)w.getX()+TO_LEFT;
+        int currentY = (int)(w.getY()/10)*10+CENTER_Y;
+        //System.out.println(xEffective+" "+yEffective);
+        //System.out.println((-xEffective+(int)w.getX()+TO_LEFT+50)+" "+(-yEffective+((int)w.getY()/10)*10+CENTER_Y+5));
+        //Rectangle me = new Rectangle(xEffective,yEffective,xEffective-(int)e.getX()+TO_LEFT+50,yEffective-((int)e.getY()/10)*10+CENTER_Y+5);
+        me.setTranslateX(xEffective-50);//+(currentX/2));
+        me.setTranslateY(yEffective-5);//+(currentY/2));
+        me.setWidth(abs(currentX-xEffective+50));
+        me.setHeight(abs(currentY-yEffective+10));
+        rectStackPane.getChildren().add(me);
+        /*selectionRectangle.setTranslateX(xEffective);
+        selectionRectangle.setTranslateY(yEffective);
+        selectionRectangle.setWidth((int)e.getX()+TO_LEFT+50);
+        selectionRectangle.setHeight(((int)e.getY()/10)*10+CENTER_Y+5);*/
+    }
+    
+    @FXML
+    private void gridRelease(MouseEvent e){
+       rectStackPane.getChildren().remove(me);
+    }
 
     /**
      * Exits the program upon user clicking the typical 'close' 
@@ -137,7 +202,7 @@ public class TuneComposer extends Application {
     private void handleExitAction(ActionEvent e){
         System.exit(0);
     }
-    
+                
     /**
      * Stops current playing composition, plays the composition from the
      * start and resets the red line to be visible and play from start of animation.
@@ -175,6 +240,31 @@ public class TuneComposer extends Application {
         MidiComposition.clear();
     }
     
+    @FXML
+    private void handlePianoAction(ActionEvent e){
+                System.out.println("piano");
+
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 0, 0, 0, 0, TRACK_INDEX);
+        channel = 0;
+        rectColor = Color.OLIVEDRAB;
+    }
+    
+    @FXML
+    private void handleHarpsichordAction(ActionEvent e){
+        System.out.println("harp");
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 1, 6, 0, 0, TRACK_INDEX);
+        channel = 1;
+        rectColor = Color.FLORALWHITE;
+    }
+    
+    @FXML
+    private void handleGoblinsAction(ActionEvent e){
+        System.out.println("gob");
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 2, 101, 0, 0, TRACK_INDEX);
+        channel = 2;
+        rectColor = Color.LIGHTGOLDENRODYELLOW;
+    }
+   
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
      * (with location, duration, and speed). Removes red line when the
