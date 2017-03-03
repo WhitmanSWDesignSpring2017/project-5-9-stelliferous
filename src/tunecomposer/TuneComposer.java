@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene; 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.StackPane;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
@@ -19,9 +18,7 @@ import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
-import javafx.event.EventHandler;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javax.sound.midi.ShortMessage;
@@ -71,9 +68,9 @@ public class TuneComposer extends Application {
     
     private final ArrayList<Rectangle> SELECTED_NOTES = new ArrayList<>();
     
-    int yEffective = 0;
-    int xEffective = 0;
-    Rectangle me = new Rectangle();
+    int yCoordinate = 0;
+    int xCoordinate = 0;
+    Rectangle selectRect = new Rectangle();
 
 
     /**
@@ -116,13 +113,48 @@ public class TuneComposer extends Application {
      */
     @FXML 
     private void gridClick(MouseEvent e) throws IOException{
+        xCoordinate = (int)e.getX();
+        yCoordinate = (int)e.getY();
+        System.out.println(xCoordinate+" "+yCoordinate+" click");
+
+    };
+    
+    @FXML
+    private void gridDrag(MouseEvent w){
+        rectStackPane.getChildren().remove(selectRect);
+        int currentX = (int)w.getX();
+        int currentY = (int)w.getY();
+        if (xCoordinate<currentX){
+            selectRect.setX(xCoordinate);
+        } else {
+            selectRect.setX(currentX);
+        }
+        if ((yCoordinate<currentY)){
+            selectRect.setY(yCoordinate);
+        } else {
+            selectRect.setY(currentY);
+        }
+        selectRect.setWidth(abs(currentX-xCoordinate));
+        selectRect.setHeight(abs(currentY-yCoordinate));
+        selectRect.setStroke(Color.CHARTREUSE);
+        selectRect.setFill(Color.TRANSPARENT);
+        rectStackPane.getChildren().add(selectRect);
+    }
+    
+    @FXML
+    private void gridRelease(MouseEvent e){
+        rectStackPane.getChildren().remove(selectRect);
+        System.out.println((int)e.getX()+" "+(int)e.getY()+ " release");
+        if ((xCoordinate != (int)e.getX()) || (yCoordinate != (int)e.getY())){
+            return;
+        }
         System.out.println("clicked!");
         //finds x and y coordinates within the gridPane where the user's clicked
-        int yCoordinate = (int)e.getY();
-        yEffective = (yCoordinate/10)*10+CENTER_Y+5;
+        yCoordinate = (int)e.getY();
+        //yEffective = (yCoordinate/10)*10+CENTER_Y+5;
         int yPitch = 127-yCoordinate/10;
-        int xCoordinate = (int)e.getX();
-        xEffective = xCoordinate+TO_LEFT+50;
+        xCoordinate = (int)e.getX();
+        //xEffective = xCoordinate+TO_LEFT+50;
         
         //adds a note to the Midi Composition based on user's click input
         MidiComposition.addNote(yPitch, VOLUME, xCoordinate,
@@ -180,86 +212,6 @@ public class TuneComposer extends Application {
         if (endcomp < (xCoordinate + 100)*10) {
             endcomp = ((xCoordinate + 100)*10);
         }
-    };
-    /*
-    private double orgSceneX, orgSceneY, orgTranslateX, orgTranslateY;
-    private double newTranslateY;
-            
-    EventHandler<MouseEvent> circleOnMousePressedEventHandler = 
-        new EventHandler<MouseEvent>() {
- 
-        @Override
-        public void handle(MouseEvent t) {
-            
-            orgSceneX = t.getX();
-            orgSceneY = t.getY();
-            Rectangle currentRect = (Rectangle) t.getSource();
-            orgTranslateX = ((Rectangle)(t.getSource())).getX();
-            orgTranslateY = ((Rectangle)(t.getSource())).getY();
-            newTranslateY = orgTranslateY;
-            System.out.println("Pressed");
-            if (t.getX() == currentRect.getX()){
-                System.out.println("covered");
-            }
-            
-        }
-    };
-     
-        EventHandler<MouseEvent> circleOnMouseDraggedEventHandler = 
-        new EventHandler<MouseEvent>() {
- 
-        @Override
-        public void handle(MouseEvent t) {
-            double offsetX = t.getX() - orgSceneX;
-            double offsetY = t.getY() - orgSceneY;
-            double newTranslateX = orgTranslateX + offsetX;
-            newTranslateY = orgTranslateY + offsetY;
-             
-            ((Rectangle)(t.getSource())).setX(newTranslateX);
-            ((Rectangle)(t.getSource())).setY(newTranslateY);
-            System.out.println("dragged");
-        }
-    };
-        EventHandler<MouseEvent> circleOnMouseReleasedEventHandler = 
-        new EventHandler<MouseEvent>() {
- 
-        @Override
-        public void handle(MouseEvent t) {
-            double finalY = ((int)(newTranslateY/10))*10-5;
-            System.out.println(newTranslateY);
-            System.out.println(finalY);
-
-            
-            
-            ((Rectangle)(t.getSource())).setY(finalY);
-            System.out.println("Released");
-        }
-    };
-    */
-    @FXML
-    private void gridDrag(MouseEvent w){
-        rectStackPane.getChildren().remove(me);
-        int currentX = (int)w.getX()+TO_LEFT;
-        int currentY = (int)(w.getY()/10)*10+CENTER_Y;
-        //System.out.println(xEffective+" "+yEffective);
-        //System.out.println((-xEffective+(int)w.getX()+TO_LEFT+50)+" "+(-yEffective+((int)w.getY()/10)*10+CENTER_Y+5));
-        //Rectangle me = new Rectangle(xEffective,yEffective,xEffective-(int)e.getX()+TO_LEFT+50,yEffective-((int)e.getY()/10)*10+CENTER_Y+5);
-        me.setX(xEffective);//+(currentX/2));
-        me.setY(yEffective);//+(currentY/2));
-        me.setWidth(abs(currentX-xEffective+50));
-        me.setHeight(abs(currentY-yEffective+10));
-        rectStackPane.getChildren().add(me);
-        /*selectionRectangle.setTranslateX(xEffective);
-        selectionRectangle.setTranslateY(yEffective);
-        selectionRectangle.setWidth((int)e.getX()+TO_LEFT+50);
-        selectionRectangle.setHeight(((int)e.getY()/10)*10+CENTER_Y+5);*/
-    }
-    
-    @FXML
-    private void gridRelease(MouseEvent e){
-       //if (rectStackPane.getChildren().contains(me)){
-        rectStackPane.getChildren().remove(me);
-       //}
     }
 
     /**
@@ -367,3 +319,60 @@ public class TuneComposer extends Application {
     }
    
 }
+
+
+/*
+    private double orgSceneX, orgSceneY, orgTranslateX, orgTranslateY;
+    private double newTranslateY;
+            
+    EventHandler<MouseEvent> circleOnMousePressedEventHandler = 
+        new EventHandler<MouseEvent>() {
+ 
+        @Override
+        public void handle(MouseEvent t) {
+            
+            orgSceneX = t.getX();
+            orgSceneY = t.getY();
+            Rectangle currentRect = (Rectangle) t.getSource();
+            orgTranslateX = ((Rectangle)(t.getSource())).getX();
+            orgTranslateY = ((Rectangle)(t.getSource())).getY();
+            newTranslateY = orgTranslateY;
+            System.out.println("Pressed");
+            if (t.getX() == currentRect.getX()){
+                System.out.println("covered");
+            }
+            
+        }
+    };
+     
+        EventHandler<MouseEvent> circleOnMouseDraggedEventHandler = 
+        new EventHandler<MouseEvent>() {
+ 
+        @Override
+        public void handle(MouseEvent t) {
+            double offsetX = t.getX() - orgSceneX;
+            double offsetY = t.getY() - orgSceneY;
+            double newTranslateX = orgTranslateX + offsetX;
+            newTranslateY = orgTranslateY + offsetY;
+             
+            ((Rectangle)(t.getSource())).setX(newTranslateX);
+            ((Rectangle)(t.getSource())).setY(newTranslateY);
+            System.out.println("dragged");
+        }
+    };
+        EventHandler<MouseEvent> circleOnMouseReleasedEventHandler = 
+        new EventHandler<MouseEvent>() {
+ 
+        @Override
+        public void handle(MouseEvent t) {
+            double finalY = ((int)(newTranslateY/10))*10-5;
+            System.out.println(newTranslateY);
+            System.out.println(finalY);
+
+            
+            
+            ((Rectangle)(t.getSource())).setY(finalY);
+            System.out.println("Released");
+        }
+    };
+    */
