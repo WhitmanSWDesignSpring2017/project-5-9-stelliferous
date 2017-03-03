@@ -6,6 +6,7 @@ import javafx.stage.WindowEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene; 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
@@ -22,7 +23,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javax.sound.midi.ShortMessage;
@@ -72,9 +72,9 @@ public class TuneComposer extends Application {
     
     private final ArrayList<Rectangle> SELECTED_NOTES = new ArrayList<>();
     
-    int yEffective = 0;
-    int xEffective = 0;
-    Rectangle me = new Rectangle();
+    int yCoordinate = 0;
+    int xCoordinate = 0;
+    Rectangle selectRect = new Rectangle();
 
     /**
      * Construct the scene and start the application.
@@ -123,7 +123,10 @@ public class TuneComposer extends Application {
             int yPitch = 127-yCoordinate/10;
             int xCoordinate = (int)e.getX();
             xEffective = xCoordinate;
-        
+        xCoordinate = (int)e.getX();
+        yCoordinate = (int)e.getY();
+        System.out.println(xCoordinate+" "+yCoordinate+" click");
+                
           //adds a note to the Midi Composition based on user's click input
             MidiComposition.addNote(yPitch, VOLUME, xCoordinate,
                                     DURATION, channel, TRACK_INDEX);  
@@ -174,6 +177,45 @@ public class TuneComposer extends Application {
                 endcomp = ((xCoordinate + 100)*10);
             }
         }
+
+    };
+    
+    @FXML
+    private void gridDrag(MouseEvent w){
+        rectStackPane.getChildren().remove(selectRect);
+        int currentX = (int)w.getX();
+        int currentY = (int)w.getY();
+        if (xCoordinate<currentX){
+            selectRect.setX(xCoordinate);
+        } else {
+            selectRect.setX(currentX);
+        }
+        if ((yCoordinate<currentY)){
+            selectRect.setY(yCoordinate);
+        } else {
+            selectRect.setY(currentY);
+        }
+        selectRect.setWidth(abs(currentX-xCoordinate));
+        selectRect.setHeight(abs(currentY-yCoordinate));
+        selectRect.setStroke(Color.CHARTREUSE);
+        selectRect.setFill(Color.TRANSPARENT);
+        rectStackPane.getChildren().add(selectRect);
+    }
+    
+    @FXML
+    private void gridRelease(MouseEvent e){
+        rectStackPane.getChildren().remove(selectRect);
+        System.out.println((int)e.getX()+" "+(int)e.getY()+ " release");
+        if ((xCoordinate != (int)e.getX()) || (yCoordinate != (int)e.getY())){
+            return;
+        }
+        System.out.println("clicked!");
+        //finds x and y coordinates within the gridPane where the user's clicked
+        yCoordinate = (int)e.getY();
+        //yEffective = (yCoordinate/10)*10+CENTER_Y+5;
+        int yPitch = 127-yCoordinate/10;
+        xCoordinate = (int)e.getX();
+        //xEffective = xCoordinate+TO_LEFT+5
     };
  
     private double orgSceneX, orgSceneY, orgTranslateX, orgTranslateY;
@@ -380,3 +422,60 @@ public class TuneComposer extends Application {
     }
    
 }
+
+
+/*
+    private double orgSceneX, orgSceneY, orgTranslateX, orgTranslateY;
+    private double newTranslateY;
+            
+    EventHandler<MouseEvent> circleOnMousePressedEventHandler = 
+        new EventHandler<MouseEvent>() {
+ 
+        @Override
+        public void handle(MouseEvent t) {
+            
+            orgSceneX = t.getX();
+            orgSceneY = t.getY();
+            Rectangle currentRect = (Rectangle) t.getSource();
+            orgTranslateX = ((Rectangle)(t.getSource())).getX();
+            orgTranslateY = ((Rectangle)(t.getSource())).getY();
+            newTranslateY = orgTranslateY;
+            System.out.println("Pressed");
+            if (t.getX() == currentRect.getX()){
+                System.out.println("covered");
+            }
+            
+        }
+    };
+     
+        EventHandler<MouseEvent> circleOnMouseDraggedEventHandler = 
+        new EventHandler<MouseEvent>() {
+ 
+        @Override
+        public void handle(MouseEvent t) {
+            double offsetX = t.getX() - orgSceneX;
+            double offsetY = t.getY() - orgSceneY;
+            double newTranslateX = orgTranslateX + offsetX;
+            newTranslateY = orgTranslateY + offsetY;
+             
+            ((Rectangle)(t.getSource())).setX(newTranslateX);
+            ((Rectangle)(t.getSource())).setY(newTranslateY);
+            System.out.println("dragged");
+        }
+    };
+        EventHandler<MouseEvent> circleOnMouseReleasedEventHandler = 
+        new EventHandler<MouseEvent>() {
+ 
+        @Override
+        public void handle(MouseEvent t) {
+            double finalY = ((int)(newTranslateY/10))*10-5;
+            System.out.println(newTranslateY);
+            System.out.println(finalY);
+
+            
+            
+            ((Rectangle)(t.getSource())).setY(finalY);
+            System.out.println("Released");
+        }
+    };
+    */
