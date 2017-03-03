@@ -223,8 +223,9 @@ public class TuneComposer extends Application {
         }
     };
  
-    private double orgSceneX, orgSceneY, orgTranslateX, orgTranslateY;
-    private double newTranslateY;
+    private double orgSceneX, orgSceneY;
+    private ArrayList<Double> orgTranslateXs = new ArrayList<>();
+    private ArrayList<Double> orgTranslateYs = new ArrayList<>();
             
     EventHandler<MouseEvent> circleOnMousePressedEventHandler = 
         new EventHandler<MouseEvent>() {
@@ -236,12 +237,19 @@ public class TuneComposer extends Application {
             yCoordinate = (int)t.getY();
             orgSceneX = t.getX();
             orgSceneY = t.getY();
+            for (int i=0; i<SELECTED_NOTES.size();i++) {
+                orgTranslateXs.add(SELECTED_NOTES.get(i).getX());
+                orgTranslateYs.add(SELECTED_NOTES.get(i).getY());
+            }
+            /*
             Rectangle currentRect = (Rectangle) t.getSource();
-            orgTranslateX = ((Rectangle)(t.getSource())).getX();
+            double orgTranslatex = ((Rectangle)(t.getSource())).getX();
             orgTranslateY = ((Rectangle)(t.getSource())).getY();
             newTranslateY = orgTranslateY;
+            */
             System.out.println("Pressed");
-            if (t.getX() == currentRect.getX()){
+            
+            if (t.getX() == SELECTED_NOTES.get(0).getX()){
                 System.out.println("covered");
             }
             
@@ -258,11 +266,19 @@ public class TuneComposer extends Application {
             yCoordinate = (int)t.getY();
             double offsetX = t.getX() - orgSceneX;
             double offsetY = t.getY() - orgSceneY;
-            double newTranslateX = orgTranslateX + offsetX;
-            newTranslateY = orgTranslateY + offsetY;
-             
+            //double newTranslateX = orgTranslateX + offsetX;
+            //newTranslateY = orgTranslateY + offsetY;
+            
+            for (int i=0; i<SELECTED_NOTES.size();i++) {
+                double newTranslateX = orgTranslateXs.get(i) + offsetX;
+                double newTranslateY = orgTranslateYs.get(i) + offsetY;
+                SELECTED_NOTES.get(i).setX(newTranslateX);
+                SELECTED_NOTES.get(i).setY(newTranslateY);
+            }
+            /*
             ((Rectangle)(t.getSource())).setX(newTranslateX);
             ((Rectangle)(t.getSource())).setY(newTranslateY);
+            */
             System.out.println("dragged");
         }
     };
@@ -271,15 +287,25 @@ public class TuneComposer extends Application {
  
         @Override
         public void handle(MouseEvent t) {
+            orgTranslateXs.clear();
+            orgTranslateYs.clear();
             rectStackPane.getChildren().remove(selectRect);
             xCoordinate = (int)t.getX();
             yCoordinate = (int)t.getY();
-            double finalY = ((int)(newTranslateY/10))*10;
-            double offsetY = finalY-newTranslateY;
-            System.out.println(newTranslateY);
-            System.out.println(finalY);
+            for (int i=0; i<SELECTED_NOTES.size(); i++) {
+                double currentY = SELECTED_NOTES.get(i).getY();
+                double finalY = ((int)(currentY/10))*10;
+                double offset = finalY - currentY;
+                SELECTED_NOTES.get(i).setTranslateY(offset);
+            }
+            /*
+            //double finalY = ((int)(newTranslateY/10))*10;
+            //double offsetY = finalY-newTranslateY;
+            //System.out.println(newTranslateY);
+            //System.out.println(finalY);
 
-            ((Rectangle)(t.getSource())).setTranslateY(offsetY);
+            //((Rectangle)(t.getSource())).setTranslateY(offsetY);
+            */
             System.out.println("Released");
         }
     };
