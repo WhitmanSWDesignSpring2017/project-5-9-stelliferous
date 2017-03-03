@@ -4,7 +4,7 @@ package tunecomposer;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.Scene; 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.StackPane;
@@ -20,10 +20,11 @@ import javafx.util.Duration;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
 import javafx.event.EventHandler;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javax.sound.midi.ShortMessage;
-import javafx.scene.control.ToggleGroup;
 
 
 /**
@@ -72,7 +73,7 @@ public class TuneComposer extends Application {
     
     int yEffective = 0;
     int xEffective = 0;
-            Rectangle me = new Rectangle();
+    Rectangle me = new Rectangle();
 
 
     /**
@@ -101,8 +102,8 @@ public class TuneComposer extends Application {
     }
     
     //makes available StackPane in which the user can click to add notes
-    @FXML StackPane rectStackPane;
-    
+    @FXML AnchorPane rectStackPane;
+    @FXML Pane compositionGrid;
     //makes available the redLine which designates place in the composition 
     @FXML Rectangle redline;
 
@@ -115,37 +116,42 @@ public class TuneComposer extends Application {
      */
     @FXML 
     private void gridClick(MouseEvent e) throws IOException{
+        System.out.println("clicked!");
         //finds x and y coordinates within the gridPane where the user's clicked
         int yCoordinate = (int)e.getY();
         yEffective = (yCoordinate/10)*10+CENTER_Y+5;
         int yPitch = 127-yCoordinate/10;
         int xCoordinate = (int)e.getX();
-         xEffective = xCoordinate+TO_LEFT+50;
+        xEffective = xCoordinate+TO_LEFT+50;
         
         //adds a note to the Midi Composition based on user's click input
         MidiComposition.addNote(yPitch, VOLUME, xCoordinate,
                                     DURATION, channel, TRACK_INDEX);  
         
         //creates, places, and formats a rectangle where the user clicks
-        Rectangle rect = new Rectangle();
+        /*Rectangle rect = new Rectangle();
         rect.setTranslateX(xEffective);
         rect.setTranslateY(yEffective);
         rect.setHeight(10);
-        rect.setWidth(100);
+        rect.setWidth(100);*/
+        double mouseX = e.getX();
+        double mouseY = e.getY();              
+        int y = (int) ((mouseY)/10);
+        Rectangle rect = new Rectangle(mouseX,y*10,100,10);
         rect.setFill(rectColor);
         rect.setStroke(Color.CRIMSON);
         rect.setStrokeWidth(2);
-        rect.setOnMousePressed(circleOnMousePressedEventHandler);
+        /*rect.setOnMousePressed(circleOnMousePressedEventHandler);
         rect.setOnMouseDragged(circleOnMouseDraggedEventHandler);   
         rect.setOnMouseReleased(circleOnMouseReleasedEventHandler);
+        */
         
-        
-        rect.setOnMouseClicked((MouseEvent mouseEvent) -> {
-            if ((SELECTED_NOTES.indexOf(rect)!= -1) && (mouseEvent.isControlDown())){
+        rect.setOnMouseClicked((MouseEvent t) -> {
+            if ((SELECTED_NOTES.indexOf(rect)!= -1) && (t.isControlDown())){
                 SELECTED_NOTES.remove(rect);
                 rect.setStroke(Color.BLACK);
             } else if (SELECTED_NOTES.indexOf(rect) == -1){
-                if(!mouseEvent.isControlDown()){
+                if(!t.isControlDown()){
                     RECT_LIST.forEach((e1) -> {
                         e1.setStroke(Color.BLACK);
                     });
@@ -155,7 +161,7 @@ public class TuneComposer extends Application {
                 rect.setStroke(Color.CRIMSON);
                 System.out.println("click"+rect.getX());
             }
-        });
+        });   
         
         if (!e.isControlDown()){
             RECT_LIST.forEach((e1) -> {
@@ -163,6 +169,7 @@ public class TuneComposer extends Application {
             });
             SELECTED_NOTES.clear();
         }
+       
         
         //adds rectangle to the list of rectangles, that they may be cleared
         RECT_LIST.add(rect);
@@ -174,8 +181,8 @@ public class TuneComposer extends Application {
             endcomp = ((xCoordinate + 100)*10);
         }
     };
-    
-        private double orgSceneX, orgSceneY, orgTranslateX, orgTranslateY;
+    /*
+    private double orgSceneX, orgSceneY, orgTranslateX, orgTranslateY;
     private double newTranslateY;
             
     EventHandler<MouseEvent> circleOnMousePressedEventHandler = 
@@ -183,16 +190,18 @@ public class TuneComposer extends Application {
  
         @Override
         public void handle(MouseEvent t) {
-            orgSceneX = t.getSceneX();
-            orgSceneY = t.getSceneY();
+            
+            orgSceneX = t.getX();
+            orgSceneY = t.getY();
             Rectangle currentRect = (Rectangle) t.getSource();
-            orgTranslateX = ((Rectangle)(t.getSource())).getTranslateX();
-            orgTranslateY = ((Rectangle)(t.getSource())).getTranslateY();
+            orgTranslateX = ((Rectangle)(t.getSource())).getX();
+            orgTranslateY = ((Rectangle)(t.getSource())).getY();
             newTranslateY = orgTranslateY;
             System.out.println("Pressed");
             if (t.getX() == currentRect.getX()){
                 System.out.println("covered");
             }
+            
         }
     };
      
@@ -201,13 +210,13 @@ public class TuneComposer extends Application {
  
         @Override
         public void handle(MouseEvent t) {
-            double offsetX = t.getSceneX() - orgSceneX;
-            double offsetY = t.getSceneY() - orgSceneY;
+            double offsetX = t.getX() - orgSceneX;
+            double offsetY = t.getY() - orgSceneY;
             double newTranslateX = orgTranslateX + offsetX;
             newTranslateY = orgTranslateY + offsetY;
              
-            ((Rectangle)(t.getSource())).setTranslateX(newTranslateX);
-            ((Rectangle)(t.getSource())).setTranslateY(newTranslateY);
+            ((Rectangle)(t.getSource())).setX(newTranslateX);
+            ((Rectangle)(t.getSource())).setY(newTranslateY);
             System.out.println("dragged");
         }
     };
@@ -222,11 +231,11 @@ public class TuneComposer extends Application {
 
             
             
-            ((Rectangle)(t.getSource())).setTranslateY(finalY);
+            ((Rectangle)(t.getSource())).setY(finalY);
             System.out.println("Released");
         }
     };
-    
+    */
     @FXML
     private void gridDrag(MouseEvent w){
         rectStackPane.getChildren().remove(me);
@@ -235,8 +244,8 @@ public class TuneComposer extends Application {
         //System.out.println(xEffective+" "+yEffective);
         //System.out.println((-xEffective+(int)w.getX()+TO_LEFT+50)+" "+(-yEffective+((int)w.getY()/10)*10+CENTER_Y+5));
         //Rectangle me = new Rectangle(xEffective,yEffective,xEffective-(int)e.getX()+TO_LEFT+50,yEffective-((int)e.getY()/10)*10+CENTER_Y+5);
-        me.setTranslateX(xEffective-50);//+(currentX/2));
-        me.setTranslateY(yEffective-5);//+(currentY/2));
+        me.setX(xEffective);//+(currentX/2));
+        me.setY(yEffective);//+(currentY/2));
         me.setWidth(abs(currentX-xEffective+50));
         me.setHeight(abs(currentY-yEffective+10));
         rectStackPane.getChildren().add(me);
@@ -248,7 +257,9 @@ public class TuneComposer extends Application {
     
     @FXML
     private void gridRelease(MouseEvent e){
-       rectStackPane.getChildren().remove(me);
+       //if (rectStackPane.getChildren().contains(me)){
+        rectStackPane.getChildren().remove(me);
+       //}
     }
 
     /**
