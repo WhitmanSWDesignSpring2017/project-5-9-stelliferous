@@ -22,9 +22,9 @@
    <center>
       <ScrollPane fx:id="compositionScroll">
          <content>
-            <AnchorPane fx:id="rectStackPane" layoutY="30.0"  prefHeight="1280.0" prefWidth="2000.0">
+            <AnchorPane fx:id="rectStackPane"  onMouseClicked="#gridClick" layoutY="30.0"  prefHeight="1280.0" prefWidth="2000.0">
                <children>
-                  <Pane fx:id="compsitionGrid" onMouseReleased="#gridRelease" onMouseClicked="#gridClick" onMouseDragged="#gridDrag"  prefHeight="1280.0" prefWidth="2000.0" styleClass="compositionPane" stylesheets="@tunecomposer.css">
+                  <Pane fx:id="compositionGrid" onMouseReleased="#gridRelease" onMouseDragged="#gridDrag"  prefHeight="1280.0" prefWidth="2000.0" styleClass="compositionPane" stylesheets="@tunecomposer.css">
                     <!--<columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>

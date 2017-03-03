@@ -6,8 +6,6 @@ import javafx.stage.WindowEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene; 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.StackPane;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
@@ -20,6 +18,9 @@ import javafx.util.Duration;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -75,7 +76,6 @@ public class TuneComposer extends Application {
     int xEffective = 0;
     Rectangle me = new Rectangle();
 
-
     /**
      * Construct the scene and start the application.
      * Loads GUI/layout from the TuneComposer.fxml into a scene, which
@@ -86,7 +86,7 @@ public class TuneComposer extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        //loads fxml file, places in a new scene, which is placed in the stage
+        //loads fxml file, places in a new scene, which is placed in the stage    
         Parent root = FXMLLoader.load(getClass().getResource("TuneComposer.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setTitle("Tune Composer");
@@ -103,10 +103,10 @@ public class TuneComposer extends Application {
     
     //makes available StackPane in which the user can click to add notes
     @FXML AnchorPane rectStackPane;
-    @FXML Pane compositionGrid;
     //makes available the redLine which designates place in the composition 
     @FXML Rectangle redline;
 
+    @FXML Pane compositionGrid;
     /**
      * Creates a rectangle at the point clicked and adds a note to the composition
      * based on the coordinates of the point clicked. Adds that rectangle
@@ -141,10 +141,10 @@ public class TuneComposer extends Application {
         rect.setFill(rectColor);
         rect.setStroke(Color.CRIMSON);
         rect.setStrokeWidth(2);
-        /*rect.setOnMousePressed(circleOnMousePressedEventHandler);
+        rect.setOnMousePressed(circleOnMousePressedEventHandler);
         rect.setOnMouseDragged(circleOnMouseDraggedEventHandler);   
         rect.setOnMouseReleased(circleOnMouseReleasedEventHandler);
-        */
+        
         
         rect.setOnMouseClicked((MouseEvent t) -> {
             if ((SELECTED_NOTES.indexOf(rect)!= -1) && (t.isControlDown())){
@@ -181,7 +181,7 @@ public class TuneComposer extends Application {
             endcomp = ((xCoordinate + 100)*10);
         }
     };
-    /*
+ 
     private double orgSceneX, orgSceneY, orgTranslateX, orgTranslateY;
     private double newTranslateY;
             
@@ -190,7 +190,6 @@ public class TuneComposer extends Application {
  
         @Override
         public void handle(MouseEvent t) {
-            
             orgSceneX = t.getX();
             orgSceneY = t.getY();
             Rectangle currentRect = (Rectangle) t.getSource();
@@ -235,7 +234,27 @@ public class TuneComposer extends Application {
             System.out.println("Released");
         }
     };
-    */
+    
+    /**
+     * Draws the horizontal grey lines that show the possible vertical positions
+     * of the rectangles.
+     * @return the canvas of grey lines
+     */
+    protected Canvas greyLines() {
+        Canvas lines = new Canvas(2000,1280);
+        GraphicsContext gc = lines.getGraphicsContext2D();
+        gc.setLineWidth(1.0);
+        for (int y = 0; y < 1280; y+=10) {
+            double y1 ;
+            y1 = y + 0.5;
+            gc.moveTo(0, y1);
+            gc.lineTo(2000, y1);
+            gc.stroke();
+        }
+        return lines;
+    }        
+        
+   
     @FXML
     private void gridDrag(MouseEvent w){
         rectStackPane.getChildren().remove(me);
@@ -345,7 +364,8 @@ public class TuneComposer extends Application {
         lineTransition.setFromX(TO_LEFT);
         lineTransition.setToX(TO_RIGHT);
         lineTransition.setInterpolator(Interpolator.LINEAR);
-        
+  
+        rectStackPane.getChildren().add(greyLines());
         //checks to see if the composition is over, removes red line
         new AnimationTimer() {
             @Override
