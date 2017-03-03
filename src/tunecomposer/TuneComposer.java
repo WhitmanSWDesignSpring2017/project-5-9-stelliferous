@@ -23,6 +23,8 @@ import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javax.sound.midi.ShortMessage;
+import javafx.scene.control.ToggleGroup;
+
 
 /**
  * This JavaFX application lets the user compose tunes by clicking!
@@ -112,7 +114,7 @@ public class TuneComposer extends Application {
      * @throws IOException
      */
     @FXML 
-    private void gridPress(MouseEvent e) throws IOException{
+    private void gridClick(MouseEvent e) throws IOException{
         //finds x and y coordinates within the gridPane where the user's clicked
         int yCoordinate = (int)e.getY();
         yEffective = (yCoordinate/10)*10+CENTER_Y+5;
@@ -133,6 +135,9 @@ public class TuneComposer extends Application {
         rect.setFill(rectColor);
         rect.setStroke(Color.CRIMSON);
         rect.setStrokeWidth(2);
+        rect.setOnMousePressed(circleOnMousePressedEventHandler);
+        rect.setOnMouseDragged(circleOnMouseDraggedEventHandler);   
+        rect.setOnMouseReleased(circleOnMouseReleasedEventHandler);
         
         
         rect.setOnMouseClicked((MouseEvent mouseEvent) -> {
@@ -167,6 +172,48 @@ public class TuneComposer extends Application {
         rectStackPane.getChildren().add(rect);
         if (endcomp < (xCoordinate + 100)*10) {
             endcomp = ((xCoordinate + 100)*10);
+        }
+    };
+    
+        private double orgSceneX, orgSceneY, orgTranslateX, orgTranslateY;
+    private double newTranslateY;
+            
+    EventHandler<MouseEvent> circleOnMousePressedEventHandler = 
+        new EventHandler<MouseEvent>() {
+ 
+        @Override
+        public void handle(MouseEvent t) {
+            orgSceneX = t.getSceneX();
+            orgSceneY = t.getSceneY();
+            orgTranslateX = ((Rectangle)(t.getSource())).getTranslateX();
+            orgTranslateY = ((Rectangle)(t.getSource())).getTranslateY();
+            System.out.println("Pressed");
+        }
+    };
+     
+        EventHandler<MouseEvent> circleOnMouseDraggedEventHandler = 
+        new EventHandler<MouseEvent>() {
+ 
+        @Override
+        public void handle(MouseEvent t) {
+            double offsetX = t.getSceneX() - orgSceneX;
+            double offsetY = t.getSceneY() - orgSceneY;
+            double newTranslateX = orgTranslateX + offsetX;
+            newTranslateY = orgTranslateY + offsetY;
+             
+            ((Rectangle)(t.getSource())).setTranslateX(newTranslateX);
+            ((Rectangle)(t.getSource())).setTranslateY(newTranslateY);
+        }
+    };
+        EventHandler<MouseEvent> circleOnMouseReleasedEventHandler = 
+        new EventHandler<MouseEvent>() {
+ 
+        @Override
+        public void handle(MouseEvent t) {
+            double finalY = ((int)(newTranslateY/10))*10-5;
+            
+            ((Rectangle)(t.getSource())).setTranslateY(finalY);
+            System.out.println("Released");
         }
     };
     
