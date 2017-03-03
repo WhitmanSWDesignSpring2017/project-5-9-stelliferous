@@ -72,6 +72,9 @@ public class TuneComposer extends Application {
     
     private final ArrayList<Rectangle> SELECTED_NOTES = new ArrayList<>();
     
+    int yEffective = 0;
+    int xEffective = 0;
+    Rectangle me = new Rectangle();
     int yCoordinate = 0;
     int xCoordinate = 0;
     Rectangle selectRect = new Rectangle();
@@ -289,7 +292,7 @@ public class TuneComposer extends Application {
         return lines;
     }        
         
-   
+   /*
     @FXML
     private void gridDrag(MouseEvent w){
         rectStackPane.getChildren().remove(me);
@@ -306,7 +309,7 @@ public class TuneComposer extends Application {
         /*selectionRectangle.setTranslateX(xEffective);
         selectionRectangle.setTranslateY(yEffective);
         selectionRectangle.setWidth((int)e.getX()+TO_LEFT+50);
-        selectionRectangle.setHeight(((int)e.getY()/10)*10+CENTER_Y+5);*/
+        selectionRectangle.setHeight(((int)e.getY()/10)*10+CENTER_Y+5);
     }
     
     @FXML
@@ -315,6 +318,7 @@ public class TuneComposer extends Application {
         rectStackPane.getChildren().remove(me);
        //}
     }
+   */
 
     /**
      * Exits the program upon user clicking the typical 'close' 
