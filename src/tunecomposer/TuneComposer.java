@@ -185,9 +185,14 @@ public class TuneComposer extends Application {
         public void handle(MouseEvent t) {
             orgSceneX = t.getSceneX();
             orgSceneY = t.getSceneY();
+            Rectangle currentRect = (Rectangle) t.getSource();
             orgTranslateX = ((Rectangle)(t.getSource())).getTranslateX();
             orgTranslateY = ((Rectangle)(t.getSource())).getTranslateY();
+            newTranslateY = orgTranslateY;
             System.out.println("Pressed");
+            if (t.getX() == currentRect.getX()){
+                System.out.println("covered");
+            }
         }
     };
      
@@ -203,6 +208,7 @@ public class TuneComposer extends Application {
              
             ((Rectangle)(t.getSource())).setTranslateX(newTranslateX);
             ((Rectangle)(t.getSource())).setTranslateY(newTranslateY);
+            System.out.println("dragged");
         }
     };
         EventHandler<MouseEvent> circleOnMouseReleasedEventHandler = 
@@ -211,6 +217,10 @@ public class TuneComposer extends Application {
         @Override
         public void handle(MouseEvent t) {
             double finalY = ((int)(newTranslateY/10))*10-5;
+            System.out.println(newTranslateY);
+            System.out.println(finalY);
+
+            
             
             ((Rectangle)(t.getSource())).setTranslateY(finalY);
             System.out.println("Released");
