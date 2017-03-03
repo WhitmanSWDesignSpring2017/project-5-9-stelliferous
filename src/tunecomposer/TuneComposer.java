@@ -116,69 +116,63 @@ public class TuneComposer extends Application {
      */
     @FXML 
     private void gridClick(MouseEvent e) throws IOException{
-        System.out.println("clicked!");
+        if (e.isStillSincePress()) {
         //finds x and y coordinates within the gridPane where the user's clicked
-        int yCoordinate = (int)e.getY();
-        yEffective = (yCoordinate/10)*10+CENTER_Y+5;
-        int yPitch = 127-yCoordinate/10;
-        int xCoordinate = (int)e.getX();
-        xEffective = xCoordinate+TO_LEFT+50;
+            int yCoordinate = (int)e.getY();
+            yEffective = (yCoordinate/10)*10;
+            int yPitch = 127-yCoordinate/10;
+            int xCoordinate = (int)e.getX();
+            xEffective = xCoordinate;
         
-        //adds a note to the Midi Composition based on user's click input
-        MidiComposition.addNote(yPitch, VOLUME, xCoordinate,
+          //adds a note to the Midi Composition based on user's click input
+            MidiComposition.addNote(yPitch, VOLUME, xCoordinate,
                                     DURATION, channel, TRACK_INDEX);  
-        
-        //creates, places, and formats a rectangle where the user clicks
-        /*Rectangle rect = new Rectangle();
-        rect.setTranslateX(xEffective);
-        rect.setTranslateY(yEffective);
-        rect.setHeight(10);
-        rect.setWidth(100);*/
-        double mouseX = e.getX();
-        double mouseY = e.getY();              
-        int y = (int) ((mouseY)/10);
-        Rectangle rect = new Rectangle(mouseX,y*10,100,10);
-        rect.setFill(rectColor);
-        rect.setStroke(Color.CRIMSON);
-        rect.setStrokeWidth(2);
-        rect.setOnMousePressed(circleOnMousePressedEventHandler);
-        rect.setOnMouseDragged(circleOnMouseDraggedEventHandler);   
-        rect.setOnMouseReleased(circleOnMouseReleasedEventHandler);
-        
-        
-        rect.setOnMouseClicked((MouseEvent t) -> {
-            if ((SELECTED_NOTES.indexOf(rect)!= -1) && (t.isControlDown())){
-                SELECTED_NOTES.remove(rect);
-                rect.setStroke(Color.BLACK);
-            } else if (SELECTED_NOTES.indexOf(rect) == -1){
-                if(!t.isControlDown()){
-                    RECT_LIST.forEach((e1) -> {
-                        e1.setStroke(Color.BLACK);
-                    });
-                    SELECTED_NOTES.clear();
-                }
-                SELECTED_NOTES.add(rect);
-                rect.setStroke(Color.CRIMSON);
-                System.out.println("click"+rect.getX());
-            }
-        });   
-        
-        if (!e.isControlDown()){
-            RECT_LIST.forEach((e1) -> {
-                        e1.setStroke(Color.BLACK);
-            });
-            SELECTED_NOTES.clear();
-        }
        
+            double mouseX = e.getX();
+            double mouseY = e.getY();              
+            int y = (int) ((mouseY)/10);
+            Rectangle rect = new Rectangle(mouseX,y*10,100,10);
+            rect.setFill(rectColor);
+            rect.setStroke(Color.CRIMSON);
+            rect.setStrokeWidth(2);
+            rect.setOnMousePressed(circleOnMousePressedEventHandler);
+            rect.setOnMouseDragged(circleOnMouseDraggedEventHandler);   
+            rect.setOnMouseReleased(circleOnMouseReleasedEventHandler);
         
-        //adds rectangle to the list of rectangles, that they may be cleared
-        RECT_LIST.add(rect);
-        SELECTED_NOTES.add(rect);
         
-        //adds on-click rectangle to the stackPane
-        rectStackPane.getChildren().add(rect);
-        if (endcomp < (xCoordinate + 100)*10) {
-            endcomp = ((xCoordinate + 100)*10);
+            rect.setOnMouseClicked((MouseEvent t) -> {
+                if ((SELECTED_NOTES.indexOf(rect)!= -1) && (t.isControlDown())){
+                    SELECTED_NOTES.remove(rect);
+                    rect.setStroke(Color.BLACK);
+                } else if (SELECTED_NOTES.indexOf(rect) == -1){
+                    if(!t.isControlDown()){
+                        RECT_LIST.forEach((e1) -> {
+                            e1.setStroke(Color.BLACK);
+                        });
+                        SELECTED_NOTES.clear();
+                    }
+                    SELECTED_NOTES.add(rect);
+                    rect.setStroke(Color.CRIMSON);
+                    System.out.println("click"+rect.getX());
+                }
+            });   
+        
+            if (!e.isControlDown()){
+                RECT_LIST.forEach((e1) -> {
+                        e1.setStroke(Color.BLACK);
+                });
+                SELECTED_NOTES.clear();
+            }
+       
+            //adds rectangle to the list of rectangles, that they may be cleared
+            RECT_LIST.add(rect);
+            SELECTED_NOTES.add(rect);
+        
+            //adds on-click rectangle to the stackPane
+            rectStackPane.getChildren().add(rect);
+            if (endcomp < (xCoordinate + 100)*10) {
+                endcomp = ((xCoordinate + 100)*10);
+            }
         }
     };
  
@@ -224,13 +218,12 @@ public class TuneComposer extends Application {
  
         @Override
         public void handle(MouseEvent t) {
-            double finalY = ((int)(newTranslateY/10))*10-5;
+            double finalY = ((int)(newTranslateY/10))*10;
+            double offsetY = finalY-newTranslateY;
             System.out.println(newTranslateY);
             System.out.println(finalY);
 
-            
-            
-            ((Rectangle)(t.getSource())).setY(finalY);
+            ((Rectangle)(t.getSource())).setTranslateY(offsetY);
             System.out.println("Released");
         }
     };
@@ -365,7 +358,7 @@ public class TuneComposer extends Application {
         lineTransition.setToX(TO_RIGHT);
         lineTransition.setInterpolator(Interpolator.LINEAR);
   
-        rectStackPane.getChildren().add(greyLines());
+        compositionGrid.getChildren().add(greyLines());
         //checks to see if the composition is over, removes red line
         new AnimationTimer() {
             @Override
