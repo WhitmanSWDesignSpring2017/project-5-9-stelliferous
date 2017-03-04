@@ -25,6 +25,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
 
 
@@ -72,6 +73,7 @@ public class TuneComposer extends Application {
     
     private final ArrayList<Rectangle> SELECTED_NOTES = new ArrayList<>();
     
+    private final Line red = redLine();
     private final ArrayList<Integer> CHANNEL_LIST = new ArrayList<>();
     
     int yEffective = 0;
@@ -108,7 +110,6 @@ public class TuneComposer extends Application {
     //makes available StackPane in which the user can click to add notes
     @FXML AnchorPane rectStackPane;
     //makes available the redLine which designates place in the composition 
-    @FXML Rectangle redline;
 
     @FXML Pane compositionGrid;
     /**
@@ -441,10 +442,9 @@ public class TuneComposer extends Application {
             MidiComposition.addNote(pitch, VOLUME, startTick, 
                     duration, curChannel, TRACK_INDEX);  
         }
+        red.setVisible(true);
         MidiComposition.play();
         lineTransition.playFromStart();
-        redline.setVisible(true);
-        
     }
     
     /**
@@ -454,7 +454,9 @@ public class TuneComposer extends Application {
     @FXML
     private void handleStopAction(ActionEvent e){
         MidiComposition.stop();
-        redline.setVisible(false);
+        lineTransition.stop();
+        red.setVisible(false);
+        //compositionGrid.getChildren().remove(red);
     }
     
     /**
@@ -564,20 +566,30 @@ public class TuneComposer extends Application {
         rectColor = Color.BLACK;
     }
    
+    private Line redLine() {
+        Line red = new Line();
+        red.setStroke(Color.valueOf("red"));
+        red.setStartX(0);
+        red.setStartY(0);
+        red.setEndX(0);
+        red.setEndY(1280);
+        return red;
+    }
+    
+    
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
      * (with location, duration, and speed). Removes red line when the
      * composition has finished playing
      */
     public void initialize() {
-        // assigns animation to red line, sets duration and placement
-        lineTransition.setNode(redline);
+        // assigns animation to red line, sets duration and placement  
+        lineTransition.setNode(red);
         lineTransition.setDuration(Duration.seconds(PANE_WIDTH/100));
-        lineTransition.setFromX(TO_LEFT);
-        lineTransition.setToX(TO_RIGHT);
+        lineTransition.setFromX(0);
+        lineTransition.setToX(2000);
         lineTransition.setInterpolator(Interpolator.LINEAR);
-  
-        compositionGrid.getChildren().add(greyLines());
+        compositionGrid.getChildren().addAll(greyLines(),red);
         //checks to see if the composition is over, removes red line
         new AnimationTimer() {
             @Override
@@ -585,7 +597,9 @@ public class TuneComposer extends Application {
                 // if current time is over the total composition time...
                 if (lineTransition.getCurrentTime().toMillis() > (endcomp)){
                     // make the red line invisible
-                    redline.setVisible(false);
+                    lineTransition.stop();
+                    red.setVisible(false);
+                    //compositionGrid.getChildren().remove(red);
                 }
             }
         }.start();
