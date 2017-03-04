@@ -72,6 +72,8 @@ public class TuneComposer extends Application {
     
     private final ArrayList<Rectangle> SELECTED_NOTES = new ArrayList<>();
     
+    private final ArrayList<Integer> CHANNEL_LIST = new ArrayList<>();
+    
     int yEffective = 0;
     int xEffective = 0;
     int yCoordinate = 0;
@@ -225,6 +227,8 @@ public class TuneComposer extends Application {
             SELECTED_NOTES.clear();
         }
 
+        CHANNEL_LIST.add(channel);
+        
         //adds rectangle to the list of rectangles, that they may be cleared
         RECT_LIST.add(rect);
         SELECTED_NOTES.add(rect);
@@ -382,9 +386,31 @@ public class TuneComposer extends Application {
     @FXML
     private void handlePlayAction(ActionEvent e){
         System.out.println("ouch "+endcomp);
+        MidiComposition.clear();
+        int pitch;
+        int startTick;
+        int duration;
+        int curChannel;
+        Rectangle rect;
+        System.out.println("Adding Notes...");
+        for(int i = 0; i < RECT_LIST.size(); i++){
+            //adds a note to the Midi Composition based on user's click input
+            rect = RECT_LIST.get(i);
+            pitch = 127-(int)rect.getY()/10;
+            System.out.println("pitch: " + pitch);
+            startTick = (int)rect.getX();
+            System.out.println("startTick: " + startTick);
+            duration = (int)rect.getWidth();
+            System.out.println("duration: " + duration);
+            curChannel = CHANNEL_LIST.get(i);
+            System.out.println("channel: " + channel);
+            MidiComposition.addNote(pitch, VOLUME, startTick, 
+                    duration, channel, TRACK_INDEX);  
+        }
         MidiComposition.play();
         lineTransition.playFromStart();
         redline.setVisible(true);
+        
     }
     
     /**
