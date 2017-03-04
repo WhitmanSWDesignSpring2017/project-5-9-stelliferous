@@ -244,9 +244,11 @@ public class TuneComposer extends Application {
         }
     };
  
-    private double orgSceneX, orgSceneY, orgWidth;
+    private double orgSceneX, orgSceneY;
     private ArrayList<Double> orgTranslateXs = new ArrayList<>();
     private ArrayList<Double> orgTranslateYs = new ArrayList<>();
+    private ArrayList<Double> orgWidths = new ArrayList<>();
+    private boolean stretch;
     //private ArrayList<Double> orgWidths = new ArrayList<>();
             
     EventHandler<MouseEvent> circleOnMousePressedEventHandler = 
@@ -260,10 +262,10 @@ public class TuneComposer extends Application {
             orgSceneX = t.getX();
             orgSceneY = t.getY();
             Rectangle currentRect = (Rectangle) t.getSource();
-            orgWidth = currentRect.getWidth();
             for (int i=0; i<SELECTED_NOTES.size();i++) {
                 orgTranslateXs.add(SELECTED_NOTES.get(i).getX());
                 orgTranslateYs.add(SELECTED_NOTES.get(i).getY());
+                orgWidths.add(SELECTED_NOTES.get(i).getWidth());
                 //orgWidths.add(SELECTED_NOTES.get(i).getWidth());
             }
             
@@ -284,18 +286,17 @@ public class TuneComposer extends Application {
             rectStackPane.getChildren().remove(selectRect);
             //xCoordinate = (int)t.getX();
             //yCoordinate = (int)t.getY();
-            boolean stretch = false;
             double offsetX = t.getX() - orgSceneX;
             double offsetY = t.getY() - orgSceneY;
             //double newTranslateX = orgTranslateX + offsetX;
             //newTranslateY = orgTranslateY + offsetY;
-            
             for (int i=0; i<SELECTED_NOTES.size();i++) {
-                if ((orgSceneX <= (orgTranslateXs.get(i)+SELECTED_NOTES.get(i).getWidth()+3)
-                        || orgSceneX >= (orgTranslateXs.get(i)+SELECTED_NOTES.get(i).getWidth()-3))
+                if ( (orgSceneX >= (orgTranslateXs.get(i)+SELECTED_NOTES.get(i).getWidth()-5)
+                        &&
+                     orgSceneX <= (orgTranslateXs.get(i)+SELECTED_NOTES.get(i).getWidth()))
                         && 
                         (orgSceneY >= orgTranslateYs.get(i)
-                        || orgSceneY <= (orgTranslateYs.get(i)+10))
+                        && orgSceneY <= (orgTranslateYs.get(i)+10))
                    )
                 {
                     stretch = true;
@@ -305,7 +306,8 @@ public class TuneComposer extends Application {
             
             for (int i=0; i<SELECTED_NOTES.size();i++) {
                 if (stretch) {
-                    SELECTED_NOTES.get(i).setWidth(orgWidth+offsetX);
+                    double width = orgWidths.get(i);
+                    SELECTED_NOTES.get(i).setWidth(width+offsetX);
                 } else {
                     double newTranslateX = orgTranslateXs.get(i) + offsetX;
                     double newTranslateY = orgTranslateYs.get(i) + offsetY;
@@ -325,8 +327,10 @@ public class TuneComposer extends Application {
  
         @Override
         public void handle(MouseEvent t) {
+            stretch = false;
             orgTranslateXs.clear();
             orgTranslateYs.clear();
+            orgWidths.clear();
             rectStackPane.getChildren().remove(selectRect);
             xCoordinate = (int)t.getX();
             yCoordinate = (int)t.getY();
