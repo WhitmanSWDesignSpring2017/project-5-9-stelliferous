@@ -360,6 +360,7 @@ public class TuneComposer extends Application {
      */
     @FXML
     private void handlePlayAction(ActionEvent e){
+        System.out.println("ouch "+endcomp);
         MidiComposition.play();
         lineTransition.playFromStart();
         redline.setVisible(true);
@@ -401,8 +402,56 @@ public class TuneComposer extends Application {
     private void handleHarpsichordAction(ActionEvent e){
         System.out.println("harp");
         MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 1, 6, 0, 0, TRACK_INDEX);
+        channel = 2;
+        rectColor = Color.LAWNGREEN;
+    }
+    
+    @FXML
+    private void handleMarimbaAction(ActionEvent e){
+        System.out.println("marimba");
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 2, 12, 0, 0, TRACK_INDEX);
+        channel = 3;
+        rectColor = Color.SEAGREEN;
+    }
+    
+    @FXML
+    private void handleOrganAction(ActionEvent e){
+        System.out.println("oregano");
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 3, 18, 0, 0, TRACK_INDEX);
+        channel = 4;
+        rectColor = Color.LIGHTSKYBLUE;
+    }
+    
+    @FXML
+    private void handleAccordionAction(ActionEvent e){
+        System.out.println("harp");
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 1, 6, 0, 0, TRACK_INDEX);
         channel = 1;
-        rectColor = Color.FLORALWHITE;
+        rectColor = Color.LAWNGREEN;
+    }
+    
+    @FXML
+    private void handleGuitarAction(ActionEvent e){
+        System.out.println("harp");
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 1, 6, 0, 0, TRACK_INDEX);
+        channel = 1;
+        rectColor = Color.LAWNGREEN;
+    }
+    
+    @FXML
+    private void handleViolinAction(ActionEvent e){
+        System.out.println("harp");
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 1, 6, 0, 0, TRACK_INDEX);
+        channel = 1;
+        rectColor = Color.LAWNGREEN;
+    }
+    
+    @FXML
+    private void handleFrenchHornAction(ActionEvent e){
+        System.out.println("harp");
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 1, 6, 0, 0, TRACK_INDEX);
+        channel = 1;
+        rectColor = Color.LAWNGREEN;
     }
     
     @FXML
@@ -410,7 +459,7 @@ public class TuneComposer extends Application {
         System.out.println("gob");
         MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 2, 101, 0, 0, TRACK_INDEX);
         channel = 2;
-        rectColor = Color.LIGHTGOLDENRODYELLOW;
+        rectColor = Color.BLACK;
     }
    
     /**
