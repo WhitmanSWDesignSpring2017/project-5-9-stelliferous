@@ -392,6 +392,7 @@ public class TuneComposer extends Application {
         MidiComposition.clear();
     }
     
+    /** */
     @FXML
     private void handlePianoAction(ActionEvent e){
                 System.out.println("piano");
