@@ -254,8 +254,8 @@ public class TuneComposer extends Application {
         @Override
         public void handle(MouseEvent t) {
             rectStackPane.getChildren().remove(selectRect);
-            xCoordinate = (int)t.getX();
-            yCoordinate = (int)t.getY();
+            //xCoordinate = (int)t.getX();
+            //yCoordinate = (int)t.getY();
             orgSceneX = t.getX();
             orgSceneY = t.getY();
             for (int i=0; i<SELECTED_NOTES.size();i++) {
@@ -283,18 +283,33 @@ public class TuneComposer extends Application {
         @Override
         public void handle(MouseEvent t) {
             rectStackPane.getChildren().remove(selectRect);
-            xCoordinate = (int)t.getX();
-            yCoordinate = (int)t.getY();
+            //xCoordinate = (int)t.getX();
+            //yCoordinate = (int)t.getY();
+            boolean stretch = false;
             double offsetX = t.getX() - orgSceneX;
             double offsetY = t.getY() - orgSceneY;
             //double newTranslateX = orgTranslateX + offsetX;
             //newTranslateY = orgTranslateY + offsetY;
             
             for (int i=0; i<SELECTED_NOTES.size();i++) {
-                double newTranslateX = orgTranslateXs.get(i) + offsetX;
-                double newTranslateY = orgTranslateYs.get(i) + offsetY;
-                SELECTED_NOTES.get(i).setX(newTranslateX);
-                SELECTED_NOTES.get(i).setY(newTranslateY);
+                if (orgSceneX == orgTranslateXs.get(i)
+                        && orgSceneY >= orgTranslateYs.get(i)
+                        && orgSceneY <= orgTranslateYs.get(i)+10) 
+                {
+                    stretch = true;
+                }
+            }
+            
+            for (int i=0; i<SELECTED_NOTES.size();i++) {
+                if (stretch) {
+                    SELECTED_NOTES.get(i).setWidth(abs(offsetX));
+                    System.out.println("strech");
+                } else {
+                    double newTranslateX = orgTranslateXs.get(i) + offsetX;
+                    double newTranslateY = orgTranslateYs.get(i) + offsetY;
+                    SELECTED_NOTES.get(i).setX(newTranslateX);
+                    SELECTED_NOTES.get(i).setY(newTranslateY);
+                }
             }
             /*
             ((Rectangle)(t.getSource())).setX(newTranslateX);
