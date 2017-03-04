@@ -228,7 +228,11 @@ public class TuneComposer extends Application {
         //adds rectangle to the list of rectangles, that they may be cleared
         RECT_LIST.add(rect);
         SELECTED_NOTES.add(rect);
-
+        /*
+        SELECTED_NOTES.forEach((e1) -> {
+            e1.setStroke(Color.CRIMSON);
+        });
+       */
         //adds on-click rectangle to the stackPane
         rectStackPane.getChildren().add(rect);
         if (endcomp < (xCoordinate + 100)*10) {
@@ -402,12 +406,33 @@ public class TuneComposer extends Application {
      * Clears the Midi Composition off all notes
      * Indicates that the end of the composition is now '0' (no comp)
      * @param e  on user click
-     */
+     
     @FXML 
     private void handleClearAction(ActionEvent e){
         rectStackPane.getChildren().removeAll(RECT_LIST);
         endcomp = 0;
         MidiComposition.clear();
+    }
+    */
+    
+    @FXML
+    private void selectAll(ActionEvent e){
+        SELECTED_NOTES.clear();
+        for (int i =0; i<RECT_LIST.size(); i++){
+            SELECTED_NOTES.add(RECT_LIST.get(i));
+        }
+        SELECTED_NOTES.forEach((e1) -> {
+            e1.setStroke(Color.CRIMSON);
+        });        
+        //adds on-click rectangle to the stackPane
+        //rectStackPane.getChildren().addAll(RECT_LIST);
+    }
+    
+    @FXML
+    private void delete(ActionEvent e){
+        rectStackPane.getChildren().removeAll(SELECTED_NOTES);
+        SELECTED_NOTES.clear();
+        RECT_LIST.removeAll(SELECTED_NOTES);
     }
     
     @FXML
