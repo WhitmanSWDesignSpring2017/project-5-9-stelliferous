@@ -129,27 +129,16 @@ public class TuneComposer extends Application {
         rectStackPane.getChildren().remove(selectRect);
         int currentX = (int)w.getX();
         int currentY = (int)w.getY();
-        int min_x = 0;
-        int min_y = 0;
-        int max_x = 0;
-        int max_y = 0;
         if (xCoordinate<currentX){
             selectRect.setX(xCoordinate);
-            max_x = currentX;
-            min_x = xCoordinate;
         } else {
             selectRect.setX(currentX);
-            max_x = xCoordinate;
-            min_x = currentX-100;
         }
         if ((yCoordinate<currentY)){
             selectRect.setY(yCoordinate);
-            max_y = currentY;
-            min_y = yCoordinate;
         } else {
             selectRect.setY(currentY);
-            max_y = yCoordinate;
-            min_y = currentY-10;
+
         }
         if(!w.isControlDown()){
                     RECT_LIST.forEach((e1) -> {
@@ -157,20 +146,23 @@ public class TuneComposer extends Application {
                     });
                     SELECTED_NOTES.clear();
         }
-        for(Rectangle r:RECT_LIST){
-            if (min_x < r.getX() && min_y < r.getY() 
-                    && max_x > r.getX() && max_y > r.getY()){
-                SELECTED_NOTES.add(r);
-                r.setStroke(Color.CRIMSON);
-            }
-        }
+        
         selectRect.setWidth(abs(currentX-xCoordinate));
         selectRect.setHeight(abs(currentY-yCoordinate));
         selectRect.setStroke(Color.CHARTREUSE);
         selectRect.setFill(Color.TRANSPARENT);
-        rectStackPane.getChildren().add(selectRect);
         
-        
+        for(Rectangle r:RECT_LIST){
+            if (selectRect.getX() + (selectRect.getWidth()) > r.getX() //min x value UPDATED
+                    && selectRect.getX()  < r.getX() + (r.getWidth()) // max x value
+                    && selectRect.getY() + (selectRect.getHeight()) > r.getY() //min y value
+                    && selectRect.getY()  < r.getY() + (r.getHeight())){    //max y  UPDATED 
+                SELECTED_NOTES.add(r);
+                r.setStroke(Color.CRIMSON);
+            }
+        }
+
+        rectStackPane.getChildren().add(selectRect);       
     }
     
     @FXML
