@@ -43,6 +43,12 @@
                         </MenuItem>
                     </items>
                 </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#selectAll" text="Select All" />
+                  <MenuItem mnemonicParsing="false" onAction="#delete" text="Delete" />
+              </items>
+            </Menu>
                 <Menu text="Action">
                     <items>
                         <MenuItem fx:id="PlayButton" onAction="#handlePlayAction" text="Play">
@@ -54,11 +60,6 @@
                             <accelerator>
                                     <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                                     </accelerator>
-                        </MenuItem>
-                        <MenuItem onAction="#handleClearAction" text="Clear">
-                            <accelerator>
-                                <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                            </accelerator>
                         </MenuItem>
                     </items>
                 </Menu>
