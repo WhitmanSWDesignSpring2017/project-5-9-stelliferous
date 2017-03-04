@@ -269,11 +269,6 @@ public class TuneComposer extends Application {
             newTranslateY = orgTranslateY;
             */
             System.out.println("Pressed");
-            
-            if (t.getX() == SELECTED_NOTES.get(0).getX()){
-                System.out.println("covered");
-            }
-            
         }
     };
      
@@ -292,18 +287,21 @@ public class TuneComposer extends Application {
             //newTranslateY = orgTranslateY + offsetY;
             
             for (int i=0; i<SELECTED_NOTES.size();i++) {
-                if (orgSceneX == orgTranslateXs.get(i)
-                        && orgSceneY >= orgTranslateYs.get(i)
-                        && orgSceneY <= orgTranslateYs.get(i)+10) 
+                if ((orgSceneX <= (orgTranslateXs.get(i)+SELECTED_NOTES.get(i).getWidth()+3)
+                        || orgSceneX >= (orgTranslateXs.get(i)+SELECTED_NOTES.get(i).getWidth()-3))
+                        && 
+                        (orgSceneY >= orgTranslateYs.get(i)
+                        || orgSceneY <= (orgTranslateYs.get(i)+10))
+                   )
                 {
                     stretch = true;
+                    System.out.println("stetch");
                 }
             }
             
             for (int i=0; i<SELECTED_NOTES.size();i++) {
                 if (stretch) {
-                    SELECTED_NOTES.get(i).setWidth(abs(offsetX));
-                    System.out.println("strech");
+                    SELECTED_NOTES.get(i).setWidth(offsetX);
                 } else {
                     double newTranslateX = orgTranslateXs.get(i) + offsetX;
                     double newTranslateY = orgTranslateYs.get(i) + offsetY;
