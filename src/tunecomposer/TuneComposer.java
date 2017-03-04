@@ -239,6 +239,9 @@ public class TuneComposer extends Application {
     private double orgSceneX, orgSceneY;
     private ArrayList<Double> orgTranslateXs = new ArrayList<>();
     private ArrayList<Double> orgTranslateYs = new ArrayList<>();
+    private ArrayList<Double> orgWidths = new ArrayList<>();
+    private boolean stretch;
+    //private ArrayList<Double> orgWidths = new ArrayList<>();
             
     EventHandler<MouseEvent> circleOnMousePressedEventHandler = 
         new EventHandler<MouseEvent>() {
@@ -246,26 +249,24 @@ public class TuneComposer extends Application {
         @Override
         public void handle(MouseEvent t) {
             rectStackPane.getChildren().remove(selectRect);
-            xCoordinate = (int)t.getX();
-            yCoordinate = (int)t.getY();
+            //xCoordinate = (int)t.getX();
+            //yCoordinate = (int)t.getY();
             orgSceneX = t.getX();
             orgSceneY = t.getY();
+            Rectangle currentRect = (Rectangle) t.getSource();
             for (int i=0; i<SELECTED_NOTES.size();i++) {
                 orgTranslateXs.add(SELECTED_NOTES.get(i).getX());
                 orgTranslateYs.add(SELECTED_NOTES.get(i).getY());
+                orgWidths.add(SELECTED_NOTES.get(i).getWidth());
+                //orgWidths.add(SELECTED_NOTES.get(i).getWidth());
             }
+            
             /*
-            Rectangle currentRect = (Rectangle) t.getSource();
             double orgTranslatex = ((Rectangle)(t.getSource())).getX();
             orgTranslateY = ((Rectangle)(t.getSource())).getY();
             newTranslateY = orgTranslateY;
             */
             System.out.println("Pressed");
-            
-            if (t.getX() == SELECTED_NOTES.get(0).getX()){
-                System.out.println("covered");
-            }
-            
         }
     };
      
@@ -275,18 +276,36 @@ public class TuneComposer extends Application {
         @Override
         public void handle(MouseEvent t) {
             rectStackPane.getChildren().remove(selectRect);
-            xCoordinate = (int)t.getX();
-            yCoordinate = (int)t.getY();
+            //xCoordinate = (int)t.getX();
+            //yCoordinate = (int)t.getY();
             double offsetX = t.getX() - orgSceneX;
             double offsetY = t.getY() - orgSceneY;
             //double newTranslateX = orgTranslateX + offsetX;
             //newTranslateY = orgTranslateY + offsetY;
+            for (int i=0; i<SELECTED_NOTES.size();i++) {
+                if ( (orgSceneX >= (orgTranslateXs.get(i)+SELECTED_NOTES.get(i).getWidth()-5)
+                        &&
+                     orgSceneX <= (orgTranslateXs.get(i)+SELECTED_NOTES.get(i).getWidth()))
+                        && 
+                        (orgSceneY >= orgTranslateYs.get(i)
+                        && orgSceneY <= (orgTranslateYs.get(i)+10))
+                   )
+                {
+                    stretch = true;
+                    System.out.println("stetch");
+                }
+            }
             
             for (int i=0; i<SELECTED_NOTES.size();i++) {
-                double newTranslateX = orgTranslateXs.get(i) + offsetX;
-                double newTranslateY = orgTranslateYs.get(i) + offsetY;
-                SELECTED_NOTES.get(i).setX(newTranslateX);
-                SELECTED_NOTES.get(i).setY(newTranslateY);
+                if (stretch) {
+                    double width = orgWidths.get(i);
+                    SELECTED_NOTES.get(i).setWidth(width+offsetX);
+                } else {
+                    double newTranslateX = orgTranslateXs.get(i) + offsetX;
+                    double newTranslateY = orgTranslateYs.get(i) + offsetY;
+                    SELECTED_NOTES.get(i).setX(newTranslateX);
+                    SELECTED_NOTES.get(i).setY(newTranslateY);
+                }
             }
             /*
             ((Rectangle)(t.getSource())).setX(newTranslateX);
@@ -300,8 +319,10 @@ public class TuneComposer extends Application {
  
         @Override
         public void handle(MouseEvent t) {
+            stretch = false;
             orgTranslateXs.clear();
             orgTranslateYs.clear();
+            orgWidths.clear();
             rectStackPane.getChildren().remove(selectRect);
             xCoordinate = (int)t.getX();
             yCoordinate = (int)t.getY();
