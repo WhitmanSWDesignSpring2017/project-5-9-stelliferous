@@ -227,7 +227,9 @@ public class TuneComposer extends Application {
             SELECTED_NOTES.clear();
         }
 
+        System.out.println(channel);
         CHANNEL_LIST.add(channel);
+        System.out.println(CHANNEL_LIST);
         
         //adds rectangle to the list of rectangles, that they may be cleared
         RECT_LIST.add(rect);
@@ -407,9 +409,37 @@ public class TuneComposer extends Application {
             duration = (int)rect.getWidth();
             System.out.println("duration: " + duration);
             curChannel = CHANNEL_LIST.get(i);
-            System.out.println("channel: " + channel);
+            System.out.println("channel: " + curChannel);
+            
+            switch(curChannel) {
+                case 0 :
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 0, 0, 0, 0, TRACK_INDEX);
+                    break;
+                case 1 :
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 1, 6, 0, 0, TRACK_INDEX);
+                    break;
+                case 2 :
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 2, 12, 0, 0, TRACK_INDEX);
+                    break;
+                case 3 :
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 3, 18, 0, 0, TRACK_INDEX);
+                    break;
+                case 4 :
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 4, 21, 0, 0, TRACK_INDEX);
+                    break;
+                case 5 :
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 5, 27, 0, 0, TRACK_INDEX);
+                    break;
+                case 6 :
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 6, 40, 0, 0, TRACK_INDEX);
+                    break;
+                case 7 :
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 7, 61, 0, 0, TRACK_INDEX);
+                    break;
+            }
+
             MidiComposition.addNote(pitch, VOLUME, startTick, 
-                    duration, channel, TRACK_INDEX);  
+                    duration, curChannel, TRACK_INDEX);  
         }
         MidiComposition.play();
         lineTransition.playFromStart();
@@ -457,8 +487,8 @@ public class TuneComposer extends Application {
     @FXML
     private void delete(ActionEvent e){
         rectStackPane.getChildren().removeAll(SELECTED_NOTES);
-        SELECTED_NOTES.clear();
         RECT_LIST.removeAll(SELECTED_NOTES);
+        SELECTED_NOTES.clear();
     }
     
     @FXML
@@ -474,7 +504,7 @@ public class TuneComposer extends Application {
     private void handleHarpsichordAction(ActionEvent e){
         System.out.println("harp");
         MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 1, 6, 0, 0, TRACK_INDEX);
-        channel = 2;
+        channel = 1;
         rectColor = Color.LAWNGREEN;
     }
     
@@ -482,7 +512,7 @@ public class TuneComposer extends Application {
     private void handleMarimbaAction(ActionEvent e){
         System.out.println("marimba");
         MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 2, 12, 0, 0, TRACK_INDEX);
-        channel = 3;
+        channel = 2;
         rectColor = Color.SEAGREEN;
     }
     
@@ -490,47 +520,47 @@ public class TuneComposer extends Application {
     private void handleOrganAction(ActionEvent e){
         System.out.println("oregano");
         MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 3, 18, 0, 0, TRACK_INDEX);
-        channel = 4;
+        channel = 3;
         rectColor = Color.LIGHTSKYBLUE;
     }
     
     @FXML
     private void handleAccordionAction(ActionEvent e){
         System.out.println("harp");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 1, 6, 0, 0, TRACK_INDEX);
-        channel = 1;
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 4, 21, 0, 0, TRACK_INDEX);
+        channel = 4;
         rectColor = Color.LAWNGREEN;
     }
     
     @FXML
     private void handleGuitarAction(ActionEvent e){
         System.out.println("harp");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 1, 6, 0, 0, TRACK_INDEX);
-        channel = 1;
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 5, 27, 0, 0, TRACK_INDEX);
+        channel = 5;
         rectColor = Color.LAWNGREEN;
     }
     
     @FXML
     private void handleViolinAction(ActionEvent e){
         System.out.println("harp");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 1, 6, 0, 0, TRACK_INDEX);
-        channel = 1;
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 6, 40, 0, 0, TRACK_INDEX);
+        channel = 6;
         rectColor = Color.LAWNGREEN;
     }
     
     @FXML
     private void handleFrenchHornAction(ActionEvent e){
         System.out.println("harp");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 1, 6, 0, 0, TRACK_INDEX);
-        channel = 1;
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 7, 61, 0, 0, TRACK_INDEX);
+        channel = 7;
         rectColor = Color.LAWNGREEN;
     }
     
     @FXML
     private void handleGoblinsAction(ActionEvent e){
         System.out.println("gob");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 2, 101, 0, 0, TRACK_INDEX);
-        channel = 2;
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 8, 125, 0, 0, TRACK_INDEX);
+        channel = 8;
         rectColor = Color.BLACK;
     }
    
