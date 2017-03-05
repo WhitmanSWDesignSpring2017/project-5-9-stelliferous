@@ -87,10 +87,10 @@
                         <RadioButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleHarpsichordAction" text="Harpsichord" textFill="LAWNGREEN" toggleGroup="$instrumentsRadioButton" />
                         <RadioButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleMarimbaAction" text="Marimba" textFill="SEAGREEN" toggleGroup="$instrumentsRadioButton" />
                         <RadioButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleOrganAction" text="Organ" textFill="LIGHTSKYBLUE" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton layoutX="10.0" layoutY="28.0" mnemonicParsing="false" onAction="#handleAccordionAction" text="Accordion" textFill="#00d4f5" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton layoutX="10.0" layoutY="46.0" mnemonicParsing="false" onAction="#handleGuitarAction" prefHeight="18.0" prefWidth="73.0" text="Guitar" textFill="#0084ff" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton layoutX="10.0" layoutY="46.0" mnemonicParsing="false" onAction="#handleViolinAction" text="Violin" textFill="#1745ff" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton layoutX="10.0" layoutY="64.0" mnemonicParsing="false" onAction="#handleFrenchHornAction" text="French Horn" textFill="#7102f0" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="28.0" mnemonicParsing="false" onAction="#handleAccordionAction" text="Accordion" textFill="AQUA" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="46.0" mnemonicParsing="false" onAction="#handleGuitarAction" prefHeight="18.0" prefWidth="73.0" text="Guitar" textFill="DEEPSKYBLUE" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="46.0" mnemonicParsing="false" onAction="#handleViolinAction" text="Violin" textFill="STEELBLUE" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="64.0" mnemonicParsing="false" onAction="#handleFrenchHornAction" text="French Horn" textFill="PURPLE" toggleGroup="$instrumentsRadioButton" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
@@ -102,13 +102,12 @@
               <content>
                   <VBox spacing="50.0">
                      <children>
-                        <RadioButton mnemonicParsing="false" text="Echoes" textFill="RED" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton mnemonicParsing="false" text="Choir" textFill="#ff6f00" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton mnemonicParsing="false" text="Rain" textFill="#979650" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton mnemonicParsing="false" text="Soundtrack" textFill="#727272" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton mnemonicParsing="false" onAction="#handleGoblinsAction" text="Goblins" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton mnemonicParsing="false" text="SciFi" textFill="#570000" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton mnemonicParsing="false" text="Applause" textFill="#654800" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton mnemonicParsing="false" onAction="#handleChoirAction" text="Choir" textFill="ORANGERED" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton mnemonicParsing="false" onAction="#handleOrchestraAction" text="Orchestra Hit" textFill="PERU" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton mnemonicParsing="false" onAction="#handleTypewriterAction" text="Typewriter" textFill="GREY" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton mnemonicParsing="false" onAction="#handleSeaAction" text="Sea" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton mnemonicParsing="false" onAction="#handleSciFiAction" text="SciFi" textFill="DARKRED" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton mnemonicParsing="false" onAction="#handleApplauseAction" text="Applause" textFill="SADDLEBROWN" toggleGroup="$instrumentsRadioButton" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />

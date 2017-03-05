@@ -39,9 +39,12 @@ import javax.sound.midi.ShortMessage;
  * @since January 26, 2017
  */
 public class TuneComposer extends Application {
+    
 
     //creates a MidiPlayer object with 100 ticks/beat, 1 beat/second
     private MidiPlayer MidiComposition = new MidiPlayer(100,60);
+    
+    
 
     //sets, volume, duration, channel, and trackIndex for the MidiPlayer's notes
     final int VOLUME = 120;
@@ -493,6 +496,7 @@ public class TuneComposer extends Application {
         SELECTED_NOTES.clear();
     }
     
+    /** */
     @FXML
     private void handlePianoAction(ActionEvent e){
                 System.out.println("piano");
@@ -526,20 +530,22 @@ public class TuneComposer extends Application {
         rectColor = Color.LIGHTSKYBLUE;
     }
     
+    
     @FXML
     private void handleAccordionAction(ActionEvent e){
         System.out.println("harp");
         MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 4, 21, 0, 0, TRACK_INDEX);
         channel = 4;
-        rectColor = Color.LAWNGREEN;
+        rectColor = Color.AQUA;
     }
     
     @FXML
     private void handleGuitarAction(ActionEvent e){
+                MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 5, 27, 0, 0, TRACK_INDEX);
         System.out.println("harp");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 5, 27, 0, 0, TRACK_INDEX);
         channel = 5;
-        rectColor = Color.LAWNGREEN;
+        rectColor = Color.DEEPSKYBLUE;
+
     }
     
     @FXML
@@ -547,7 +553,8 @@ public class TuneComposer extends Application {
         System.out.println("harp");
         MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 6, 40, 0, 0, TRACK_INDEX);
         channel = 6;
-        rectColor = Color.LAWNGREEN;
+        rectColor = Color.STEELBLUE;
+
     }
     
     @FXML
@@ -555,16 +562,59 @@ public class TuneComposer extends Application {
         System.out.println("harp");
         MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 7, 61, 0, 0, TRACK_INDEX);
         channel = 7;
-        rectColor = Color.LAWNGREEN;
+        rectColor = Color.PURPLE;
     }
     
     @FXML
-    private void handleGoblinsAction(ActionEvent e){
-        System.out.println("gob");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 8, 125, 0, 0, TRACK_INDEX);
+    private void handleChoirAction(ActionEvent e){
+        System.out.println("echo");
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 8, 52, 0, 0, TRACK_INDEX);
         channel = 8;
+        rectColor = Color.ORANGERED;
+    }
+    
+    
+    @FXML
+    private void handleOrchestraAction(ActionEvent e){
+        System.out.println("sea");
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 10, 55, 0, 0, TRACK_INDEX);
+        channel = 10;
+        rectColor = Color.PERU;
+    }
+    
+    @FXML
+    private void handleTypewriterAction(ActionEvent e){
+        System.out.println("gun");
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 11, 124, 0, 0, TRACK_INDEX);
+        channel = 11;
+        rectColor = Color.GREY;
+    }
+    
+    @FXML
+    private void handleSeaAction(ActionEvent e){
+        System.out.println("sea");
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 12, 125, 0, 0, TRACK_INDEX);
+        channel = 12;
         rectColor = Color.BLACK;
     }
+    
+    @FXML
+    private void handleSciFiAction(ActionEvent e){
+        System.out.println("sci");
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 13, 103, 0, 0, TRACK_INDEX);
+        channel = 13;
+        rectColor = Color.DARKRED;
+    }
+    
+    @FXML
+    private void handleApplauseAction(ActionEvent e){
+        System.out.println("gun");
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 14, 126, 0, 0, TRACK_INDEX);
+        channel = 14;
+        rectColor = Color.SADDLEBROWN;
+    }
+    
+    
    
     private Line redLine() {
         Line red = new Line();
