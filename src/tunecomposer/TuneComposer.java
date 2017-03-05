@@ -224,10 +224,13 @@ public class TuneComposer extends Application {
         SELECTED_NOTES.add(rect);
         
         //adds on-click rectangle to the stackPane
+        
         rectStackPane.getChildren().add(rect);
+        /*
         if (endcomp < (xCoordinate + 100)*10) {
             endcomp = ((xCoordinate + 100)*10);
         }
+        */
     };
  
     private double orgSceneX, orgSceneY;
@@ -255,7 +258,7 @@ public class TuneComposer extends Application {
         }
     };
      
-        EventHandler<MouseEvent> circleOnMouseDraggedEventHandler = 
+    EventHandler<MouseEvent> circleOnMouseDraggedEventHandler = 
         new EventHandler<MouseEvent>() {
  
         @Override
@@ -352,7 +355,7 @@ public class TuneComposer extends Application {
      */
     @FXML
     private void handlePlayAction(ActionEvent e){
-        System.out.println("ouch "+endcomp);
+        endcomp = 0;
         MidiComposition.clear();
         int pitch;
         int startTick;
@@ -404,6 +407,8 @@ public class TuneComposer extends Application {
             MidiComposition.addNote(pitch, VOLUME, startTick, 
                     duration, curChannel, TRACK_INDEX);  
         }
+        lineTransition.setToX(endcomp);
+        lineTransition.setDuration(Duration.seconds(endcomp/100));
         red.setVisible(true);
         MidiComposition.play();
         lineTransition.playFromStart();
@@ -573,23 +578,13 @@ public class TuneComposer extends Application {
         return red;
     }
     
-    /**
-     * Finds the x-coordinate of the left side of the right-most rectangle.
-     * @return value of the position of the rectangle's left side
-     */
-    protected int getRightMost() {
-        int rightX = 0;
-        for (int i=0; i<RECT_LIST.size();i++){
-            int currentX = (int) RECT_LIST.get(i).getX();
-            if (rightX < currentX) {
-                rightX = currentX;
-            }
+    EventHandler<ActionEvent> setOnFinishTransition = 
+            new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent t) {
+            red.setVisible(false);
         }
-        rightX += 10;
-        return rightX;
-    }
-
-    
+    };
     
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
@@ -599,12 +594,14 @@ public class TuneComposer extends Application {
     public void initialize() {
         // assigns animation to red line, sets duration and placement  
         lineTransition.setNode(red);
-        lineTransition.setDuration(Duration.seconds(20));
+        //lineTransition.setDuration(Duration.seconds(20));
         lineTransition.setFromX(0);
-        lineTransition.setToX(2000);
+        //lineTransition.setToX(2000);
         lineTransition.setInterpolator(Interpolator.LINEAR);
+        lineTransition.setOnFinished(setOnFinishTransition);
         compositionGrid.getChildren().addAll(greyLines(),red);
         //checks to see if the composition is over, removes red line
+        /*
         new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -617,6 +614,7 @@ public class TuneComposer extends Application {
                 }
             }
         }.start();
+        */
     }
     /**
      * Launch the application.
