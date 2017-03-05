@@ -124,6 +124,8 @@ public class TuneComposer extends Application {
      */
     @FXML 
     private void gridClick(MouseEvent e) throws IOException{
+        MidiComposition.stop();
+        red.setVisible(false);
         xCoordinate = (int)e.getX();
         yCoordinate = (int)e.getY();
         System.out.println(xCoordinate+" "+yCoordinate+" click");
@@ -132,6 +134,8 @@ public class TuneComposer extends Application {
     
     @FXML
     private void gridDrag(MouseEvent w){
+        MidiComposition.stop();
+        red.setVisible(false);
         rectStackPane.getChildren().remove(selectRect);
         int currentX = (int)w.getX();
         int currentY = (int)w.getY();
@@ -258,6 +262,8 @@ public class TuneComposer extends Application {
  
         @Override
         public void handle(MouseEvent t) {
+            MidiComposition.stop();
+            red.setVisible(false);
             rectStackPane.getChildren().remove(selectRect);
             //xCoordinate = (int)t.getX();
             //yCoordinate = (int)t.getY();
@@ -285,6 +291,8 @@ public class TuneComposer extends Application {
  
         @Override
         public void handle(MouseEvent t) {
+            MidiComposition.stop();
+            red.setVisible(false);
             rectStackPane.getChildren().remove(selectRect);
             //xCoordinate = (int)t.getX();
             //yCoordinate = (int)t.getY();
@@ -476,6 +484,8 @@ public class TuneComposer extends Application {
     
     @FXML
     private void selectAll(ActionEvent e){
+        MidiComposition.stop();
+        red.setVisible(false);
         SELECTED_NOTES.clear();
         for (int i =0; i<RECT_LIST.size(); i++){
             SELECTED_NOTES.add(RECT_LIST.get(i));
@@ -489,6 +499,8 @@ public class TuneComposer extends Application {
     
     @FXML
     private void delete(ActionEvent e){
+        MidiComposition.stop();
+        red.setVisible(false);
         rectStackPane.getChildren().removeAll(SELECTED_NOTES);
         RECT_LIST.removeAll(SELECTED_NOTES);
         SELECTED_NOTES.clear();
