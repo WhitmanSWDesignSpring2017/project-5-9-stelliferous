@@ -43,9 +43,7 @@ public class TuneComposer extends Application {
 
     //creates a MidiPlayer object with 100 ticks/beat, 1 beat/second
     private MidiPlayer MidiComposition = new MidiPlayer(100,60);
-    
-    
-
+   
     //sets, volume, duration, channel, and trackIndex for the MidiPlayer's notes
     final int VOLUME = 120;
     final int DURATION = 100;
@@ -53,17 +51,6 @@ public class TuneComposer extends Application {
     int channel = 0;
 
     Color rectColor = Color.OLIVEDRAB;
-    
-    //Defines bounds of the composition pane being used in the page
-    final int PANE_WIDTH = 2000;
-    final int PANE_HEIGHT = 1280;
-    
-    //Defines coordinates based on the center of the page 
-    final int TO_LEFT = -(PANE_WIDTH/2);
-    final int TO_RIGHT = (PANE_WIDTH/2);
-    
-    //Provides centering for the y-coordinate on mouseclick
-    final int CENTER_Y = -(PANE_HEIGHT/2);
     
     //refers to the end of the current notes
     public int endcomp;
@@ -79,8 +66,7 @@ public class TuneComposer extends Application {
     private final Line red = redLine();
     private final ArrayList<Integer> CHANNEL_LIST = new ArrayList<>();
     
-    int yEffective = 0;
-    int xEffective = 0;
+
     int yCoordinate = 0;
     int xCoordinate = 0;
     Rectangle selectRect = new Rectangle();
@@ -186,9 +172,7 @@ public class TuneComposer extends Application {
         xCoordinate = (int)e.getX();
         yCoordinate = (int)e.getY();
         //finds x and y coordinates within the gridPane where the user's clicked
-        yEffective = (yCoordinate/10)*10;
-        int yPitch = 127-yCoordinate/10;
-        xEffective = xCoordinate;
+
 
         System.out.println(xCoordinate+" "+yCoordinate+" click");
 
@@ -662,7 +646,7 @@ public class TuneComposer extends Application {
     public void initialize() {
         // assigns animation to red line, sets duration and placement  
         lineTransition.setNode(red);
-        lineTransition.setDuration(Duration.seconds(PANE_WIDTH/100));
+        lineTransition.setDuration(Duration.seconds(20));
         lineTransition.setFromX(0);
         lineTransition.setToX(2000);
         lineTransition.setInterpolator(Interpolator.LINEAR);
