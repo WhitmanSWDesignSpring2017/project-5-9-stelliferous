@@ -40,7 +40,6 @@ import javax.sound.midi.ShortMessage;
  */
 public class TuneComposer extends Application {
     
-
     //creates a MidiPlayer object with 100 ticks/beat, 1 beat/second
     private MidiPlayer MidiComposition = new MidiPlayer(100,60);
    
@@ -50,11 +49,11 @@ public class TuneComposer extends Application {
     final int TRACK_INDEX = 1;
     int channel = 0;
     
-    
+    //sets the default color for note rectangles, corresponding to piano
     Color rectColor = Color.OLIVEDRAB;
     
     //refers to the end of the current notes
-    public int endcomp;
+    public double endcomp;
     
     //constructs the TranslateTransition for use later in animation of redline
     public TranslateTransition lineTransition = new TranslateTransition();
@@ -62,15 +61,28 @@ public class TuneComposer extends Application {
     //creates a list to store created rectangles, that they may be later erased
     private final ArrayList<Rectangle> RECT_LIST = new ArrayList<>();
     
-    private final ArrayList<Rectangle> SELECTED_NOTES = new ArrayList<>();
-    
-    private final Line red = redLine();
+    //creates a list of channels that aligns with and gives instrument info
+    //to RECT_LIST
     private final ArrayList<Integer> CHANNEL_LIST = new ArrayList<>();
     
-
-    int yCoordinate = 0;
-    int xCoordinate = 0;
+    //creates a list to store selected rectangles
+    private final ArrayList<Rectangle> SELECTED_NOTES = new ArrayList<>();
+    
+    //creates a line that will indicate the time in the composition
+    private final Line red = redLine();
+    
+    //creates a rectangle that users will control by dragging
     Rectangle selectRect = new Rectangle();
+
+    //stores x and y coordinates, to later calculate distance moved by the mouse
+    private double yCoordinate = 0;
+    private double xCoordinate = 0;
+    
+    //makes available rectAnchorPane, which stores the rectangles
+    @FXML AnchorPane rectStackPane;
+    
+    //makes available the composition Pane, allowing user to create notes
+    @FXML Pane compositionGrid;
 
     /**
      * Construct the scene and start the application.
@@ -97,11 +109,12 @@ public class TuneComposer extends Application {
         primaryStage.show();
     }
     
-    //makes available StackPane in which the user can click to add notes
-    @FXML AnchorPane rectStackPane;
-    //makes available the redLine which designates place in the composition 
-
-    @FXML Pane compositionGrid;
+    void reset_coordinates(MouseEvent m){
+        xCoordinate = (int)m.getX();
+        yCoordinate = (int)m.getY();
+        MidiComposition.stop();
+                red.setVisible(false);
+    }
     /**
      * Creates a rectangle at the point clicked and adds a note to the composition
      * based on the coordinates of the point clicked. Adds that rectangle
@@ -111,10 +124,7 @@ public class TuneComposer extends Application {
      */
     @FXML 
     private void gridClick(MouseEvent e) throws IOException{
-        MidiComposition.stop();
-        red.setVisible(false);
-        xCoordinate = (int)e.getX();
-        yCoordinate = (int)e.getY();
+        reset_coordinates(e);
         System.out.println(xCoordinate+" "+yCoordinate+" click");
         rectStackPane.getChildren().remove(selectRect);
     };
@@ -169,18 +179,9 @@ public class TuneComposer extends Application {
         if ((xCoordinate != (int)e.getX()) || (yCoordinate != (int)e.getY())){
             return;
         }
-        rectStackPane.getChildren().remove(selectRect);
-        xCoordinate = (int)e.getX();
-        yCoordinate = (int)e.getY();
-        //finds x and y coordinates within the gridPane where the user's clicked
-
-
-        System.out.println(xCoordinate+" "+yCoordinate+" click");
-
-        double mouseX = e.getX();
-        double mouseY = e.getY();              
-        int y = (int) ((mouseY)/10);
-        Rectangle rect = new Rectangle(mouseX,y*10,100,10);
+        reset_coordinates(e);            
+        int y = (int) ((yCoordinate)/10);
+        Rectangle rect = new Rectangle(xCoordinate,y*10,100,10);
         rect.setFill(rectColor);
         rect.setStroke(Color.CRIMSON);
         rect.setStrokeWidth(2);
@@ -190,9 +191,7 @@ public class TuneComposer extends Application {
 
 
         rect.setOnMouseClicked((MouseEvent t) -> {
-            rectStackPane.getChildren().remove(selectRect);
-            xCoordinate = (int)e.getX();
-            yCoordinate = (int)e.getY();
+            reset_coordinates(t);
             if ((SELECTED_NOTES.indexOf(rect)!= -1) && (t.isControlDown())){
                 SELECTED_NOTES.remove(rect);
                 rect.setStroke(Color.BLACK);
@@ -242,12 +241,10 @@ public class TuneComposer extends Application {
  
         @Override
         public void handle(MouseEvent t) {
-            MidiComposition.stop();
-            red.setVisible(false);
-            rectStackPane.getChildren().remove(selectRect);
+            reset_coordinates(t);
             orgSceneX = t.getX();
             orgSceneY = t.getY();
-            Rectangle currentRect = (Rectangle) t.getSource();
+            //Rectangle currentRect = (Rectangle) t.getSource();
             for (int i=0; i<SELECTED_NOTES.size();i++) {
                 orgTranslateXs.add(SELECTED_NOTES.get(i).getX());
                 orgTranslateYs.add(SELECTED_NOTES.get(i).getY());
@@ -261,12 +258,8 @@ public class TuneComposer extends Application {
  
         @Override
         public void handle(MouseEvent t) {
-            MidiComposition.stop();
-            red.setVisible(false);
-            rectStackPane.getChildren().remove(selectRect);
-
-            double offsetX = t.getX() - orgSceneX;
-            double offsetY = t.getY() - orgSceneY;
+            double offsetX = t.getX() - xCoordinate; //used to be orgSceneX
+            double offsetY = t.getY() - yCoordinate; //used to be orgSceneY
 
             for (int i=0; i<SELECTED_NOTES.size();i++) {
                 if ( (orgSceneX >= (orgTranslateXs.get(i)+SELECTED_NOTES.get(i).getWidth()-5)
@@ -304,9 +297,7 @@ public class TuneComposer extends Application {
             orgTranslateXs.clear();
             orgTranslateYs.clear();
             orgWidths.clear();
-            rectStackPane.getChildren().remove(selectRect);
-            xCoordinate = (int)t.getX();
-            yCoordinate = (int)t.getY();
+            reset_coordinates(t);
             for (int i=0; i<SELECTED_NOTES.size(); i++) {
                 double currentY = SELECTED_NOTES.get(i).getY();
                 double finalY = ((int)(currentY/10))*10;
@@ -366,6 +357,8 @@ public class TuneComposer extends Application {
             
             //if the note has been deleted, do not add it to the composition
             if (rect.getWidth()==0){continue;}
+            
+            //print statements
             pitch = 127-(int)rect.getY()/10;
             System.out.println("pitch: " + pitch);
             startTick = (int)rect.getX();
@@ -374,6 +367,7 @@ public class TuneComposer extends Application {
             System.out.println("duration: " + duration);
             curChannel = CHANNEL_LIST.get(i);
             System.out.println("channel: " + curChannel);
+            
             if (endcomp < startTick+duration) {
                 endcomp = startTick+duration;
             }           
@@ -436,7 +430,6 @@ public class TuneComposer extends Application {
         MidiComposition.stop();
         lineTransition.stop();
         red.setVisible(false);
-        //compositionGrid.getChildren().remove(red);
     }
     
     @FXML
@@ -484,8 +477,6 @@ public class TuneComposer extends Application {
     /** */
     @FXML
     private void handlePianoAction(ActionEvent e){
-                System.out.println("piano");
-
         MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 0, 0, 0, 0, TRACK_INDEX);
         channel = 0;
         rectColor = Color.OLIVEDRAB;
