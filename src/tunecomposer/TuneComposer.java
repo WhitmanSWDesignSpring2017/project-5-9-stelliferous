@@ -113,8 +113,9 @@ public class TuneComposer extends Application {
         xCoordinate = (int)m.getX();
         yCoordinate = (int)m.getY();
         MidiComposition.stop();
-                red.setVisible(false);
+        red.setVisible(false);
     }
+    
     /**
      * Creates a rectangle at the point clicked and adds a note to the composition
      * based on the coordinates of the point clicked. Adds that rectangle
@@ -125,17 +126,18 @@ public class TuneComposer extends Application {
     @FXML 
     private void gridClick(MouseEvent e) throws IOException{
         reset_coordinates(e);
-        System.out.println(xCoordinate+" "+yCoordinate+" click");
-        rectStackPane.getChildren().remove(selectRect);
     };
     
     @FXML
     private void gridDrag(MouseEvent w){
-        MidiComposition.stop();
-        red.setVisible(false);
+        //remove current iteration of selection rectangle
         rectStackPane.getChildren().remove(selectRect);
+        
+        //get and store current coordinates
         int currentX = (int)w.getX();
         int currentY = (int)w.getY();
+        
+        //determine coordinates of top-left corner of the rectangle
         if (xCoordinate<currentX){
             selectRect.setX(xCoordinate);
         } else {
@@ -145,31 +147,35 @@ public class TuneComposer extends Application {
             selectRect.setY(yCoordinate);
         } else {
             selectRect.setY(currentY);
-
-        }
-        if(!w.isControlDown()){
-                    RECT_LIST.forEach((e1) -> {
-                        e1.setStroke(Color.BLACK);
-                    });
-                    SELECTED_NOTES.clear();
         }
         
+        //determine whether previously selected notes remain selected
+        if(!w.isControlDown()){
+            RECT_LIST.forEach((e1) -> {
+                e1.setStroke(Color.BLACK);
+            });
+            SELECTED_NOTES.clear();
+        }
+        
+        //detail, style, and display selection rectangle
         selectRect.setWidth(abs(currentX-xCoordinate));
         selectRect.setHeight(abs(currentY-yCoordinate));
         selectRect.setStroke(Color.CHARTREUSE);
         selectRect.setFill(Color.TRANSPARENT);
+        rectStackPane.getChildren().add(selectRect);       
+
         
+        //determine whether any "note rectangles" are within the selection rect
         for(Rectangle r:RECT_LIST){
             if (selectRect.getX() + (selectRect.getWidth()) > r.getX() //min x value UPDATED
                     && selectRect.getX()  < r.getX() + (r.getWidth()) // max x value
                     && selectRect.getY() + (selectRect.getHeight()) > r.getY() //min y value
                     && selectRect.getY()  < r.getY() + (r.getHeight())){    //max y  UPDATED 
+                // select note rectangles within the selection area
                 SELECTED_NOTES.add(r);
                 r.setStroke(Color.CRIMSON);
             }
-        }
-
-        rectStackPane.getChildren().add(selectRect);       
+        }     
     }
     
     @FXML
@@ -233,7 +239,7 @@ public class TuneComposer extends Application {
         */
     };
  
-    private double orgSceneX, orgSceneY;
+    //private double orgSceneX, orgSceneY;
     private ArrayList<Double> orgTranslateXs = new ArrayList<>();
     private ArrayList<Double> orgTranslateYs = new ArrayList<>();
     private ArrayList<Double> orgWidths = new ArrayList<>();
@@ -245,8 +251,8 @@ public class TuneComposer extends Application {
         @Override
         public void handle(MouseEvent t) {
             reset_coordinates(t);
-            orgSceneX = t.getX();
-            orgSceneY = t.getY();
+            //orgSceneX = t.getX();
+            //orgSceneY = t.getY();
             //Rectangle currentRect = (Rectangle) t.getSource();
             for (int i=0; i<SELECTED_NOTES.size();i++) {
                 orgTranslateXs.add(SELECTED_NOTES.get(i).getX());
@@ -265,12 +271,14 @@ public class TuneComposer extends Application {
             double offsetY = t.getY() - yCoordinate; //used to be orgSceneY
 
             for (int i=0; i<SELECTED_NOTES.size();i++) {
-                if ( (orgSceneX >= (orgTranslateXs.get(i)+SELECTED_NOTES.get(i).getWidth()-5)
+                if ( (xCoordinate >= (orgTranslateXs.get(i) //used to be orgSceneX
+                                    +SELECTED_NOTES.get(i).getWidth()-5)
                         &&
-                     orgSceneX <= (orgTranslateXs.get(i)+SELECTED_NOTES.get(i).getWidth()))
+                     xCoordinate <= (orgTranslateXs.get(i) //used to be orgSceneX
+                                   +SELECTED_NOTES.get(i).getWidth()))
                         && 
-                        (orgSceneY >= orgTranslateYs.get(i)
-                        && orgSceneY <= (orgTranslateYs.get(i)+10))
+                        (yCoordinate >= orgTranslateYs.get(i) //used to be orgSceneY
+                        && yCoordinate <= (orgTranslateYs.get(i)+10)) //used to be orgSceneY
                    )
                 {
                     stretch = true;
