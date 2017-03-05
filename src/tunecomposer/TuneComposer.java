@@ -188,10 +188,6 @@ public class TuneComposer extends Application {
 
         System.out.println(xCoordinate+" "+yCoordinate+" click");
 
-        //adds a note to the Midi Composition based on user's click input
-        MidiComposition.addNote(yPitch, VOLUME, xCoordinate,
-                                DURATION, channel, TRACK_INDEX);  
-
         double mouseX = e.getX();
         double mouseY = e.getY();              
         int y = (int) ((mouseY)/10);
