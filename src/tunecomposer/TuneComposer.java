@@ -67,6 +67,8 @@ public class TuneComposer extends Application {
     //creates a list to store selected rectangles
     private final ArrayList<Rectangle> SELECTED_NOTES = new ArrayList<>();
     
+    private final int[] instrumentArray = {0,6,12,18,21,27,40,61,52,124,125,126};
+    
     //creates a line that will indicate the time in the composition
     //private final Line red = redLine();
     @FXML Line redLine;
@@ -362,7 +364,7 @@ public class TuneComposer extends Application {
             rect = RECT_LIST.get(i);
             
             //if the note has been deleted, do not add it to the composition
-            if (rect.getWidth()==0){continue;}
+            if (rect.getWidth()== 0){continue;}
             
             //print statements
             pitch = 127-(int)rect.getY()/10;
@@ -376,46 +378,9 @@ public class TuneComposer extends Application {
             
             if (endcomp < startTick+duration) {
                 endcomp = startTick+duration;
-            }           
-            switch(curChannel) {
-                case 0 :
-                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 0, 0, 0, 0, TRACK_INDEX);
-                    break;
-                case 1 :
-                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 1, 6, 0, 0, TRACK_INDEX);
-                    break;
-                case 2 :
-                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 2, 12, 0, 0, TRACK_INDEX);
-                    break;
-                case 3 :
-                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 3, 18, 0, 0, TRACK_INDEX);
-                    break;
-                case 4 :
-                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 4, 21, 0, 0, TRACK_INDEX);
-                    break;
-                case 5 :
-                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 5, 27, 0, 0, TRACK_INDEX);
-                    break;
-                case 6 :
-                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 6, 40, 0, 0, TRACK_INDEX);
-                    break;
-                case 7 :
-                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 7, 61, 0, 0, TRACK_INDEX);
-                    break;
-                case 8 : //choir
-                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 8, 52, 0, 0, TRACK_INDEX);
-                    break;
-                case 9 : //typewriter
-                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 9, 124, 0, 0, TRACK_INDEX);
-                    break;
-                case 10 : //sea
-                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 10, 125, 0, 0, TRACK_INDEX);
-                    break;
-                case 11 : //applause
-                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 11, 126, 0, 0, TRACK_INDEX);
-                    break;
             }
-
+            MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 
+                    curChannel, instrumentArray[curChannel],0,0,TRACK_INDEX);
             MidiComposition.addNote(pitch, VOLUME, startTick, 
                     duration, curChannel, TRACK_INDEX);  
         }
@@ -498,7 +463,6 @@ public class TuneComposer extends Application {
         channel = 3;
         rectColor = Color.LIGHTSKYBLUE;
     }
-    
     
     @FXML
     private void handleAccordionAction(ActionEvent e){
