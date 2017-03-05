@@ -106,7 +106,6 @@
                         <RadioButton mnemonicParsing="false" onAction="#handleOrchestraAction" text="Orchestra Hit" textFill="PERU" toggleGroup="$instrumentsRadioButton" />
                         <RadioButton mnemonicParsing="false" onAction="#handleTypewriterAction" text="Typewriter" textFill="GREY" toggleGroup="$instrumentsRadioButton" />
                         <RadioButton mnemonicParsing="false" onAction="#handleSeaAction" text="Sea" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton mnemonicParsing="false" onAction="#handleSciFiAction" text="SciFi" textFill="DARKRED" toggleGroup="$instrumentsRadioButton" />
                         <RadioButton mnemonicParsing="false" onAction="#handleApplauseAction" text="Applause" textFill="SADDLEBROWN" toggleGroup="$instrumentsRadioButton" />
                      </children>
                      <padding>

@@ -49,7 +49,8 @@ public class TuneComposer extends Application {
     final int DURATION = 100;
     final int TRACK_INDEX = 1;
     int channel = 0;
-
+    
+    
     Color rectColor = Color.OLIVEDRAB;
     
     //refers to the end of the current notes
@@ -361,8 +362,10 @@ public class TuneComposer extends Application {
         Rectangle rect;
         System.out.println("Adding Notes...");
         for(int i = 0; i < RECT_LIST.size(); i++){
-            //adds a note to the Midi Composition based on user's click input
             rect = RECT_LIST.get(i);
+            
+            //if the note has been deleted, do not add it to the composition
+            if (rect.getWidth()==0){continue;}
             pitch = 127-(int)rect.getY()/10;
             System.out.println("pitch: " + pitch);
             startTick = (int)rect.getX();
@@ -373,7 +376,7 @@ public class TuneComposer extends Application {
             System.out.println("channel: " + curChannel);
             if (endcomp < startTick+duration) {
                 endcomp = startTick+duration;
-            }            
+            }           
             switch(curChannel) {
                 case 0 :
                     MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 0, 0, 0, 0, TRACK_INDEX);
@@ -398,6 +401,21 @@ public class TuneComposer extends Application {
                     break;
                 case 7 :
                     MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 7, 61, 0, 0, TRACK_INDEX);
+                    break;
+                case 8 : //choir
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 8, 52, 0, 0, TRACK_INDEX);
+                    break;
+                case 9 : //orchestra
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 9, 55, 0, 0, TRACK_INDEX);
+                    break;
+                case 10 : //typewriter
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 10, 124, 0, 0, TRACK_INDEX);
+                    break;
+                case 11 : //sea
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 11, 125, 0, 0, TRACK_INDEX);
+                    break;
+                case 12 : //applause
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 12, 126, 0, 0, TRACK_INDEX);
                     break;
             }
 
@@ -437,9 +455,29 @@ public class TuneComposer extends Application {
     @FXML
     private void delete(ActionEvent e){
         MidiComposition.stop();
+        System.out.println(SELECTED_NOTES.size());
+        System.out.println(RECT_LIST.size());
+        System.out.println(CHANNEL_LIST.size());
         red.setVisible(false);
+        for (int i =0; i < RECT_LIST.size();i++){
+            System.out.println("ongoing");
+            if (SELECTED_NOTES.contains(RECT_LIST.get(i))){
+                RECT_LIST.get(i).setWidth(0);
+            }
+            //if (SELECTED_NOTES.contains(e1) && SELECTED_NOTES.indexOf(e1)  <  CHANNEL_LIST.size()){
+             //   CHANNEL_LIST.remove(SELECTED_NOTES.indexOf(e1));
+            //}
+        }
+        System.out.println(CHANNEL_LIST);
+        /*for (int i =0; i<RECT_LIST.size(); ){ 
+            Rectangle compare = RECT_LIST.get(i);
+            if (SELECTED_NOTES.contains(compare)){
+                CHANNEL_LIST.remove(i);
+            }
+            i++;
+        }*/
         rectStackPane.getChildren().removeAll(SELECTED_NOTES);
-        RECT_LIST.removeAll(SELECTED_NOTES);
+        //RECT_LIST.removeAll(SELECTED_NOTES);
         SELECTED_NOTES.clear();
     }
     
@@ -524,40 +562,33 @@ public class TuneComposer extends Application {
     @FXML
     private void handleOrchestraAction(ActionEvent e){
         System.out.println("sea");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 10, 55, 0, 0, TRACK_INDEX);
-        channel = 10;
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 9, 55, 0, 0, TRACK_INDEX);
+        channel = 9;
         rectColor = Color.PERU;
     }
     
     @FXML
     private void handleTypewriterAction(ActionEvent e){
         System.out.println("gun");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 11, 124, 0, 0, TRACK_INDEX);
-        channel = 11;
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 10, 124, 0, 0, TRACK_INDEX);
+        channel = 10;
         rectColor = Color.GREY;
     }
     
     @FXML
     private void handleSeaAction(ActionEvent e){
         System.out.println("sea");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 12, 125, 0, 0, TRACK_INDEX);
-        channel = 12;
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 11, 122, 0, 0, TRACK_INDEX);
+        channel = 11;
         rectColor = Color.BLACK;
     }
-    
-    @FXML
-    private void handleSciFiAction(ActionEvent e){
-        System.out.println("sci");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 13, 103, 0, 0, TRACK_INDEX);
-        channel = 13;
-        rectColor = Color.DARKRED;
-    }
+
     
     @FXML
     private void handleApplauseAction(ActionEvent e){
         System.out.println("gun");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 14, 126, 0, 0, TRACK_INDEX);
-        channel = 14;
+        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 12, 126, 0, 0, TRACK_INDEX);
+        channel = 12;
         rectColor = Color.SADDLEBROWN;
     }
     
