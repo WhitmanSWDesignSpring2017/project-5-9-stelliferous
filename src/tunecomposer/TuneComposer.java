@@ -414,7 +414,9 @@ public class TuneComposer extends Application {
             System.out.println("duration: " + duration);
             curChannel = CHANNEL_LIST.get(i);
             System.out.println("channel: " + curChannel);
-            
+            if (endcomp < startTick+duration) {
+                endcomp = startTick+duration;
+            }            
             switch(curChannel) {
                 case 0 :
                     MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 0, 0, 0, 0, TRACK_INDEX);
@@ -625,6 +627,23 @@ public class TuneComposer extends Application {
         red.setEndY(1280);
         return red;
     }
+    
+    /**
+     * Finds the x-coordinate of the left side of the right-most rectangle.
+     * @return value of the position of the rectangle's left side
+     */
+    protected int getRightMost() {
+        int rightX = 0;
+        for (int i=0; i<RECT_LIST.size();i++){
+            int currentX = (int) RECT_LIST.get(i).getX();
+            if (rightX < currentX) {
+                rightX = currentX;
+            }
+        }
+        rightX += 10;
+        return rightX;
+    }
+
     
     
     /**
