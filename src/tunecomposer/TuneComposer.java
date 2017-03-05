@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
-import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -41,7 +40,7 @@ import javax.sound.midi.ShortMessage;
 public class TuneComposer extends Application {
     
     //creates a MidiPlayer object with 100 ticks/beat, 1 beat/second
-    private MidiPlayer MidiComposition = new MidiPlayer(100,60);
+    private final MidiPlayer MidiComposition = new MidiPlayer(100,60);
    
     //sets, volume, duration, channel, and trackIndex for the MidiPlayer's notes
     final int VOLUME = 120;
@@ -223,21 +222,16 @@ public class TuneComposer extends Application {
         }
 
         System.out.println(channel);
-        CHANNEL_LIST.add(channel);
         System.out.println(CHANNEL_LIST);
         
         //adds rectangle to the list of rectangles, that they may be cleared
+        CHANNEL_LIST.add(channel);
         RECT_LIST.add(rect);
         SELECTED_NOTES.add(rect);
         
         //adds on-click rectangle to the stackPane
         
         rectStackPane.getChildren().add(rect);
-        /*
-        if (endcomp < (xCoordinate + 100)*10) {
-            endcomp = ((xCoordinate + 100)*10);
-        }
-        */
     };
  
     //private double orgSceneX, orgSceneY;
@@ -483,31 +477,24 @@ public class TuneComposer extends Application {
     /** */
     @FXML
     private void handlePianoAction(ActionEvent e){
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 0, 0, 0, 0, TRACK_INDEX);
         channel = 0;
         rectColor = Color.OLIVEDRAB;
     }
     
     @FXML
     private void handleHarpsichordAction(ActionEvent e){
-        System.out.println("harp");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 1, 6, 0, 0, TRACK_INDEX);
         channel = 1;
         rectColor = Color.LAWNGREEN;
     }
     
     @FXML
     private void handleMarimbaAction(ActionEvent e){
-        System.out.println("marimba");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 2, 12, 0, 0, TRACK_INDEX);
         channel = 2;
         rectColor = Color.SEAGREEN;
     }
     
     @FXML
     private void handleOrganAction(ActionEvent e){
-        System.out.println("oregano");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 3, 18, 0, 0, TRACK_INDEX);
         channel = 3;
         rectColor = Color.LIGHTSKYBLUE;
     }
@@ -515,16 +502,12 @@ public class TuneComposer extends Application {
     
     @FXML
     private void handleAccordionAction(ActionEvent e){
-        System.out.println("harp");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 4, 21, 0, 0, TRACK_INDEX);
         channel = 4;
         rectColor = Color.AQUA;
     }
     
     @FXML
     private void handleGuitarAction(ActionEvent e){
-                MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 5, 27, 0, 0, TRACK_INDEX);
-        System.out.println("harp");
         channel = 5;
         rectColor = Color.DEEPSKYBLUE;
 
@@ -532,41 +515,30 @@ public class TuneComposer extends Application {
     
     @FXML
     private void handleViolinAction(ActionEvent e){
-        System.out.println("harp");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 6, 40, 0, 0, TRACK_INDEX);
         channel = 6;
         rectColor = Color.STEELBLUE;
-
     }
     
     @FXML
     private void handleFrenchHornAction(ActionEvent e){
-        System.out.println("harp");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 7, 61, 0, 0, TRACK_INDEX);
         channel = 7;
         rectColor = Color.PURPLE;
     }
     
     @FXML
     private void handleChoirAction(ActionEvent e){
-        System.out.println("echo");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 8, 52, 0, 0, TRACK_INDEX);
         channel = 8;
         rectColor = Color.ORANGERED;
     }
     
     @FXML
     private void handleTypewriterAction(ActionEvent e){
-        System.out.println("gun");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 9, 124, 0, 0, TRACK_INDEX);
         channel = 9;
         rectColor = Color.GREY;
     }
     
     @FXML
     private void handleSeaAction(ActionEvent e){
-        System.out.println("sea");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 10, 122, 0, 0, TRACK_INDEX);
         channel = 10;
         rectColor = Color.BLACK;
     }
@@ -574,19 +546,10 @@ public class TuneComposer extends Application {
     
     @FXML
     private void handleApplauseAction(ActionEvent e){
-        System.out.println("gun");
-        MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 11, 126, 0, 0, TRACK_INDEX);
         channel = 11;
         rectColor = Color.SADDLEBROWN;
     }
     
-    EventHandler<ActionEvent> setOnFinishTransition = 
-            new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent t) {
-            redLine.setVisible(false);
-        }
-    };
     
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
@@ -594,30 +557,15 @@ public class TuneComposer extends Application {
      * composition has finished playing
      */
     public void initialize() {
-        // assigns animation to red line, sets duration and placement  
         lineTransition.setNode(redLine);
-        //lineTransition.setDuration(Duration.seconds(20));
         lineTransition.setFromX(0);
-        //lineTransition.setToX(2000);
         lineTransition.setInterpolator(Interpolator.LINEAR);
-        lineTransition.setOnFinished(setOnFinishTransition);
+        lineTransition.setOnFinished((e)->{
+            redLine.setVisible(false);
+        });
         compositionGrid.getChildren().addAll(greyLines());
-        //checks to see if the composition is over, removes red line
-        /*
-        new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                // if current time is over the total composition time...
-                if (lineTransition.getCurrentTime().toMillis() > (endcomp)){
-                    // make the red line invisible
-                    lineTransition.stop();
-                    red.setVisible(false);
-                    //compositionGrid.getChildren().remove(red);
-                }
-            }
-        }.start();
-        */
     }
+    
     /**
      * Launch the application.
      * @param args the command line arguments are ignored
