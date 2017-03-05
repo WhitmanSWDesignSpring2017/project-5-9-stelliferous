@@ -36,31 +36,20 @@
             <menus>
                 <Menu text="File">
                     <items>
-                        <MenuItem fx:id="ExitButton" onAction="#handleExitAction" text="Exit">
-                            <accelerator>
-                                <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                            </accelerator>
-                        </MenuItem>
+                        <MenuItem fx:id="ExitButton" onAction="#handleExitAction" text="Exit" accelerator="Shortcut+Q"/>
                     </items>
                 </Menu>
             <Menu mnemonicParsing="false" text="Edit">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#selectAll" text="Select All" />
-                  <MenuItem mnemonicParsing="false" onAction="#delete" text="Delete" />
+                <MenuItem mnemonicParsing="false" onAction="#handleSelectAllAction" text="Select All" accelerator="Shortcut+A"/>
+                <MenuItem mnemonicParsing="false" onAction="#handleDeleteAction" text="Delete" accelerator="Shortcut+D"/>
+                <MenuItem mnemonicParsing="false" onAction="#handleClearAction" text="Clear" accelerator="Shortcut+C"/>  
               </items>
             </Menu>
                 <Menu text="Action">
                     <items>
-                        <MenuItem fx:id="PlayButton" onAction="#handlePlayAction" text="Play">
-                            <accelerator>
-                                <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                            </accelerator>
-                        </MenuItem>
-                        <MenuItem fx:id="StopButton" onAction="#handleStopAction" text="Stop">
-                            <accelerator>
-                                    <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                                    </accelerator>
-                        </MenuItem>
+                        <MenuItem fx:id="PlayButton" onAction="#handlePlayAction" text="Play" accelerator="Shortcut+P"/>
+                        <MenuItem fx:id="StopButton" onAction="#handleStopAction" text="Stop" accelerator="Shortcut+S"/>
                     </items>
                 </Menu>
             </menus>
@@ -103,7 +92,7 @@
                   <VBox spacing="50.0">
                      <children>
                         <RadioButton mnemonicParsing="false" onAction="#handleChoirAction" text="Choir" textFill="ORANGERED" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton mnemonicParsing="false" onAction="#handleOrchestraAction" text="Orchestra Hit" textFill="PERU" toggleGroup="$instrumentsRadioButton" />
+                        <!--<RadioButton mnemonicParsing="false" onAction="#handleOrchestraAction" text="Orchestra Hit" textFill="PERU" toggleGroup="$instrumentsRadioButton" />-->
                         <RadioButton mnemonicParsing="false" onAction="#handleTypewriterAction" text="Typewriter" textFill="GREY" toggleGroup="$instrumentsRadioButton" />
                         <RadioButton mnemonicParsing="false" onAction="#handleSeaAction" text="Sea" toggleGroup="$instrumentsRadioButton" />
                         <RadioButton mnemonicParsing="false" onAction="#handleApplauseAction" text="Applause" textFill="SADDLEBROWN" toggleGroup="$instrumentsRadioButton" />
