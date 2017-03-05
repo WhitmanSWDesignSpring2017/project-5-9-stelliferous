@@ -222,11 +222,7 @@ public class TuneComposer extends Application {
         //adds rectangle to the list of rectangles, that they may be cleared
         RECT_LIST.add(rect);
         SELECTED_NOTES.add(rect);
-        /*
-        SELECTED_NOTES.forEach((e1) -> {
-            e1.setStroke(Color.CRIMSON);
-        });
-       */
+        
         //adds on-click rectangle to the stackPane
         rectStackPane.getChildren().add(rect);
         if (endcomp < (xCoordinate + 100)*10) {
@@ -239,7 +235,6 @@ public class TuneComposer extends Application {
     private ArrayList<Double> orgTranslateYs = new ArrayList<>();
     private ArrayList<Double> orgWidths = new ArrayList<>();
     private boolean stretch;
-    //private ArrayList<Double> orgWidths = new ArrayList<>();
             
     EventHandler<MouseEvent> circleOnMousePressedEventHandler = 
         new EventHandler<MouseEvent>() {
@@ -249,8 +244,6 @@ public class TuneComposer extends Application {
             MidiComposition.stop();
             red.setVisible(false);
             rectStackPane.getChildren().remove(selectRect);
-            //xCoordinate = (int)t.getX();
-            //yCoordinate = (int)t.getY();
             orgSceneX = t.getX();
             orgSceneY = t.getY();
             Rectangle currentRect = (Rectangle) t.getSource();
@@ -258,15 +251,7 @@ public class TuneComposer extends Application {
                 orgTranslateXs.add(SELECTED_NOTES.get(i).getX());
                 orgTranslateYs.add(SELECTED_NOTES.get(i).getY());
                 orgWidths.add(SELECTED_NOTES.get(i).getWidth());
-                //orgWidths.add(SELECTED_NOTES.get(i).getWidth());
             }
-            
-            /*
-            double orgTranslatex = ((Rectangle)(t.getSource())).getX();
-            orgTranslateY = ((Rectangle)(t.getSource())).getY();
-            newTranslateY = orgTranslateY;
-            */
-            System.out.println("Pressed");
         }
     };
      
@@ -278,12 +263,10 @@ public class TuneComposer extends Application {
             MidiComposition.stop();
             red.setVisible(false);
             rectStackPane.getChildren().remove(selectRect);
-            //xCoordinate = (int)t.getX();
-            //yCoordinate = (int)t.getY();
+
             double offsetX = t.getX() - orgSceneX;
             double offsetY = t.getY() - orgSceneY;
-            //double newTranslateX = orgTranslateX + offsetX;
-            //newTranslateY = orgTranslateY + offsetY;
+
             for (int i=0; i<SELECTED_NOTES.size();i++) {
                 if ( (orgSceneX >= (orgTranslateXs.get(i)+SELECTED_NOTES.get(i).getWidth()-5)
                         &&
@@ -309,11 +292,6 @@ public class TuneComposer extends Application {
                     SELECTED_NOTES.get(i).setY(newTranslateY);
                 }
             }
-            /*
-            ((Rectangle)(t.getSource())).setX(newTranslateX);
-            ((Rectangle)(t.getSource())).setY(newTranslateY);
-            */
-            System.out.println("dragged");
         }
     };
         EventHandler<MouseEvent> circleOnMouseReleasedEventHandler = 
@@ -334,15 +312,6 @@ public class TuneComposer extends Application {
                 double offset = finalY - currentY;
                 SELECTED_NOTES.get(i).setTranslateY(offset);
             }
-            /*
-            //double finalY = ((int)(newTranslateY/10))*10;
-            //double offsetY = finalY-newTranslateY;
-            //System.out.println(newTranslateY);
-            //System.out.println(finalY);
-
-            //((Rectangle)(t.getSource())).setTranslateY(offsetY);
-            */
-            System.out.println("Released");
         }
     };
     
@@ -452,20 +421,6 @@ public class TuneComposer extends Application {
         //compositionGrid.getChildren().remove(red);
     }
     
-    /**
-     * Clears all rectangles from the screen
-     * Clears the Midi Composition off all notes
-     * Indicates that the end of the composition is now '0' (no comp)
-     * @param e  on user click
-     
-    @FXML 
-    private void handleClearAction(ActionEvent e){
-        rectStackPane.getChildren().removeAll(RECT_LIST);
-        endcomp = 0;
-        MidiComposition.clear();
-    }
-    */
-    
     @FXML
     private void selectAll(ActionEvent e){
         MidiComposition.stop();
@@ -477,8 +432,6 @@ public class TuneComposer extends Application {
         SELECTED_NOTES.forEach((e1) -> {
             e1.setStroke(Color.CRIMSON);
         });        
-        //adds on-click rectangle to the stackPane
-        //rectStackPane.getChildren().addAll(RECT_LIST);
     }
     
     @FXML
