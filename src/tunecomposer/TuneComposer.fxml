@@ -9,12 +9,11 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.shape.Line?>
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.TuneComposer">
    <center>
@@ -24,7 +23,7 @@
                <children>           
                     <Pane fx:id="compositionGrid" onMouseDragged="#gridDrag" onMousePressed="#gridClick" onMouseReleased="#gridRelease" prefHeight="1280.0" prefWidth="2000.0">
                      <children>
-                          <Rectangle fx:id="redline" arcHeight="5.0" arcWidth="5.0" fill="RED" height="1280.0" stroke="RED" strokeType="INSIDE" visible="false" width="100.0" x="-1000.0" y="0.0" />
+                        <Line fx:id="redLine" endX="0.0" endY="1280.0" startX="0.0" startY="0.0" stroke="RED" />
                      </children></Pane>
                     </children>
             </AnchorPane>
@@ -36,20 +35,20 @@
             <menus>
                 <Menu text="File">
                     <items>
-                        <MenuItem fx:id="ExitButton" onAction="#handleExitAction" text="Exit" accelerator="Shortcut+Q"/>
+                        <MenuItem fx:id="ExitButton" accelerator="Shortcut+Q" onAction="#handleExitAction" text="Exit" />
                     </items>
                 </Menu>
             <Menu mnemonicParsing="false" text="Edit">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#handleSelectAllAction" text="Select All" accelerator="Shortcut+A"/>
-                <MenuItem mnemonicParsing="false" onAction="#handleDeleteAction" text="Delete" accelerator="Shortcut+D"/>
-                <MenuItem mnemonicParsing="false" onAction="#handleClearAction" text="Clear" accelerator="Shortcut+C"/>  
+                <MenuItem accelerator="Shortcut+A" mnemonicParsing="false" onAction="#handleSelectAllAction" text="Select All" />
+                <MenuItem accelerator="Shortcut+D" mnemonicParsing="false" onAction="#handleDeleteAction" text="Delete" />
+                <MenuItem accelerator="Shortcut+C" mnemonicParsing="false" onAction="#handleClearAction" text="Clear" />  
               </items>
             </Menu>
                 <Menu text="Action">
                     <items>
-                        <MenuItem fx:id="PlayButton" onAction="#handlePlayAction" text="Play" accelerator="Shortcut+P"/>
-                        <MenuItem fx:id="StopButton" onAction="#handleStopAction" text="Stop" accelerator="Shortcut+S"/>
+                        <MenuItem fx:id="PlayButton" accelerator="Shortcut+P" onAction="#handlePlayAction" text="Play" />
+                        <MenuItem fx:id="StopButton" accelerator="Shortcut+S" onAction="#handleStopAction" text="Stop" />
                     </items>
                 </Menu>
             </menus>

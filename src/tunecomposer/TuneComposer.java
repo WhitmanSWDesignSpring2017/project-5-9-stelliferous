@@ -69,7 +69,8 @@ public class TuneComposer extends Application {
     private final ArrayList<Rectangle> SELECTED_NOTES = new ArrayList<>();
     
     //creates a line that will indicate the time in the composition
-    private final Line red = redLine();
+    //private final Line red = redLine();
+    @FXML Line redLine;
     
     //creates a rectangle that users will control by dragging
     Rectangle selectRect = new Rectangle();
@@ -113,7 +114,7 @@ public class TuneComposer extends Application {
         xCoordinate = (int)m.getX();
         yCoordinate = (int)m.getY();
         MidiComposition.stop();
-        red.setVisible(false);
+        redLine.setVisible(false);
     }
     
     /**
@@ -426,7 +427,7 @@ public class TuneComposer extends Application {
         }
         lineTransition.setToX(endcomp);
         lineTransition.setDuration(Duration.seconds(endcomp/100));
-        red.setVisible(true);
+        redLine.setVisible(true);
         MidiComposition.play();
         lineTransition.playFromStart();
     }
@@ -439,13 +440,13 @@ public class TuneComposer extends Application {
     private void handleStopAction(ActionEvent e){
         MidiComposition.stop();
         lineTransition.stop();
-        red.setVisible(false);
+        redLine.setVisible(false);
     }
     
     @FXML
     private void handleSelectAllAction(ActionEvent e){
         MidiComposition.stop();
-        red.setVisible(false);
+        redLine.setVisible(false);
         SELECTED_NOTES.clear();
         for (int i =0; i<RECT_LIST.size(); i++){
             SELECTED_NOTES.add(RECT_LIST.get(i));
@@ -458,7 +459,7 @@ public class TuneComposer extends Application {
     @FXML
     private void handleDeleteAction(ActionEvent e){
         MidiComposition.stop();
-        red.setVisible(false);
+        redLine.setVisible(false);
         for (int i =0; i < RECT_LIST.size();i++){
             System.out.println("ongoing");
             if (SELECTED_NOTES.contains(RECT_LIST.get(i))){
@@ -471,7 +472,7 @@ public class TuneComposer extends Application {
     
     @FXML
     private void handleClearAction(ActionEvent e){
-        red.setVisible(false);
+        redLine.setVisible(false);
         MidiComposition.clear();
         rectStackPane.getChildren().removeAll(RECT_LIST);
         RECT_LIST.clear();
@@ -579,23 +580,11 @@ public class TuneComposer extends Application {
         rectColor = Color.SADDLEBROWN;
     }
     
-    
-   
-    private Line redLine() {
-        Line red = new Line();
-        red.setStroke(Color.valueOf("red"));
-        red.setStartX(0);
-        red.setStartY(0);
-        red.setEndX(0);
-        red.setEndY(1280);
-        return red;
-    }
-    
     EventHandler<ActionEvent> setOnFinishTransition = 
             new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent t) {
-            red.setVisible(false);
+            redLine.setVisible(false);
         }
     };
     
@@ -606,13 +595,13 @@ public class TuneComposer extends Application {
      */
     public void initialize() {
         // assigns animation to red line, sets duration and placement  
-        lineTransition.setNode(red);
+        lineTransition.setNode(redLine);
         //lineTransition.setDuration(Duration.seconds(20));
         lineTransition.setFromX(0);
         //lineTransition.setToX(2000);
         lineTransition.setInterpolator(Interpolator.LINEAR);
         lineTransition.setOnFinished(setOnFinishTransition);
-        compositionGrid.getChildren().addAll(greyLines(),red);
+        compositionGrid.getChildren().addAll(greyLines());
         //checks to see if the composition is over, removes red line
         /*
         new AnimationTimer() {
