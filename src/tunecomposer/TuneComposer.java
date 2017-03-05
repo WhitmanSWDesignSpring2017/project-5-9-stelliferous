@@ -25,6 +25,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
 
 
@@ -75,6 +76,9 @@ public class TuneComposer extends Application {
     
     private final ArrayList<Rectangle> SELECTED_NOTES = new ArrayList<>();
     
+    private final Line red = redLine();
+    private final ArrayList<Integer> CHANNEL_LIST = new ArrayList<>();
+    
     int yEffective = 0;
     int xEffective = 0;
     int yCoordinate = 0;
@@ -109,7 +113,6 @@ public class TuneComposer extends Application {
     //makes available StackPane in which the user can click to add notes
     @FXML AnchorPane rectStackPane;
     //makes available the redLine which designates place in the composition 
-    @FXML Rectangle redline;
 
     @FXML Pane compositionGrid;
     /**
@@ -228,10 +231,18 @@ public class TuneComposer extends Application {
             SELECTED_NOTES.clear();
         }
 
+        System.out.println(channel);
+        CHANNEL_LIST.add(channel);
+        System.out.println(CHANNEL_LIST);
+        
         //adds rectangle to the list of rectangles, that they may be cleared
         RECT_LIST.add(rect);
         SELECTED_NOTES.add(rect);
-
+        /*
+        SELECTED_NOTES.forEach((e1) -> {
+            e1.setStroke(Color.CRIMSON);
+        });
+       */
         //adds on-click rectangle to the stackPane
         rectStackPane.getChildren().add(rect);
         if (endcomp < (xCoordinate + 100)*10) {
@@ -242,6 +253,9 @@ public class TuneComposer extends Application {
     private double orgSceneX, orgSceneY;
     private ArrayList<Double> orgTranslateXs = new ArrayList<>();
     private ArrayList<Double> orgTranslateYs = new ArrayList<>();
+    private ArrayList<Double> orgWidths = new ArrayList<>();
+    private boolean stretch;
+    //private ArrayList<Double> orgWidths = new ArrayList<>();
             
     EventHandler<MouseEvent> circleOnMousePressedEventHandler = 
         new EventHandler<MouseEvent>() {
@@ -249,26 +263,24 @@ public class TuneComposer extends Application {
         @Override
         public void handle(MouseEvent t) {
             rectStackPane.getChildren().remove(selectRect);
-            xCoordinate = (int)t.getX();
-            yCoordinate = (int)t.getY();
+            //xCoordinate = (int)t.getX();
+            //yCoordinate = (int)t.getY();
             orgSceneX = t.getX();
             orgSceneY = t.getY();
+            Rectangle currentRect = (Rectangle) t.getSource();
             for (int i=0; i<SELECTED_NOTES.size();i++) {
                 orgTranslateXs.add(SELECTED_NOTES.get(i).getX());
                 orgTranslateYs.add(SELECTED_NOTES.get(i).getY());
+                orgWidths.add(SELECTED_NOTES.get(i).getWidth());
+                //orgWidths.add(SELECTED_NOTES.get(i).getWidth());
             }
+            
             /*
-            Rectangle currentRect = (Rectangle) t.getSource();
             double orgTranslatex = ((Rectangle)(t.getSource())).getX();
             orgTranslateY = ((Rectangle)(t.getSource())).getY();
             newTranslateY = orgTranslateY;
             */
             System.out.println("Pressed");
-            
-            if (t.getX() == SELECTED_NOTES.get(0).getX()){
-                System.out.println("covered");
-            }
-            
         }
     };
      
@@ -278,18 +290,36 @@ public class TuneComposer extends Application {
         @Override
         public void handle(MouseEvent t) {
             rectStackPane.getChildren().remove(selectRect);
-            xCoordinate = (int)t.getX();
-            yCoordinate = (int)t.getY();
+            //xCoordinate = (int)t.getX();
+            //yCoordinate = (int)t.getY();
             double offsetX = t.getX() - orgSceneX;
             double offsetY = t.getY() - orgSceneY;
             //double newTranslateX = orgTranslateX + offsetX;
             //newTranslateY = orgTranslateY + offsetY;
+            for (int i=0; i<SELECTED_NOTES.size();i++) {
+                if ( (orgSceneX >= (orgTranslateXs.get(i)+SELECTED_NOTES.get(i).getWidth()-5)
+                        &&
+                     orgSceneX <= (orgTranslateXs.get(i)+SELECTED_NOTES.get(i).getWidth()))
+                        && 
+                        (orgSceneY >= orgTranslateYs.get(i)
+                        && orgSceneY <= (orgTranslateYs.get(i)+10))
+                   )
+                {
+                    stretch = true;
+                    System.out.println("stetch");
+                }
+            }
             
             for (int i=0; i<SELECTED_NOTES.size();i++) {
-                double newTranslateX = orgTranslateXs.get(i) + offsetX;
-                double newTranslateY = orgTranslateYs.get(i) + offsetY;
-                SELECTED_NOTES.get(i).setX(newTranslateX);
-                SELECTED_NOTES.get(i).setY(newTranslateY);
+                if (stretch) {
+                    double width = orgWidths.get(i);
+                    SELECTED_NOTES.get(i).setWidth(width+offsetX);
+                } else {
+                    double newTranslateX = orgTranslateXs.get(i) + offsetX;
+                    double newTranslateY = orgTranslateYs.get(i) + offsetY;
+                    SELECTED_NOTES.get(i).setX(newTranslateX);
+                    SELECTED_NOTES.get(i).setY(newTranslateY);
+                }
             }
             /*
             ((Rectangle)(t.getSource())).setX(newTranslateX);
@@ -303,8 +333,10 @@ public class TuneComposer extends Application {
  
         @Override
         public void handle(MouseEvent t) {
+            stretch = false;
             orgTranslateXs.clear();
             orgTranslateYs.clear();
+            orgWidths.clear();
             rectStackPane.getChildren().remove(selectRect);
             xCoordinate = (int)t.getX();
             yCoordinate = (int)t.getY();
@@ -364,9 +396,58 @@ public class TuneComposer extends Application {
     @FXML
     private void handlePlayAction(ActionEvent e){
         System.out.println("ouch "+endcomp);
+        MidiComposition.clear();
+        int pitch;
+        int startTick;
+        int duration;
+        int curChannel;
+        Rectangle rect;
+        System.out.println("Adding Notes...");
+        for(int i = 0; i < RECT_LIST.size(); i++){
+            //adds a note to the Midi Composition based on user's click input
+            rect = RECT_LIST.get(i);
+            pitch = 127-(int)rect.getY()/10;
+            System.out.println("pitch: " + pitch);
+            startTick = (int)rect.getX();
+            System.out.println("startTick: " + startTick);
+            duration = (int)rect.getWidth();
+            System.out.println("duration: " + duration);
+            curChannel = CHANNEL_LIST.get(i);
+            System.out.println("channel: " + curChannel);
+            
+            switch(curChannel) {
+                case 0 :
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 0, 0, 0, 0, TRACK_INDEX);
+                    break;
+                case 1 :
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 1, 6, 0, 0, TRACK_INDEX);
+                    break;
+                case 2 :
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 2, 12, 0, 0, TRACK_INDEX);
+                    break;
+                case 3 :
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 3, 18, 0, 0, TRACK_INDEX);
+                    break;
+                case 4 :
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 4, 21, 0, 0, TRACK_INDEX);
+                    break;
+                case 5 :
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 5, 27, 0, 0, TRACK_INDEX);
+                    break;
+                case 6 :
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 6, 40, 0, 0, TRACK_INDEX);
+                    break;
+                case 7 :
+                    MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 7, 61, 0, 0, TRACK_INDEX);
+                    break;
+            }
+
+            MidiComposition.addNote(pitch, VOLUME, startTick, 
+                    duration, curChannel, TRACK_INDEX);  
+        }
+        red.setVisible(true);
         MidiComposition.play();
         lineTransition.playFromStart();
-        redline.setVisible(true);
     }
     
     /**
@@ -376,7 +457,9 @@ public class TuneComposer extends Application {
     @FXML
     private void handleStopAction(ActionEvent e){
         MidiComposition.stop();
-        redline.setVisible(false);
+        lineTransition.stop();
+        red.setVisible(false);
+        //compositionGrid.getChildren().remove(red);
     }
     
     /**
@@ -384,12 +467,33 @@ public class TuneComposer extends Application {
      * Clears the Midi Composition off all notes
      * Indicates that the end of the composition is now '0' (no comp)
      * @param e  on user click
-     */
+     
     @FXML 
     private void handleClearAction(ActionEvent e){
         rectStackPane.getChildren().removeAll(RECT_LIST);
         endcomp = 0;
         MidiComposition.clear();
+    }
+    */
+    
+    @FXML
+    private void selectAll(ActionEvent e){
+        SELECTED_NOTES.clear();
+        for (int i =0; i<RECT_LIST.size(); i++){
+            SELECTED_NOTES.add(RECT_LIST.get(i));
+        }
+        SELECTED_NOTES.forEach((e1) -> {
+            e1.setStroke(Color.CRIMSON);
+        });        
+        //adds on-click rectangle to the stackPane
+        //rectStackPane.getChildren().addAll(RECT_LIST);
+    }
+    
+    @FXML
+    private void delete(ActionEvent e){
+        rectStackPane.getChildren().removeAll(SELECTED_NOTES);
+        RECT_LIST.removeAll(SELECTED_NOTES);
+        SELECTED_NOTES.clear();
     }
     
     /** */
@@ -438,10 +542,10 @@ public class TuneComposer extends Application {
     @FXML
     private void handleGuitarAction(ActionEvent e){
                 MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 5, 27, 0, 0, TRACK_INDEX);
-
         System.out.println("harp");
         channel = 5;
         rectColor = Color.DEEPSKYBLUE;
+
     }
     
     @FXML
@@ -450,6 +554,7 @@ public class TuneComposer extends Application {
         MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 6, 40, 0, 0, TRACK_INDEX);
         channel = 6;
         rectColor = Color.STEELBLUE;
+
     }
     
     @FXML
@@ -511,20 +616,30 @@ public class TuneComposer extends Application {
     
     
    
+    private Line redLine() {
+        Line red = new Line();
+        red.setStroke(Color.valueOf("red"));
+        red.setStartX(0);
+        red.setStartY(0);
+        red.setEndX(0);
+        red.setEndY(1280);
+        return red;
+    }
+    
+    
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
      * (with location, duration, and speed). Removes red line when the
      * composition has finished playing
      */
     public void initialize() {
-        // assigns animation to red line, sets duration and placement
-        lineTransition.setNode(redline);
+        // assigns animation to red line, sets duration and placement  
+        lineTransition.setNode(red);
         lineTransition.setDuration(Duration.seconds(PANE_WIDTH/100));
-        lineTransition.setFromX(TO_LEFT);
-        lineTransition.setToX(TO_RIGHT);
+        lineTransition.setFromX(0);
+        lineTransition.setToX(2000);
         lineTransition.setInterpolator(Interpolator.LINEAR);
-  
-        compositionGrid.getChildren().add(greyLines());
+        compositionGrid.getChildren().addAll(greyLines(),red);
         //checks to see if the composition is over, removes red line
         new AnimationTimer() {
             @Override
@@ -532,7 +647,9 @@ public class TuneComposer extends Application {
                 // if current time is over the total composition time...
                 if (lineTransition.getCurrentTime().toMillis() > (endcomp)){
                     // make the red line invisible
-                    redline.setVisible(false);
+                    lineTransition.stop();
+                    red.setVisible(false);
+                    //compositionGrid.getChildren().remove(red);
                 }
             }
         }.start();

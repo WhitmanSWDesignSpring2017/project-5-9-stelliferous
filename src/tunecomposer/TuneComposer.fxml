@@ -20,12 +20,12 @@
    <center>
       <ScrollPane fx:id="compositionScroll">
          <content>
-                                 <Rectangle fx:id="redline" arcHeight="5.0" arcWidth="5.0" fill="RED" height="1280.0" stroke="RED" strokeType="INSIDE" visible="false" width="1.0" x="-1000.0" y="0.0" />
-
             <AnchorPane fx:id="rectStackPane" layoutY="30.0" prefHeight="1280.0" prefWidth="2000.0">
-               <children>
+               <children>           
                     <Pane fx:id="compositionGrid" onMouseDragged="#gridDrag" onMousePressed="#gridClick" onMouseReleased="#gridRelease" prefHeight="1280.0" prefWidth="2000.0" styleClass="compositionPane" stylesheets="@tunecomposer.css">
-                    </Pane>
+                     <children>
+                          <Rectangle fx:id="redline" arcHeight="5.0" arcWidth="5.0" fill="RED" height="1280.0" stroke="RED" strokeType="INSIDE" visible="false" width="100.0" x="-1000.0" y="0.0" />
+                     </children></Pane>
                     </children>
             </AnchorPane>
             </content>
@@ -43,6 +43,12 @@
                         </MenuItem>
                     </items>
                 </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#selectAll" text="Select All" />
+                  <MenuItem mnemonicParsing="false" onAction="#delete" text="Delete" />
+              </items>
+            </Menu>
                 <Menu text="Action">
                     <items>
                         <MenuItem fx:id="PlayButton" onAction="#handlePlayAction" text="Play">
@@ -54,11 +60,6 @@
                             <accelerator>
                                     <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                                     </accelerator>
-                        </MenuItem>
-                        <MenuItem onAction="#handleClearAction" text="Clear">
-                            <accelerator>
-                                <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                            </accelerator>
                         </MenuItem>
                     </items>
                 </Menu>
