@@ -19,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
 import tunecomposer.MidiPlayer;
+import tunecomposer.NoteRectangle;
 
 
 /**
@@ -44,6 +45,7 @@ public class TuneComposerNoteSelection {
     //sets the default color for note rectangles, corresponding to piano
     Color rectColor = Color.OLIVEDRAB;
     
+    int instrument = 0;
     //refers to the end of the current notes
     public double endcomp;
     
@@ -51,16 +53,16 @@ public class TuneComposerNoteSelection {
     public TranslateTransition lineTransition = new TranslateTransition();
     
     //creates a list to store created rectangles, that they may be later erased
-    private final ArrayList<Rectangle> RECT_LIST = new ArrayList<>();
+    private final ArrayList<NoteRectangle> RECT_LIST = new ArrayList<>();
     
     //creates a list of channels that aligns with and gives instrument info
     //to RECT_LIST
-    private final ArrayList<Integer> CHANNEL_LIST = new ArrayList<>();
+    //private final ArrayList<Integer> CHANNEL_LIST = new ArrayList<>();
     
     //creates a list to store selected rectangles
-    private final ArrayList<Rectangle> SELECTED_NOTES = new ArrayList<>();
+    private final ArrayList<NoteRectangle> SELECTED_NOTES = new ArrayList<>();
     
-    private final int[] instrumentArray = {0,6,12,18,21,27,40,61,52,124,125,126};
+    //private final int[] instrumentArray = {0,6,12,18,21,27,40,61,52,124,125,126};
     
     //creates a line that will indicate the time in the composition
     //private final Line red = redLine();
@@ -129,14 +131,14 @@ public class TuneComposerNoteSelection {
 
         
         //determine whether any "note rectangles" are within the selection rect
-        for(Rectangle r:RECT_LIST){
-            if (selectRect.getX() + (selectRect.getWidth()) > r.getX() //min x value UPDATED
-                    && selectRect.getX()  < r.getX() + (r.getWidth()) // max x value
-                    && selectRect.getY() + (selectRect.getHeight()) > r.getY() //min y value
-                    && selectRect.getY()  < r.getY() + (r.getHeight())){    //max y  UPDATED 
+        for(NoteRectangle r:RECT_LIST){
+            if (selectRect.getX() + (selectRect.getWidth()) > r.Notes.getX() //min x value UPDATED
+                    && selectRect.getX()  < r.Notes.getX() + (r.Notes.getWidth()) // max x value
+                    && selectRect.getY() + (selectRect.getHeight()) > r.Notes.getY() //min y value
+                    && selectRect.getY()  < r.Notes.getY() + (r.Notes.getHeight())){    //max y  UPDATED 
                 // select note rectangles within the selection area
                 SELECTED_NOTES.add(r);
-                r.setStroke(Color.CRIMSON);
+                r.Notes.setStroke(Color.CRIMSON);
             }
         }     
     }
@@ -156,10 +158,14 @@ public class TuneComposerNoteSelection {
         }
         reset_coordinates(e);            
         int y = (int) ((yCoordinate)/10);
+        /*
         Rectangle rect = new Rectangle(xCoordinate,y*10,100,10);
         rect.setFill(rectColor);
         rect.setStroke(Color.CRIMSON);
         rect.setStrokeWidth(2);
+        */
+        
+        NoteRectangle rect = new NoteRectangle(xCoordinate,y*10, rectColor, channel, instrument);
         rect.setOnMousePressed(circleOnMousePressedEventHandler);
         rect.setOnMouseDragged(circleOnMouseDraggedEventHandler);   
         rect.setOnMouseReleased(circleOnMouseReleasedEventHandler);
@@ -191,16 +197,16 @@ public class TuneComposerNoteSelection {
         }
 
         System.out.println(channel);
-        System.out.println(CHANNEL_LIST);
+        //System.out.println(CHANNEL_LIST);
         
         //adds rectangle to the list of rectangles, that they may be cleared
-        CHANNEL_LIST.add(channel);
+        //CHANNEL_LIST.add(channel);
         RECT_LIST.add(rect);
         SELECTED_NOTES.add(rect);
         
         //adds on-click rectangle to the stackPane
         
-        rectStackPane.getChildren().add(rect);
+        rectStackPane.getChildren().add(rect.Notes);
     };
  
     //private double orgSceneX, orgSceneY;
@@ -306,7 +312,8 @@ public class TuneComposerNoteSelection {
         int startTick;
         int duration;
         int curChannel;
-        Rectangle rect;
+        int curInstru;
+        NoteRectangle rect;
         System.out.println("Adding Notes...");
         for(int i = 0; i < RECT_LIST.size(); i++){
             rect = RECT_LIST.get(i);
@@ -321,14 +328,14 @@ public class TuneComposerNoteSelection {
             System.out.println("startTick: " + startTick);
             duration = (int)rect.getWidth();
             System.out.println("duration: " + duration);
-            curChannel = CHANNEL_LIST.get(i);
+            curChannel = rect.getChannel();
             System.out.println("channel: " + curChannel);
-            
+            curInstru = rect.getInstrument();
             if (endcomp < startTick+duration) {
                 endcomp = startTick+duration;
             }
             MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 
-                    curChannel, instrumentArray[curChannel],0,0,TRACK_INDEX);
+                    curChannel, curInstru,0,0,TRACK_INDEX);
             MidiComposition.addNote(pitch, VOLUME, startTick, 
                     duration, curChannel, TRACK_INDEX);  
         }
@@ -367,13 +374,20 @@ public class TuneComposerNoteSelection {
     private void handleDeleteAction(ActionEvent e){
         MidiComposition.stop();
         redLine.setVisible(false);
+        /*
         for (int i =0; i < RECT_LIST.size();i++){
             System.out.println("ongoing");
             if (SELECTED_NOTES.contains(RECT_LIST.get(i))){
                 RECT_LIST.get(i).setWidth(0);
             }
         }
-        rectStackPane.getChildren().removeAll(SELECTED_NOTES);
+        */
+        SELECTED_NOTES.forEach((e1) -> {
+            rectStackPane.getChildren().remove(e1.Notes);
+        });
+        SELECTED_NOTES.forEach((e1)->{
+            RECT_LIST.remove(e1);
+        });
         SELECTED_NOTES.clear();
     }
     
@@ -381,45 +395,53 @@ public class TuneComposerNoteSelection {
     private void handleClearAction(ActionEvent e){
         redLine.setVisible(false);
         MidiComposition.clear();
-        rectStackPane.getChildren().removeAll(RECT_LIST);
+        RECT_LIST.forEach((e1) -> {
+            rectStackPane.getChildren().remove(e1.Notes);
+        });
         RECT_LIST.clear();
         SELECTED_NOTES.clear();
-        CHANNEL_LIST.clear();
+        //CHANNEL_LIST.clear();
     }
     
     /** */
     @FXML
     private void handlePianoAction(ActionEvent e){
+        instrument = 0;
         channel = 0;
         rectColor = Color.OLIVEDRAB;
     }
     
     @FXML
     private void handleHarpsichordAction(ActionEvent e){
+        instrument = 6;
         channel = 1;
         rectColor = Color.LAWNGREEN;
     }
     
     @FXML
     private void handleMarimbaAction(ActionEvent e){
+        instrument = 12;
         channel = 2;
         rectColor = Color.SEAGREEN;
     }
     
     @FXML
     private void handleOrganAction(ActionEvent e){
+        instrument = 18;
         channel = 3;
         rectColor = Color.LIGHTSKYBLUE;
     }
     
     @FXML
     private void handleAccordionAction(ActionEvent e){
+        instrument = 21;
         channel = 4;
         rectColor = Color.AQUA;
     }
     
     @FXML
     private void handleGuitarAction(ActionEvent e){
+        instrument = 27;
         channel = 5;
         rectColor = Color.DEEPSKYBLUE;
 
@@ -427,30 +449,35 @@ public class TuneComposerNoteSelection {
     
     @FXML
     private void handleViolinAction(ActionEvent e){
+        instrument = 40;
         channel = 6;
         rectColor = Color.STEELBLUE;
     }
     
     @FXML
     private void handleFrenchHornAction(ActionEvent e){
+        instrument = 61;
         channel = 7;
         rectColor = Color.PURPLE;
     }
     
     @FXML
     private void handleChoirAction(ActionEvent e){
+        instrument = 52;
         channel = 8;
         rectColor = Color.ORANGERED;
     }
     
     @FXML
     private void handleTypewriterAction(ActionEvent e){
+        instrument = 124;
         channel = 9;
         rectColor = Color.GREY;
     }
     
     @FXML
     private void handleSeaAction(ActionEvent e){
+        instrument= 125;
         channel = 10;
         rectColor = Color.BLACK;
     }
@@ -458,6 +485,7 @@ public class TuneComposerNoteSelection {
     
     @FXML
     private void handleApplauseAction(ActionEvent e){
+        instrument = 126;
         channel = 11;
         rectColor = Color.SADDLEBROWN;
     }
