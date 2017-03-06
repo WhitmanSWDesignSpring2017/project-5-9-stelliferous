@@ -13,3 +13,53 @@ and open the template in the editor.
     -fx-background-color: lavender;
 }
 
+.redLine{
+    -fx-stroke: crimson;
+    -fx-stroke-width: 2px;
+}
+
+.pianoButton{
+    -fx-text-fill: olivedrab;
+}
+
+.harpsichordButton{
+    -fx-text-fill: lawngreen;
+}
+
+.marimbaButton{
+    -fx-text-fill: seagreen;
+}
+
+.organButton{
+    -fx-text-fill: lightskyblue;
+}
+
+.accordionButton{
+    -fx-text-fill: aqua;
+}
+
+.guitarButton{
+    -fx-text-fill: deepskyblue;
+}
+
+.violinButton{
+    -fx-text-fill: steelblue;
+}
+
+.frenchHornButton{
+    -fx-text-fill: purple;
+}
+
+.choirButton{
+    -fx-text-fill: orangered;
+}
+
+.typewriterButton{
+    -fx-text-fill: grey;
+}
+
+.applauseButton{
+    -fx-text-fill: saddlebrown;
+}
+
+

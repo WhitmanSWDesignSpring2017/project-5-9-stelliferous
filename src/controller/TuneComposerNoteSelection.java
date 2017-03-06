@@ -2,12 +2,7 @@
 LATEST */
 package controller;
 
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import javafx.scene.Parent;
-import javafx.scene.Scene; 
 import javafx.fxml.FXML;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
 import java.io.IOException;
@@ -18,15 +13,11 @@ import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
-import tunecomposer.MidiPlayer;
 import tunecomposer.MidiPlayer;
 
 
@@ -39,7 +30,7 @@ import tunecomposer.MidiPlayer;
  * @author Tyler Maule
  * @since January 26, 2017
  */
-public class TuneComposer {
+public class TuneComposerNoteSelection {
     
     //creates a MidiPlayer object with 100 ticks/beat, 1 beat/second
     private final MidiPlayer MidiComposition = new MidiPlayer(100,60);
@@ -87,15 +78,7 @@ public class TuneComposer {
     
     //makes available the composition Pane, allowing user to create notes
     @FXML Pane compositionGrid;
-    //@FXML TuneComposerInstruments TuneComposerInstruments;
-    
-    void reset_coordinates(MouseEvent m){
-        xCoordinate = (int)m.getX();
-        yCoordinate = (int)m.getY();
-        MidiComposition.stop();
-        redLine.setVisible(false);
-    }
-    
+
     /**
      * Creates a rectangle at the point clicked and adds a note to the composition
      * based on the coordinates of the point clicked. Adds that rectangle
@@ -156,6 +139,12 @@ public class TuneComposer {
                 r.setStroke(Color.CRIMSON);
             }
         }     
+    }
+    void reset_coordinates(MouseEvent m){
+        xCoordinate = (int)m.getX();
+        yCoordinate = (int)m.getY();
+        MidiComposition.stop();
+        redLine.setVisible(false);
     }
     
     @FXML
@@ -291,9 +280,7 @@ public class TuneComposer {
                 SELECTED_NOTES.get(i).setTranslateY(offset);
             }
         }
-    };
-    
-       
+    };    
 
     /**
      * Exits the program upon user clicking the typical 'close' 
@@ -399,7 +386,7 @@ public class TuneComposer {
         SELECTED_NOTES.clear();
         CHANNEL_LIST.clear();
     }
-
+    
     /** */
     @FXML
     private void handlePianoAction(ActionEvent e){
@@ -476,40 +463,19 @@ public class TuneComposer {
     }
     
     
-    @FXML Canvas canvasGreyLines;
-    /**
-     * Draws the horizontal grey lines that show the possible vertical positions
-     * of the rectangles.
-     * @param lines input the canvas which is created in the fxml
-     */
-    protected void greyLines(Canvas lines) {
-        GraphicsContext gc = lines.getGraphicsContext2D();
-        gc.setLineWidth(1.0);
-        for (int y = 0; y < 1280; y+=10) {
-            double y1 ;
-            y1 = y + 0.5;
-            gc.moveTo(0, y1);
-            gc.lineTo(2000, y1);
-            gc.stroke();
-        }
-    }   
-    
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
      * (with location, duration, and speed). Removes red line when the
      * composition has finished playing
      */
-    @FXML public void initialize() {
-        redLine.setVisible(false);
+    public void initialize() {
         lineTransition.setNode(redLine);
         lineTransition.setFromX(0);
         lineTransition.setInterpolator(Interpolator.LINEAR);
         lineTransition.setOnFinished((e)->{
             redLine.setVisible(false);
         });
-        greyLines(canvasGreyLines);
     }
-   
-}
+}    
 
 
