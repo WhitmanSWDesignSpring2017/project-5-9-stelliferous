@@ -1,6 +1,6 @@
 /* CS 300-A, 2017S 
 LATEST */
-package tunecomposer;
+package controller;
 
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -26,6 +26,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
+import tunecomposer.MidiPlayer;
+import tunecomposer.MidiPlayer;
 
 
 /**
@@ -37,7 +39,7 @@ import javax.sound.midi.ShortMessage;
  * @author Tyler Maule
  * @since January 26, 2017
  */
-public class TuneComposer extends Application {
+public class TuneComposer {
     
     //creates a MidiPlayer object with 100 ticks/beat, 1 beat/second
     private final MidiPlayer MidiComposition = new MidiPlayer(100,60);
@@ -86,34 +88,6 @@ public class TuneComposer extends Application {
     //makes available the composition Pane, allowing user to create notes
     @FXML Pane compositionGrid;
     //@FXML TuneComposerInstruments TuneComposerInstruments;
-
-    /**
-     * Construct the scene and start the application.
-     * Loads GUI/layout from the TuneComposer.fxml into a scene, which
-     * is placed inside the primary Stage. Program terminates when the user
-     * hits the close button. Stage is shown.
-     * @param primaryStage the stage for the main window
-     * @throws java.io.IOException
-     */
-    @Override
-    public void start(Stage primaryStage) throws IOException {
-        //loads fxml file, places in a new scene, which is placed in the stage    
-        //Parent root = FXMLLoader.load(getClass().getResource("TuneComposer.fxml"));
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("TuneComposer.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        primaryStage.setTitle("Tune Composer");
-        primaryStage.setScene(scene);
-        
-        //closes the program when the window is closed
-        primaryStage.setOnCloseRequest((WindowEvent we) -> {
-            System.exit(0);
-        });        
-        
-        //displays the stage
-        primaryStage.show();
-    }
     
     void reset_coordinates(MouseEvent m){
         xCoordinate = (int)m.getX();
@@ -501,7 +475,25 @@ public class TuneComposer extends Application {
         rectColor = Color.SADDLEBROWN;
     }
     
-    @FXML TuneComposerInstruments TuneComposerInstrumentsController;
+    
+    @FXML Canvas canvasGreyLines;
+    /**
+     * Draws the horizontal grey lines that show the possible vertical positions
+     * of the rectangles.
+     * @param lines input the canvas which is created in the fxml
+     */
+    protected void greyLines(Canvas lines) {
+        GraphicsContext gc = lines.getGraphicsContext2D();
+        gc.setLineWidth(1.0);
+        for (int y = 0; y < 1280; y+=10) {
+            double y1 ;
+            y1 = y + 0.5;
+            gc.moveTo(0, y1);
+            gc.lineTo(2000, y1);
+            gc.stroke();
+        }
+    }   
+    
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
      * (with location, duration, and speed). Removes red line when the
@@ -515,15 +507,7 @@ public class TuneComposer extends Application {
         lineTransition.setOnFinished((e)->{
             redLine.setVisible(false);
         });
-        TuneComposerInstrumentsController.init(this);
-    }
-    
-    /**
-     * Launch the application.
-     * @param args the command line arguments are ignored
-     */
-    public static void main(String[] args) {
-        launch(args);
+        greyLines(canvasGreyLines);
     }
    
 }
