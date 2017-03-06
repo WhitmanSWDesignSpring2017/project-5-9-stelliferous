@@ -536,10 +536,10 @@ public class TuneComposer extends Application {
     }
     
     /**
-     * Changes the channel for the Choir instrument and assigns the color 
-     *  OrangeRed to be used for the noteblocks that use the Choir instrument
-     * @param e The button in the instrument panel that is associated with the 
-     *  Choir instrument and is pressed to indicate the current instrument
+     * Changes the channel for the Choir sound effect and assigns the color 
+     *  OrangeRed to be used for the noteblocks that use the Choir sound effect
+     * @param e The button in the sound effect panel that is associated with the 
+     *  Choir sound effect and is pressed to indicate the current sound effect
      */
     @FXML
     private void handleChoirAction(ActionEvent e){
@@ -548,10 +548,10 @@ public class TuneComposer extends Application {
     }
     
     /**
-     * Changes the channel for the Typewriter instrument and assigns the color 
-     *  Grey to be used for the noteblocks that use the Typewriter instrument
+     * Changes the channel for the sound effect instrument and assigns the color 
+     *  Grey to be used for the noteblocks that use the Typewriter sound effect
      * @param e The button in the instrument panel that is associated with the 
-     *  Typewriter instrument and is pressed to indicate the current instrument
+     *  Typewriter sound effect and is pressed to indicate the current sound effect
      */
     @FXML
     private void handleTypewriterAction(ActionEvent e){
@@ -560,10 +560,10 @@ public class TuneComposer extends Application {
     }
     
     /**
-     * Changes the channel for the Sea instrument and assigns the color 
-     *  Black to be used for the noteblocks that use the Sea instrument
-     * @param e The button in the instrument panel that is associated with the 
-     *  Sea instrument and is pressed to indicate the current instrument
+     * Changes the channel for the Sea sound effect and assigns the color 
+     *  Black to be used for the noteblocks that use the Sea sound effect
+     * @param e The button in the sound effect panel that is associated with the 
+     *  Sea sound effect and is pressed to indicate the current sound effect
      */
     @FXML
     private void handleSeaAction(ActionEvent e){
@@ -572,10 +572,10 @@ public class TuneComposer extends Application {
     }
 
     /**
-     * Changes the channel for the Applause instrument and assigns the color 
-     *  SaddleBrown to be used for the noteblocks that use the Applause instrument
-     * @param e The button in the instrument panel that is associated with the 
-     *  Applause instrument and is pressed to indicate the current instrument
+     * Changes the channel for the Applause sound effect and assigns the color 
+     *  SaddleBrown to be used for the noteblocks that use the Applause sound effect
+     * @param e The button in the sound effect panel that is associated with the 
+     *  Applause sound effect and is pressed to indicate the current sound effect
      */
     @FXML
     private void handleApplauseAction(ActionEvent e){
