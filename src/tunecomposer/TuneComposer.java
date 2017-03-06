@@ -315,13 +315,13 @@ public class TuneComposer extends Application {
         }
     };
     
+    @FXML Canvas canvasGreyLines;
     /**
      * Draws the horizontal grey lines that show the possible vertical positions
      * of the rectangles.
-     * @return the canvas of grey lines
+     * @param lines input the canvas which is created in the fxml
      */
-    protected Canvas greyLines() {
-        Canvas lines = new Canvas(2000,1280);
+    protected void greyLines(Canvas lines) {
         GraphicsContext gc = lines.getGraphicsContext2D();
         gc.setLineWidth(1.0);
         for (int y = 0; y < 1280; y+=10) {
@@ -331,8 +331,7 @@ public class TuneComposer extends Application {
             gc.lineTo(2000, y1);
             gc.stroke();
         }
-        return lines;
-    }        
+    }   
 
     /**
      * Exits the program upon user clicking the typical 'close' 
@@ -527,7 +526,7 @@ public class TuneComposer extends Application {
         lineTransition.setOnFinished((e)->{
             redLine.setVisible(false);
         });
-        compositionGrid.getChildren().addAll(greyLines());
+        greyLines(canvasGreyLines);
     }
     
     /**
