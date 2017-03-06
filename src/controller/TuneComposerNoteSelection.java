@@ -2,12 +2,7 @@
 LATEST */
 package controller;
 
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import javafx.scene.Parent;
-import javafx.scene.Scene; 
 import javafx.fxml.FXML;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
 import java.io.IOException;
@@ -17,11 +12,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
-import static javafx.application.Application.launch;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -88,16 +79,6 @@ public class TuneComposerNoteSelection {
     //makes available the composition Pane, allowing user to create notes
     @FXML Pane compositionGrid;
 
-    /**
-     * Construct the scene and start the application.
-     * Loads GUI/layout from the TuneComposer.fxml into a scene, which
-     * is placed inside the primary Stage. Program terminates when the user
-     * hits the close button. Stage is shown.
-     * @param primaryStage the stage for the main window
-     * @throws java.io.IOException
-     */
-
-    
     /**
      * Creates a rectangle at the point clicked and adds a note to the composition
      * based on the coordinates of the point clicked. Adds that rectangle
