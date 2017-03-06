@@ -438,37 +438,72 @@ public class TuneComposer extends Application {
         CHANNEL_LIST.clear();
     }
     
-    /** */
+    /**
+     * Changes the channel for the piano instrument and assigns the color 
+     *  Olivedrab to be used for the noteblocks that use the piano instrument
+     * @param e The button in the instrument panel that is associated with the 
+     *  piano instrument and is pressed to indicate the current instrument
+     */
     @FXML
     private void handlePianoAction(ActionEvent e){
         channel = 0;
         rectColor = Color.OLIVEDRAB;
     }
     
+    /**
+     * Changes the channel for the harpsichord instrument and assigns the color 
+     *  LawnGreen to be used for the noteblocks that use the harpsichord instrument
+     * @param e The button in the instrument panel that is associated with the 
+     *  harpsichord instrument and is pressed to indicate the current instrument
+     */
     @FXML
     private void handleHarpsichordAction(ActionEvent e){
         channel = 1;
         rectColor = Color.LAWNGREEN;
     }
     
+    /**
+     * Changes the channel for the marimba instrument and assigns the color 
+     *  SeaGreen to be used for the noteblocks that use the marimba instrument
+     * @param e The button in the instrument panel that is associated with the 
+     *  marimba instrument and is pressed to indicate the current instrument
+     */
     @FXML
     private void handleMarimbaAction(ActionEvent e){
         channel = 2;
         rectColor = Color.SEAGREEN;
     }
     
+    /**
+     * Changes the channel for the organ instrument and assigns the color 
+     *  LightSkyBlue to be used for the noteblocks that use the organ instrument
+     * @param e The button in the instrument panel that is associated with the 
+     *  organ instrument and is pressed to indicate the current instrument
+     */
     @FXML
     private void handleOrganAction(ActionEvent e){
         channel = 3;
         rectColor = Color.LIGHTSKYBLUE;
     }
     
+    /**
+     * Changes the channel for the accordion instrument and assigns the color 
+     * Aqua to be used for the noteblocks that use the accordion instrument
+     * @param e The button in the instrument panel that is associated with the 
+     *  accordion instrument and is pressed to indicate the current instrument
+     */
     @FXML
     private void handleAccordionAction(ActionEvent e){
         channel = 4;
         rectColor = Color.AQUA;
     }
     
+    /**
+     * Changes the channel for the guitar instrument and assigns the color 
+     *  DeepSkyBlue to be used for the noteblocks that use the guitar instrument
+     * @param e The button in the instrument panel that is associated with the 
+     *  guitar instrument and is pressed to indicate the current instrument
+     */
     @FXML
     private void handleGuitarAction(ActionEvent e){
         channel = 5;
@@ -476,37 +511,72 @@ public class TuneComposer extends Application {
 
     }
     
+    /**
+     * Changes the channel for the Violin instrument and assigns the color 
+     *  SteelBlue to be used for the noteblocks that use the Violin instrument
+     * @param e The button in the instrument panel that is associated with the 
+     *  Violin instrument and is pressed to indicate the current instrument
+     */
     @FXML
     private void handleViolinAction(ActionEvent e){
         channel = 6;
         rectColor = Color.STEELBLUE;
     }
     
+    /**
+     * Changes the channel for the FrenchHorn instrument and assigns the color 
+     *  Purple to be used for the noteblocks that use the FrenchHorn instrument
+     * @param e The button in the instrument panel that is associated with the 
+     *  FrenchHorn instrument and is pressed to indicate the current instrument
+     */
     @FXML
     private void handleFrenchHornAction(ActionEvent e){
         channel = 7;
         rectColor = Color.PURPLE;
     }
     
+    /**
+     * Changes the channel for the Choir instrument and assigns the color 
+     *  OrangeRed to be used for the noteblocks that use the Choir instrument
+     * @param e The button in the instrument panel that is associated with the 
+     *  Choir instrument and is pressed to indicate the current instrument
+     */
     @FXML
     private void handleChoirAction(ActionEvent e){
         channel = 8;
         rectColor = Color.ORANGERED;
     }
     
+    /**
+     * Changes the channel for the Typewriter instrument and assigns the color 
+     *  Grey to be used for the noteblocks that use the Typewriter instrument
+     * @param e The button in the instrument panel that is associated with the 
+     *  Typewriter instrument and is pressed to indicate the current instrument
+     */
     @FXML
     private void handleTypewriterAction(ActionEvent e){
         channel = 9;
         rectColor = Color.GREY;
     }
     
+    /**
+     * Changes the channel for the Sea instrument and assigns the color 
+     *  Black to be used for the noteblocks that use the Sea instrument
+     * @param e The button in the instrument panel that is associated with the 
+     *  Sea instrument and is pressed to indicate the current instrument
+     */
     @FXML
     private void handleSeaAction(ActionEvent e){
         channel = 10;
         rectColor = Color.BLACK;
     }
 
-    
+    /**
+     * Changes the channel for the Applause instrument and assigns the color 
+     *  SaddleBrown to be used for the noteblocks that use the Applause instrument
+     * @param e The button in the instrument panel that is associated with the 
+     *  Applause instrument and is pressed to indicate the current instrument
+     */
     @FXML
     private void handleApplauseAction(ActionEvent e){
         channel = 11;
