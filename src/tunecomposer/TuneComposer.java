@@ -85,6 +85,7 @@ public class TuneComposer extends Application {
     
     //makes available the composition Pane, allowing user to create notes
     @FXML Pane compositionGrid;
+    //@FXML TuneComposerInstruments TuneComposerInstruments;
 
     /**
      * Construct the scene and start the application.
@@ -97,7 +98,10 @@ public class TuneComposer extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         //loads fxml file, places in a new scene, which is placed in the stage    
-        Parent root = FXMLLoader.load(getClass().getResource("TuneComposer.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("TuneComposer.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("TuneComposer.fxml"));
+        Parent root = loader.load();
         Scene scene = new Scene(root);
         primaryStage.setTitle("Tune Composer");
         primaryStage.setScene(scene);
@@ -315,24 +319,7 @@ public class TuneComposer extends Application {
         }
     };
     
-    /**
-     * Draws the horizontal grey lines that show the possible vertical positions
-     * of the rectangles.
-     * @return the canvas of grey lines
-     */
-    protected Canvas greyLines() {
-        Canvas lines = new Canvas(2000,1280);
-        GraphicsContext gc = lines.getGraphicsContext2D();
-        gc.setLineWidth(1.0);
-        for (int y = 0; y < 1280; y+=10) {
-            double y1 ;
-            y1 = y + 0.5;
-            gc.moveTo(0, y1);
-            gc.lineTo(2000, y1);
-            gc.stroke();
-        }
-        return lines;
-    }        
+       
 
     /**
      * Exits the program upon user clicking the typical 'close' 
@@ -438,7 +425,7 @@ public class TuneComposer extends Application {
         SELECTED_NOTES.clear();
         CHANNEL_LIST.clear();
     }
-    
+
     /** */
     @FXML
     private void handlePianoAction(ActionEvent e){
@@ -514,20 +501,21 @@ public class TuneComposer extends Application {
         rectColor = Color.SADDLEBROWN;
     }
     
-    
+    @FXML TuneComposerInstruments TuneComposerInstrumentsController;
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
      * (with location, duration, and speed). Removes red line when the
      * composition has finished playing
      */
-    public void initialize() {
+    @FXML public void initialize() {
+        redLine.setVisible(false);
         lineTransition.setNode(redLine);
         lineTransition.setFromX(0);
         lineTransition.setInterpolator(Interpolator.LINEAR);
         lineTransition.setOnFinished((e)->{
             redLine.setVisible(false);
         });
-        compositionGrid.getChildren().addAll(greyLines());
+        TuneComposerInstrumentsController.init(this);
     }
     
     /**

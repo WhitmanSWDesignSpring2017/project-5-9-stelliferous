@@ -10,6 +10,6 @@ and open the template in the editor.
 
 /* Determines background color of Tune Composition pane */
 .compositionPane {
-    -fx-background-color: grey;
+    -fx-background-color: lavender;
 }
 

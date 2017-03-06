@@ -15,13 +15,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.TuneComposer">
+<BorderPane stylesheets="@TuneComposer.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.TuneComposer" >
    <center>
       <ScrollPane fx:id="compositionScroll">
          <content>
             <AnchorPane fx:id="rectStackPane" layoutY="30.0" prefHeight="1280.0" prefWidth="2000.0">
                <children>           
-                    <Pane fx:id="compositionGrid" onMouseDragged="#gridDrag" onMousePressed="#gridClick" onMouseReleased="#gridRelease" prefHeight="1280.0" prefWidth="2000.0">
+                    <Pane fx:id="compositionGrid" onMouseDragged="#gridDrag" onMousePressed="#gridClick" onMouseReleased="#gridRelease" prefHeight="1280.0" prefWidth="2000.0" styleClass="compositionPane">
                      <children>
                         <Line fx:id="redLine" endX="0.0" endY="1280.0" startX="0.0" startY="0.0" stroke="RED" />
                      </children>
@@ -39,7 +39,7 @@
                         <MenuItem fx:id="ExitButton" accelerator="Shortcut+Q" onAction="#handleExitAction" text="Exit" />
                     </items>
                 </Menu>
-            <Menu mnemonicParsing="false" text="Edit">
+            <Menu text="Edit">
               <items>
                 <MenuItem accelerator="Shortcut+A" onAction="#handleSelectAllAction" text="Select All" />
                 <MenuItem accelerator="Shortcut+D" onAction="#handleDeleteAction" text="Delete" />
@@ -73,13 +73,13 @@
                               <ToggleGroup fx:id="instrumentsRadioButton" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton layoutX="10.0" layoutY="10.0"  onAction="#handleHarpsichordAction" text="Harpsichord" textFill="LAWNGREEN" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton layoutX="10.0" layoutY="10.0"  onAction="#handleMarimbaAction" text="Marimba" textFill="SEAGREEN" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton layoutX="10.0" layoutY="10.0"  onAction="#handleOrganAction" text="Organ" textFill="LIGHTSKYBLUE" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton layoutX="10.0" layoutY="28.0"  onAction="#handleAccordionAction" text="Accordion" textFill="AQUA" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton layoutX="10.0" layoutY="46.0"  onAction="#handleGuitarAction" prefHeight="18.0" prefWidth="73.0" text="Guitar" textFill="DEEPSKYBLUE" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton layoutX="10.0" layoutY="46.0"  onAction="#handleViolinAction" text="Violin" textFill="STEELBLUE" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton layoutX="10.0" layoutY="64.0"  onAction="#handleFrenchHornAction" text="French Horn" textFill="PURPLE" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="10.0" onAction="#handleHarpsichordAction" text="Harpsichord" textFill="LAWNGREEN" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="10.0" onAction="#handleMarimbaAction" text="Marimba" textFill="SEAGREEN" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="10.0" onAction="#handleOrganAction" text="Organ" textFill="LIGHTSKYBLUE" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="28.0" onAction="#handleAccordionAction" text="Accordion" textFill="AQUA" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="46.0" onAction="#handleGuitarAction" prefHeight="18.0" prefWidth="73.0" text="Guitar" textFill="DEEPSKYBLUE" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="46.0" onAction="#handleViolinAction" text="Violin" textFill="STEELBLUE" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton layoutX="10.0" layoutY="64.0" onAction="#handleFrenchHornAction" text="French Horn" textFill="PURPLE" toggleGroup="$instrumentsRadioButton" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
@@ -91,10 +91,10 @@
               <content>
                   <VBox spacing="50.0">
                      <children>
-                        <RadioButton  onAction="#handleChoirAction" text="Choir" textFill="ORANGERED" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton  onAction="#handleTypewriterAction" text="Typewriter" textFill="GREY" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton  onAction="#handleSeaAction" text="Sea" toggleGroup="$instrumentsRadioButton" />
-                        <RadioButton  onAction="#handleApplauseAction" text="Applause" textFill="SADDLEBROWN" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton onAction="#handleChoirAction" text="Choir" textFill="ORANGERED" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton onAction="#handleTypewriterAction" text="Typewriter" textFill="GREY" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton onAction="#handleSeaAction" text="Sea" toggleGroup="$instrumentsRadioButton" />
+                        <RadioButton onAction="#handleApplauseAction" text="Applause" textFill="SADDLEBROWN" toggleGroup="$instrumentsRadioButton" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
