@@ -41,7 +41,7 @@ public class TuneComposerNoteSelection {
     int channel = 0;
     
     //sets the default color for note rectangles, corresponding to piano
-    private String rectColor;
+    private String rectColor = "pianoButton";
     
     //sets a final interger for the height of each rectangles which cannot be changed
     private final int heightRectangle = 10;

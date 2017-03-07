@@ -20,47 +20,57 @@ and open the template in the editor.
 
 .pianoButton{
     -fx-text-fill: olivedrab;
-    -fx-fill:olivedrab;
+    -fx-fill: olivedrab;
 }
 
 .harpsichordButton{
     -fx-text-fill: lawngreen;
+    -fx-fill: lawngreen;
 }
 
 .marimbaButton{
     -fx-text-fill: seagreen;
+    -fx-fill: seagreen;
 }
 
 .organButton{
     -fx-text-fill: lightskyblue;
+    -fx-fill: lightskyblue;
 }
 
 .accordionButton{
     -fx-text-fill: aqua;
+    -fx-fill: aqua;
 }
 
 .guitarButton{
     -fx-text-fill: deepskyblue;
+    -fx-fill: deepskyblue;
 }
 
 .violinButton{
     -fx-text-fill: steelblue;
+    -fx-fill: steelblue;
 }
 
 .frenchHornButton{
     -fx-text-fill: purple;
+    -fx-fill: purple;
 }
 
 .choirButton{
     -fx-text-fill: orangered;
+    -fx-fill: orangered;
 }
 
 .typewriterButton{
     -fx-text-fill: grey;
+    -fx-fill: grey;
 }
 
 .applauseButton{
     -fx-text-fill: saddlebrown;
+    -fx-fill: saddlebrown;
 }
 
 
