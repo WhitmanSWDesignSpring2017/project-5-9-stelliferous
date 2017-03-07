@@ -76,6 +76,21 @@ public class TuneComposerNoteSelection {
     
     //makes available the composition Pane, allowing user to create notes
     @FXML Pane compositionGrid;
+    
+    /**
+     * resets the mouse coordinates to allow dragging functionality
+     * stops ongoing composition-playing events
+     * @param m a mouse event (on-click, on-release, on-drag, etc)
+     */
+    void reset_coordinates(MouseEvent m){
+        //resets mouse coordinates
+        xCoordinate = (int)m.getX();
+        yCoordinate = (int)m.getY();
+        
+        //stops ongoing composition-playing events
+        MidiComposition.stop();
+        redLine.setVisible(false);
+    }
 
     /**
      * Creates a rectangle at the point clicked and adds a note to the composition
@@ -85,13 +100,21 @@ public class TuneComposerNoteSelection {
      * @throws IOException
      */
     @FXML 
-    private void gridClick(MouseEvent e) throws IOException{
+    private void paneMouseClick(MouseEvent e) throws IOException{
         reset_coordinates(e);
     };
     
-    
+    /**
+     * When the user drags the mouse on the composition pane, current
+     * 'selection rectangles' are cleared from the screen. Current mouse 
+     * coordinates are fetched, and a 'selection rectangle' indicates points
+     * from initial mouse click to current mouse location. All notes within the
+     * area of the 'selection rectangle' are selected. If control is not held 
+     * down, all other notes are deselected.
+     * @param w a mouse dragging event
+     */
     @FXML
-    private void gridDrag(MouseEvent w){
+    private void paneMouseDrag(MouseEvent w){
         //remove current iteration of selection rectangle
         rectStackPane.getChildren().remove(selectRect);
         
@@ -129,39 +152,53 @@ public class TuneComposerNoteSelection {
         
         //determine whether any "note rectangles" are within the selection rect
         for(NoteRectangle r:RECT_LIST){
-            if (selectRect.getX() + (selectRect.getWidth()) > r.Notes.getX() //min x value UPDATED
-                    && selectRect.getX()  < r.Notes.getX() + (r.Notes.getWidth()) // max x value
-                    && selectRect.getY() + (selectRect.getHeight()) > r.Notes.getY() //min y value
-                    && selectRect.getY()  < r.Notes.getY() + (r.Notes.getHeight())){    //max y  UPDATED 
+            if (selectRect.getX() + (selectRect.getWidth()) > r.Notes.getX() 
+                    && selectRect.getX()  < r.Notes.getX() + (r.Notes.getWidth()) 
+                    && selectRect.getY() + (selectRect.getHeight()) > r.Notes.getY() 
+                    && selectRect.getY()  < r.Notes.getY() + (r.Notes.getHeight())){   
                 // select note rectangles within the selection area
                 SELECTED_NOTES.add(r);
                 r.Notes.setStroke(Color.CRIMSON);
             }
         }     
     }
-    void reset_coordinates(MouseEvent m){
-        xCoordinate = (int)m.getX();
-        yCoordinate = (int)m.getY();
-        MidiComposition.stop();
-        redLine.setVisible(false);
-    }
-    
+
+    /**
+     * When the user releases the mouse, if they have created a 'selection
+     * rectangle' by dragging, that rectangle is removed from the screen. 
+     * Otherwise, a new Note Rectangle is created and placed. If the user has
+     * clicked on an existing Note Rectangle, that rectangle is selected and
+     * all others are deselected. If the user holds down the control button
+     * and clicks on an existing Note Rectangle, that rectangle is selected
+     * and other already-selected rectangles remain selected.
+     * @param e 
+     */
     @FXML
-    private void gridRelease(MouseEvent e){
+    private void paneMouseRelease(MouseEvent e){
+        
+        //removes 'selection rectangles,' created by dragging, from screen
         rectStackPane.getChildren().remove(selectRect);
-        System.out.println((int)e.getX()+" "+(int)e.getY()+ " release");
+        
+        //if the user has dragged on the screen, the method ends; no
+        //new rectangles are created or selected
         if ((xCoordinate != (int)e.getX()) || (yCoordinate != (int)e.getY())){
             return;
         }
+        
+        //gets new mouse coordinates; calculates effective y coordinate
         reset_coordinates(e);            
         int y = (int) ((yCoordinate)/heightRectangle);
         
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*heightRectangle, 
                                                rectColor, channel, instrument);
+
+        
+        //assigns mouse-action events to the created NoteRectangle
         rect.setOnMousePressed(rectangleOnMousePressedEventHandler);
         rect.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);   
         rect.setOnMouseReleased(rectangleOnMouseReleasedEventHandler);
 
+      //when an existing NoteRectangle
         rect.setOnMouseClicked((MouseEvent t) -> {
             reset_coordinates(t);
             if ((SELECTED_NOTES.indexOf(rect)!= -1) && (t.isControlDown())){

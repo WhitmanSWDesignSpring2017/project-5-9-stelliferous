@@ -13,20 +13,28 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
- * FXML Controller class
- *
+ * FXML Controller class to draw grey lines in the canvas of 
+ * TuneComposerBackground.fxml 
+ * 
  * @author tmaule
  */
 public class TuneComposerBackgroundController  implements Initializable {
-    @FXML Canvas lines;
+    
+    //makes available the canvas from TuneComposerBackground
+    @FXML Canvas linesCanvas;
+    
     /**
-     * Initializes the controller class.
-     * @param url
-     * @param rb
+     * Initializes the controller class. Draws grey lines on the Canvas named
+     * "lines"
+     * @param url placeholder/default/generic url
+     * @param rb placeholder/default/generic resource bundle
      */
     public void initialize(URL url, ResourceBundle rb) {
-        GraphicsContext gc = lines.getGraphicsContext2D();
+        //set up for drawing grey lines
+        GraphicsContext gc = linesCanvas.getGraphicsContext2D();
         gc.setLineWidth(1.0);
+        
+        //for loop to draw lines
         for (int y = 0; y < 1280; y+=10) {
             double y1 ;
             y1 = y + 0.5;
