@@ -43,7 +43,9 @@ public class TuneComposerNoteSelection {
     //sets the default color for note rectangles, corresponding to piano
     Color rectColor = Color.OLIVEDRAB;
     
-    int instrument = 0;
+    //creates a private interger to indicate which is the instrument selected
+    private int instrument = 0;
+    
     //refers to the end of the current notes
     public double endcomp;
     
@@ -53,17 +55,10 @@ public class TuneComposerNoteSelection {
     //creates a list to store created rectangles, that they may be later erased
     private final ArrayList<NoteRectangle> RECT_LIST = new ArrayList<>();
     
-    //creates a list of channels that aligns with and gives instrument info
-    //to RECT_LIST
-    //private final ArrayList<Integer> CHANNEL_LIST = new ArrayList<>();
-    
     //creates a list to store selected rectangles
     private final ArrayList<NoteRectangle> SELECTED_NOTES = new ArrayList<>();
-    
-    //private final int[] instrumentArray = {0,6,12,18,21,27,40,61,52,124,125,126};
-    
-    //creates a line that will indicate the time in the composition
-    //private final Line red = redLine();
+        
+    //makes available redLine, which stores the line object.
     @FXML Line redLine;
     
     //creates a rectangle that users will control by dragging
@@ -90,6 +85,7 @@ public class TuneComposerNoteSelection {
     private void gridClick(MouseEvent e) throws IOException{
         reset_coordinates(e);
     };
+    
     
     @FXML
     private void gridDrag(MouseEvent w){
@@ -156,12 +152,6 @@ public class TuneComposerNoteSelection {
         }
         reset_coordinates(e);            
         int y = (int) ((yCoordinate)/10);
-        /*
-        Rectangle rect = new Rectangle(xCoordinate,y*10,100,10);
-        rect.setFill(rectColor);
-        rect.setStroke(Color.CRIMSON);
-        rect.setStrokeWidth(2);
-        */
         
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*10, rectColor, channel, instrument);
         rect.setOnMousePressed(circleOnMousePressedEventHandler);
@@ -195,89 +185,121 @@ public class TuneComposerNoteSelection {
         }
 
         System.out.println(channel);
-        //System.out.println(CHANNEL_LIST);
-        
-        //adds rectangle to the list of rectangles, that they may be cleared
-        //CHANNEL_LIST.add(channel);
         RECT_LIST.add(rect);
-        SELECTED_NOTES.add(rect);
-        
-        //adds on-click rectangle to the stackPane
-        
+        SELECTED_NOTES.add(rect);        
         rectStackPane.getChildren().add(rect.Notes);
     };
  
-    //private double orgSceneX, orgSceneY;
-    private ArrayList<Double> orgTranslateXs = new ArrayList<>();
-    private ArrayList<Double> orgTranslateYs = new ArrayList<>();
+    //create a new ArrayList to store original X positions of selected rectangles
+    private ArrayList<Double> orgXs = new ArrayList<>();
+
+    //create a new ArrayList to store original Y positions of selected rectangles
+    private ArrayList<Double> orgYs = new ArrayList<>();
+    
+    //create a new ArrayList to store original widths of selected rectangles
     private ArrayList<Double> orgWidths = new ArrayList<>();
+    
+    //create a new boolean value to determine whether the action is for stretch
     private boolean stretch;
-            
-    EventHandler<MouseEvent> circleOnMousePressedEventHandler = 
+    
+    /**
+     * Crete a new EventHandler for the mouseEvent that happens when pressed 
+     * on the rectangle.
+     */
+    private final EventHandler<MouseEvent> circleOnMousePressedEventHandler = 
         new EventHandler<MouseEvent>() {
- 
+        /**
+        * override the handle method in the EventHandler class to create event when
+        * the rectangle got pressed
+        * @param t occurs on mouse press event 
+        */
         @Override
         public void handle(MouseEvent t) {
             reset_coordinates(t);
-            //orgSceneX = t.getX();
-            //orgSceneY = t.getY();
-            //Rectangle currentRect = (Rectangle) t.getSource();
             for (int i=0; i<SELECTED_NOTES.size();i++) {
-                orgTranslateXs.add(SELECTED_NOTES.get(i).getX());
-                orgTranslateYs.add(SELECTED_NOTES.get(i).getY());
+                //add all orginal positions of the selected rectangles to arraylists
+                orgXs.add(SELECTED_NOTES.get(i).getX()); 
+                orgYs.add(SELECTED_NOTES.get(i).getY());
+                //add all widths of the selected rectangles to the arraylist
                 orgWidths.add(SELECTED_NOTES.get(i).getWidth());
             }
         }
     };
-     
-    EventHandler<MouseEvent> circleOnMouseDraggedEventHandler = 
+
+    /**
+     * Crete a new EventHandler for the mouseEvent that happens when dragging 
+     * the rectangle.
+     */    
+    private final EventHandler<MouseEvent> circleOnMouseDraggedEventHandler = 
         new EventHandler<MouseEvent>() {
- 
+
+        /**
+        * override the handle method in the EventHandler class to create event when
+        * the rectangle got dragged
+        * @param t occurs on mouse drag event 
+        */ 
         @Override
         public void handle(MouseEvent t) {
-            double offsetX = t.getX() - xCoordinate; //used to be orgSceneX
-            double offsetY = t.getY() - yCoordinate; //used to be orgSceneY
-
+            //calculate the distance that mouse moved both in x and y axis
+            double offsetX = t.getX() - xCoordinate;
+            double offsetY = t.getY() - yCoordinate;
             for (int i=0; i<SELECTED_NOTES.size();i++) {
-                if ( (xCoordinate >= (orgTranslateXs.get(i) //used to be orgSceneX
+                //check whether the mouseposition is within the dragging zone
+                if ( (xCoordinate >= (orgXs.get(i)
                                     +SELECTED_NOTES.get(i).getWidth()-5)
                         &&
-                     xCoordinate <= (orgTranslateXs.get(i) //used to be orgSceneX
+                     xCoordinate <= (orgXs.get(i)
                                    +SELECTED_NOTES.get(i).getWidth()))
                         && 
-                        (yCoordinate >= orgTranslateYs.get(i) //used to be orgSceneY
-                        && yCoordinate <= (orgTranslateYs.get(i)+10)) //used to be orgSceneY
+                        (yCoordinate >= orgYs.get(i)
+                        && yCoordinate <= (orgYs.get(i)+10))
                    )
                 {
+                    //if true, change the boolean value stretch to true
                     stretch = true;
-                    System.out.println("stetch");
                 }
             }
-            
+            //perform either stretching or dragging operation on all selected rectangles.
             for (int i=0; i<SELECTED_NOTES.size();i++) {
                 if (stretch) {
+                    //if it's stretch operation, set the width of rectangles.
                     double width = orgWidths.get(i);
                     SELECTED_NOTES.get(i).setWidth(width+offsetX);
                 } else {
-                    double newTranslateX = orgTranslateXs.get(i) + offsetX;
-                    double newTranslateY = orgTranslateYs.get(i) + offsetY;
+                    //if it's dragging operation, set the position of rectangles 
+                    //based on the distance mouse moved
+                    double newTranslateX = orgXs.get(i) + offsetX;
+                    double newTranslateY = orgYs.get(i) + offsetY;
                     SELECTED_NOTES.get(i).setX(newTranslateX);
                     SELECTED_NOTES.get(i).setY(newTranslateY);
                 }
             }
         }
     };
-        EventHandler<MouseEvent> circleOnMouseReleasedEventHandler = 
+    
+    /**
+     * Crete a new EventHandler for the mouseEvent that happens when releasing 
+     * the rectangle.
+     */        
+        private final EventHandler<MouseEvent> circleOnMouseReleasedEventHandler = 
         new EventHandler<MouseEvent>() {
  
+        /**
+        * override the handle method in the EventHandler class to create event when
+        * the rectangle got released
+        * @param t occurs on mouse release event 
+        */             
         @Override
         public void handle(MouseEvent t) {
+            //reset the stretching operation to false
             stretch = false;
-            orgTranslateXs.clear();
-            orgTranslateYs.clear();
+            //clear all three arraylists
+            orgXs.clear();
+            orgYs.clear();
             orgWidths.clear();
             reset_coordinates(t);
             for (int i=0; i<SELECTED_NOTES.size(); i++) {
+                //reset the position of rectangles to fit it between grey lines
                 double currentY = SELECTED_NOTES.get(i).getY();
                 double finalY = ((int)(currentY/10))*10;
                 double offset = finalY - currentY;
@@ -319,15 +341,10 @@ public class TuneComposerNoteSelection {
             //if the note has been deleted, do not add it to the composition
             if (rect.getWidth()== 0){continue;}
             
-            //print statements
             pitch = 127-(int)rect.getY()/10;
-            System.out.println("pitch: " + pitch);
             startTick = (int)rect.getX();
-            System.out.println("startTick: " + startTick);
             duration = (int)rect.getWidth();
-            System.out.println("duration: " + duration);
             curChannel = rect.getChannel();
-            System.out.println("channel: " + curChannel);
             curInstru = rect.getInstrument();
             if (endcomp < startTick+duration) {
                 endcomp = startTick+duration;
