@@ -240,30 +240,7 @@ public class TuneComposerNoteSelection {
     //create two new boolean value to determine whether the action is for stretch
     //and drag
     private boolean stretch, drag;
-    /*
-    private final EventHandler<MouseEvent> rectangleOnMouseClickedEventHandler = 
-        new EventHandler<MouseEvent>() {
-                
-        @Override
-        public void handle(MouseEvent t) {
-            reset_coordinates(t);
-            if ((SELECTED_NOTES.indexOf(this)!= -1) && (t.isControlDown())){
-                SELECTED_NOTES.remove(this);
-                currentRect.setStroke(Color.BLACK);
-            } else if (SELECTED_NOTES.indexOf(this) == -1){
-                if(!t.isControlDown()){
-                    RECT_LIST.forEach((e1) -> {
-                        e1.setStroke(Color.BLACK);
-                    });
-                    SELECTED_NOTES.clear();
-                }
-                SELECTED_NOTES.add(this);
-                currentRect.setStroke(Color.CRIMSON);
-            }
-        }
-    };      
-    */
-    
+
     /**
      * Crete a new EventHandler for the mouseEvent that happens when pressed 
      * on the rectangle.
@@ -287,6 +264,50 @@ public class TuneComposerNoteSelection {
             }
         }
     };
+    
+    /**
+     * Change the boolean value stretch based on the current position of mouse
+     */    
+    private void determineStretch() {
+        //define the dragzone to be 5 pixels
+        int stretchZone = 5;
+        for (int i=0; i<SELECTED_NOTES.size();i++) {
+            //check whether the mouseposition is within the stretching zone
+            if ( xCoordinate >= (orgXs.get(i)
+                                +SELECTED_NOTES.get(i).getWidth()-stretchZone)
+                    &&
+                  xCoordinate <= (orgXs.get(i)
+                               +SELECTED_NOTES.get(i).getWidth())
+                    && 
+                  yCoordinate >= orgYs.get(i)
+                    && 
+                  yCoordinate <= (orgYs.get(i)+heightRectangle) )
+            {
+                //if true, change the boolean value stretch to true
+                    stretch = true;
+            }
+        }        
+    }
+
+    /**
+     * Change the boolean value drag based on the current position of mouse
+     */   
+    private void determineDrag() {
+        for (int i=0; i<SELECTED_NOTES.size();i++) {
+            //check whether the mouseposition is within the dragging zone
+            if ( xCoordinate >= orgXs.get(i)
+                 &&
+                 xCoordinate <= (orgXs.get(i)
+                                 +SELECTED_NOTES.get(i).getWidth())
+                 && 
+                 yCoordinate >= orgYs.get(i)
+                 && yCoordinate <= (orgYs.get(i)+heightRectangle) ) 
+               {
+                 //if true, change the boolean value drag to true
+                 drag = true;
+               }
+        }    
+    }
 
     /**
      * Crete a new EventHandler for the mouseEvent that happens when dragging 
@@ -302,41 +323,12 @@ public class TuneComposerNoteSelection {
         */ 
         @Override
         public void handle(MouseEvent t) {
-            //define the dragzone to be 5 pixels
-            int stretchZone = 5;
             //calculate the distance that mouse moved both in x and y axis
             double offsetX = t.getX() - xCoordinate;
             double offsetY = t.getY() - yCoordinate;
-            for (int i=0; i<SELECTED_NOTES.size();i++) {
-                //check whether the mouseposition is within the stretching zone
-                if ( (xCoordinate >= (orgXs.get(i)
-                                    +SELECTED_NOTES.get(i).getWidth()-stretchZone)
-                        &&
-                     xCoordinate <= (orgXs.get(i)
-                                   +SELECTED_NOTES.get(i).getWidth()))
-                        && 
-                        (yCoordinate >= orgYs.get(i)
-                        && yCoordinate <= (orgYs.get(i)+heightRectangle)) )
-                {
-                    //if true, change the boolean value stretch to true
-                    stretch = true;
-                }
-            }
-            
-            for (int i=0; i<SELECTED_NOTES.size();i++) {
-                //check whether the mouseposition is within the dragging zone
-                if ( (xCoordinate >= orgXs.get(i)
-                        &&
-                     xCoordinate <= (orgXs.get(i)
-                                   +SELECTED_NOTES.get(i).getWidth()))
-                        && 
-                        (yCoordinate >= orgYs.get(i)
-                        && yCoordinate <= (orgYs.get(i)+heightRectangle)) )
-                {
-                    //if true, change the boolean value drag to true
-                    drag = true;
-                }
-            }
+            //determine whether should be performing stretch or drag
+            determineStretch();
+            determineDrag();
             
             //perform either stretching or dragging operation on all selected rectangles.
             for (int i=0; i<SELECTED_NOTES.size();i++) {
