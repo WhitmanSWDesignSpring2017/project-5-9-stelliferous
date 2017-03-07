@@ -41,7 +41,7 @@ public class TuneComposerNoteSelection {
     int channel = 0;
     
     //sets the default color for note rectangles, corresponding to piano
-    Color rectColor = Color.OLIVEDRAB;
+    private String rectColor = "pianoButton";
     
     //sets a final interger for the height of each rectangles which cannot be changed
     private final int heightRectangle = 10;
@@ -504,7 +504,7 @@ public class TuneComposerNoteSelection {
     private void handlePianoAction(ActionEvent e){
         instrument = 0;
         channel = 0;
-        rectColor = Color.OLIVEDRAB;
+        rectColor = "pianoButton";
     }
 
     /**
@@ -516,7 +516,7 @@ public class TuneComposerNoteSelection {
     private void handleHarpsichordAction(ActionEvent e){
         instrument = 6;
         channel = 1;
-        rectColor = Color.LAWNGREEN;
+        rectColor = "harpsichordButton";
     }
 
     /**
@@ -528,7 +528,7 @@ public class TuneComposerNoteSelection {
     private void handleMarimbaAction(ActionEvent e){
         instrument = 12;
         channel = 2;
-        rectColor = Color.SEAGREEN;
+        rectColor = "marimbaButton";
     }
 
     /**
@@ -540,7 +540,7 @@ public class TuneComposerNoteSelection {
     private void handleOrganAction(ActionEvent e){
         instrument = 18;
         channel = 3;
-        rectColor = Color.LIGHTSKYBLUE;
+        rectColor = "organButton";
     }
     
     /**
@@ -552,7 +552,7 @@ public class TuneComposerNoteSelection {
     private void handleAccordionAction(ActionEvent e){
         instrument = 21;
         channel = 4;
-        rectColor = Color.AQUA;
+        rectColor = "accordionButton";
     }
 
     /**
@@ -564,7 +564,7 @@ public class TuneComposerNoteSelection {
     private void handleGuitarAction(ActionEvent e){
         instrument = 27;
         channel = 5;
-        rectColor = Color.DEEPSKYBLUE;
+        rectColor = "guitarButton";
 
     }
 
@@ -577,7 +577,7 @@ public class TuneComposerNoteSelection {
     private void handleViolinAction(ActionEvent e){
         instrument = 40;
         channel = 6;
-        rectColor = Color.STEELBLUE;
+        rectColor = "violinButton";
     }
     
     /**
@@ -589,7 +589,7 @@ public class TuneComposerNoteSelection {
     private void handleFrenchHornAction(ActionEvent e){
         instrument = 61;
         channel = 7;
-        rectColor = Color.PURPLE;
+        rectColor = "frenchHornButton";
     }
 
     /**
@@ -601,7 +601,7 @@ public class TuneComposerNoteSelection {
     private void handleChoirAction(ActionEvent e){
         instrument = 52;
         channel = 8;
-        rectColor = Color.ORANGERED;
+        rectColor = "choirButton";
     }
 
     /**
@@ -613,7 +613,7 @@ public class TuneComposerNoteSelection {
     private void handleTypewriterAction(ActionEvent e){
         instrument = 124;
         channel = 9;
-        rectColor = Color.GREY;
+        rectColor = "typerWriterButton";
     }
     
     /**
@@ -625,7 +625,7 @@ public class TuneComposerNoteSelection {
     private void handleSeaAction(ActionEvent e){
         instrument= 125;
         channel = 10;
-        rectColor = Color.BLACK;
+        rectColor = "seaButton";
     }
 
     /**
@@ -637,7 +637,7 @@ public class TuneComposerNoteSelection {
     private void handleApplauseAction(ActionEvent e){
         instrument = 126;
         channel = 11;
-        rectColor = Color.SADDLEBROWN;
+        rectColor = "applauseButton";
     }
     
     /**

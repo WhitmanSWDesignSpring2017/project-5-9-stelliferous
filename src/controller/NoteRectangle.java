@@ -23,7 +23,6 @@ public class NoteRectangle {
     //associated instrument
     protected Rectangle Notes;
     private int channel;
-    private Color rectColor;
     private final int instrument;
     
     /**
@@ -34,15 +33,14 @@ public class NoteRectangle {
      * @param channel channel number of the rectangle
      * @param instrument instrument number of the rectangle
      */        
-    public NoteRectangle(double x, int y, Color color, int channel, int instrument) {
+    public NoteRectangle(double x, int y, String color, int channel, int instrument) {
         //assigns user-given attribute values of instrument, channel, color
         this.instrument = instrument;
         this.channel = channel;
-        this.rectColor = color;
         
         //creates a new rectangle object for visual representation
         Notes = new Rectangle(x,y,100,10);
-        Notes.setFill(rectColor);
+        Notes.getStyleClass().add(color);
         Notes.setStroke(Color.CRIMSON);
         Notes.setStrokeWidth(2);
     }
@@ -61,14 +59,6 @@ public class NoteRectangle {
      */
     public int getChannel() {
         return channel;
-    }
-    
-    /**
-     * sets value of the NoteRectangle object's 'rectColor' attribute
-     * @param newColor takes user's given Color
-     */
-    public void setColor(Color newColor) {
-        rectColor = newColor;
     }
     
     /**
