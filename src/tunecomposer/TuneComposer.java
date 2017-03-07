@@ -23,7 +23,6 @@ import javafx.stage.WindowEvent;
  * @since January 26, 2017
  */
 public class TuneComposer extends Application {
-
     /**
      * Construct the scene and start the application.
      * Loads GUI/layout from the TuneComposer.fxml into a scene, which
@@ -32,6 +31,7 @@ public class TuneComposer extends Application {
      * @param primaryStage the stage for the main window
      * @throws java.io.IOException
      */
+    
     @Override
     public void start(Stage primaryStage) throws IOException {
         //loads fxml file, places in a new scene, which is placed in the stage    
@@ -39,7 +39,7 @@ public class TuneComposer extends Application {
         Scene scene = new Scene(root);
         primaryStage.setTitle("Tune Composer");
         primaryStage.setScene(scene);
-        
+
         //closes the program when the window is closed
         primaryStage.setOnCloseRequest((WindowEvent we) -> {
             System.exit(0);
