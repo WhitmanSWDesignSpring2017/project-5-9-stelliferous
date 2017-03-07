@@ -31,10 +31,9 @@ import javax.sound.midi.ShortMessage;
 /**
  * This JavaFX application lets the user compose tunes by clicking!
  * @author Janet Davis 
- * @author Eric Hsu
- * @author Ben Adams
- * @author Will Mullins
+ * @author Jing
  * @author Tyler Maule
+ * @author Kai McConnell
  * @since January 26, 2017
  */
 public class TuneComposer extends Application {
@@ -111,6 +110,10 @@ public class TuneComposer extends Application {
         primaryStage.show();
     }
     
+    /**
+     * 
+     * @param m 
+     */
     void reset_coordinates(MouseEvent m){
         xCoordinate = (int)m.getX();
         yCoordinate = (int)m.getY();
@@ -130,6 +133,10 @@ public class TuneComposer extends Application {
         reset_coordinates(e);
     };
     
+    /**
+     * 
+     * @param w 
+     */
     @FXML
     private void gridDrag(MouseEvent w){
         //remove current iteration of selection rectangle
@@ -180,6 +187,10 @@ public class TuneComposer extends Application {
         }     
     }
     
+    /**
+     * 
+     * @param e 
+     */
     @FXML
     private void gridRelease(MouseEvent e){
         rectStackPane.getChildren().remove(selectRect);
@@ -353,10 +364,10 @@ public class TuneComposer extends Application {
     private void handlePlayAction(ActionEvent e){
         endcomp = 0;
         MidiComposition.clear();
-        int pitch;
-        int startTick;
-        int duration;
-        int curChannel;
+        int pitch; //The pitch of the note being added
+        int startTick; // The starting tick of the note being added
+        int duration; //The Duration of the note being added
+        int curChannel; //The current channel related to the insturment the note being added will play
         Rectangle rect;
         System.out.println("Adding Notes...");
         for(int i = 0; i < RECT_LIST.size(); i++){
@@ -375,18 +386,28 @@ public class TuneComposer extends Application {
             curChannel = CHANNEL_LIST.get(i);
             System.out.println("channel: " + curChannel);
             
+            //Calculates the pixel the red line should stop at to signfy the end of the tune
             if (endcomp < startTick+duration) {
                 endcomp = startTick+duration;
             }
+            
+            //Changes the insturment being used for the following note
             MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 
                     curChannel, instrumentArray[curChannel],0,0,TRACK_INDEX);
+            
+            //Adds the note based on the noteblocks location and length
             MidiComposition.addNote(pitch, VOLUME, startTick, 
                     duration, curChannel, TRACK_INDEX);  
         }
+        
+        //Handles the ending point of the red line animation
         lineTransition.setToX(endcomp);
+        //Handles the duration the red line animation takes to complete based 
+        //  on the ending location for the animation
         lineTransition.setDuration(Duration.seconds(endcomp/100));
         redLine.setVisible(true);
         MidiComposition.play();
+        //Starts the animation
         lineTransition.playFromStart();
     }
     
@@ -401,6 +422,10 @@ public class TuneComposer extends Application {
         redLine.setVisible(false);
     }
     
+    /**
+     * Selects all note blocks from the composition pane when the selectAll button within the menu bar is clicked
+     * @param e The action of clicking the selectAll button within the menu bar
+     */
     @FXML
     private void handleSelectAllAction(ActionEvent e){
         MidiComposition.stop();
@@ -414,6 +439,10 @@ public class TuneComposer extends Application {
         });        
     }
     
+    /**
+     * Clears selected note blocks from the composition pane when the clear button within the menu bar is clicked
+     * @param e The action of clicking the delete button within the menu bar
+     */
     @FXML
     private void handleDeleteAction(ActionEvent e){
         MidiComposition.stop();
@@ -428,6 +457,10 @@ public class TuneComposer extends Application {
         SELECTED_NOTES.clear();
     }
     
+    /**
+     * Clears all note blocks in the composition pane when the clear button within the menu bar is clicked
+     * @param e The action of clicking the clear button within the menu bar
+     */
     @FXML
     private void handleClearAction(ActionEvent e){
         redLine.setVisible(false);
