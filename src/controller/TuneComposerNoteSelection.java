@@ -18,8 +18,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
-import tunecomposer.MidiPlayer;
-import tunecomposer.NoteRectangle;
 
 
 /**
