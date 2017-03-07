@@ -154,9 +154,9 @@ public class TuneComposerNoteSelection {
         int y = (int) ((yCoordinate)/10);
         
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*10, rectColor, channel, instrument);
-        rect.setOnMousePressed(circleOnMousePressedEventHandler);
-        rect.setOnMouseDragged(circleOnMouseDraggedEventHandler);   
-        rect.setOnMouseReleased(circleOnMouseReleasedEventHandler);
+        rect.setOnMousePressed(rectangleOnMousePressedEventHandler);
+        rect.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);   
+        rect.setOnMouseReleased(rectangleOnMouseReleasedEventHandler);
 
 
         rect.setOnMouseClicked((MouseEvent t) -> {
@@ -206,7 +206,7 @@ public class TuneComposerNoteSelection {
      * Crete a new EventHandler for the mouseEvent that happens when pressed 
      * on the rectangle.
      */
-    private final EventHandler<MouseEvent> circleOnMousePressedEventHandler = 
+    private final EventHandler<MouseEvent> rectangleOnMousePressedEventHandler = 
         new EventHandler<MouseEvent>() {
         /**
         * override the handle method in the EventHandler class to create event when
@@ -230,7 +230,7 @@ public class TuneComposerNoteSelection {
      * Crete a new EventHandler for the mouseEvent that happens when dragging 
      * the rectangle.
      */    
-    private final EventHandler<MouseEvent> circleOnMouseDraggedEventHandler = 
+    private final EventHandler<MouseEvent> rectangleOnMouseDraggedEventHandler = 
         new EventHandler<MouseEvent>() {
 
         /**
@@ -281,7 +281,7 @@ public class TuneComposerNoteSelection {
      * Crete a new EventHandler for the mouseEvent that happens when releasing 
      * the rectangle.
      */        
-        private final EventHandler<MouseEvent> circleOnMouseReleasedEventHandler = 
+        private final EventHandler<MouseEvent> rectangleOnMouseReleasedEventHandler = 
         new EventHandler<MouseEvent>() {
  
         /**
@@ -372,6 +372,10 @@ public class TuneComposerNoteSelection {
         redLine.setVisible(false);
     }
     
+    /**
+     * Select all the rectangle created on the pane
+     * @param e  on user click
+     */    
     @FXML
     private void handleSelectAllAction(ActionEvent e){
         MidiComposition.stop();
@@ -385,18 +389,14 @@ public class TuneComposerNoteSelection {
         });        
     }
     
+    /**
+     * Delete all the selected rectangles
+     * @param e  on user click
+     */        
     @FXML
     private void handleDeleteAction(ActionEvent e){
         MidiComposition.stop();
         redLine.setVisible(false);
-        /*
-        for (int i =0; i < RECT_LIST.size();i++){
-            System.out.println("ongoing");
-            if (SELECTED_NOTES.contains(RECT_LIST.get(i))){
-                RECT_LIST.get(i).setWidth(0);
-            }
-        }
-        */
         SELECTED_NOTES.forEach((e1) -> {
             rectStackPane.getChildren().remove(e1.Notes);
         });
@@ -406,6 +406,10 @@ public class TuneComposerNoteSelection {
         SELECTED_NOTES.clear();
     }
     
+    /**
+     * Delete all the rectangles created on the pane
+     * @param e  on user click
+     */        
     @FXML
     private void handleClearAction(ActionEvent e){
         redLine.setVisible(false);
@@ -415,31 +419,49 @@ public class TuneComposerNoteSelection {
         });
         RECT_LIST.clear();
         SELECTED_NOTES.clear();
-        //CHANNEL_LIST.clear();
     }
     
-    /** */
+    /**
+     * Change the current value of instrument, channel and color to the ones
+     * correspond to the piano
+     * @param e  on user click
+     */    
     @FXML
     private void handlePianoAction(ActionEvent e){
         instrument = 0;
         channel = 0;
         rectColor = Color.OLIVEDRAB;
     }
-    
+
+    /**
+     * Change the current value of instrument, channel and color to the ones
+     * correspond to the harpsichord
+     * @param e  on user click
+     */        
     @FXML
     private void handleHarpsichordAction(ActionEvent e){
         instrument = 6;
         channel = 1;
         rectColor = Color.LAWNGREEN;
     }
-    
+
+    /**
+     * Change the current value of instrument, channel and color to the ones
+     * correspond to the marimba
+     * @param e  on user click
+     */        
     @FXML
     private void handleMarimbaAction(ActionEvent e){
         instrument = 12;
         channel = 2;
         rectColor = Color.SEAGREEN;
     }
-    
+
+    /**
+     * Change the current value of instrument, channel and color to the ones
+     * correspond to the organ
+     * @param e  on user click
+     */        
     @FXML
     private void handleOrganAction(ActionEvent e){
         instrument = 18;
@@ -447,13 +469,23 @@ public class TuneComposerNoteSelection {
         rectColor = Color.LIGHTSKYBLUE;
     }
     
+    /**
+     * Change the current value of instrument, channel and color to the ones
+     * correspond to the accordion
+     * @param e  on user click
+     */        
     @FXML
     private void handleAccordionAction(ActionEvent e){
         instrument = 21;
         channel = 4;
         rectColor = Color.AQUA;
     }
-    
+
+    /**
+     * Change the current value of instrument, channel and color to the ones
+     * correspond to the guitar
+     * @param e  on user click
+     */        
     @FXML
     private void handleGuitarAction(ActionEvent e){
         instrument = 27;
@@ -461,7 +493,12 @@ public class TuneComposerNoteSelection {
         rectColor = Color.DEEPSKYBLUE;
 
     }
-    
+
+    /**
+     * Change the current value of instrument, channel and color to the ones
+     * correspond to the violin
+     * @param e  on user click
+     */        
     @FXML
     private void handleViolinAction(ActionEvent e){
         instrument = 40;
@@ -469,20 +506,35 @@ public class TuneComposerNoteSelection {
         rectColor = Color.STEELBLUE;
     }
     
+    /**
+     * Change the current value of instrument, channel and color to the ones
+     * correspond to the frenchhorn
+     * @param e  on user click
+     */        
     @FXML
     private void handleFrenchHornAction(ActionEvent e){
         instrument = 61;
         channel = 7;
         rectColor = Color.PURPLE;
     }
-    
+
+    /**
+     * Change the current value of instrument, channel and color to the ones
+     * correspond to the choir
+     * @param e  on user click
+     */        
     @FXML
     private void handleChoirAction(ActionEvent e){
         instrument = 52;
         channel = 8;
         rectColor = Color.ORANGERED;
     }
-    
+
+    /**
+     * Change the current value of instrument, channel and color to the ones
+     * correspond to the typewriter
+     * @param e  on user click
+     */        
     @FXML
     private void handleTypewriterAction(ActionEvent e){
         instrument = 124;
@@ -490,6 +542,11 @@ public class TuneComposerNoteSelection {
         rectColor = Color.GREY;
     }
     
+    /**
+     * Change the current value of instrument, channel and color to the ones
+     * correspond to the sea
+     * @param e  on user click
+     */        
     @FXML
     private void handleSeaAction(ActionEvent e){
         instrument= 125;
@@ -497,14 +554,17 @@ public class TuneComposerNoteSelection {
         rectColor = Color.BLACK;
     }
 
-    
+    /**
+     * Change the current value of instrument, channel and color to the ones
+     * correspond to the applause
+     * @param e  on user click
+     */       
     @FXML
     private void handleApplauseAction(ActionEvent e){
         instrument = 126;
         channel = 11;
         rectColor = Color.SADDLEBROWN;
     }
-    
     
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
