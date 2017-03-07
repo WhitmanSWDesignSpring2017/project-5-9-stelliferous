@@ -43,6 +43,9 @@ public class TuneComposerNoteSelection {
     //sets the default color for note rectangles, corresponding to piano
     Color rectColor = Color.OLIVEDRAB;
     
+    //sets a final interger for the height of each rectangles which cannot be changed
+    private final int heightRectangle = 10;
+    
     //creates a private interger to indicate which is the instrument selected
     private int instrument = 0;
     
@@ -184,18 +187,18 @@ public class TuneComposerNoteSelection {
         
         //gets new mouse coordinates; calculates effective y coordinate
         reset_coordinates(e);            
-        int yEffective = (int) ((yCoordinate)/10);
+        int y = (int) ((yCoordinate)/heightRectangle);
         
-        //creates a new NoteRectangle object
-        NoteRectangle rect = new NoteRectangle(xCoordinate,yEffective*10, 
-                rectColor, channel, instrument);
+        NoteRectangle rect = new NoteRectangle(xCoordinate,y*heightRectangle, 
+                                               rectColor, channel, instrument);
+
         
         //assigns mouse-action events to the created NoteRectangle
         rect.setOnMousePressed(rectangleOnMousePressedEventHandler);
         rect.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);   
         rect.setOnMouseReleased(rectangleOnMouseReleasedEventHandler);
 
-        //when an existing NoteRectangle
+      //when an existing NoteRectangle
         rect.setOnMouseClicked((MouseEvent t) -> {
             reset_coordinates(t);
             if ((SELECTED_NOTES.indexOf(rect)!= -1) && (t.isControlDown())){
@@ -210,18 +213,16 @@ public class TuneComposerNoteSelection {
                 }
                 SELECTED_NOTES.add(rect);
                 rect.setStroke(Color.CRIMSON);
-                System.out.println("click"+rect.getX());
             }
         });   
-
+  
         if (!e.isControlDown()){
             RECT_LIST.forEach((e1) -> {
                     e1.setStroke(Color.BLACK);
             });
             SELECTED_NOTES.clear();
         }
-
-        System.out.println(channel);
+     
         RECT_LIST.add(rect);
         SELECTED_NOTES.add(rect);        
         rectStackPane.getChildren().add(rect.Notes);
@@ -236,8 +237,32 @@ public class TuneComposerNoteSelection {
     //create a new ArrayList to store original widths of selected rectangles
     private ArrayList<Double> orgWidths = new ArrayList<>();
     
-    //create a new boolean value to determine whether the action is for stretch
-    private boolean stretch;
+    //create two new boolean value to determine whether the action is for stretch
+    //and drag
+    private boolean stretch, drag;
+    /*
+    private final EventHandler<MouseEvent> rectangleOnMouseClickedEventHandler = 
+        new EventHandler<MouseEvent>() {
+                
+        @Override
+        public void handle(MouseEvent t) {
+            reset_coordinates(t);
+            if ((SELECTED_NOTES.indexOf(this)!= -1) && (t.isControlDown())){
+                SELECTED_NOTES.remove(this);
+                currentRect.setStroke(Color.BLACK);
+            } else if (SELECTED_NOTES.indexOf(this) == -1){
+                if(!t.isControlDown()){
+                    RECT_LIST.forEach((e1) -> {
+                        e1.setStroke(Color.BLACK);
+                    });
+                    SELECTED_NOTES.clear();
+                }
+                SELECTED_NOTES.add(this);
+                currentRect.setStroke(Color.CRIMSON);
+            }
+        }
+    };      
+    */
     
     /**
      * Crete a new EventHandler for the mouseEvent that happens when pressed 
@@ -277,32 +302,49 @@ public class TuneComposerNoteSelection {
         */ 
         @Override
         public void handle(MouseEvent t) {
+            //define the dragzone to be 5 pixels
+            int stretchZone = 5;
             //calculate the distance that mouse moved both in x and y axis
             double offsetX = t.getX() - xCoordinate;
             double offsetY = t.getY() - yCoordinate;
             for (int i=0; i<SELECTED_NOTES.size();i++) {
-                //check whether the mouseposition is within the dragging zone
+                //check whether the mouseposition is within the stretching zone
                 if ( (xCoordinate >= (orgXs.get(i)
-                                    +SELECTED_NOTES.get(i).getWidth()-5)
+                                    +SELECTED_NOTES.get(i).getWidth()-stretchZone)
                         &&
                      xCoordinate <= (orgXs.get(i)
                                    +SELECTED_NOTES.get(i).getWidth()))
                         && 
                         (yCoordinate >= orgYs.get(i)
-                        && yCoordinate <= (orgYs.get(i)+10))
-                   )
+                        && yCoordinate <= (orgYs.get(i)+heightRectangle)) )
                 {
                     //if true, change the boolean value stretch to true
                     stretch = true;
                 }
             }
+            
+            for (int i=0; i<SELECTED_NOTES.size();i++) {
+                //check whether the mouseposition is within the dragging zone
+                if ( (xCoordinate >= orgXs.get(i)
+                        &&
+                     xCoordinate <= (orgXs.get(i)
+                                   +SELECTED_NOTES.get(i).getWidth()))
+                        && 
+                        (yCoordinate >= orgYs.get(i)
+                        && yCoordinate <= (orgYs.get(i)+heightRectangle)) )
+                {
+                    //if true, change the boolean value drag to true
+                    drag = true;
+                }
+            }
+            
             //perform either stretching or dragging operation on all selected rectangles.
             for (int i=0; i<SELECTED_NOTES.size();i++) {
                 if (stretch) {
                     //if it's stretch operation, set the width of rectangles.
                     double width = orgWidths.get(i);
                     SELECTED_NOTES.get(i).setWidth(width+offsetX);
-                } else {
+                } else if (drag) {
                     //if it's dragging operation, set the position of rectangles 
                     //based on the distance mouse moved
                     double newTranslateX = orgXs.get(i) + offsetX;
@@ -338,7 +380,7 @@ public class TuneComposerNoteSelection {
             for (int i=0; i<SELECTED_NOTES.size(); i++) {
                 //reset the position of rectangles to fit it between grey lines
                 double currentY = SELECTED_NOTES.get(i).getY();
-                double finalY = ((int)(currentY/10))*10;
+                double finalY = ((int)(currentY/heightRectangle))*heightRectangle;
                 double offset = finalY - currentY;
                 SELECTED_NOTES.get(i).setTranslateY(offset);
             }
@@ -365,6 +407,8 @@ public class TuneComposerNoteSelection {
     private void handlePlayAction(ActionEvent e){
         endcomp = 0;
         MidiComposition.clear();
+        //define the number of total pitches to be 127
+        int pitchTotal = 127;
         int pitch;
         int startTick;
         int duration;
@@ -378,7 +422,7 @@ public class TuneComposerNoteSelection {
             //if the note has been deleted, do not add it to the composition
             if (rect.getWidth()== 0){continue;}
             
-            pitch = 127-(int)rect.getY()/10;
+            pitch = pitchTotal-(int)rect.getY()/heightRectangle;
             startTick = (int)rect.getX();
             duration = (int)rect.getWidth();
             curChannel = rect.getChannel();
@@ -392,6 +436,7 @@ public class TuneComposerNoteSelection {
                     duration, curChannel, TRACK_INDEX);  
         }
         lineTransition.setToX(endcomp);
+        //convert endcomp from miliseconds to seconds and set it to be duration
         lineTransition.setDuration(Duration.seconds(endcomp/100));
         redLine.setVisible(true);
         MidiComposition.play();
@@ -605,7 +650,7 @@ public class TuneComposerNoteSelection {
     
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
-     * (with location, duration, and speed). Removes red line when the
+     * (with location, duration, and speed). Make the red line invisible when the
      * composition has finished playing
      */
     public void initialize() {
