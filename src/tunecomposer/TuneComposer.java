@@ -14,8 +14,13 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- *
  * @author wangj2
+ * This JavaFX application lets the user compose tunes by clicking!
+ * @author Janet Davis 
+ * @author Jing
+ * @author Tyler Maule
+ * @author Kai McConnell
+ * @since January 26, 2017
  */
 public class TuneComposer extends Application {
 
@@ -43,7 +48,6 @@ public class TuneComposer extends Application {
         //displays the stage
         primaryStage.show();
     }
-
     /**
      * @param args the command line arguments
      */
