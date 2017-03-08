@@ -22,9 +22,8 @@ import javax.sound.midi.ShortMessage;
 /**
  * This JavaFX application lets the user compose tunes by clicking!
  * @author Janet Davis 
- * @author Eric Hsu
- * @author Ben Adams
- * @author Will Mullins
+ * @author Kai McConnell
+ * @author Jingyuan Wang
  * @author Tyler Maule
  * @since January 26, 2017
  */
@@ -683,7 +682,7 @@ public class TuneComposerNoteSelection {
     private void handleTypewriterAction(ActionEvent e){
         instrument = 124;
         channel = 9;
-        rectColor = "typerWriterButton";
+        rectColor = "typewriterButton";
     }
     
     /**
