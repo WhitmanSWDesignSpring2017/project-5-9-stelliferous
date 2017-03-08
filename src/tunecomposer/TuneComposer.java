@@ -17,7 +17,7 @@ import javafx.stage.WindowEvent;
  * @author wangj2
  * This JavaFX application lets the user compose tunes by clicking!
  * @author Janet Davis 
- * @author Jing
+ * @author Jingyuan Wang
  * @author Tyler Maule
  * @author Kai McConnell
  * @since January 26, 2017
@@ -34,8 +34,10 @@ public class TuneComposer extends Application {
     
     @Override
     public void start(Stage primaryStage) throws IOException {
+        
         //loads fxml file, places in a new scene, which is placed in the stage    
-        Parent root = FXMLLoader.load(getClass().getResource("/view/TuneComposerNoteSelection.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource
+            ("/view/TuneComposerNoteSelection.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setTitle("Tune Composer");
         primaryStage.setScene(scene);
@@ -48,6 +50,8 @@ public class TuneComposer extends Application {
         //displays the stage
         primaryStage.show();
     }
+    
+    
     /**
      * @param args the command line arguments
      */

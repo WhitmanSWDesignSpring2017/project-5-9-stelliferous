@@ -16,7 +16,9 @@ import javafx.scene.canvas.GraphicsContext;
  * FXML Controller class to draw grey lines in the canvas of 
  * TuneComposerBackground.fxml 
  * 
- * @author tmaule
+ * @author Tyler Maule
+ * @author Jingyuan Wang
+ * @author Kai Mcconnell
  */
 public class TuneComposerBackgroundController  implements Initializable {
     
@@ -43,8 +45,5 @@ public class TuneComposerBackgroundController  implements Initializable {
             gc.lineTo(2000, y1);
             gc.stroke();
         }
-    }    
-    
-    
-    
+    }      
 }

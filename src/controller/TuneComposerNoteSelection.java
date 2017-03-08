@@ -54,7 +54,7 @@ public class TuneComposerNoteSelection {
     public double endcomp;
     
     //constructs the TranslateTransition for use later in animation of redline
-    public TranslateTransition lineTransition = new TranslateTransition();
+    private final TranslateTransition lineTransition = new TranslateTransition();
     
     //creates a list to store created rectangles, that they may be later erased
     private final ArrayList<NoteRectangle> RECT_LIST = new ArrayList<>();
@@ -66,7 +66,7 @@ public class TuneComposerNoteSelection {
     @FXML Line redLine;
     
     //creates a rectangle that users will control by dragging
-    Rectangle selectRect = new Rectangle();
+    private final Rectangle selectRect = new Rectangle();
 
     //stores x and y coordinates, to later calculate distance moved by the mouse
     private double yCoordinate = 0;
@@ -79,13 +79,13 @@ public class TuneComposerNoteSelection {
     @FXML AnchorPane rectAnchorPane;
     
     //create a new ArrayList to store original X positions of selected rectangles
-    private ArrayList<Double> orgXs = new ArrayList<>();
+    private final ArrayList<Double> ORIGINALX = new ArrayList<>();
 
     //create a new ArrayList to store original Y positions of selected rectangles
-    private ArrayList<Double> orgYs = new ArrayList<>();
+    private final ArrayList<Double> ORIGINALY = new ArrayList<>();
     
     //create a new ArrayList to store original widths of selected rectangles
-    private ArrayList<Double> orgWidths = new ArrayList<>();
+    private final ArrayList<Double> ORIGINALWIDTH = new ArrayList<>();
     
     //create two new boolean value to determine whether the action is for stretch
     //and drag
@@ -304,10 +304,10 @@ public class TuneComposerNoteSelection {
             reset_coordinates(t);
             for (int i=0; i<SELECTED_NOTES.size();i++) {
                 //add all orginal positions of the selected rectangles to arraylists
-                orgXs.add(SELECTED_NOTES.get(i).getX()); 
-                orgYs.add(SELECTED_NOTES.get(i).getY());
+                ORIGINALX.add(SELECTED_NOTES.get(i).getX()); 
+                ORIGINALY.add(SELECTED_NOTES.get(i).getY());
                 //add all widths of the selected rectangles to the arraylist
-                orgWidths.add(SELECTED_NOTES.get(i).getWidth());
+                ORIGINALWIDTH.add(SELECTED_NOTES.get(i).getWidth());
             }
         }
     };
@@ -320,15 +320,15 @@ public class TuneComposerNoteSelection {
         //define the dragzone to be 5 pixels
         for (int i=0; i<SELECTED_NOTES.size();i++) {
             //check whether the mouseposition is within the stretching zone
-            if ( xCoordinate >= (orgXs.get(i)
+            if ( xCoordinate >= (ORIGINALX.get(i)
                                 +SELECTED_NOTES.get(i).getWidth()-STRETCHZONE)
                     &&
-                  xCoordinate <= (orgXs.get(i)
+                  xCoordinate <= (ORIGINALX.get(i)
                                +SELECTED_NOTES.get(i).getWidth())
                     && 
-                  yCoordinate >= orgYs.get(i)
+                  yCoordinate >= ORIGINALY.get(i)
                     && 
-                  yCoordinate <= (orgYs.get(i)+heightRectangle) )
+                  yCoordinate <= (ORIGINALY.get(i)+heightRectangle) )
             {
                 //if true, change the boolean value stretch to true
                 stretch = true;
@@ -343,13 +343,13 @@ public class TuneComposerNoteSelection {
     private void determineDrag() {
         for (int i=0; i<SELECTED_NOTES.size();i++) {
             //check whether the mouseposition is within the dragging zone
-            if ( xCoordinate >= orgXs.get(i)
+            if ( xCoordinate >= ORIGINALX.get(i)
                  &&
-                 xCoordinate <= (orgXs.get(i)
+                 xCoordinate <= (ORIGINALX.get(i)
                                  +SELECTED_NOTES.get(i).getWidth())
                  && 
-                 yCoordinate >= orgYs.get(i)
-                 && yCoordinate <= (orgYs.get(i)+heightRectangle) ) 
+                 yCoordinate >= ORIGINALY.get(i)
+                 && yCoordinate <= (ORIGINALY.get(i)+heightRectangle) ) 
                {
                  //if true, change the boolean value drag to true
                  drag = true;
@@ -383,9 +383,9 @@ public class TuneComposerNoteSelection {
             for (int i=0; i<SELECTED_NOTES.size();i++) {
                 if (stretch) {
                     //if it's stretch operation, get the width of rectangles.
-                    double width = orgWidths.get(i);
+                    double width = ORIGINALWIDTH.get(i);
                     //if a 'note' rectangle is not 5px or more, change nothing
-                    if (orgWidths.get(i)+offsetX >= STRETCHZONE ){
+                    if (ORIGINALWIDTH.get(i)+offsetX >= STRETCHZONE ){
                         //set rectangle width
                         SELECTED_NOTES.get(i).setWidth(width+offsetX);
                     } else {
@@ -395,8 +395,8 @@ public class TuneComposerNoteSelection {
                 } else if (drag) {
                     //if it's dragging operation, set the position of rectangles 
                     //based on the distance mouse moved
-                    double newTranslateX = orgXs.get(i) + offsetX;
-                    double newTranslateY = orgYs.get(i) + offsetY;
+                    double newTranslateX = ORIGINALX.get(i) + offsetX;
+                    double newTranslateY = ORIGINALY.get(i) + offsetY;
                     SELECTED_NOTES.get(i).setX(newTranslateX);
                     SELECTED_NOTES.get(i).setY(newTranslateY);
                 }
@@ -422,9 +422,9 @@ public class TuneComposerNoteSelection {
             stretch = false;
             
             //clear all three arraylists, resets coordinates
-            orgXs.clear();
-            orgYs.clear();
-            orgWidths.clear();
+            ORIGINALX.clear();
+            ORIGINALY.clear();
+            ORIGINALWIDTH.clear();
             reset_coordinates(t);
             
             for (int i=0; i<SELECTED_NOTES.size(); i++) {
