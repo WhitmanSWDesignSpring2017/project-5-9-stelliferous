@@ -15,7 +15,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<BorderPane stylesheets="@TuneComposer.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TuneComposerNoteSelection">
+<BorderPane stylesheets="@TuneComposer.css" 
+            xmlns="http://javafx.com/javafx/8.0.111"
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="controller.TuneComposerNoteSelection">
    <center>
       <ScrollPane fx:id="compositionScroll">
          <content>
