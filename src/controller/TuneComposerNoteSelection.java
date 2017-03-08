@@ -37,6 +37,7 @@ public class TuneComposerNoteSelection {
     final int TRACK_INDEX = 1;
     int channel = 0;
     
+    
     //define the number of total pitches to be 127
     final int PITCHTOTAL = 127;
     
@@ -76,8 +77,6 @@ public class TuneComposerNoteSelection {
     
     //makes available rectAnchorPane, which stores the rectangles
     @FXML AnchorPane rectAnchorPane;
-    
-
     
     //create a new ArrayList to store original X positions of selected rectangles
     private ArrayList<Double> orgXs = new ArrayList<>();
@@ -145,15 +144,9 @@ public class TuneComposerNoteSelection {
         //determine coordinates, size, and style of seleciton rectangle
         formatSelectionRectangle(w);
         
-        //determine whether previously selected notes remain selected
-        if(!w.isControlDown()){
-            RECT_LIST.forEach((e1) -> {
-                e1.setStroke(Color.BLACK);
-            });
-            SELECTED_NOTES.clear();
-        }      
+        //if control is not down, deselect all other notes
+        deselectNotes(w);
 
-        
         //determine whether any "note rectangles" are within the selection rect
         for(NoteRectangle r:RECT_LIST){
             if (selectRect.getX() + (selectRect.getWidth()) > r.Notes.getX() 
@@ -165,6 +158,20 @@ public class TuneComposerNoteSelection {
                 r.Notes.setStroke(Color.CRIMSON);
             }
         }     
+    }
+    
+    /**
+     * If the control key is not held down, deselect all notes
+     * @param m a mouse event
+     */
+    private void deselectNotes(MouseEvent m){
+        //determine whether previously selected notes remain selected
+        if(!m.isControlDown()){
+            RECT_LIST.forEach((e1) -> {
+                e1.setStroke(Color.BLACK);
+            });
+            SELECTED_NOTES.clear();
+        }  
     }
     
     /**
@@ -244,12 +251,7 @@ public class TuneComposerNoteSelection {
   
         //determine whether previously selected notes remain selected when
         //a new note is created; if control is not down, deselect all old notes
-        if (!e.isControlDown()){
-            RECT_LIST.forEach((e1) -> {
-                e1.setStroke(Color.BLACK);
-            });
-            SELECTED_NOTES.clear();
-        }
+        deselectNotes(e);
         
         //add newly created rectangles to lists, visual
         RECT_LIST.add(rect);
@@ -278,12 +280,8 @@ public class TuneComposerNoteSelection {
         } else if (SELECTED_NOTES.indexOf(rect) == -1){
             //if the rectangle is not selected and control is not down, 
             //deselect all other rectangles
-            if(!m.isControlDown()){
-                RECT_LIST.forEach((e1) -> {
-                    e1.setStroke(Color.BLACK);
-                });
-                SELECTED_NOTES.clear();
-            }
+            deselectNotes(m);
+            
             //select the rectangle that has been clicked on 
             SELECTED_NOTES.add(rect);
             rect.setStroke(Color.CRIMSON);
