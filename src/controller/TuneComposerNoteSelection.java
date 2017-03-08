@@ -72,7 +72,7 @@ public class TuneComposerNoteSelection {
     private double xCoordinate = 0;
     
     //makes available rectAnchorPane, which stores the rectangles
-    @FXML AnchorPane rectStackPane;
+    @FXML AnchorPane rectAnchorPane;
     
     //makes available the composition Pane, allowing user to create notes
     @FXML Pane compositionGrid;
@@ -130,7 +130,7 @@ public class TuneComposerNoteSelection {
     @FXML
     private void paneMouseDrag(MouseEvent w){
         //remove current iteration of selection rectangle
-        rectStackPane.getChildren().remove(selectRect);
+        rectAnchorPane.getChildren().remove(selectRect);
         
         //get and store current coordinates
         int currentX = (int)w.getX();
@@ -161,7 +161,7 @@ public class TuneComposerNoteSelection {
         selectRect.setHeight(abs(currentY-yCoordinate));
         selectRect.setStroke(Color.CHARTREUSE);
         selectRect.setFill(Color.TRANSPARENT);
-        rectStackPane.getChildren().add(selectRect);       
+        rectAnchorPane.getChildren().add(selectRect);       
 
         
         //determine whether any "note rectangles" are within the selection rect
@@ -191,7 +191,7 @@ public class TuneComposerNoteSelection {
     private void paneMouseRelease(MouseEvent e){
         
         //removes 'selection rectangles,' created by dragging, from screen
-        rectStackPane.getChildren().remove(selectRect);
+        rectAnchorPane.getChildren().remove(selectRect);
         
         //if the user has dragged on the screen, the method ends; no
         //new rectangles are created or selected
@@ -213,35 +213,43 @@ public class TuneComposerNoteSelection {
         rect.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);   
         rect.setOnMouseReleased(rectangleOnMouseReleasedEventHandler);
 
-      //when an existing NoteRectangle
+        //when an existing NoteRectangle is clicked on, begin selection process
         rect.setOnMouseClicked((MouseEvent t) -> {
+            //reset current mouse coordinates
             reset_coordinates(t);
+            
+            //if the rectangle was selected and 'control' is down, deselect it
             if ((SELECTED_NOTES.indexOf(rect)!= -1) && (t.isControlDown())){
                 SELECTED_NOTES.remove(rect);
                 rect.setStroke(Color.BLACK);
             } else if (SELECTED_NOTES.indexOf(rect) == -1){
+                //if the rectangle is not selected and control is not down, 
+                //deselect all other rectangles
                 if(!t.isControlDown()){
                     RECT_LIST.forEach((e1) -> {
                         e1.setStroke(Color.BLACK);
                     });
                     SELECTED_NOTES.clear();
                 }
+                //select the rectangle that has been clicked on 
                 SELECTED_NOTES.add(rect);
                 rect.setStroke(Color.CRIMSON);
             }
         });   
   
-        //determine whether previously selected notes remain selected
+        //determine whether previously selected notes remain selected when
+        //a new note is created; if control is not down, deselect all old notes
         if (!e.isControlDown()){
             RECT_LIST.forEach((e1) -> {
-                    e1.setStroke(Color.BLACK);
+                e1.setStroke(Color.BLACK);
             });
             SELECTED_NOTES.clear();
         }
-     
+        
+        //add newly created rectangles to lists, visual
         RECT_LIST.add(rect);
         SELECTED_NOTES.add(rect);        
-        rectStackPane.getChildren().add(rect.Notes);
+        rectAnchorPane.getChildren().add(rect.Notes);
     };
 
     /**
@@ -367,11 +375,13 @@ public class TuneComposerNoteSelection {
         public void handle(MouseEvent t) {
             //reset the stretching operation to false
             stretch = false;
-            //clear all three arraylists
+            
+            //clear all three arraylists, resets coordinates
             orgXs.clear();
             orgYs.clear();
             orgWidths.clear();
             reset_coordinates(t);
+            
             for (int i=0; i<SELECTED_NOTES.size(); i++) {
                 //reset the position of rectangles to fit it between grey lines
                 double currentY = SELECTED_NOTES.get(i).getY();
@@ -497,7 +507,7 @@ public class TuneComposerNoteSelection {
         
         //removes selected notes from Pane and from list of Rectangles
         SELECTED_NOTES.forEach((e1) -> {
-            rectStackPane.getChildren().remove(e1.Notes);
+            rectAnchorPane.getChildren().remove(e1.Notes);
             RECT_LIST.remove(e1);
         });
         
@@ -518,7 +528,7 @@ public class TuneComposerNoteSelection {
         //removes all notes from Pane and clears list of selected and
         //unselected rectangles
         RECT_LIST.forEach((e1) -> {
-            rectStackPane.getChildren().remove(e1.Notes);
+            rectAnchorPane.getChildren().remove(e1.Notes);
         });
         RECT_LIST.clear();
         SELECTED_NOTES.clear();

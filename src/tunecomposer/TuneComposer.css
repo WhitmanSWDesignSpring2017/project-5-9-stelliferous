@@ -13,61 +13,73 @@ and open the template in the editor.
     -fx-background-color: lavender;
 }
 
+/* Determines color of moving line that signifies time */
 .redLine{
     -fx-stroke: crimson;
     -fx-stroke-width: 2px;
 }
 
+/* Determines text and rectangle fill color of Piano notes */
 .pianoButton{
     -fx-text-fill: olivedrab;
     -fx-fill: olivedrab;
 }
 
+/* Determines text and rectangle fill color of Piano notes */
 .harpsichordButton{
     -fx-text-fill: lawngreen;
     -fx-fill: lawngreen;
 }
 
+/* Determines text and rectangle fill color of Marimba notes */
 .marimbaButton{
     -fx-text-fill: seagreen;
     -fx-fill: seagreen;
 }
 
+/* Determines text and rectangle fill color of Organ notes */
 .organButton{
     -fx-text-fill: lightskyblue;
     -fx-fill: lightskyblue;
 }
 
+/* Determines text and rectangle fill color of Accordion notes */
 .accordionButton{
     -fx-text-fill: aqua;
     -fx-fill: aqua;
 }
 
+/* Determines text and rectangle fill color of Guitar notes */
 .guitarButton{
     -fx-text-fill: deepskyblue;
     -fx-fill: deepskyblue;
 }
 
+/* Determines text and rectangle fill color of Violin notes */
 .violinButton{
     -fx-text-fill: steelblue;
     -fx-fill: steelblue;
 }
 
+/* Determines text and rectangle fill color of French Horn notes */
 .frenchHornButton{
     -fx-text-fill: purple;
     -fx-fill: purple;
 }
 
+/* Determines text and rectangle fill color of Choir notes */
 .choirButton{
     -fx-text-fill: orangered;
     -fx-fill: orangered;
 }
 
+/* Determines text and rectangle fill color of Typewriter notes */
 .typewriterButton{
     -fx-text-fill: grey;
     -fx-fill: grey;
 }
 
+/* Determines text and rectangle fill color of Applause notes */
 .applauseButton{
     -fx-text-fill: saddlebrown;
     -fx-fill: saddlebrown;

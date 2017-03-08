@@ -29,6 +29,7 @@ public class TuneComposerBackgroundController  implements Initializable {
      * @param url placeholder/default/generic url
      * @param rb placeholder/default/generic resource bundle
      */
+    @Override
     public void initialize(URL url, ResourceBundle rb) {
         //set up for drawing grey lines
         GraphicsContext gc = linesCanvas.getGraphicsContext2D();
