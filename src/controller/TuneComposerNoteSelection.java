@@ -14,7 +14,6 @@ import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.event.EventHandler;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
@@ -713,10 +712,11 @@ public class TuneComposerNoteSelection {
     
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
-     * (with location, duration, and speed). Make the red line invisible when the
-     * composition has finished playing
+     * (with location, duration, and speed). Make the red line invisible 
+     * at the start and when the composition has finished playing
      */
     public void initialize() {
+        redLine.setVisible(false);
         lineTransition.setNode(redLine);
         lineTransition.setFromX(0);
         lineTransition.setInterpolator(Interpolator.LINEAR);
