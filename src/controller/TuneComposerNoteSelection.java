@@ -363,17 +363,22 @@ public class TuneComposerNoteSelection {
             //calculate the distance that mouse moved both in x and y axis
             double offsetX = t.getX() - xCoordinate;
             double offsetY = t.getY() - yCoordinate;
+            
             //determine whether should be performing stretch or drag
             determineStretch();
             determineDrag();
             
             //perform either stretching or dragging operation on all selected rectangles.
             for (int i=0; i<SELECTED_NOTES.size();i++) {
-                //if a 'note' rectangle is less than 5px, change nothing
-                if ((stretch) && (SELECTED_NOTES.get(i).getWidth() >= 5 )) {
-                    //if it's stretch operation, set the width of rectangles.
+                if (stretch) {
+                    //if it's stretch operation, get the width of rectangles.
                     double width = orgWidths.get(i);
-                    SELECTED_NOTES.get(i).setWidth(width+offsetX);
+                    
+                    //if a 'note' rectangle is not 5px or more, change nothing
+                    if (SELECTED_NOTES.get(i).getWidth() >= 5 ){
+                        //set rectangle width
+                        SELECTED_NOTES.get(i).setWidth(width+offsetX);
+                    }
                 } else if (drag) {
                     //if it's dragging operation, set the position of rectangles 
                     //based on the distance mouse moved
