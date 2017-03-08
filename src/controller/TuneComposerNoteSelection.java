@@ -129,6 +129,13 @@ public class TuneComposerNoteSelection {
      */
     @FXML
     private void paneMouseDrag(MouseEvent w){
+        
+        //if the alt-key is down, do not create a selection rectangle
+        if (w.isAltDown()){
+            paneMouseRelease(w);
+            return;
+        }
+
         //remove current iteration of selection rectangle
         rectAnchorPane.getChildren().remove(selectRect);
         
@@ -193,11 +200,14 @@ public class TuneComposerNoteSelection {
         //removes 'selection rectangles,' created by dragging, from screen
         rectAnchorPane.getChildren().remove(selectRect);
         
-        //if the user has dragged on the screen, the method ends; no
-        //new rectangles are created or selected
-        if ((xCoordinate != (int)e.getX()) || (yCoordinate != (int)e.getY())){
-            return;
-        }
+        /*if the user has dragged on the screen, the method ends; no
+        new rectangles are created or selected. If 'alt' key is down, create
+        new rectangles anyhow */
+        if (((xCoordinate != (int)e.getX()) 
+            || (yCoordinate != (int)e.getY()))
+            && !e.isAltDown()){
+                return;
+        } 
         
         //gets new mouse coordinates; calculates effective y coordinate
         reset_coordinates(e);            
