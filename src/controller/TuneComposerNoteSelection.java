@@ -77,6 +77,20 @@ public class TuneComposerNoteSelection {
     //makes available the composition Pane, allowing user to create notes
     @FXML Pane compositionGrid;
     
+    //create a new ArrayList to store original X positions of selected rectangles
+    private ArrayList<Double> orgXs = new ArrayList<>();
+
+    //create a new ArrayList to store original Y positions of selected rectangles
+    private ArrayList<Double> orgYs = new ArrayList<>();
+    
+    //create a new ArrayList to store original widths of selected rectangles
+    private ArrayList<Double> orgWidths = new ArrayList<>();
+    
+    //create two new boolean value to determine whether the action is for stretch
+    //and drag
+    private boolean stretch, drag;
+    
+    
     /**
      * resets the mouse coordinates to allow dragging functionality
      * stops ongoing composition-playing events
@@ -189,6 +203,7 @@ public class TuneComposerNoteSelection {
         reset_coordinates(e);            
         int y = (int) ((yCoordinate)/heightRectangle);
         
+        //creates a new NoteRectangle object
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*heightRectangle, 
                                                rectColor, channel, instrument);
 
@@ -216,6 +231,7 @@ public class TuneComposerNoteSelection {
             }
         });   
   
+        //determine whether previously selected notes remain selected
         if (!e.isControlDown()){
             RECT_LIST.forEach((e1) -> {
                     e1.setStroke(Color.BLACK);
@@ -227,19 +243,6 @@ public class TuneComposerNoteSelection {
         SELECTED_NOTES.add(rect);        
         rectStackPane.getChildren().add(rect.Notes);
     };
- 
-    //create a new ArrayList to store original X positions of selected rectangles
-    private ArrayList<Double> orgXs = new ArrayList<>();
-
-    //create a new ArrayList to store original Y positions of selected rectangles
-    private ArrayList<Double> orgYs = new ArrayList<>();
-    
-    //create a new ArrayList to store original widths of selected rectangles
-    private ArrayList<Double> orgWidths = new ArrayList<>();
-    
-    //create two new boolean value to determine whether the action is for stretch
-    //and drag
-    private boolean stretch, drag;
 
     /**
      * Crete a new EventHandler for the mouseEvent that happens when pressed 
@@ -397,23 +400,31 @@ public class TuneComposerNoteSelection {
      */
     @FXML
     private void handlePlayAction(ActionEvent e){
+        //clears all current MidiPlayer events
         endcomp = 0;
         MidiComposition.clear();
+        
         //define the number of total pitches to be 127
         int pitchTotal = 127;
+        
+        //creates variables for MidiPlayer note addition
         int pitch;
         int startTick;
         int duration;
         int curChannel;
         int curInstru;
+        
+        //aceesses the current note rectangle
         NoteRectangle rect;
-        System.out.println("Adding Notes...");
+
+        //iterates through all rectangles in the composition
         for(int i = 0; i < RECT_LIST.size(); i++){
             rect = RECT_LIST.get(i);
             
-            //if the note has been deleted, do not add it to the composition
-            if (rect.getWidth()== 0){continue;}
+            /*//if the note has been deleted, do not add it to the composition
+            if (rect.getWidth()== 0){continue;}*/
             
+            //determines attributes of the MidiPlayer note to be added
             pitch = pitchTotal-(int)rect.getY()/heightRectangle;
             startTick = (int)rect.getX();
             duration = (int)rect.getWidth();
@@ -422,21 +433,31 @@ public class TuneComposerNoteSelection {
             if (endcomp < startTick+duration) {
                 endcomp = startTick+duration;
             }
+            
+            //changes instrument according to the current channel
             MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 
                     curChannel, curInstru,0,0,TRACK_INDEX);
+            
+            //adds a note to the MidiPlayer composition
             MidiComposition.addNote(pitch, VOLUME, startTick, 
                     duration, curChannel, TRACK_INDEX);  
         }
+        
+        //defines end of the composition for the red line to stop at
         lineTransition.setToX(endcomp);
+        
         //convert endcomp from miliseconds to seconds and set it to be duration
         lineTransition.setDuration(Duration.seconds(endcomp/100));
+        
+        //makes red line visible, starts MidiComposition notes, moves red line
         redLine.setVisible(true);
         MidiComposition.play();
         lineTransition.playFromStart();
     }
     
     /**
-     * Stops the player from playing, and sets the red line to be invisible.
+     * Stops the player from playing, stops and 
+     * sets the red line to be invisible.
      * @param e  on user click
      */
     @FXML
@@ -452,15 +473,16 @@ public class TuneComposerNoteSelection {
      */    
     @FXML
     private void handleSelectAllAction(ActionEvent e){
+        //stops the current MidiComposition and red line animation
         MidiComposition.stop();
         redLine.setVisible(false);
+        
+        //clears currently selected notes, adds and 'highlights' all notes
         SELECTED_NOTES.clear();
         for (int i =0; i<RECT_LIST.size(); i++){
             SELECTED_NOTES.add(RECT_LIST.get(i));
-        }
-        SELECTED_NOTES.forEach((e1) -> {
-            e1.setStroke(Color.CRIMSON);
-        });        
+            RECT_LIST.get(i).setStroke(Color.CRIMSON);
+        }      
     }
     
     /**
@@ -469,14 +491,17 @@ public class TuneComposerNoteSelection {
      */        
     @FXML
     private void handleDeleteAction(ActionEvent e){
+        //stops the current MidiComposition and red line animation
         MidiComposition.stop();
         redLine.setVisible(false);
+        
+        //removes selected notes from Pane and from list of Rectangles
         SELECTED_NOTES.forEach((e1) -> {
             rectStackPane.getChildren().remove(e1.Notes);
-        });
-        SELECTED_NOTES.forEach((e1)->{
             RECT_LIST.remove(e1);
         });
+        
+        //clears all selected notes from the list of selected notes
         SELECTED_NOTES.clear();
     }
     
@@ -486,8 +511,12 @@ public class TuneComposerNoteSelection {
      */        
     @FXML
     private void handleClearAction(ActionEvent e){
+        //stops the current MidiComposition and red line animation
         redLine.setVisible(false);
         MidiComposition.clear();
+        
+        //removes all notes from Pane and clears list of selected and
+        //unselected rectangles
         RECT_LIST.forEach((e1) -> {
             rectStackPane.getChildren().remove(e1.Notes);
         });
