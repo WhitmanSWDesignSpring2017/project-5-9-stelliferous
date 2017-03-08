@@ -71,6 +71,9 @@ public class TuneComposerNoteSelection {
     private double yCoordinate = 0;
     private double xCoordinate = 0;
     
+    //the pixel length in which a user can click to stretch a NoteRectangle
+    final int STRETCHZONE = 5;
+    
     //makes available rectAnchorPane, which stores the rectangles
     @FXML AnchorPane rectAnchorPane;
     
@@ -120,10 +123,10 @@ public class TuneComposerNoteSelection {
     
     /**
      * When the user drags the mouse on the composition pane, current
-     * 'selection rectangles' are cleared from the screen. Current mouse 
-     * coordinates are fetched, and a 'selection rectangle' indicates points
-     * from initial mouse click to current mouse location. All notes within the
-     * area of the 'selection rectangle' are selected. If control is not held 
+     * ' selection rectangles ' are cleared from the screen. Calls 
+     * formatSelectionRectangle() to determine coordinates, size, style
+     * of the rectangle. All notes within the
+     * area of the ' selection rectangle ' are selected. If control is not held 
      * down, all other notes are deselected.
      * @param w a mouse dragging event
      */
@@ -139,6 +142,38 @@ public class TuneComposerNoteSelection {
         //remove current iteration of selection rectangle
         rectAnchorPane.getChildren().remove(selectRect);
         
+        //determine coordinates, size, and style of seleciton rectangle
+        formatSelectionRectangle(w);
+        
+        //determine whether previously selected notes remain selected
+        if(!w.isControlDown()){
+            RECT_LIST.forEach((e1) -> {
+                e1.setStroke(Color.BLACK);
+            });
+            SELECTED_NOTES.clear();
+        }      
+
+        
+        //determine whether any "note rectangles" are within the selection rect
+        for(NoteRectangle r:RECT_LIST){
+            if (selectRect.getX() + (selectRect.getWidth()) > r.Notes.getX() 
+                    && selectRect.getX()  < r.Notes.getX() + (r.Notes.getWidth()) 
+                    && selectRect.getY() + (selectRect.getHeight()) > r.Notes.getY() 
+                    && selectRect.getY()  < r.Notes.getY() + (r.Notes.getHeight())){   
+                // select note rectangles within the selection area
+                SELECTED_NOTES.add(r);
+                r.Notes.setStroke(Color.CRIMSON);
+            }
+        }     
+    }
+    
+    /**
+     * Determines size, coordinates, and style of Selection Rectangle. 
+     * Current mouse coordinates are fetched, and a ' selection rectangle ' 
+     * indicates points from initial mouse click to current mouse location.
+     * @param w mouse event of the user dragging on the CompositionPane
+     */
+    private void formatSelectionRectangle(MouseEvent w){
         //get and store current coordinates
         int currentX = (int)w.getX();
         int currentY = (int)w.getY();
@@ -155,42 +190,20 @@ public class TuneComposerNoteSelection {
             selectRect.setY(currentY);
         }
         
-        //determine whether previously selected notes remain selected
-        if(!w.isControlDown()){
-            RECT_LIST.forEach((e1) -> {
-                e1.setStroke(Color.BLACK);
-            });
-            SELECTED_NOTES.clear();
-        }
-        
         //detail, style, and display selection rectangle
         selectRect.setWidth(abs(currentX-xCoordinate));
         selectRect.setHeight(abs(currentY-yCoordinate));
         selectRect.setStroke(Color.CHARTREUSE);
         selectRect.setFill(Color.TRANSPARENT);
-        rectAnchorPane.getChildren().add(selectRect);       
-
-        
-        //determine whether any "note rectangles" are within the selection rect
-        for(NoteRectangle r:RECT_LIST){
-            if (selectRect.getX() + (selectRect.getWidth()) > r.Notes.getX() 
-                    && selectRect.getX()  < r.Notes.getX() + (r.Notes.getWidth()) 
-                    && selectRect.getY() + (selectRect.getHeight()) > r.Notes.getY() 
-                    && selectRect.getY()  < r.Notes.getY() + (r.Notes.getHeight())){   
-                // select note rectangles within the selection area
-                SELECTED_NOTES.add(r);
-                r.Notes.setStroke(Color.CRIMSON);
-            }
-        }     
+        rectAnchorPane.getChildren().add(selectRect); 
     }
 
     /**
-     * When the user releases the mouse, if they have created a 'selection
-     * rectangle' by dragging, that selection rectangle is removed from the 
-     * screen. 
-     * Otherwise, a new Note Rectangle is created and placed. If the user has
-     * held down control while clicking, all other selected notes remain 
-     * selected; otherwise all other notes are unselected. Clicking or 
+     * When the user releases the mouse, if they have created a ' selection
+     * rectangle ' by dragging, that selection rectangle is removed from the 
+     * screen. Otherwise, a new Note Rectangle is created and placed. If the 
+     * user has held down control while clicking, all other selected notes 
+     * remain selected; otherwise all other notes are unselected. Clicking or 
      * control-clicking on an already-created note is delegated to the 
      * onNoteClick() function
      * @param e a mouse click event on the composition Pane
@@ -303,14 +316,14 @@ public class TuneComposerNoteSelection {
     
     /**
      * Change the boolean value stretch based on the current position of mouse
+     * True if within the stretching rather than dragging zone
      */    
     private void determineStretch() {
         //define the dragzone to be 5 pixels
-        int stretchZone = 5;
         for (int i=0; i<SELECTED_NOTES.size();i++) {
             //check whether the mouseposition is within the stretching zone
             if ( xCoordinate >= (orgXs.get(i)
-                                +SELECTED_NOTES.get(i).getWidth()-stretchZone)
+                                +SELECTED_NOTES.get(i).getWidth()-STRETCHZONE)
                     &&
                   xCoordinate <= (orgXs.get(i)
                                +SELECTED_NOTES.get(i).getWidth())
@@ -327,6 +340,7 @@ public class TuneComposerNoteSelection {
 
     /**
      * Change the boolean value drag based on the current position of mouse
+     * True if within the dragging rather than stretching zone
      */   
     private void determineDrag() {
         for (int i=0; i<SELECTED_NOTES.size();i++) {
@@ -362,7 +376,7 @@ public class TuneComposerNoteSelection {
             //calculate the distance that mouse moved both in x and y axis
             double offsetX = t.getX() - xCoordinate;
             double offsetY = t.getY() - yCoordinate;
-            int smallestWidth = 5;
+            
             //determine whether should be performing stretch or drag
             determineStretch();
             determineDrag();
@@ -373,12 +387,12 @@ public class TuneComposerNoteSelection {
                     //if it's stretch operation, get the width of rectangles.
                     double width = orgWidths.get(i);
                     //if a 'note' rectangle is not 5px or more, change nothing
-                    if (orgWidths.get(i)+offsetX >= smallestWidth ){
+                    if (orgWidths.get(i)+offsetX >= STRETCHZONE ){
                         //set rectangle width
                         SELECTED_NOTES.get(i).setWidth(width+offsetX);
                     } else {
                         //if under 5px, change to 5px
-                        SELECTED_NOTES.get(i).setWidth(smallestWidth);
+                        SELECTED_NOTES.get(i).setWidth(STRETCHZONE);
                     }                        
                 } else if (drag) {
                     //if it's dragging operation, set the position of rectangles 
@@ -650,7 +664,7 @@ public class TuneComposerNoteSelection {
     
     /**
      * Change the current value of instrument, channel and color to the ones
-     * correspond to the frenchhorn
+     * correspond to the frenchHorn
      * @param e  on user click
      */        
     @FXML
