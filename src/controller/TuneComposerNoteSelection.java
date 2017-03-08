@@ -74,8 +74,7 @@ public class TuneComposerNoteSelection {
     //makes available rectAnchorPane, which stores the rectangles
     @FXML AnchorPane rectAnchorPane;
     
-    //makes available the composition Pane, allowing user to create notes
-    @FXML Pane compositionGrid;
+
     
     //create a new ArrayList to store original X positions of selected rectangles
     private ArrayList<Double> orgXs = new ArrayList<>();
@@ -88,7 +87,8 @@ public class TuneComposerNoteSelection {
     
     //create two new boolean value to determine whether the action is for stretch
     //and drag
-    private boolean stretch, drag;
+    private boolean stretch;
+    private boolean drag;
     
     
     /**
@@ -105,7 +105,7 @@ public class TuneComposerNoteSelection {
         MidiComposition.stop();
         redLine.setVisible(false);
     }
-
+    
     /**
      * Creates a rectangle at the point clicked and adds a note to the composition
      * based on the coordinates of the point clicked. Adds that rectangle
@@ -186,13 +186,14 @@ public class TuneComposerNoteSelection {
 
     /**
      * When the user releases the mouse, if they have created a 'selection
-     * rectangle' by dragging, that rectangle is removed from the screen. 
+     * rectangle' by dragging, that selection rectangle is removed from the 
+     * screen. 
      * Otherwise, a new Note Rectangle is created and placed. If the user has
-     * clicked on an existing Note Rectangle, that rectangle is selected and
-     * all others are deselected. If the user holds down the control button
-     * and clicks on an existing Note Rectangle, that rectangle is selected
-     * and other already-selected rectangles remain selected.
-     * @param e 
+     * held down control while clicking, all other selected notes remain 
+     * selected; otherwise all other notes are unselected. Clicking or 
+     * control-clicking on an already-created note is delegated to the 
+     * onNoteClick() function
+     * @param e a mouse click event on the composition Pane
      */
     @FXML
     private void paneMouseRelease(MouseEvent e){
@@ -225,26 +226,7 @@ public class TuneComposerNoteSelection {
 
         //when an existing NoteRectangle is clicked on, begin selection process
         rect.setOnMouseClicked((MouseEvent t) -> {
-            //reset current mouse coordinates
-            reset_coordinates(t);
-            
-            //if the rectangle was selected and 'control' is down, deselect it
-            if ((SELECTED_NOTES.indexOf(rect)!= -1) && (t.isControlDown())){
-                SELECTED_NOTES.remove(rect);
-                rect.setStroke(Color.BLACK);
-            } else if (SELECTED_NOTES.indexOf(rect) == -1){
-                //if the rectangle is not selected and control is not down, 
-                //deselect all other rectangles
-                if(!t.isControlDown()){
-                    RECT_LIST.forEach((e1) -> {
-                        e1.setStroke(Color.BLACK);
-                    });
-                    SELECTED_NOTES.clear();
-                }
-                //select the rectangle that has been clicked on 
-                SELECTED_NOTES.add(rect);
-                rect.setStroke(Color.CRIMSON);
-            }
+            onNoteClick(t, rect);
         });   
   
         //determine whether previously selected notes remain selected when
@@ -262,6 +244,39 @@ public class TuneComposerNoteSelection {
         rectAnchorPane.getChildren().add(rect.Notes);
     };
 
+    /**
+     * When a user clicks on a Rectangle, the event handler calls this method.
+     * If a rectangle is already selected and control is down, that 
+     * rectangle is deselected and removed from the relevant list. If it is
+     * not selected and control is held, it is added to selected rectangles.
+     * If it is not selected and control is not held, it is selected
+     * and all other rectangles are unselected.
+     * @param m an on-click mouse event
+     * @param rect a NoteRectangle object
+     */
+    private void onNoteClick(MouseEvent m, NoteRectangle rect){
+        //reset current mouse coordinates
+        reset_coordinates(m);
+            
+        //if the rectangle was selected and 'control' is down, deselect it
+        if ((SELECTED_NOTES.indexOf(rect)!= -1) && (m.isControlDown())){
+            SELECTED_NOTES.remove(rect);
+            rect.setStroke(Color.BLACK);
+        } else if (SELECTED_NOTES.indexOf(rect) == -1){
+            //if the rectangle is not selected and control is not down, 
+            //deselect all other rectangles
+            if(!m.isControlDown()){
+                RECT_LIST.forEach((e1) -> {
+                    e1.setStroke(Color.BLACK);
+                });
+                SELECTED_NOTES.clear();
+            }
+            //select the rectangle that has been clicked on 
+            SELECTED_NOTES.add(rect);
+            rect.setStroke(Color.CRIMSON);
+        }
+    }
+    
     /**
      * Crete a new EventHandler for the mouseEvent that happens when pressed 
      * on the rectangle.
@@ -302,10 +317,11 @@ public class TuneComposerNoteSelection {
                     && 
                   yCoordinate >= orgYs.get(i)
                     && 
-                  yCoordinate <= (orgYs.get(i)+heightRectangle) )
+                  yCoordinate <= (orgYs.get(i)+heightRectangle))
+
             {
                 //if true, change the boolean value stretch to true
-                    stretch = true;
+                stretch = true;
             }
         }        
     }
@@ -353,7 +369,8 @@ public class TuneComposerNoteSelection {
             
             //perform either stretching or dragging operation on all selected rectangles.
             for (int i=0; i<SELECTED_NOTES.size();i++) {
-                if (stretch) {
+                //if a 'note' rectangle is less than 5px, change nothing
+                if ((stretch) && (SELECTED_NOTES.get(i).getWidth() >= 5 )) {
                     //if it's stretch operation, set the width of rectangles.
                     double width = orgWidths.get(i);
                     SELECTED_NOTES.get(i).setWidth(width+offsetX);
