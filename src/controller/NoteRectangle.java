@@ -22,7 +22,7 @@ public class NoteRectangle {
     //attributes to hold a NoteRectangle's Rectangle, channel, color, and
     //associated instrument
     protected Rectangle Notes;
-    private int channel;
+    private final int channel;
     private final int instrument;
     
     /**
@@ -59,14 +59,6 @@ public class NoteRectangle {
      */
     public int getChannel() {
         return channel;
-    }
-    
-    /**
-     * sets value of the NoteRectangle object's 'channel' attribute
-     * @param newChannel takes user's given Channel (an integer)
-     */
-    public void setChannel(int newChannel) {
-        channel = newChannel;
     }
     
     /**
