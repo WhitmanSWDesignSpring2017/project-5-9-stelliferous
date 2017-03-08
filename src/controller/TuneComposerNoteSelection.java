@@ -128,8 +128,8 @@ public class TuneComposerNoteSelection {
     @FXML
     private void paneMouseDrag(MouseEvent w){
         
-        //if the alt-key is down, do not create a selection rectangle
-        if (w.isAltDown()){
+        //if the shift-key is down, do not create a selection rectangle
+        if (w.isShiftDown()){
             paneMouseRelease(w);
             return;
         }
@@ -200,11 +200,11 @@ public class TuneComposerNoteSelection {
         rectAnchorPane.getChildren().remove(selectRect);
         
         /*if the user has dragged on the screen, the method ends; no
-        new rectangles are created or selected. If 'alt' key is down, create
+        new rectangles are created or selected. If 'shift' key is down, create
         new rectangles anyhow */
         if (((xCoordinate != (int)e.getX()) 
             || (yCoordinate != (int)e.getY()))
-            && !e.isAltDown()){
+            && !e.isShiftDown()){
                 return;
         } 
         
