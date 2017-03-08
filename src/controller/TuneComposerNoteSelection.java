@@ -1,5 +1,4 @@
-/* CS 300-A, 2017S 
-LATEST */
+/* CS 300-A, 2017S LATEST */
 package controller;
 
 import javafx.fxml.FXML;
@@ -37,6 +36,9 @@ public class TuneComposerNoteSelection {
     final int DURATION = 100;
     final int TRACK_INDEX = 1;
     int channel = 0;
+    
+    //define the number of total pitches to be 127
+    final int PITCHTOTAL = 127;
     
     //sets the default color for note rectangles, corresponding to piano
     private String rectColor = "pianoButton";
@@ -316,7 +318,6 @@ public class TuneComposerNoteSelection {
                   yCoordinate >= orgYs.get(i)
                     && 
                   yCoordinate <= (orgYs.get(i)+heightRectangle))
-
             {
                 //if true, change the boolean value stretch to true
                 stretch = true;
@@ -376,7 +377,10 @@ public class TuneComposerNoteSelection {
                     if (SELECTED_NOTES.get(i).getWidth() >= 5 ){
                         //set rectangle width
                         SELECTED_NOTES.get(i).setWidth(width+offsetX);
-                    }
+                    } else {
+                        //if under 5px, change to 5px
+                        SELECTED_NOTES.get(i).setWidth(5);
+                    }                        
                 } else if (drag) {
                     //if it's dragging operation, set the position of rectangles 
                     //based on the distance mouse moved
@@ -444,32 +448,39 @@ public class TuneComposerNoteSelection {
         endcomp = 0;
         MidiComposition.clear();
         
-        //define the number of total pitches to be 127
-        int pitchTotal = 127;
+        //build the MidiComposition based off of TuneRectangles
+        buildMidiComposition();
+     
+        //defines end of the composition for the red line to stop at
+        lineTransition.setToX(endcomp);
         
-        //creates variables for MidiPlayer note addition
-        int pitch;
-        int startTick;
-        int duration;
-        int curChannel;
-        int curInstru;
+        //convert endcomp from miliseconds to seconds and set it to be duration
+        lineTransition.setDuration(Duration.seconds(endcomp/100));
         
-        //aceesses the current note rectangle
+        //makes red line visible, starts MidiComposition notes, moves red line
+        redLine.setVisible(true);
+        MidiComposition.play();
+        lineTransition.playFromStart();
+    }
+    
+    /**
+     * Adds MidiEvent notes to the composition based on NoteRectangles in 
+     * RectList, changing instruments when interesting
+     */
+    private void buildMidiComposition(){
+        //initialize a NoteRectangle object
         NoteRectangle rect;
-
+        
         //iterates through all rectangles in the composition
         for(int i = 0; i < RECT_LIST.size(); i++){
             rect = RECT_LIST.get(i);
             
-            /*//if the note has been deleted, do not add it to the composition
-            if (rect.getWidth()== 0){continue;}*/
-            
             //determines attributes of the MidiPlayer note to be added
-            pitch = pitchTotal-(int)rect.getY()/heightRectangle;
-            startTick = (int)rect.getX();
-            duration = (int)rect.getWidth();
-            curChannel = rect.getChannel();
-            curInstru = rect.getInstrument();
+            int pitch = PITCHTOTAL -(int)rect.getY()/heightRectangle;
+            int startTick = (int)rect.getX();
+            int duration = (int)rect.getWidth();
+            int curChannel = rect.getChannel();
+            int curInstru = rect.getInstrument();
             if (endcomp < startTick+duration) {
                 endcomp = startTick+duration;
             }
@@ -482,17 +493,6 @@ public class TuneComposerNoteSelection {
             MidiComposition.addNote(pitch, VOLUME, startTick, 
                     duration, curChannel, TRACK_INDEX);  
         }
-        
-        //defines end of the composition for the red line to stop at
-        lineTransition.setToX(endcomp);
-        
-        //convert endcomp from miliseconds to seconds and set it to be duration
-        lineTransition.setDuration(Duration.seconds(endcomp/100));
-        
-        //makes red line visible, starts MidiComposition notes, moves red line
-        redLine.setVisible(true);
-        MidiComposition.play();
-        lineTransition.playFromStart();
     }
     
     /**
@@ -723,6 +723,4 @@ public class TuneComposerNoteSelection {
             redLine.setVisible(false);
         });
     }
-}    
-
-
+}
