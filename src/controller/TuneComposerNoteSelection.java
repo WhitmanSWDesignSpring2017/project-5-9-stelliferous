@@ -141,7 +141,7 @@ public class TuneComposerNoteSelection {
         //remove current iteration of selection rectangle
         rectAnchorPane.getChildren().remove(selectRect);
         
-        //determine coordinates, size, and style of seleciton rectangle
+        //determine coordinates, size, and style of selection rectangle
         formatSelectionRectangle(w);
         
         //if control is not down, deselect all other notes
@@ -208,7 +208,7 @@ public class TuneComposerNoteSelection {
     /**
      * When the user releases the mouse, if they have created a ' selection
      * rectangle ' by dragging, that selection rectangle is removed from the 
-     * screen. Otherwise, a new Note Rectangle is created and placed. If the 
+     * screen. Otherwise, newNote() creates and places new rectangle. If the 
      * user has held down control while clicking, all other selected notes 
      * remain selected; otherwise all other notes are unselected. Clicking or 
      * control-clicking on an already-created note is delegated to the 
@@ -230,8 +230,24 @@ public class TuneComposerNoteSelection {
                 return;
         } 
         
+        //determine whether previously selected notes remain selected when
+        //a new note is created; if control is not down, deselect all old notes
+        deselectNotes(e);
+        
+        //creates and places a new NoteRectangle
+        createNoteRectangle(e);
+    };
+    
+    /**
+     * Find the current coordinates to place a 100px x 20px Note Rectangle.
+     * Assigns mouse events to that rectangle. Adds that rectangle to the
+     * list of rectangles, list of selected rectangles, and the visual 
+     * rectAnchorPane
+     * @param t an on-click mouse event
+     */
+    private void createNoteRectangle(MouseEvent t){
         //gets new mouse coordinates; calculates effective y coordinate
-        reset_coordinates(e);            
+        reset_coordinates(t);            
         int y = (int) ((yCoordinate)/heightRectangle);
         
         //creates a new NoteRectangle object
@@ -245,19 +261,15 @@ public class TuneComposerNoteSelection {
         rect.setOnMouseReleased(rectangleOnMouseReleasedEventHandler);
 
         //when an existing NoteRectangle is clicked on, begin selection process
-        rect.setOnMouseClicked((MouseEvent t) -> {
-            onNoteClick(t, rect);
-        });   
-  
-        //determine whether previously selected notes remain selected when
-        //a new note is created; if control is not down, deselect all old notes
-        deselectNotes(e);
+        rect.setOnMouseClicked((MouseEvent o) -> {
+            onNoteClick(o, rect);
+        }); 
         
         //add newly created rectangles to lists, visual
         RECT_LIST.add(rect);
         SELECTED_NOTES.add(rect);        
         rectAnchorPane.getChildren().add(rect.Notes);
-    };
+    }
 
     /**
      * When a user clicks on a Rectangle, the event handler calls this method.
@@ -286,6 +298,7 @@ public class TuneComposerNoteSelection {
             SELECTED_NOTES.add(rect);
             rect.setStroke(Color.CRIMSON);
         }
+        rect.setStroke(Color.CRIMSON);
     }
     
     /**
