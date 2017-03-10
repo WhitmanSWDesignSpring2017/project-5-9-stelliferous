@@ -4,6 +4,8 @@
 
 - We divided the code into classes and methods based on the principles of Least Astonishment and that of code decomposition. Whenever possible, we broke code off into different classes, and had methods delegate tasks to one another. Our design for Project 4 is much better organized than in Project 3 in that we put code into seperate files based on their function and required accessibility. We responded to feedback with better variable names, a focus on clarity, and generally better organization of code. 
 
+- As part of our "stretch goal," we added additional 'special effect' instruments, added a "clear" menu item to allow the user to clear all notes, and added a "shift" hotkey option (if the user holds down 'shift' while dragging on the composition panel, they will create new notes rather than a selection rectangle).
+
 > Explain why your way was the elegant way to do it. Address any improvements you made based on my feedback.
 
 - Because of how modular our code is, it is more simple, in that the logical relationships between classes and methods can be more clearly understood. It is maintainable, as dividing the code into smaller 'bits' isolates the area where a problem could occur. Dividing code into different files and packages also gives it greater extensibility, as a programmer can now expand different areas of the code into different, unexpected directions. 
@@ -14,7 +16,7 @@
 
 > Finally, describe how your team collaborated on the project. What did you do together? What did you do separately? What did each team member contribute?
 
-- We met together several times, and collaborated in talking over the best way of approaching code. For the most part, however, individuals worked seperately and on their own time. Together, we discussed the overall layout of the code's functionality, and tackled problems that we'd run into individually. Most 'features,' however, were specifically coded for by individuals alone. Each team member _________________. Kai worked on the functionality of the play button, helped suggest ideas on the drag select, and worked on general edits.
+- We met together several times, and collaborated in talking over the best way of approaching code. For the most part, however, individuals worked seperately and on their own time. Together, we discussed the overall layout of the code's functionality, and tackled problems that we'd run into individually. Most 'features,' however, were specifically coded for by individuals alone. Kai worked on the functionality of the play button, helped suggest ideas on the drag select, and worked on general edits. Tyler used and refactored his old team's projects, implemented the click/control-click on notes, selection rectangle dragging, added the stretch goal features of "shift" to add notes while dragging & "clear" menu item, and formatted the instruments' colors and MidiEvent Program Changes (+ general refactoring, code organization). Jing ___________________________________________
 
 > In your reflection on collaboration, include a reflection on estimation: How did you use your estimates? For which requirement(s) did you make the most inaccurate estimate(s)? Why?
 
