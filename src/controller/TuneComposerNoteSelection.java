@@ -35,7 +35,7 @@ public class TuneComposerNoteSelection {
     final int VOLUME = 120;
     final int DURATION = 100;
     final int TRACK_INDEX = 1;
-    int channel = 0;
+    private int channel = 0;
     
     
     //define the number of total pitches to be 127
@@ -54,7 +54,7 @@ public class TuneComposerNoteSelection {
     public double endcomp;
     
     //constructs the TranslateTransition for use later in animation of redline
-    private final TranslateTransition lineTransition = new TranslateTransition();
+    private final TranslateTransition LINETRANSITION = new TranslateTransition();
     
     //creates a list to store created rectangles, that they may be later erased
     private final ArrayList<NoteRectangle> RECT_LIST = new ArrayList<>();
@@ -66,7 +66,7 @@ public class TuneComposerNoteSelection {
     @FXML Line redLine;
     
     //creates a rectangle that users will control by dragging
-    private final Rectangle selectRect = new Rectangle();
+    private final Rectangle SELECTRECT = new Rectangle();
 
     //stores x and y coordinates, to later calculate distance moved by the mouse
     private double yCoordinate = 0;
@@ -139,7 +139,7 @@ public class TuneComposerNoteSelection {
         }
 
         //remove current iteration of selection rectangle
-        rectAnchorPane.getChildren().remove(selectRect);
+        rectAnchorPane.getChildren().remove(SELECTRECT);
         
         //determine coordinates, size, and style of selection rectangle
         formatSelectionRectangle(w);
@@ -149,10 +149,10 @@ public class TuneComposerNoteSelection {
 
         //determine whether any "note rectangles" are within the selection rect
         for(NoteRectangle r:RECT_LIST){
-            if (selectRect.getX() + (selectRect.getWidth()) > r.Notes.getX() 
-                    && selectRect.getX()  < r.Notes.getX() + (r.Notes.getWidth()) 
-                    && selectRect.getY() + (selectRect.getHeight()) > r.Notes.getY() 
-                    && selectRect.getY()  < r.Notes.getY() + (r.Notes.getHeight())){   
+            if (SELECTRECT.getX() + (SELECTRECT.getWidth()) > r.Notes.getX() 
+                    && SELECTRECT.getX()  < r.Notes.getX() + (r.Notes.getWidth()) 
+                    && SELECTRECT.getY() + (SELECTRECT.getHeight()) > r.Notes.getY() 
+                    && SELECTRECT.getY()  < r.Notes.getY() + (r.Notes.getHeight())){   
                 // select note rectangles within the selection area
                 SELECTED_NOTES.add(r);
                 r.Notes.setStroke(Color.CRIMSON);
@@ -187,22 +187,22 @@ public class TuneComposerNoteSelection {
         
         //determine coordinates of top-left corner of the rectangle
         if (xCoordinate<currentX){
-            selectRect.setX(xCoordinate);
+            SELECTRECT.setX(xCoordinate);
         } else {
-            selectRect.setX(currentX);
+            SELECTRECT.setX(currentX);
         }
         if ((yCoordinate<currentY)){
-            selectRect.setY(yCoordinate);
+            SELECTRECT.setY(yCoordinate);
         } else {
-            selectRect.setY(currentY);
+            SELECTRECT.setY(currentY);
         }
         
         //detail, style, and display selection rectangle
-        selectRect.setWidth(abs(currentX-xCoordinate));
-        selectRect.setHeight(abs(currentY-yCoordinate));
-        selectRect.setStroke(Color.CHARTREUSE);
-        selectRect.setFill(Color.TRANSPARENT);
-        rectAnchorPane.getChildren().add(selectRect); 
+        SELECTRECT.setWidth(abs(currentX-xCoordinate));
+        SELECTRECT.setHeight(abs(currentY-yCoordinate));
+        SELECTRECT.setStroke(Color.CHARTREUSE);
+        SELECTRECT.setFill(Color.TRANSPARENT);
+        rectAnchorPane.getChildren().add(SELECTRECT); 
     }
 
     /**
@@ -219,7 +219,7 @@ public class TuneComposerNoteSelection {
     private void paneMouseRelease(MouseEvent e){
         
         //removes 'selection rectangles,' created by dragging, from screen
-        rectAnchorPane.getChildren().remove(selectRect);
+        rectAnchorPane.getChildren().remove(SELECTRECT);
         
         /*if the user has dragged on the screen, the method ends; no
         new rectangles are created or selected. If 'shift' key is down, create
@@ -476,15 +476,15 @@ public class TuneComposerNoteSelection {
         buildMidiComposition();
      
         //defines end of the composition for the red line to stop at
-        lineTransition.setToX(endcomp);
+        LINETRANSITION.setToX(endcomp);
         
         //convert endcomp from miliseconds to seconds and set it to be duration
-        lineTransition.setDuration(Duration.seconds(endcomp/100));
+        LINETRANSITION.setDuration(Duration.seconds(endcomp/100));
         
         //makes red line visible, starts MidiComposition notes, moves red line
         redLine.setVisible(true);
         MidiComposition.play();
-        lineTransition.playFromStart();
+        LINETRANSITION.playFromStart();
     }
     
     /**
@@ -527,7 +527,7 @@ public class TuneComposerNoteSelection {
     @FXML
     private void handleStopAction(ActionEvent e){
         MidiComposition.stop();
-        lineTransition.stop();
+        LINETRANSITION.stop();
         redLine.setVisible(false);
     }
     
@@ -740,10 +740,10 @@ public class TuneComposerNoteSelection {
      */
     public void initialize() {
         redLine.setVisible(false);
-        lineTransition.setNode(redLine);
-        lineTransition.setFromX(0);
-        lineTransition.setInterpolator(Interpolator.LINEAR);
-        lineTransition.setOnFinished((e)->{
+        LINETRANSITION.setNode(redLine);
+        LINETRANSITION.setFromX(0);
+        LINETRANSITION.setInterpolator(Interpolator.LINEAR);
+        LINETRANSITION.setOnFinished((e)->{
             redLine.setVisible(false);
         });
     }
