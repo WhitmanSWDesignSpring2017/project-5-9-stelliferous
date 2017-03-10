@@ -22,21 +22,21 @@ public class NoteRectangle {
     //attributes to hold a NoteRectangle's Rectangle, channel, color, and
     //associated instrument
     protected Rectangle Notes;
-    private final int channel;
-    private final int instrument;
+    private final int CHANNEL;
+    private final int INSTURMENT;
     
     /**
      * Initializer for the NoteRectangle object
      * @param x x-coordinate of upper-left hand corner of the rectangle
      * @param y y-coordinate of upper-left hand corner of the rectangle
      * @param color fill color of the rectangle
-     * @param channel channel number of the rectangle
-     * @param instrument instrument number of the rectangle
+     * @param CHANNEL channel number of the rectangle
+     * @param INSTURMENT instrument number of the rectangle
      */        
-    public NoteRectangle(double x, int y, String color, int channel, int instrument) {
+    public NoteRectangle(double x, int y, String color, int CHANNEL, int INSTURMENT) {
         //assigns user-given attribute values of instrument, channel, color
-        this.instrument = instrument;
-        this.channel = channel;
+        this.INSTURMENT = INSTURMENT;
+        this.CHANNEL = CHANNEL;
         
         //creates a new rectangle object for visual representation
         Notes = new Rectangle(x,y,100,10);
@@ -50,7 +50,7 @@ public class NoteRectangle {
      * @return instrument
      */
     public int getInstrument() {
-        return instrument;
+        return INSTURMENT;
     }
     
     /**
@@ -58,7 +58,7 @@ public class NoteRectangle {
      * @return channel
      */
     public int getChannel() {
-        return channel;
+        return CHANNEL;
     }
     
     /**
@@ -95,10 +95,10 @@ public class NoteRectangle {
 
     /**
      * Allows the user to set the stroke color of a Rectangle Note
-     * @param newcolor the color given by the user (should be crimson/black)
+     * @param newColor the color given by the user (should be crimson/black)
      */
-    public void setStroke(Color newcolor) {
-        Notes.setStroke(newcolor);
+    public void setStroke(Color newColor) {
+        Notes.setStroke(newColor);
     }
     
     /**
