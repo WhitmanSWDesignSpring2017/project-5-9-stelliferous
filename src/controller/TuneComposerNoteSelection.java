@@ -298,7 +298,6 @@ public class TuneComposerNoteSelection {
             SELECTED_NOTES.add(rect);
             rect.setStroke(Color.CRIMSON);
         }
-        rect.setStroke(Color.CRIMSON);
     }
     
     /**
