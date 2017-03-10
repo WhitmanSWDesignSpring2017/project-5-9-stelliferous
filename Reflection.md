@@ -14,7 +14,7 @@
 
 > Finally, describe how your team collaborated on the project. What did you do together? What did you do separately? What did each team member contribute?
 
-- We met together several times, and collaborated in talking over the best way of approaching code. For the most part, however, individuals worked seperately and on their own time. Together, we discussed the overall layout of the code's functionality, and tackled problems that we'd run into individually. Most 'features,' however, were specifically coded for by individuals alone. Each team member _________________.
+- We met together several times, and collaborated in talking over the best way of approaching code. For the most part, however, individuals worked seperately and on their own time. Together, we discussed the overall layout of the code's functionality, and tackled problems that we'd run into individually. Most 'features,' however, were specifically coded for by individuals alone. Each team member _________________. Kai worked on the functionality of the play button, helped suggest ideas on the drag select, and worked on general edits.
 
 > In your reflection on collaboration, include a reflection on estimation: How did you use your estimates? For which requirement(s) did you make the most inaccurate estimate(s)? Why?
 
