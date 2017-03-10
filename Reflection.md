@@ -10,7 +10,7 @@
 
 > Explain what, if anything, in your solution is inelegant and why you didn't make it elegant (for example, maybe you didn't have time or the knowledge to fix it).
 
-- As usual, there is always more refactoring, reorganization, and research that could be done with greater time. Because we aren't that knowledgable about working in Java, JavaFX, CSS, or FXML, a seasoned programmer might know simpler ways/functions/libraries of accomplishing what we did. 
+- As usual, there is always more refactoring, reorganization, and research that could be done with greater time. Because we aren't that knowledgable about working in Java, JavaFX, CSS, or FXML, a seasoned programmer might know simpler ways/functions/libraries of accomplishing what we did. We could probably break our fxml code into seperate files as well, but at this point we don't have the technical knowledge to establish complex communication between controllers.
 
 > Finally, describe how your team collaborated on the project. What did you do together? What did you do separately? What did each team member contribute?
 
@@ -18,4 +18,4 @@
 
 > In your reflection on collaboration, include a reflection on estimation: How did you use your estimates? For which requirement(s) did you make the most inaccurate estimate(s)? Why?
 
-- We did not place a big emphasis on our initial estimates, as we felt that our limited experience with estimation and these programming languages made precise estimation difficult. I think we divided each assignment/task by association with other tasks, rather than by difficulty. This makes sense, as many features built upon one another. I think that our most inaccurate estimations concerned ____________________________________.
+- First of all, we started working early because our estimations indicated that we needed a large amount of time. We probably exceeded that estimate of ~30 hrs. We did not place a big emphasis on our initial estimates, as we felt that our limited experience with estimation and these programming languages made precise estimation difficult. I think we divided each assignment/task by association with other tasks, rather than by difficulty. This makes sense, as many features built upon one another. I think that our most inaccurate estimations concerned making the code more elegant and refactoring it, which we didn't really take into account in our in-class estimations.
