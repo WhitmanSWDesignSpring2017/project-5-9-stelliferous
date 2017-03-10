@@ -45,7 +45,7 @@ public class TuneComposerNoteSelection {
     private String rectColor = "pianoButton";
     
     //sets a final interger for the height of each rectangles which cannot be changed
-    private final int heightRectangle = 10;
+    private final int HEIGHTRECTANGLE = 10;
     
     //creates a private interger to indicate which is the instrument selected
     private int instrument = 0;
@@ -248,10 +248,10 @@ public class TuneComposerNoteSelection {
     private void createNoteRectangle(MouseEvent t){
         //gets new mouse coordinates; calculates effective y coordinate
         reset_coordinates(t);            
-        int y = (int) ((yCoordinate)/heightRectangle);
+        int y = (int) ((yCoordinate)/HEIGHTRECTANGLE);
         
         //creates a new NoteRectangle object
-        NoteRectangle rect = new NoteRectangle(xCoordinate,y*heightRectangle, 
+        NoteRectangle rect = new NoteRectangle(xCoordinate,y*HEIGHTRECTANGLE, 
                                                rectColor, channel, instrument);
 
         
@@ -340,7 +340,7 @@ public class TuneComposerNoteSelection {
                     && 
                   yCoordinate >= ORIGINALY.get(i)
                     && 
-                  yCoordinate <= (ORIGINALY.get(i)+heightRectangle) )
+                  yCoordinate <= (ORIGINALY.get(i)+HEIGHTRECTANGLE) )
             {
                 //if true, change the boolean value stretch to true
                 stretch = true;
@@ -361,7 +361,7 @@ public class TuneComposerNoteSelection {
                                  +SELECTED_NOTES.get(i).getWidth())
                  && 
                  yCoordinate >= ORIGINALY.get(i)
-                 && yCoordinate <= (ORIGINALY.get(i)+heightRectangle) ) 
+                 && yCoordinate <= (ORIGINALY.get(i)+HEIGHTRECTANGLE) ) 
                {
                  //if true, change the boolean value drag to true
                  drag = true;
@@ -442,7 +442,8 @@ public class TuneComposerNoteSelection {
             for (int i=0; i<SELECTED_NOTES.size(); i++) {
                 //reset the position of rectangles to fit it between grey lines
                 double currentY = SELECTED_NOTES.get(i).getY();
-                double finalY = ((int)(currentY/heightRectangle))*heightRectangle;
+                double finalY = ((int)(currentY/HEIGHTRECTANGLE))
+                        *HEIGHTRECTANGLE;
                 double offset = finalY - currentY;
                 SELECTED_NOTES.get(i).setTranslateY(offset);
             }
@@ -499,7 +500,7 @@ public class TuneComposerNoteSelection {
             rect = RECT_LIST.get(i);
             
             //determines attributes of the MidiPlayer note to be added
-            int pitch = PITCHTOTAL -(int)rect.getY()/heightRectangle;
+            int pitch = PITCHTOTAL -(int)rect.getY()/HEIGHTRECTANGLE;
             int startTick = (int)rect.getX();
             int duration = (int)rect.getWidth();
             int curChannel = rect.getChannel();
