@@ -432,6 +432,7 @@ public class TuneComposerNoteSelection {
         public void handle(MouseEvent t) {
             //reset the stretching operation to false
             stretch = false;
+            drag = false;
             
             //clear all three arraylists, resets coordinates
             ORIGINALX.clear();
