@@ -8,6 +8,21 @@
     -fx-background-color: lavender;
 }
 
+.strokeRed{
+    -fx-stroke: crimson;
+    -fx-stroke-width: 2px;
+}
+
+.strokeBlack{
+    -fx-stroke: black;   
+    -fx-stroke-width: 2px;
+}
+
+.selectRect{
+    -fx-stroke: chartreuse;
+    -fx-fill: transparent;
+}
+
 /* Determines color of moving line that signifies time */
 .redLine{
     -fx-stroke: crimson;
