@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import javafx.event.EventHandler;
@@ -21,9 +16,13 @@ public class NoteRectangle {
     
     //attributes to hold a NoteRectangle's Rectangle, channel, color, and
     //associated instrument
+
     protected Rectangle Notes;
     private final int CHANNEL;
     private final Instrument INSTRUMENT;
+    private final String instrumentColor;
+    private TuneComposerNoteSelection master;
+
     
     /**
      * Initializer for the NoteRectangle object
@@ -33,14 +32,18 @@ public class NoteRectangle {
      */        
     public NoteRectangle(double x, int y, Instrument instrument) {
         //assigns user-given attribute values of instrument, channel, color
-        this.INSTRUMENT = instrument;
-        this.CHANNEL = instrument.getChannel();
+        this.instrument = instrument;
+        this.channel = instrument.getChannel();
         
         //creates a new rectangle object for visual representation
-        Notes = new Rectangle(x,y,100,10);
-        Notes.setFill(instrument.getDisplayColor());
-        Notes.setStroke(Color.CRIMSON);
-        Notes.setStrokeWidth(2);
+        notes.setFill(instrument.getDisplayColor());
+      
+        //assigns user-given attribute values of instrument, channel, color
+        this.master = master;
+      
+        //creates a new rectangle object for visual representation
+        notes = new Rectangle(x,y,100,10);
+        notes.getStyleClass().add("strokeRed");
     }
     
     /**
@@ -48,47 +51,51 @@ public class NoteRectangle {
      * @return instrument
      */
     public Instrument getInstrument() {
-        return INSTRUMENT;
+        return instrument;
     }
     
+    protected void clearStroke() {
+        notes.getStyleClass().clear();
+        notes.getStyleClass().add(instrumentColor);
+    }
     /**
      * returns value of the NoteRectangle object's 'channel' attribute
      * @return channel
      */
     public int getChannel() {
-        return CHANNEL;
+        return channel;
     }
     
     /**
-     * Set the MousePressed event for the Rectangle Notes
+     * Set the MousePressed event for the Rectangle notes
      * @param mouseEvent an incoming event, when the mouse is pressed
      */
     public void setOnMousePressed(EventHandler<MouseEvent> mouseEvent) {
-        Notes.setOnMousePressed(mouseEvent);
+        notes.setOnMousePressed(mouseEvent);
     }
     
     /**
-     * Sets the MouseDragged event for the Rectangle Notes
+     * Sets the MouseDragged event for the Rectangle notes
      * @param mouseEvent an incoming event, when the mouse is dragged
      */
     public void setOnMouseDragged(EventHandler<MouseEvent> mouseEvent) {
-        Notes.setOnMouseDragged(mouseEvent);
+        notes.setOnMouseDragged(mouseEvent);
     }
     
     /**
-     * Sets the MouseReleased event for the Rectangle Notes
+     * Sets the MouseReleased event for the Rectangle notes
      * @param mouseEvent an incoming event, when the mouse is released
      */
     public void setOnMouseReleased(EventHandler<MouseEvent> mouseEvent) {
-        Notes.setOnMouseReleased(mouseEvent);
+        notes.setOnMouseReleased(mouseEvent);
     }
     
     /**
-     * Sets the Mouse Clicked event for the Rectangle Notes
+     * Sets the Mouse Clicked event for the Rectangle notes
      * @param mouseEvent an incoming event, when the mouse is clicked
      */
     public void setOnMouseClicked(EventHandler<MouseEvent> mouseEvent) {
-        Notes.setOnMouseClicked(mouseEvent);
+        notes.setOnMouseClicked(mouseEvent);
     }
 
     /**
@@ -96,39 +103,39 @@ public class NoteRectangle {
      * @param newColor the color given by the user (should be crimson/black)
      */
     public void setStroke(Color newColor) {
-        Notes.setStroke(newColor);
+        notes.setStroke(newColor);
     }
     
     /**
      * Returns the x-coordinate of a Rectangle Note
-     * @return Notes.getX() the x-coordinate
+     * @return notes.getX() the x-coordinate
      */
     public double getX() {
-        return Notes.getX();
+        return notes.getX();
     }
     
     /**
      * Returns the y-coordinate of a Rectangle Note
-     * @return Notes.getY() the y-coordinate
+     * @return notes.getY() the y-coordinate
      */
     public double getY() {
-        return Notes.getY();
+        return notes.getY();
     }
     
     /**
      * Returns the width of a Rectangle Note
-     * @return Notes.getWidth(), the width
+     * @return notes.getWidth(), the width
      */
     public double getWidth() {
-        return Notes.getWidth();
+        return notes.getWidth();
     }
     
     /**
      * Returns the height of a Rectangle Note
-     * @return Notes.getHeight(), the height
+     * @return notes.getHeight(), the height
      */
     public double getHeight() {
-        return Notes.getHeight();
+        return notes.getHeight();
     }
     
     /**
@@ -136,7 +143,7 @@ public class NoteRectangle {
      * @param width the width value given by the user
      */
     public void setWidth(double width) {
-        Notes.setWidth(width);
+        notes.setWidth(width);
     }        
     
     /**
@@ -144,7 +151,7 @@ public class NoteRectangle {
      * @param height the height value given by the user
      */
     public void setHeight(double height) {
-        Notes.setHeight(height);
+        notes.setHeight(height);
     }
     
     /**
@@ -152,7 +159,7 @@ public class NoteRectangle {
      * @param newX the x-coordinate double value given by the user
      */
     public void setX(double newX) {
-        Notes.setX(newX);
+        notes.setX(newX);
     }
     
     /**
@@ -160,7 +167,7 @@ public class NoteRectangle {
      * @param newY the y-coordinate double value given by the user
      */
     public void setY(double newY) {
-        Notes.setY(newY);
+        notes.setY(newY);
     }
     
     /**
@@ -168,6 +175,6 @@ public class NoteRectangle {
      * @param translateY the translation in the y-direction given by the user
      */
     public void setTranslateY(double translateY) {
-        Notes.setTranslateY(translateY);
+        notes.setTranslateY(translateY);
     }
 }

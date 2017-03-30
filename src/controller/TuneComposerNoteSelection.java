@@ -31,69 +31,71 @@ import javax.sound.midi.ShortMessage;
  */
 public class TuneComposerNoteSelection {
     
-    //creates a MidiPlayer object with 100 ticks/beat, 1 beat/second
+    //creates a MidiPlayer object with 100 ticks per beat, 1 beat per second
     private final MidiPlayer MidiComposition = new MidiPlayer(100,60);
    
-    //sets, volume, duration, channel, and trackIndex for the MidiPlayer's notes
-    final int VOLUME = 120;
-    final int DURATION = 100;
-    final int TRACK_INDEX = 1;
-    private int channel = 0;
+    //sets volume for the MidiPlayer's notes
+    private static final int VOLUME = 120;
     
+    //sets trackIndex for the MidiPlayer's notes
+    private static final int TRACK_INDEX = 1;
     
     //define the number of total pitches to be 127
-    final int PITCHTOTAL = 127;
+    private static final int PITCHTOTAL = 127;
+    
+    //sets constant height of each rectangle
+    private static final int HEIGHTRECTANGLE = 10;
+    
+    //the pixel length in which a user can click to stretch a NoteRectangle
+    private static final int STRETCHZONE = 5;
+    
+    //sets channel for the MidiPlayer's notes
+    private int channel = 0;
+    
+    //creates a private integer to indicate which is the instrument selected
+    private int instrument = 0;
+    
+    //makes available rectAnchorPane, which stores the rectangles
+    @FXML AnchorPane rectAnchorPane;
     
     //sets the default color for note rectangles, corresponding to piano
     private String rectColor = "pianoButton";
     
-    //sets a final interger for the height of each rectangles which cannot be changed
-    private final int HEIGHTRECTANGLE = 10;
-    
-    //creates a private interger to indicate which is the instrument selected
-    private int instrument = 0;
-    
-    //refers to the end of the current notes
-    public double endcomp;
-    
-    //constructs the TranslateTransition for use later in animation of redline
-    private final TranslateTransition LINETRANSITION = new TranslateTransition();
-    
     //creates a list to store created rectangles, that they may be later erased
-    private final ArrayList<NoteRectangle> RECT_LIST = new ArrayList<>();
+    private ArrayList<NoteRectangle> rectList = new ArrayList<>();
     
     //creates a list to store selected rectangles
-    private final ArrayList<NoteRectangle> SELECTED_NOTES = new ArrayList<>();
-        
+    private ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
+    
     //makes available redLine, which stores the line object.
     @FXML Line redLine;
     
-    //creates a rectangle that users will control by dragging
-    private final Rectangle SELECTRECT = new Rectangle();
+    //constructs the TranslateTransition for use later in animation of redline
+    private final TranslateTransition lineTransition = new TranslateTransition();
+    
+    //refers to the end of the current notes
+    public double endcomp;
 
     //stores x and y coordinates, to later calculate distance moved by the mouse
     private double yCoordinate = 0;
     private double xCoordinate = 0;
     
-    //the pixel length in which a user can click to stretch a NoteRectangle
-    final int STRETCHZONE = 5;
-    
-    //makes available rectAnchorPane, which stores the rectangles
-    @FXML AnchorPane rectAnchorPane;
+    //creates a rectangle that users will control by dragging
+    private final Rectangle selectRect = new Rectangle();
     
     //create a new ArrayList to store original X positions of selected rectangles
-    private final ArrayList<Double> ORIGINALX = new ArrayList<>();
+    private final ArrayList<Double> originalX = new ArrayList<>();
 
     //create a new ArrayList to store original Y positions of selected rectangles
-    private final ArrayList<Double> ORIGINALY = new ArrayList<>();
+    private final ArrayList<Double> originalY = new ArrayList<>();
     
     //create a new ArrayList to store original widths of selected rectangles
-    private final ArrayList<Double> ORIGINALWIDTH = new ArrayList<>();
+    private final ArrayList<Double> originalWidth = new ArrayList<>();
     
     //create two new boolean value to determine whether the action is for stretch
     //and drag
     private boolean stretch;
-    private boolean drag;
+    //private boolean drag;
     
     
     /**
@@ -142,7 +144,7 @@ public class TuneComposerNoteSelection {
         }
 
         //remove current iteration of selection rectangle
-        rectAnchorPane.getChildren().remove(SELECTRECT);
+        rectAnchorPane.getChildren().remove(selectRect);
         
         //determine coordinates, size, and style of selection rectangle
         formatSelectionRectangle(w);
@@ -151,14 +153,20 @@ public class TuneComposerNoteSelection {
         deselectNotes(w);
 
         //determine whether any "note rectangles" are within the selection rect
-        for(NoteRectangle r:RECT_LIST){
-            if (SELECTRECT.getX() + (SELECTRECT.getWidth()) > r.Notes.getX() 
-                    && SELECTRECT.getX()  < r.Notes.getX() + (r.Notes.getWidth()) 
-                    && SELECTRECT.getY() + (SELECTRECT.getHeight()) > r.Notes.getY() 
-                    && SELECTRECT.getY()  < r.Notes.getY() + (r.Notes.getHeight())){   
+
+        for(NoteRectangle r:rectList){
+            if (selectRect.getX() + (selectRect.getWidth()) > r.notes.getX() 
+                    && selectRect.getX()  < r.notes.getX() + (r.notes.getWidth()) 
+                    && selectRect.getY() + (selectRect.getHeight()) > r.notes.getY() 
+                    && selectRect.getY()  < r.notes.getY() + (r.notes.getHeight())){   
                 // select note rectangles within the selection area
-                SELECTED_NOTES.add(r);
-                r.Notes.setStroke(Color.CRIMSON);
+                selectedNotes.add(r);
+                r.clearStroke();
+                r.notes.getStyleClass().add("strokeRed");
+
+                selectedNotes.add(r);
+                r.notes.getStyleClass().add("strokeRed");
+
             }
         }     
     }
@@ -170,10 +178,11 @@ public class TuneComposerNoteSelection {
     private void deselectNotes(MouseEvent m){
         //determine whether previously selected notes remain selected
         if(!m.isControlDown()){
-            RECT_LIST.forEach((e1) -> {
-                e1.setStroke(Color.BLACK);
+            rectList.forEach((e1) -> {
+                e1.clearStroke();
+                e1.notes.getStyleClass().add("strokeBlack");
             });
-            SELECTED_NOTES.clear();
+            selectedNotes.clear();
         }  
     }
     
@@ -190,22 +199,21 @@ public class TuneComposerNoteSelection {
         
         //determine coordinates of top-left corner of the rectangle
         if (xCoordinate<currentX){
-            SELECTRECT.setX(xCoordinate);
+            selectRect.setX(xCoordinate);
         } else {
-            SELECTRECT.setX(currentX);
+            selectRect.setX(currentX);
         }
         if ((yCoordinate<currentY)){
-            SELECTRECT.setY(yCoordinate);
+            selectRect.setY(yCoordinate);
         } else {
-            SELECTRECT.setY(currentY);
+            selectRect.setY(currentY);
         }
         
         //detail, style, and display selection rectangle
-        SELECTRECT.setWidth(abs(currentX-xCoordinate));
-        SELECTRECT.setHeight(abs(currentY-yCoordinate));
-        SELECTRECT.setStroke(Color.CHARTREUSE);
-        SELECTRECT.setFill(Color.TRANSPARENT);
-        rectAnchorPane.getChildren().add(SELECTRECT); 
+        selectRect.setWidth(abs(currentX-xCoordinate));
+        selectRect.setHeight(abs(currentY-yCoordinate));
+        selectRect.getStyleClass().add("selectRect");
+        rectAnchorPane.getChildren().add(selectRect); 
     }
 
     /**
@@ -222,7 +230,7 @@ public class TuneComposerNoteSelection {
     private void paneMouseRelease(MouseEvent e){
         
         //removes 'selection rectangles,' created by dragging, from screen
-        rectAnchorPane.getChildren().remove(SELECTRECT);
+        rectAnchorPane.getChildren().remove(selectRect);
         
         /*if the user has dragged on the screen, the method ends; no
         new rectangles are created or selected. If 'shift' key is down, create
@@ -259,7 +267,8 @@ public class TuneComposerNoteSelection {
         
         //creates a new NoteRectangle object
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*HEIGHTRECTANGLE, 
-                                               selectedInstrument);
+                                               selectedInstrument, this);
+
 
         
         //assigns mouse-action events to the created NoteRectangle
@@ -273,9 +282,9 @@ public class TuneComposerNoteSelection {
         }); 
         
         //add newly created rectangles to lists, visual
-        RECT_LIST.add(rect);
-        SELECTED_NOTES.add(rect);        
-        rectAnchorPane.getChildren().add(rect.Notes);
+        rectList.add(rect);
+        selectedNotes.add(rect);        
+        rectAnchorPane.getChildren().add(rect.notes);
     }
 
     /**
@@ -293,17 +302,20 @@ public class TuneComposerNoteSelection {
         reset_coordinates(m);
             
         //if the rectangle was selected and 'control' is down, deselect it
-        if ((SELECTED_NOTES.indexOf(rect)!= -1) && (m.isControlDown())){
-            SELECTED_NOTES.remove(rect);
-            rect.setStroke(Color.BLACK);
-        } else if (SELECTED_NOTES.indexOf(rect) == -1){
+        if ((selectedNotes.indexOf(rect)!= -1) && (m.isControlDown())){
+            selectedNotes.remove(rect);
+            rect.clearStroke();            
+            rect.notes.getStyleClass().add("strokeBlack");
+        } else if (selectedNotes.indexOf(rect) == -1){
             //if the rectangle is not selected and control is not down, 
             //deselect all other rectangles
             deselectNotes(m);
             
             //select the rectangle that has been clicked on 
-            SELECTED_NOTES.add(rect);
-            rect.setStroke(Color.CRIMSON);
+            selectedNotes.add(rect);
+            rect.clearStroke();
+
+            rect.notes.getStyleClass().add("strokeRed");
         }
     }
     
@@ -321,12 +333,12 @@ public class TuneComposerNoteSelection {
         @Override
         public void handle(MouseEvent t) {
             reset_coordinates(t);
-            for (int i=0; i<SELECTED_NOTES.size();i++) {
+            for (int i=0; i<selectedNotes.size();i++) {
                 //add all orginal positions of the selected rectangles to arraylists
-                ORIGINALX.add(SELECTED_NOTES.get(i).getX()); 
-                ORIGINALY.add(SELECTED_NOTES.get(i).getY());
+                originalX.add(selectedNotes.get(i).getX()); 
+                originalY.add(selectedNotes.get(i).getY());
                 //add all widths of the selected rectangles to the arraylist
-                ORIGINALWIDTH.add(SELECTED_NOTES.get(i).getWidth());
+                originalWidth.add(selectedNotes.get(i).getWidth());
             }
         }
     };
@@ -337,17 +349,17 @@ public class TuneComposerNoteSelection {
      */    
     private void determineStretch() {
         //define the dragzone to be 5 pixels
-        for (int i=0; i<SELECTED_NOTES.size();i++) {
+        for (int i=0; i<selectedNotes.size();i++) {
             //check whether the mouseposition is within the stretching zone
-            if ( xCoordinate >= (ORIGINALX.get(i)
-                                +SELECTED_NOTES.get(i).getWidth()-STRETCHZONE)
+            if ( xCoordinate >= (originalX.get(i)
+                                +selectedNotes.get(i).getWidth()-STRETCHZONE)
                     &&
-                  xCoordinate <= (ORIGINALX.get(i)
-                               +SELECTED_NOTES.get(i).getWidth())
+                  xCoordinate <= (originalX.get(i)
+                               +selectedNotes.get(i).getWidth())
                     && 
-                  yCoordinate >= ORIGINALY.get(i)
+                  yCoordinate >= originalY.get(i)
                     && 
-                  yCoordinate <= (ORIGINALY.get(i)+HEIGHTRECTANGLE) )
+                  yCoordinate <= (originalY.get(i)+HEIGHTRECTANGLE) )
             {
                 //if true, change the boolean value stretch to true
                 stretch = true;
@@ -358,24 +370,25 @@ public class TuneComposerNoteSelection {
     /**
      * Change the boolean value drag based on the current position of mouse
      * True if within the dragging rather than stretching zone
-     */   
+     
     private void determineDrag() {
-        for (int i=0; i<SELECTED_NOTES.size();i++) {
+        for (int i=0; i<selectedNotes.size();i++) {
             //check whether the mouseposition is within the dragging zone
-            if ( xCoordinate >= ORIGINALX.get(i)
+            if ( xCoordinate >= originalX.get(i)
                  &&
-                 xCoordinate <= (ORIGINALX.get(i)
-                                 +SELECTED_NOTES.get(i).getWidth())
+                 xCoordinate <= (originalX.get(i)
+                                 +selectedNotes.get(i).getWidth())
                  && 
-                 yCoordinate >= ORIGINALY.get(i)
-                 && yCoordinate <= (ORIGINALY.get(i)+HEIGHTRECTANGLE) ) 
+                 yCoordinate >= originalY.get(i)
+                 && yCoordinate <= (originalY.get(i)+HEIGHTRECTANGLE) ) 
                {
                  //if true, change the boolean value drag to true
                  drag = true;
                }
         }    
     }
-
+    */
+    
     /**
      * Crete a new EventHandler for the mouseEvent that happens when dragging 
      * the rectangle.
@@ -396,28 +409,28 @@ public class TuneComposerNoteSelection {
             
             //determine whether should be performing stretch or drag
             determineStretch();
-            determineDrag();
+            //determineDrag();
             
             //perform either stretching or dragging operation on all selected rectangles.
-            for (int i=0; i<SELECTED_NOTES.size();i++) {
+            for (int i=0; i<selectedNotes.size();i++) {
                 if (stretch) {
                     //if it's stretch operation, get the width of rectangles.
-                    double width = ORIGINALWIDTH.get(i);
+                    double width = originalWidth.get(i);
                     //if a 'note' rectangle is not 5px or more, change nothing
-                    if (ORIGINALWIDTH.get(i)+offsetX >= STRETCHZONE ){
+                    if (originalWidth.get(i)+offsetX >= STRETCHZONE ){
                         //set rectangle width
-                        SELECTED_NOTES.get(i).setWidth(width+offsetX);
+                        selectedNotes.get(i).setWidth(width+offsetX);
                     } else {
                         //if under 5px, change to 5px
-                        SELECTED_NOTES.get(i).setWidth(STRETCHZONE);
+                        selectedNotes.get(i).setWidth(STRETCHZONE);
                     }                        
-                } else if (drag) {
+                } else {
                     //if it's dragging operation, set the position of rectangles 
                     //based on the distance mouse moved
-                    double newTranslateX = ORIGINALX.get(i) + offsetX;
-                    double newTranslateY = ORIGINALY.get(i) + offsetY;
-                    SELECTED_NOTES.get(i).setX(newTranslateX);
-                    SELECTED_NOTES.get(i).setY(newTranslateY);
+                    double newTranslateX = originalX.get(i) + offsetX;
+                    double newTranslateY = originalY.get(i) + offsetY;
+                    selectedNotes.get(i).setX(newTranslateX);
+                    selectedNotes.get(i).setY(newTranslateY);
                 }
             }
         }
@@ -439,21 +452,21 @@ public class TuneComposerNoteSelection {
         public void handle(MouseEvent t) {
             //reset the stretching operation to false
             stretch = false;
-            drag = false;
+            //drag = false;
             
             //clear all three arraylists, resets coordinates
-            ORIGINALX.clear();
-            ORIGINALY.clear();
-            ORIGINALWIDTH.clear();
+            originalX.clear();
+            originalY.clear();
+            originalWidth.clear();
             reset_coordinates(t);
             
-            for (int i=0; i<SELECTED_NOTES.size(); i++) {
+            for (int i=0; i<selectedNotes.size(); i++) {
                 //reset the position of rectangles to fit it between grey lines
-                double currentY = SELECTED_NOTES.get(i).getY();
+                double currentY = selectedNotes.get(i).getY();
                 double finalY = ((int)(currentY/HEIGHTRECTANGLE))
                         *HEIGHTRECTANGLE;
                 double offset = finalY - currentY;
-                SELECTED_NOTES.get(i).setTranslateY(offset);
+                selectedNotes.get(i).setTranslateY(offset);
             }
         }
     };    
@@ -484,16 +497,16 @@ public class TuneComposerNoteSelection {
         buildMidiComposition();
      
         //defines end of the composition for the red line to stop at
-        LINETRANSITION.setToX(endcomp);
+        lineTransition.setToX(endcomp);
         
         //convert endcomp from miliseconds to seconds and set it to be duration
-        LINETRANSITION.setDuration(Duration.seconds(endcomp/100));
+        lineTransition.setDuration(Duration.seconds(endcomp/100));
         
         //makes red line visible, starts MidiComposition notes, moves red line
         redLine.setVisible(true);
         redLine.toFront();
         MidiComposition.play();
-        LINETRANSITION.playFromStart();
+        lineTransition.playFromStart();
     }
     
     /**
@@ -505,8 +518,8 @@ public class TuneComposerNoteSelection {
         NoteRectangle rect;
         
         //iterates through all rectangles in the composition
-        for(int i = 0; i < RECT_LIST.size(); i++){
-            rect = RECT_LIST.get(i);
+        for(int i = 0; i < rectList.size(); i++){
+            rect = rectList.get(i);
             
             //determines attributes of the MidiPlayer note to be added
             int pitch = PITCHTOTAL -(int)rect.getY()/HEIGHTRECTANGLE;
@@ -535,7 +548,7 @@ public class TuneComposerNoteSelection {
     @FXML
     private void handleStopAction(ActionEvent e){
         MidiComposition.stop();
-        LINETRANSITION.stop();
+        lineTransition.stop();
         redLine.setVisible(false);
     }
     
@@ -550,10 +563,11 @@ public class TuneComposerNoteSelection {
         redLine.setVisible(false);
         
         //clears currently selected notes, adds and 'highlights' all notes
-        SELECTED_NOTES.clear();
-        for (int i =0; i<RECT_LIST.size(); i++){
-            SELECTED_NOTES.add(RECT_LIST.get(i));
-            RECT_LIST.get(i).setStroke(Color.CRIMSON);
+        selectedNotes.clear();
+        for (int i =0; i<rectList.size(); i++){
+            selectedNotes.add(rectList.get(i));
+            rectList.get(i).clearStroke();
+            rectList.get(i).notes.getStyleClass().add("strokeRed");
         }      
     }
     
@@ -568,13 +582,13 @@ public class TuneComposerNoteSelection {
         redLine.setVisible(false);
         
         //removes selected notes from Pane and from list of Rectangles
-        SELECTED_NOTES.forEach((e1) -> {
-            rectAnchorPane.getChildren().remove(e1.Notes);
-            RECT_LIST.remove(e1);
+        selectedNotes.forEach((e1) -> {
+            rectAnchorPane.getChildren().remove(e1.notes);
+            rectList.remove(e1);
         });
         
         //clears all selected notes from the list of selected notes
-        SELECTED_NOTES.clear();
+        selectedNotes.clear();
     }
     
     /**
@@ -589,11 +603,11 @@ public class TuneComposerNoteSelection {
         
         //removes all notes from Pane and clears list of selected and
         //unselected rectangles
-        RECT_LIST.forEach((e1) -> {
-            rectAnchorPane.getChildren().remove(e1.Notes);
+        rectList.forEach((e1) -> {
+            rectAnchorPane.getChildren().remove(e1.notes);
         });
-        RECT_LIST.clear();
-        SELECTED_NOTES.clear();
+        rectList.clear();
+        selectedNotes.clear();
     }
     
     @FXML ToggleGroup instrumentsRadioButton;
@@ -623,10 +637,10 @@ public class TuneComposerNoteSelection {
      */
     public void initialize() {
         redLine.setVisible(false);
-        LINETRANSITION.setNode(redLine);
-        LINETRANSITION.setFromX(0);
-        LINETRANSITION.setInterpolator(Interpolator.LINEAR);
-        LINETRANSITION.setOnFinished((e)->{
+        lineTransition.setNode(redLine);
+        lineTransition.setFromX(0);
+        lineTransition.setInterpolator(Interpolator.LINEAR);
+        lineTransition.setOnFinished((e)->{
             redLine.setVisible(false);
         });
         setupInstruments();
