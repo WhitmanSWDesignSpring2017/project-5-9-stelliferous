@@ -16,30 +16,33 @@ public class NoteRectangle {
     
     //attributes to hold a NoteRectangle's Rectangle, channel, color, and
     //associated instrument
-    protected Rectangle notes;
-    private final int channel;
-    private final int instrument;
+
+    protected Rectangle Notes;
+    private final int CHANNEL;
+    private final Instrument INSTRUMENT;
     private final String instrumentColor;
     private TuneComposerNoteSelection master;
+
     
     /**
      * Initializer for the NoteRectangle object
      * @param x x-coordinate of upper-left hand corner of the rectangle
      * @param y y-coordinate of upper-left hand corner of the rectangle
-     * @param instrumentColor fill color of the rectangle
-     * @param channel channel number of the rectangle
      * @param instrument instrument number of the rectangle
      */        
-    public NoteRectangle(double x, int y, String instrumentColor, int channel, 
-                         int instrument, TuneComposerNoteSelection master) {
+    public NoteRectangle(double x, int y, Instrument instrument) {
         //assigns user-given attribute values of instrument, channel, color
-        this.instrumentColor = instrumentColor;
         this.instrument = instrument;
-        this.channel = channel;
+        this.channel = instrument.getChannel();
+        
+        //creates a new rectangle object for visual representation
+        notes.setFill(instrument.getDisplayColor());
+      
+        //assigns user-given attribute values of instrument, channel, color
         this.master = master;
+      
         //creates a new rectangle object for visual representation
         notes = new Rectangle(x,y,100,10);
-        notes.getStyleClass().add(instrumentColor);
         notes.getStyleClass().add("strokeRed");
     }
     
@@ -47,7 +50,7 @@ public class NoteRectangle {
      * returns value of the NoteRectangle object's 'instrument' attribute
      * @return instrument
      */
-    public int getInstrument() {
+    public Instrument getInstrument() {
         return instrument;
     }
     

@@ -12,7 +12,11 @@ import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.event.EventHandler;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
 
@@ -257,9 +261,14 @@ public class TuneComposerNoteSelection {
         reset_coordinates(t);            
         int y = (int) ((yCoordinate)/HEIGHTRECTANGLE);
         
+        //checks which instrument is selected
+        RadioButton selectedButton = (RadioButton)instrumentsRadioButton.getSelectedToggle();
+        Instrument selectedInstrument = (Instrument)selectedButton.getUserData();
+        
         //creates a new NoteRectangle object
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*HEIGHTRECTANGLE, 
-                                               rectColor, channel, instrument, this);
+                                               selectedInstrument, this);
+
 
         
         //assigns mouse-action events to the created NoteRectangle
@@ -516,19 +525,18 @@ public class TuneComposerNoteSelection {
             int pitch = PITCHTOTAL -(int)rect.getY()/HEIGHTRECTANGLE;
             int startTick = (int)rect.getX();
             int duration = (int)rect.getWidth();
-            int curChannel = rect.getChannel();
-            int curInstru = rect.getInstrument();
+            Instrument curInstru = rect.getInstrument();
             if (endcomp < startTick+duration) {
                 endcomp = startTick+duration;
             }
             
             //changes instrument according to the current channel
             MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 
-                    curChannel, curInstru,0,0,TRACK_INDEX);
+                    curInstru.getChannel(), curInstru.getMidiProgram(),0,0,TRACK_INDEX);
             
             //adds a note to the MidiPlayer composition
             MidiComposition.addNote(pitch, VOLUME, startTick, 
-                    duration, curChannel, TRACK_INDEX);  
+                    duration, curInstru.getChannel(), TRACK_INDEX);  
         }
     }
     
@@ -602,149 +610,24 @@ public class TuneComposerNoteSelection {
         selectedNotes.clear();
     }
     
-    /**
-     * Change the current value of instrument, channel and color to the ones
-     * correspond to the piano
-     * @param e  on user click
-     */    
-    @FXML
-    private void handlePianoAction(ActionEvent e){
-        instrument = 0;
-        channel = 0;
-        rectColor = "pianoButton";
-    }
-
-    /**
-     * Change the current value of instrument, channel and color to the ones
-     * correspond to the harpsichord
-     * @param e  on user click
-     */        
-    @FXML
-    private void handleHarpsichordAction(ActionEvent e){
-        instrument = 6;
-        channel = 1;
-        rectColor = "harpsichordButton";
-    }
-
-    /**
-     * Change the current value of instrument, channel and color to the ones
-     * correspond to the marimba
-     * @param e  on user click
-     */        
-    @FXML
-    private void handleMarimbaAction(ActionEvent e){
-        instrument = 12;
-        channel = 2;
-        rectColor = "marimbaButton";
-    }
-
-    /**
-     * Change the current value of instrument, channel and color to the ones
-     * correspond to the organ
-     * @param e  on user click
-     */        
-    @FXML
-    private void handleOrganAction(ActionEvent e){
-        instrument = 18;
-        channel = 3;
-        rectColor = "organButton";
-    }
+    @FXML ToggleGroup instrumentsRadioButton;
+    @FXML VBox instrumentsVBox;
     
-    /**
-     * Change the current value of instrument, channel and color to the ones
-     * correspond to the accordion
-     * @param e  on user click
-     */        
-    @FXML
-    private void handleAccordionAction(ActionEvent e){
-        instrument = 21;
-        channel = 4;
-        rectColor = "accordionButton";
-    }
-
-    /**
-     * Change the current value of instrument, channel and color to the ones
-     * correspond to the guitar
-     * @param e  on user click
-     */        
-    @FXML
-    private void handleGuitarAction(ActionEvent e){
-        instrument = 27;
-        channel = 5;
-        rectColor = "guitarButton";
-
-    }
-
-    /**
-     * Change the current value of instrument, channel and color to the ones
-     * correspond to the violin
-     * @param e  on user click
-     */        
-    @FXML
-    private void handleViolinAction(ActionEvent e){
-        instrument = 40;
-        channel = 6;
-        rectColor = "violinButton";
-    }
-    
-    /**
-     * Change the current value of instrument, channel and color to the ones
-     * correspond to the frenchHorn
-     * @param e  on user click
-     */        
-    @FXML
-    private void handleFrenchHornAction(ActionEvent e){
-        instrument = 61;
-        channel = 7;
-        rectColor = "frenchHornButton";
-    }
-
-    /**
-     * Change the current value of instrument, channel and color to the ones
-     * correspond to the choir
-     * @param e  on user click
-     */        
-    @FXML
-    private void handleChoirAction(ActionEvent e){
-        instrument = 52;
-        channel = 8;
-        rectColor = "choirButton";
-    }
-
-    /**
-     * Change the current value of instrument, channel and color to the ones
-     * correspond to the typewriter
-     * @param e  on user click
-     */        
-    @FXML
-    private void handleTypewriterAction(ActionEvent e){
-        instrument = 124;
-        channel = 9;
-        rectColor = "typewriterButton";
-    }
-    
-    /**
-     * Change the current value of instrument, channel and color to the ones
-     * correspond to the sea
-     * @param e  on user click
-     */        
-    @FXML
-    private void handleSeaAction(ActionEvent e){
-        instrument= 125;
-        channel = 10;
-        rectColor = "seaButton";
-    }
-
-    /**
-     * Change the current value of instrument, channel and color to the ones
-     * correspond to the applause
-     * @param e  on user click
-     */       
-    @FXML
-    private void handleApplauseAction(ActionEvent e){
-        instrument = 126;
-        channel = 11;
-        rectColor = "applauseButton";
+    private void setupInstruments() {
+        boolean firstInstrument = true;
+        for (Instrument inst : Instrument.values()) {
+            RadioButton rb = new RadioButton();
+            
+            rb.setText(inst.getDisplayName());
+            rb.setTextFill(inst.getDisplayColor());
+            rb.setUserData(inst);
+            rb.setToggleGroup(instrumentsRadioButton);
+            instrumentsVBox.getChildren().add(rb);
+            if (firstInstrument) {
+                instrumentsRadioButton.selectToggle(rb);
+                firstInstrument = false;
+            }
+        }
     }
     
     /**
@@ -760,5 +643,6 @@ public class TuneComposerNoteSelection {
         lineTransition.setOnFinished((e)->{
             redLine.setVisible(false);
         });
+        setupInstruments();
     }
 }
