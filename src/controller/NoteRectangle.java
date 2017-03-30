@@ -17,10 +17,9 @@ public class NoteRectangle {
     //attributes to hold a NoteRectangle's Rectangle, channel, color, and
     //associated instrument
 
-    protected Rectangle Notes;
-    private final int CHANNEL;
-    private final Instrument INSTRUMENT;
-    private final String instrumentColor;
+    protected Rectangle notes;
+    private final int channel;
+    private final Instrument instrument;
     private TuneComposerNoteSelection master;
 
     
@@ -30,13 +29,15 @@ public class NoteRectangle {
      * @param y y-coordinate of upper-left hand corner of the rectangle
      * @param instrument instrument number of the rectangle
      */        
-    public NoteRectangle(double x, int y, Instrument instrument) {
+    public NoteRectangle(double x, int y, Instrument instrument, TuneComposerNoteSelection master) {
         //assigns user-given attribute values of instrument, channel, color
+        this.master = master;
         this.instrument = instrument;
         this.channel = instrument.getChannel();
         
-        //creates a new rectangle object for visual representation
-        notes.setFill(instrument.getDisplayColor());
+        System.out.println(instrument.getDisplayColor());
+        
+        
       
         //assigns user-given attribute values of instrument, channel, color
         this.master = master;
@@ -44,6 +45,9 @@ public class NoteRectangle {
         //creates a new rectangle object for visual representation
         notes = new Rectangle(x,y,100,10);
         notes.getStyleClass().add("strokeRed");
+        
+        //creates a new rectangle object for visual representation
+        notes.setFill(instrument.getDisplayColor());
     }
     
     /**
@@ -56,7 +60,6 @@ public class NoteRectangle {
     
     protected void clearStroke() {
         notes.getStyleClass().clear();
-        notes.getStyleClass().add(instrumentColor);
     }
     /**
      * returns value of the NoteRectangle object's 'channel' attribute

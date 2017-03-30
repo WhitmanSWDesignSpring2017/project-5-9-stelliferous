@@ -264,6 +264,8 @@ public class TuneComposerNoteSelection {
         //checks which instrument is selected
         RadioButton selectedButton = (RadioButton)instrumentsRadioButton.getSelectedToggle();
         Instrument selectedInstrument = (Instrument)selectedButton.getUserData();
+        System.out.println(selectedInstrument);
+        
         
         //creates a new NoteRectangle object
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*HEIGHTRECTANGLE, 
