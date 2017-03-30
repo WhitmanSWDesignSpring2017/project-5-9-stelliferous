@@ -150,6 +150,7 @@ public class TuneComposerNoteSelection {
         deselectNotes(w);
 
         //determine whether any "note rectangles" are within the selection rect
+
         for(NoteRectangle r:rectList){
             if (selectRect.getX() + (selectRect.getWidth()) > r.Notes.getX() 
                     && selectRect.getX()  < r.Notes.getX() + (r.Notes.getWidth()) 
@@ -157,7 +158,7 @@ public class TuneComposerNoteSelection {
                     && selectRect.getY()  < r.Notes.getY() + (r.Notes.getHeight())){   
                 // select note rectangles within the selection area
                 selectedNotes.add(r);
-                r.Notes.setStroke(Color.CRIMSON);
+                r.Notes.getStyleClass().add("strokeRed");
             }
         }     
     }
@@ -170,7 +171,8 @@ public class TuneComposerNoteSelection {
         //determine whether previously selected notes remain selected
         if(!m.isControlDown()){
             rectList.forEach((e1) -> {
-                e1.setStroke(Color.BLACK);
+                e1.notes.getStyleClass().remove("strokeRed");
+                e1.notes.getStyleClass().remove("strokeBlack");
             });
             selectedNotes.clear();
         }  
@@ -202,8 +204,7 @@ public class TuneComposerNoteSelection {
         //detail, style, and display selection rectangle
         selectRect.setWidth(abs(currentX-xCoordinate));
         selectRect.setHeight(abs(currentY-yCoordinate));
-        selectRect.setStroke(Color.CHARTREUSE);
-        selectRect.setFill(Color.TRANSPARENT);
+        selectRect.getStyleClass().add("selectRect");
         rectAnchorPane.getChildren().add(selectRect); 
     }
 
@@ -270,7 +271,7 @@ public class TuneComposerNoteSelection {
         //add newly created rectangles to lists, visual
         rectList.add(rect);
         selectedNotes.add(rect);        
-        rectAnchorPane.getChildren().add(rect.Notes);
+        rectAnchorPane.getChildren().add(rect.notes);
     }
 
     /**
@@ -290,7 +291,7 @@ public class TuneComposerNoteSelection {
         //if the rectangle was selected and 'control' is down, deselect it
         if ((selectedNotes.indexOf(rect)!= -1) && (m.isControlDown())){
             selectedNotes.remove(rect);
-            rect.setStroke(Color.BLACK);
+            rect.notes.getStyleClass().ass("strokeBlack");
         } else if (selectedNotes.indexOf(rect) == -1){
             //if the rectangle is not selected and control is not down, 
             //deselect all other rectangles
@@ -298,7 +299,7 @@ public class TuneComposerNoteSelection {
             
             //select the rectangle that has been clicked on 
             selectedNotes.add(rect);
-            rect.setStroke(Color.CRIMSON);
+            rect.notes.getStyleClass().add("strokeRed");
         }
     }
     
@@ -486,6 +487,7 @@ public class TuneComposerNoteSelection {
         
         //makes red line visible, starts MidiComposition notes, moves red line
         redLine.setVisible(true);
+        redLine.toFront();
         MidiComposition.play();
         lineTransition.playFromStart();
     }
@@ -548,7 +550,7 @@ public class TuneComposerNoteSelection {
         selectedNotes.clear();
         for (int i =0; i<rectList.size(); i++){
             selectedNotes.add(rectList.get(i));
-            rectList.get(i).setStroke(Color.CRIMSON);
+            rectList.get(i).notes.getStyleClass().add("strokeRed");
         }      
     }
     
@@ -564,7 +566,7 @@ public class TuneComposerNoteSelection {
         
         //removes selected notes from Pane and from list of Rectangles
         selectedNotes.forEach((e1) -> {
-            rectAnchorPane.getChildren().remove(e1.Notes);
+            rectAnchorPane.getChildren().remove(e1.notes);
             rectList.remove(e1);
         });
         
@@ -585,7 +587,7 @@ public class TuneComposerNoteSelection {
         //removes all notes from Pane and clears list of selected and
         //unselected rectangles
         rectList.forEach((e1) -> {
-            rectAnchorPane.getChildren().remove(e1.Notes);
+            rectAnchorPane.getChildren().remove(e1.notes);
         });
         rectList.clear();
         selectedNotes.clear();
