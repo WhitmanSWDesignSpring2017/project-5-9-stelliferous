@@ -45,7 +45,7 @@
             <Menu text="Edit">
               <items>
                 <MenuItem accelerator="Shortcut+A" onAction="#handleSelectAllAction" text="Select All" />
-                <MenuItem accelerator="Shortcut+D" onAction="#handleDeleteAction" text="Delete" />
+                <MenuItem accelerator="backspace" onAction="#handleDeleteAction" text="Delete" />
                 <MenuItem accelerator="Shortcut+C" onAction="#handleClearAction" text="Clear" />  
               </items>
             </Menu>
