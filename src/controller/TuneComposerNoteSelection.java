@@ -13,7 +13,6 @@ import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.event.EventHandler;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
 
@@ -57,10 +56,10 @@ public class TuneComposerNoteSelection {
     private final TranslateTransition LINETRANSITION = new TranslateTransition();
     
     //creates a list to store created rectangles, that they may be later erased
-    private final ArrayList<NoteRectangle> RECT_LIST = new ArrayList<>();
+    private ArrayList<NoteRectangle> RECT_LIST = new ArrayList<>();
     
     //creates a list to store selected rectangles
-    private final ArrayList<NoteRectangle> SELECTED_NOTES = new ArrayList<>();
+    protected ArrayList<NoteRectangle> SELECTED_NOTES = new ArrayList<>();
         
     //makes available redLine, which stores the line object.
     @FXML Line redLine;
@@ -90,7 +89,7 @@ public class TuneComposerNoteSelection {
     //create two new boolean value to determine whether the action is for stretch
     //and drag
     private boolean stretch;
-    private boolean drag;
+    //private boolean drag;
     
     
     /**
@@ -155,6 +154,7 @@ public class TuneComposerNoteSelection {
                     && SELECTRECT.getY()  < r.notes.getY() + (r.notes.getHeight())){   
                 // select note rectangles within the selection area
                 SELECTED_NOTES.add(r);
+                r.clearStroke();
                 r.notes.getStyleClass().add("strokeRed");
             }
         }     
@@ -168,7 +168,7 @@ public class TuneComposerNoteSelection {
         //determine whether previously selected notes remain selected
         if(!m.isControlDown()){
             RECT_LIST.forEach((e1) -> {
-                e1.notes.getStyleClass().remove("strokeRed");
+                e1.clearStroke();
                 e1.notes.getStyleClass().add("strokeBlack");
             });
             SELECTED_NOTES.clear();
@@ -252,7 +252,7 @@ public class TuneComposerNoteSelection {
         
         //creates a new NoteRectangle object
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*HEIGHTRECTANGLE, 
-                                               rectColor, channel, instrument);
+                                               rectColor, channel, instrument, this);
 
         
         //assigns mouse-action events to the created NoteRectangle
@@ -288,7 +288,8 @@ public class TuneComposerNoteSelection {
         //if the rectangle was selected and 'control' is down, deselect it
         if ((SELECTED_NOTES.indexOf(rect)!= -1) && (m.isControlDown())){
             SELECTED_NOTES.remove(rect);
-            rect.notes.getStyleClass().add("strokeRed");
+            rect.clearStroke();            
+            rect.notes.getStyleClass().add("strokeBlack");
         } else if (SELECTED_NOTES.indexOf(rect) == -1){
             //if the rectangle is not selected and control is not down, 
             //deselect all other rectangles
@@ -296,6 +297,7 @@ public class TuneComposerNoteSelection {
             
             //select the rectangle that has been clicked on 
             SELECTED_NOTES.add(rect);
+            rect.clearStroke();
             rect.notes.getStyleClass().add("strokeRed");
         }
     }
@@ -351,7 +353,7 @@ public class TuneComposerNoteSelection {
     /**
      * Change the boolean value drag based on the current position of mouse
      * True if within the dragging rather than stretching zone
-     */   
+     
     private void determineDrag() {
         for (int i=0; i<SELECTED_NOTES.size();i++) {
             //check whether the mouseposition is within the dragging zone
@@ -368,7 +370,8 @@ public class TuneComposerNoteSelection {
                }
         }    
     }
-
+    */
+    
     /**
      * Crete a new EventHandler for the mouseEvent that happens when dragging 
      * the rectangle.
@@ -389,7 +392,7 @@ public class TuneComposerNoteSelection {
             
             //determine whether should be performing stretch or drag
             determineStretch();
-            determineDrag();
+            //determineDrag();
             
             //perform either stretching or dragging operation on all selected rectangles.
             for (int i=0; i<SELECTED_NOTES.size();i++) {
@@ -404,7 +407,7 @@ public class TuneComposerNoteSelection {
                         //if under 5px, change to 5px
                         SELECTED_NOTES.get(i).setWidth(STRETCHZONE);
                     }                        
-                } else if (drag) {
+                } else {
                     //if it's dragging operation, set the position of rectangles 
                     //based on the distance mouse moved
                     double newTranslateX = ORIGINALX.get(i) + offsetX;
@@ -432,7 +435,7 @@ public class TuneComposerNoteSelection {
         public void handle(MouseEvent t) {
             //reset the stretching operation to false
             stretch = false;
-            drag = false;
+            //drag = false;
             
             //clear all three arraylists, resets coordinates
             ORIGINALX.clear();
@@ -547,6 +550,7 @@ public class TuneComposerNoteSelection {
         SELECTED_NOTES.clear();
         for (int i =0; i<RECT_LIST.size(); i++){
             SELECTED_NOTES.add(RECT_LIST.get(i));
+            RECT_LIST.get(i).clearStroke();
             RECT_LIST.get(i).notes.getStyleClass().add("strokeRed");
         }      
     }
