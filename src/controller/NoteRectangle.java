@@ -19,6 +19,8 @@ public class NoteRectangle {
     protected Rectangle notes;
     private final int channel;
     private final int instrument;
+    private final String instrumentColor;
+    private TuneComposerNoteSelection master;
     
     /**
      * Initializer for the NoteRectangle object
@@ -28,11 +30,13 @@ public class NoteRectangle {
      * @param channel channel number of the rectangle
      * @param instrument instrument number of the rectangle
      */        
-    public NoteRectangle(double x, int y, String instrumentColor, int channel, int instrument) {
+    public NoteRectangle(double x, int y, String instrumentColor, int channel, 
+                         int instrument, TuneComposerNoteSelection master) {
         //assigns user-given attribute values of instrument, channel, color
+        this.instrumentColor = instrumentColor;
         this.instrument = instrument;
         this.channel = channel;
-        
+        this.master = master;
         //creates a new rectangle object for visual representation
         notes = new Rectangle(x,y,100,10);
         notes.getStyleClass().add(instrumentColor);
@@ -47,6 +51,10 @@ public class NoteRectangle {
         return instrument;
     }
     
+    protected void clearStroke() {
+        notes.getStyleClass().clear();
+        notes.getStyleClass().add(instrumentColor);
+    }
     /**
      * returns value of the NoteRectangle object's 'channel' attribute
      * @return channel
