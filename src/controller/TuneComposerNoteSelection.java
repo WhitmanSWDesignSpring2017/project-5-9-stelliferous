@@ -151,17 +151,17 @@ public class TuneComposerNoteSelection {
         //determine whether any "note rectangles" are within the selection rect
 
         for(NoteRectangle r:rectList){
-            if (selectRect.getX() + (selectRect.getWidth()) > r.Notes.getX() 
-                    && selectRect.getX()  < r.Notes.getX() + (r.Notes.getWidth()) 
-                    && selectRect.getY() + (selectRect.getHeight()) > r.Notes.getY() 
-                    && selectRect.getY()  < r.Notes.getY() + (r.Notes.getHeight())){   
+            if (selectRect.getX() + (selectRect.getWidth()) > r.notes.getX() 
+                    && selectRect.getX()  < r.notes.getX() + (r.notes.getWidth()) 
+                    && selectRect.getY() + (selectRect.getHeight()) > r.notes.getY() 
+                    && selectRect.getY()  < r.notes.getY() + (r.notes.getHeight())){   
                 // select note rectangles within the selection area
-                SELECTED_NOTES.add(r);
+                selectedNotes.add(r);
                 r.clearStroke();
                 r.notes.getStyleClass().add("strokeRed");
 
                 selectedNotes.add(r);
-                r.Notes.getStyleClass().add("strokeRed");
+                r.notes.getStyleClass().add("strokeRed");
 
             }
         }     
