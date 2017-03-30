@@ -484,6 +484,7 @@ public class TuneComposerNoteSelection {
         
         //makes red line visible, starts MidiComposition notes, moves red line
         redLine.setVisible(true);
+        redLine.toFront();
         MidiComposition.play();
         LINETRANSITION.playFromStart();
     }
