@@ -496,32 +496,6 @@ public class TuneComposerNoteSelection {
     
     @FXML
     private void handleGroupAction(ActionEvent e){
-        /*
-        gestureNoteGroups.forEach((e1) -> {
-            selectedNotes.forEach((e2) -> {
-                if (e1.contains(e2)){
-                    newGesture = e1;
-                    selectedNotes.forEach((e3) -> {
-                        if (!newGesture.contains(e3)){
-                            newGesture.add(e3);
-                        }
-                    });
-                gestureNoteGroups.add(0,newGesture);
-                newGesture.forEach((e4)->{
-                        System.out.println("boo");
-                        });
-                
-                }
-            });
-        });
-        System.out.println("cat");
-        gestureNoteGroups.add(0, selectedNotes);
-        gestureNoteGroups.forEach((p)->{
-            p.forEach((w)->{
-                        System.out.println("mouse");
-            });
-        });
-        */
         ArrayList<NoteRectangle> newGesture = new ArrayList<>();
         selectedNotes.forEach((e1)-> {
             newGesture.add(e1);
@@ -533,7 +507,13 @@ public class TuneComposerNoteSelection {
     
     @FXML
     private void handleUngroupAction(ActionEvent e){
-        System.exit(0);
+        gestureNoteGroups.remove(selectedNotes);
+        selectedNotes.forEach((e1)-> {
+            e1.clearStroke();
+            e1.notes.getStyleClass().add("strokeBlack");
+        });
+        selectedNotes.clear();
+        selectRed();
     }  
         
     /**
