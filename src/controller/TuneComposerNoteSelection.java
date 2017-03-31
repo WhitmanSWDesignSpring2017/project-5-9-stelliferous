@@ -162,9 +162,31 @@ public class TuneComposerNoteSelection {
                 // select note rectangles within the selection area
                 selectedNotes.add(r);
                 selectRed();
-
+                
+                ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
+                
+            for (int i=0 ;i < gestureNoteGroups.size();i++) {
+                ArrayList currentGesture = gestureNoteGroups.get(i);
+                if (currentGesture.contains(r)) {
+                    System.out.println("contains");
+                    selectNotes = currentGesture;
+                    break;
+                } 
+            }
+            
+            //select the rectangle that has been clicked on
+            if (!selectNotes.isEmpty()) {
+                selectNotes.forEach((e1)-> {
+                    selectedNotes.add(e1);
+                });
+            } else {
                 selectedNotes.add(r);
-                r.notes.getStyleClass().add("strokeRed");
+            } 
+            System.out.println(selectedNotes);
+            selectRed(); 
+            
+            selectedNotes.add(r);
+            r.notes.getStyleClass().add("strokeRed");
 
             }
         }     
@@ -207,6 +229,7 @@ public class TuneComposerNoteSelection {
         } else {
             selectRect.setY(currentY);
         }
+        
         
         //detail, style, and display selection rectangle
         selectRect.setWidth(abs(currentX-xCoordinate));
@@ -311,6 +334,7 @@ public class TuneComposerNoteSelection {
             //if the rectangle is not selected and control is not down, 
             //deselect all other rectangles
             deselectNotes(m);
+            
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
             for (int i=0 ;i < gestureNoteGroups.size();i++) {
                 ArrayList currentGesture = gestureNoteGroups.get(i);
