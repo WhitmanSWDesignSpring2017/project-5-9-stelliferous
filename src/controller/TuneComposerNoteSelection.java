@@ -508,10 +508,6 @@ public class TuneComposerNoteSelection {
     @FXML
     private void handleUngroupAction(ActionEvent e){
         gestureNoteGroups.remove(selectedNotes);
-        selectedNotes.forEach((e1)-> {
-            e1.clearStroke();
-            e1.notes.getStyleClass().add("strokeBlack");
-        });
         selectedNotes.clear();
         selectRed();
     }  
