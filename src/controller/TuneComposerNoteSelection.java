@@ -58,14 +58,14 @@ public class TuneComposerNoteSelection {
     //makes available rectAnchorPane, which stores the rectangles
     @FXML AnchorPane rectAnchorPane;
     
-    //sets the default color for note rectangles, corresponding to piano
-    private String rectColor = "pianoButton";
-    
     //creates a list to store created rectangles, that they may be later erased
     private ArrayList<NoteRectangle> rectList = new ArrayList<>();
     
     //creates a list to store selected rectangles
     private ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
+    
+    //creates a list to store all gesture/grouped notes
+    private ArrayList<ArrayList<NoteRectangle>> gestureNoteGroups = new ArrayList<>();
     
     //makes available redLine, which stores the line object.
     @FXML Line redLine;
@@ -467,12 +467,49 @@ public class TuneComposerNoteSelection {
                 double currentY = selectedNotes.get(i).getY();
                 double finalY = ((int)(currentY/HEIGHTRECTANGLE))
                         *HEIGHTRECTANGLE;
-                double offset = finalY - currentY;
+                 double offset = finalY - currentY;
                 selectedNotes.get(i).setTranslateY(offset);
             }
         }
     };    
 
+    ArrayList<NoteRectangle> newGesture = new ArrayList<>();
+    
+    @FXML
+    private void handleGroupAction(ActionEvent e){
+                                System.out.println("yay");
+
+        gestureNoteGroups.forEach((e1) -> {
+            selectedNotes.forEach((e2) -> {
+                if (e1.contains(e2)){
+                    newGesture = e1;
+                    selectedNotes.forEach((e3) -> {
+                        if (!newGesture.contains(e3)){
+                            newGesture.add(e3);
+                        }
+                    });
+                gestureNoteGroups.add(0,newGesture);
+                newGesture.forEach((e4)->{
+                        System.out.println("boo");
+                        });
+                
+                }
+            });
+        });
+        System.out.println("cat");
+        gestureNoteGroups.add(0, selectedNotes);
+        gestureNoteGroups.forEach((p)->{
+            p.forEach((w)->{
+                        System.out.println("mouse");
+            });
+        });
+    }    
+    
+    @FXML
+    private void handleUngroupAction(ActionEvent e){
+        System.exit(0);
+    }  
+        
     /**
      * Exits the program upon user clicking the typical 'close' 
      * @param e on user click
