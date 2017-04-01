@@ -358,7 +358,6 @@ public class TuneComposerNoteSelection {
             } else {
                 selectedNotes.add(rect);
             }
-            System.out.println(selectedNotes);
             selectRed();
         }
     }
