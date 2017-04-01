@@ -467,18 +467,13 @@ public class TuneComposerNoteSelection {
                 if (stretch) {
                     doStretchAction(i, offsetX);                        
                 } else if (drag){
-                    //if it's dragging operation, set the position of rectangles 
-                    //based on the distance mouse moved
-                    double newTranslateX = originalX.get(i) + offsetX;
-                    double newTranslateY = originalY.get(i) + offsetY;
-                    selectedNotes.get(i).setX(newTranslateX);
-                    selectedNotes.get(i).setY(newTranslateY);
+                    doDragAction(i, offsetX, offsetY);
                 }
             }
         }
 
         /**
-         * Changes the rectangles according to the nature of the stretch action.
+         * Changes the rectangle according to the nature of the stretch action.
          * @param i the rectangle being acted on
          * @param offsetX the distance the mouse moves horizontally
          */
@@ -493,6 +488,21 @@ public class TuneComposerNoteSelection {
                 //if under 5px, change to 5px
                 selectedNotes.get(i).setWidth(STRETCHZONE);
             }
+        }
+        
+        /**
+         * Changes the rectangle according to the nature of the drag action.
+         * @param i the rectangle being acted on
+         * @param offsetX the distance the mouse moves horizontally
+         * @param offsetY the distance the mouse moves vertically
+         */
+        private void doDragAction(int i, double offsetX, double offsetY) {
+            //if it's dragging operation, set the position of rectangles
+            //based on the distance mouse moved
+            double newTranslateX = originalX.get(i) + offsetX;
+            double newTranslateY = originalY.get(i) + offsetY;
+            selectedNotes.get(i).setX(newTranslateX);
+            selectedNotes.get(i).setY(newTranslateY);
         }
     };
     
