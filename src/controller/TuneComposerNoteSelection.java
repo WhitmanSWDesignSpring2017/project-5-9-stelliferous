@@ -523,10 +523,13 @@ public class TuneComposerNoteSelection {
                 double finalY = ((int)(currentY/HEIGHTRECTANGLE))
                         *HEIGHTRECTANGLE;
                  double offset = finalY - currentY;
-                selectedNotes.get(i).setTranslateY(offset);
+                selectedNotes.get(i).setTranslateY(offset);  
             }
             
             resetGestureRectangle();
+            for (int j=0 ;j < gestureNoteGroups.size();j++) {
+                updateGestureRectangle(gestureNoteGroups.get(j));
+            }
         }
     };    
     
@@ -548,12 +551,7 @@ public class TuneComposerNoteSelection {
     Rectangle gestureRect = new Rectangle();
     
     
-    private void updateGestureRectangle(ArrayList<NoteRectangle> gesture){
-        //System.out.println("update");
-        if (gestureRectPane.getChildren().contains(gestureRect)){
-            gestureRectPane.getChildren().remove(gestureRect);
-        }
-        
+    private void updateGestureRectangle(ArrayList<NoteRectangle> gesture){       
         NoteRectangle currentRect = gesture.get(0);
         double gestureMinX = currentRect.getX();
         double gestureMinY = currentRect.getY() + HEIGHTRECTANGLE;
