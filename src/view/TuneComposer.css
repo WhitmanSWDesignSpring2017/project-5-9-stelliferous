@@ -14,6 +14,7 @@
 }
 
 .dashed{
+    -fx-stroke: black;
     -fx-fill: transparent;
     -fx-stroke-dash-array: 8 3 8 3;
 }
