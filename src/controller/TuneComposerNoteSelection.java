@@ -15,6 +15,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -168,7 +169,7 @@ public class TuneComposerNoteSelection {
             for (int i=0 ;i < gestureNoteGroups.size();i++) {
                 ArrayList currentGesture = gestureNoteGroups.get(i);
                 if (currentGesture.contains(r)) {
-                    System.out.println("contains");
+                    updateGestureRectangle(currentGesture);
                     selectNotes = currentGesture;
                     break;
                 } 
@@ -523,9 +524,39 @@ public class TuneComposerNoteSelection {
             newGesture.add(e1);
         });
         gestureNoteGroups.add(0,newGesture);
-        System.out.println(gestureNoteGroups);
         System.out.println("yay");
-    }    
+        updateGestureRectangle(newGesture);
+        
+    } 
+    
+    @FXML Pane compositionPane;
+    double gestureRectPadding = 5;
+    
+    private void updateGestureRectangle(ArrayList<NoteRectangle> gesture){
+        NoteRectangle currentRect = gesture.get(0);
+        double gestureMinX = currentRect.getX();
+        double gestureMinY = currentRect.getY() + HEIGHTRECTANGLE;
+        double gestureMaxX = currentRect.getX() + currentRect.getWidth();
+        double gestureMaxY = currentRect.getY();
+        for (int i = 1; i < gesture.size(); i++){
+            currentRect = gesture.get(i);
+            if (gestureMinY > currentRect.getY() ){
+                gestureMinY = currentRect.getY() ;
+            }
+            if (gestureMinX > currentRect.getX()){
+                gestureMinX = currentRect.getX();
+            }
+            if (gestureMaxX < currentRect.getX() + currentRect.getWidth()){
+                gestureMaxX = currentRect.getX() + currentRect.getWidth();
+            }
+            if (gestureMaxY < currentRect.getY()  + HEIGHTRECTANGLE){
+                gestureMaxY = currentRect.getY() + HEIGHTRECTANGLE ;
+            }
+        }
+        System.out.println(gestureMaxX + " " + gestureMaxY + " " + gestureMinX + " " + gestureMinY);
+        Rectangle gestureRect = new Rectangle(gestureMinX - gestureRectPadding, gestureMinY - gestureRectPadding, gestureMaxX - gestureMinX + 2*gestureRectPadding , gestureMaxY - gestureMinY + 2*gestureRectPadding);
+        compositionPane.getChildren().add(gestureRect);
+    }
     
     @FXML
     private void handleUngroupAction(ActionEvent e){
