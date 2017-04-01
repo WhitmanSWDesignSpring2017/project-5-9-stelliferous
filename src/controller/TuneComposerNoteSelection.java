@@ -20,7 +20,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
-import controller.Constants.*;
 
 
 /**
@@ -35,20 +34,21 @@ public class TuneComposerNoteSelection {
     
     //creates a MidiPlayer object with 100 ticks per beat, 1 beat per second
     private final MidiPlayer MidiComposition = new MidiPlayer(100,60);
-   
-    
-    
-    //sets channel for the MidiPlayer's notes
-    private int channel = 0;
-    
-    //creates a private integer to indicate which is the instrument selected
-    private int instrument = 0;
-    
+
     //makes available rectAnchorPane, which stores the rectangles
     @FXML AnchorPane rectAnchorPane;
     
     //makes available gestureRectPane, which stores gesture outlines
     @FXML Pane gestureRectPane;
+    
+    //makes available redLine, which stores the line object.
+    @FXML Line redLine;
+    
+    //makes available a toggle group of radio buttons where instruments can be selected
+    @FXML ToggleGroup instrumentsRadioButton;
+    
+    //makes available the area where the instrument radio buttons lie
+    @FXML VBox instrumentsVBox;
     
     //creates a list to store created rectangles, that they may be later erased
     private ArrayList<NoteRectangle> rectList = new ArrayList<>();
@@ -58,9 +58,6 @@ public class TuneComposerNoteSelection {
     
     //creates a list to store all gesture/grouped notes
     private ArrayList<ArrayList<NoteRectangle>> gestureNoteGroups = new ArrayList<>();
-    
-    //makes available redLine, which stores the line object.
-    @FXML Line redLine;
     
     //constructs the TranslateTransition for use later in animation of redline
     private final TranslateTransition lineTransition = new TranslateTransition();
@@ -86,8 +83,8 @@ public class TuneComposerNoteSelection {
     
     //create two new boolean value to determine whether the action is for stretch
     //and drag
-    private boolean stretch,drag;
-    //private boolean drag;
+    private boolean stretch;
+    private boolean drag;
     
     
     /**
@@ -168,6 +165,7 @@ public class TuneComposerNoteSelection {
                 && selectRect.getX()  < r.notes.getX() + (r.notes.getWidth())
                 && selectRect.getY() + (selectRect.getHeight()) > r.notes.getY()
                 && selectRect.getY()  < r.notes.getY() + (r.notes.getHeight())){
+            
             // select note rectangles within the selection area
             selectedNotes.add(r);
             selectRed();
@@ -749,9 +747,6 @@ public class TuneComposerNoteSelection {
         selectedNotes.clear();
         gestureNoteGroups.clear();
     }
-    
-    @FXML ToggleGroup instrumentsRadioButton;
-    @FXML VBox instrumentsVBox;
     
     private void setupInstruments() {
         boolean firstInstrument = true;
