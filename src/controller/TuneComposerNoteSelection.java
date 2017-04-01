@@ -34,30 +34,21 @@ public class TuneComposerNoteSelection {
     
     //creates a MidiPlayer object with 100 ticks per beat, 1 beat per second
     private final MidiPlayer MidiComposition = new MidiPlayer(100,60);
-   
-    //sets volume for the MidiPlayer's notes
-    private static final int VOLUME = 120;
-    
-    //sets trackIndex for the MidiPlayer's notes
-    private static final int TRACK_INDEX = 1;
-    
-    //define the number of total pitches to be 127
-    private static final int PITCHTOTAL = 127;
-    
-    //sets constant height of each rectangle
-    private static final int HEIGHTRECTANGLE = 10;
-    
-    //the pixel length in which a user can click to stretch a NoteRectangle
-    private static final int STRETCHZONE = 5;
-    
-    //sets channel for the MidiPlayer's notes
-    private int channel = 0;
-    
-    //creates a private integer to indicate which is the instrument selected
-    private int instrument = 0;
-    
+
     //makes available rectAnchorPane, which stores the rectangles
     @FXML AnchorPane rectAnchorPane;
+    
+    //makes available gestureRectPane, which stores gesture outlines
+    @FXML Pane gestureRectPane;
+    
+    //makes available redLine, which stores the line object.
+    @FXML Line redLine;
+    
+    //makes available a toggle group of radio buttons where instruments can be selected
+    @FXML ToggleGroup instrumentsRadioButton;
+    
+    //makes available the area where the instrument radio buttons lie
+    @FXML VBox instrumentsVBox;
     
     //creates a list to store created rectangles, that they may be later erased
     private ArrayList<NoteRectangle> rectList = new ArrayList<>();
@@ -67,9 +58,6 @@ public class TuneComposerNoteSelection {
     
     //creates a list to store all gesture/grouped notes
     private ArrayList<ArrayList<NoteRectangle>> gestureNoteGroups = new ArrayList<>();
-    
-    //makes available redLine, which stores the line object.
-    @FXML Line redLine;
     
     //constructs the TranslateTransition for use later in animation of redline
     private final TranslateTransition lineTransition = new TranslateTransition();
@@ -95,8 +83,8 @@ public class TuneComposerNoteSelection {
     
     //create two new boolean value to determine whether the action is for stretch
     //and drag
-    private boolean stretch,drag;
-    //private boolean drag;
+    private boolean stretch;
+    private boolean drag;
     
     
     /**
@@ -183,6 +171,7 @@ public class TuneComposerNoteSelection {
                 && selectRect.getX()  < r.notes.getX() + (r.notes.getWidth())
                 && selectRect.getY() + (selectRect.getHeight()) > r.notes.getY()
                 && selectRect.getY()  < r.notes.getY() + (r.notes.getHeight())){
+            
             // select note rectangles within the selection area
             selectedNotes.add(r);
             selectRed();
@@ -287,7 +276,7 @@ public class TuneComposerNoteSelection {
         deselectNotes(e);
         
         //creates and places a new NoteRectangle
-        createNoteRectangle(e);
+        prepareNoteRectangle(e);
     };
     
     /**
@@ -297,17 +286,17 @@ public class TuneComposerNoteSelection {
      * rectAnchorPane
      * @param t an on-click mouse event
      */
-    private void createNoteRectangle(MouseEvent t){
+    private void prepareNoteRectangle(MouseEvent t){
         //gets new mouse coordinates; calculates effective y coordinate
         reset_coordinates(t);            
-        int y = (int) ((yCoordinate)/HEIGHTRECTANGLE);
+        int y = (int) ((yCoordinate)/Constants.HEIGHTRECTANGLE);
         
         //checks which instrument is selected
         RadioButton selectedButton = (RadioButton)instrumentsRadioButton.getSelectedToggle();
         Instrument selectedInstrument = (Instrument)selectedButton.getUserData();        
         
         //creates a new NoteRectangle object
-        NoteRectangle rect = new NoteRectangle(xCoordinate,y*HEIGHTRECTANGLE, 
+        NoteRectangle rect = new NoteRectangle(xCoordinate,y*Constants.HEIGHTRECTANGLE, 
                                                selectedInstrument, this);
 
         //assigns mouse-action events to the created NoteRectangle
@@ -369,8 +358,27 @@ public class TuneComposerNoteSelection {
             } else {
                 selectedNotes.add(rect);
             }
+    /*
+    private void detectInteriorGestures(NoteRectangle rect){
+        ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
+        for (int i=0 ;i < gestureNoteGroups.size();i++) {
+            ArrayList currentGesture = gestureNoteGroups.get(i);
+            if (currentGesture.contains(rect)) {
+                selectNotes = currentGesture;
+                updateGestureRectangle(currentGesture);
+                break;
+            } 
         }
-        selectRed();
+        */
+            
+        //select the rectangle that has been clicked on
+        if (!selectNotes.isEmpty()) {
+            selectNotes.forEach((e1)-> {
+                selectedNotes.add(e1);
+            });
+        } else {
+            selectedNotes.add(rect);
+        }
     }
     
     private void selectRed() {
@@ -418,7 +426,7 @@ public class TuneComposerNoteSelection {
                                  +selectedNotes.get(i).getWidth())
                  && 
                  yCoordinate >= originalY.get(i)
-                 && yCoordinate <= (originalY.get(i)+HEIGHTRECTANGLE) ) 
+                 && yCoordinate <= (originalY.get(i)+Constants.HEIGHTRECTANGLE) ) 
                 {
                  //if true, change the boolean value drag to true
                 drag = true;
@@ -435,14 +443,14 @@ public class TuneComposerNoteSelection {
         for (int i=0; i<selectedNotes.size();i++) {
             //check whether the mouseposition is within the stretching zone
             if ( xCoordinate >= (originalX.get(i)
-                                +selectedNotes.get(i).getWidth()-STRETCHZONE)
+                                +selectedNotes.get(i).getWidth()- Constants.STRETCHZONE)
                     &&
                   xCoordinate <= (originalX.get(i)
                                +selectedNotes.get(i).getWidth())
                     && 
                   yCoordinate >= originalY.get(i)
                     && 
-                  yCoordinate <= (originalY.get(i)+HEIGHTRECTANGLE) )
+                  yCoordinate <= (originalY.get(i)+ Constants.HEIGHTRECTANGLE) )
             {
                 //if true, change the boolean value stretch to true
                 stretch = true;
@@ -498,12 +506,12 @@ public class TuneComposerNoteSelection {
             //get the width of rectangles.
             double width = originalWidth.get(i);
             //if a 'note' rectangle is not 5px or more, change nothing
-            if (originalWidth.get(i)+offsetX >= STRETCHZONE ){
+            if (originalWidth.get(i)+offsetX >= Constants.STRETCHZONE ){
                 //set rectangle width
                 selectedNotes.get(i).setWidth(width+offsetX);
             } else {
                 //if under 5px, change to 5px
-                selectedNotes.get(i).setWidth(STRETCHZONE);
+                selectedNotes.get(i).setWidth(Constants.STRETCHZONE);
             }
         }
         
@@ -554,7 +562,6 @@ public class TuneComposerNoteSelection {
                         *HEIGHTRECTANGLE;
                 selectedNotes.get(i).setY(finalY);   
             }
-            
             resetGestureRectangle();
         }
     };    
@@ -566,7 +573,6 @@ public class TuneComposerNoteSelection {
             newGesture.add(e1);
         });
         gestureNoteGroups.add(0,newGesture);
-        System.out.println("yay");
         updateGestureRectangle(newGesture);
         
     } 
@@ -575,11 +581,14 @@ public class TuneComposerNoteSelection {
     double gestureRectPadding = 5;
     
     private ArrayList<Double> calculateBorder(ArrayList<NoteRectangle> gesture) {
+        if (gesture.isEmpty()) return;
+        
         NoteRectangle currentRect = gesture.get(0);
         double gestureMinX = currentRect.getX();
-        double gestureMinY = currentRect.getY() + HEIGHTRECTANGLE;
+        double gestureMinY = currentRect.getY() + Constants.HEIGHTRECTANGLE;
         double gestureMaxX = currentRect.getX() + currentRect.getWidth();
         double gestureMaxY = currentRect.getY();
+        
         for (int i = 1; i < gesture.size(); i++){
             currentRect = gesture.get(i);
             if (gestureMinY > currentRect.getY() ){
@@ -591,8 +600,8 @@ public class TuneComposerNoteSelection {
             if (gestureMaxX < currentRect.getX() + currentRect.getWidth()){
                 gestureMaxX = currentRect.getX() + currentRect.getWidth();
             }
-            if (gestureMaxY < currentRect.getY()  + HEIGHTRECTANGLE){
-                gestureMaxY = currentRect.getY() + HEIGHTRECTANGLE ;
+            if (gestureMaxY < currentRect.getY()  + Constants.HEIGHTRECTANGLE){
+                gestureMaxY = currentRect.getY() + Constants.HEIGHTRECTANGLE ;
             }
         }
         ArrayList<Double> borderCords = new ArrayList<>();
@@ -608,6 +617,7 @@ public class TuneComposerNoteSelection {
         Rectangle gestRect = new Rectangle(borderCords.get(0),borderCords.get(1),borderCords.get(2),borderCords.get(3));
         gestRect.getStyleClass().add("dashed");
         gestureRectPane.getChildren().add(gestRect);
+
     }
     
     @FXML
@@ -668,7 +678,7 @@ public class TuneComposerNoteSelection {
             rect = rectList.get(i);
             
             //determines attributes of the MidiPlayer note to be added
-            int pitch = PITCHTOTAL -(int)rect.getY()/HEIGHTRECTANGLE;
+            int pitch = Constants.PITCHTOTAL -(int)rect.getY()/Constants.HEIGHTRECTANGLE;
             int startTick = (int)rect.getX();
             int duration = (int)rect.getWidth();
             Instrument curInstru = rect.getInstrument();
@@ -678,11 +688,11 @@ public class TuneComposerNoteSelection {
             
             //changes instrument according to the current channel
             MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 
-                    curInstru.getChannel(), curInstru.getMidiProgram(),0,0,TRACK_INDEX);
+                    curInstru.getChannel(), curInstru.getMidiProgram(),0,0,Constants.TRACK_INDEX);
             
             //adds a note to the MidiPlayer composition
-            MidiComposition.addNote(pitch, VOLUME, startTick, 
-                    duration, curInstru.getChannel(), TRACK_INDEX);  
+            MidiComposition.addNote(pitch, Constants.VOLUME, startTick, 
+                    duration, curInstru.getChannel(), Constants.TRACK_INDEX);  
         }
     }
     
@@ -755,9 +765,6 @@ public class TuneComposerNoteSelection {
         selectedNotes.clear();
         gestureNoteGroups.clear();
     }
-    
-    @FXML ToggleGroup instrumentsRadioButton;
-    @FXML VBox instrumentsVBox;
     
     private void setupInstruments() {
         boolean firstInstrument = true;
