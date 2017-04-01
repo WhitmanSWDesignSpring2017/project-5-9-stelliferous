@@ -33,12 +33,8 @@ public class NoteRectangle {
         //assigns user-given attribute values of instrument, channel, color
         this.master = master;
         this.instrument = instrument;
-        this.channel = instrument.getChannel();
+        this.channel = instrument.getChannel();        
         
-        System.out.println(instrument.getDisplayColor());
-        
-        
-      
         //assigns user-given attribute values of instrument, channel, color
         this.master = master;
       

@@ -109,6 +109,10 @@ public class TuneComposerNoteSelection {
         xCoordinate = (int)m.getX();
         yCoordinate = (int)m.getY();
         
+        if (compositionPane.getChildren().contains(gestureRect)){
+            compositionPane.getChildren().remove(gestureRect);
+        }
+        
         //stops ongoing composition-playing events
         MidiComposition.stop();
         redLine.setVisible(false);
@@ -183,7 +187,6 @@ public class TuneComposerNoteSelection {
             } else {
                 selectedNotes.add(r);
             } 
-            System.out.println(selectedNotes);
             selectRed(); 
             
             selectedNotes.add(r);
@@ -286,9 +289,7 @@ public class TuneComposerNoteSelection {
         
         //checks which instrument is selected
         RadioButton selectedButton = (RadioButton)instrumentsRadioButton.getSelectedToggle();
-        Instrument selectedInstrument = (Instrument)selectedButton.getUserData();
-        System.out.println(selectedInstrument);
-        
+        Instrument selectedInstrument = (Instrument)selectedButton.getUserData();        
         
         //creates a new NoteRectangle object
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*HEIGHTRECTANGLE, 
@@ -340,7 +341,6 @@ public class TuneComposerNoteSelection {
             for (int i=0 ;i < gestureNoteGroups.size();i++) {
                 ArrayList currentGesture = gestureNoteGroups.get(i);
                 if (currentGesture.contains(rect)) {
-                    System.out.println("contains");
                     selectNotes = currentGesture;
                     break;
                 } 
@@ -353,7 +353,6 @@ public class TuneComposerNoteSelection {
             } else {
                 selectedNotes.add(rect);
             }
-            System.out.println(selectedNotes);
             selectRed();
         }
     }
@@ -478,7 +477,17 @@ public class TuneComposerNoteSelection {
                     selectedNotes.get(i).setX(newTranslateX);
                     selectedNotes.get(i).setY(newTranslateY);
                 }
+                
+                for (int j=0 ;j < gestureNoteGroups.size();j++) {
+                ArrayList currentGesture = gestureNoteGroups.get(j);
+                if (currentGesture.contains(selectedNotes.get(j))) {
+                    updateGestureRectangle(currentGesture);
+                    
+                } 
             }
+            }
+                            
+            
         }
     };
     
@@ -531,8 +540,16 @@ public class TuneComposerNoteSelection {
     
     @FXML Pane compositionPane;
     double gestureRectPadding = 5;
+    //@FXML Rectangle gestureRectangle;
+    Rectangle gestureRect = new Rectangle();
+    
     
     private void updateGestureRectangle(ArrayList<NoteRectangle> gesture){
+        System.out.println("update");
+        if (compositionPane.getChildren().contains(gestureRect)){
+            compositionPane.getChildren().remove(gestureRect);
+        }
+        
         NoteRectangle currentRect = gesture.get(0);
         double gestureMinX = currentRect.getX();
         double gestureMinY = currentRect.getY() + HEIGHTRECTANGLE;
@@ -553,13 +570,21 @@ public class TuneComposerNoteSelection {
                 gestureMaxY = currentRect.getY() + HEIGHTRECTANGLE ;
             }
         }
+        
         System.out.println(gestureMaxX + " " + gestureMaxY + " " + gestureMinX + " " + gestureMinY);
-        Rectangle gestureRect = new Rectangle(gestureMinX - gestureRectPadding, gestureMinY - gestureRectPadding, gestureMaxX - gestureMinX + 2*gestureRectPadding , gestureMaxY - gestureMinY + 2*gestureRectPadding);
+        //gestureRect =  Rectangle(gestureMinX - gestureRectPadding, gestureMinY - gestureRectPadding, gestureMaxX - gestureMinX + 2*gestureRectPadding , gestureMaxY - gestureMinY + 2*gestureRectPadding);
         compositionPane.getChildren().add(gestureRect);
+        gestureRect.setX(gestureMinX - gestureRectPadding);
+        gestureRect.setY(gestureMinY - gestureRectPadding);
+        gestureRect.setWidth(gestureMaxX - gestureMinX + 2*gestureRectPadding);
+        gestureRect.setHeight(gestureMaxY - gestureMinY + 2*gestureRectPadding);
     }
     
     @FXML
     private void handleUngroupAction(ActionEvent e){
+        if (compositionPane.getChildren().contains(gestureRect)){
+            compositionPane.getChildren().remove(gestureRect);
+        }
         gestureNoteGroups.remove(selectedNotes);
         selectedNotes.clear();
         selectRed();
