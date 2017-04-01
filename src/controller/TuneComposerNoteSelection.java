@@ -465,16 +465,7 @@ public class TuneComposerNoteSelection {
             //perform either stretching or dragging operation on all selected rectangles.
             for (int i=0; i<selectedNotes.size();i++) {
                 if (stretch) {
-                    //if it's stretch operation, get the width of rectangles.
-                    double width = originalWidth.get(i);
-                    //if a 'note' rectangle is not 5px or more, change nothing
-                    if (originalWidth.get(i)+offsetX >= STRETCHZONE ){
-                        //set rectangle width
-                        selectedNotes.get(i).setWidth(width+offsetX);
-                    } else {
-                        //if under 5px, change to 5px
-                        selectedNotes.get(i).setWidth(STRETCHZONE);
-                    }                        
+                    doStretchAction(i, offsetX);                        
                 } else if (drag){
                     //if it's dragging operation, set the position of rectangles 
                     //based on the distance mouse moved
@@ -483,6 +474,24 @@ public class TuneComposerNoteSelection {
                     selectedNotes.get(i).setX(newTranslateX);
                     selectedNotes.get(i).setY(newTranslateY);
                 }
+            }
+        }
+
+        /**
+         * Changes the rectangles according to the nature of the stretch action.
+         * @param i the rectangle being acted on
+         * @param offsetX the distance the mouse moves horizontally
+         */
+        private void doStretchAction(int i, double offsetX) {
+            //get the width of rectangles.
+            double width = originalWidth.get(i);
+            //if a 'note' rectangle is not 5px or more, change nothing
+            if (originalWidth.get(i)+offsetX >= STRETCHZONE ){
+                //set rectangle width
+                selectedNotes.get(i).setWidth(width+offsetX);
+            } else {
+                //if under 5px, change to 5px
+                selectedNotes.get(i).setWidth(STRETCHZONE);
             }
         }
     };
