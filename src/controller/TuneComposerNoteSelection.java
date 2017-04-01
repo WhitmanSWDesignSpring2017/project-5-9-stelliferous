@@ -190,10 +190,10 @@ public class TuneComposerNoteSelection {
             } else {
                 selectedNotes.add(r);
             } 
-            selectRed(); 
+            //selectRed(); 
             
-            selectedNotes.add(r);
-            r.notes.getStyleClass().add("strokeRed");
+            //selectedNotes.add(r);
+            //r.notes.getStyleClass().add("strokeRed");
             
         }     
     }
