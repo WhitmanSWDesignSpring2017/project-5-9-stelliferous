@@ -152,19 +152,28 @@ public class TuneComposerNoteSelection {
         //if control is not down, deselect all other notes
         deselectNotes(w);
 
-        //determine whether any "note rectangles" are within the selection rect
-
         for(NoteRectangle r:rectList){
-            if (selectRect.getX() + (selectRect.getWidth()) > r.notes.getX() 
-                    && selectRect.getX()  < r.notes.getX() + (r.notes.getWidth()) 
-                    && selectRect.getY() + (selectRect.getHeight()) > r.notes.getY() 
-                    && selectRect.getY()  < r.notes.getY() + (r.notes.getHeight())){   
-                // select note rectangles within the selection area
-                selectedNotes.add(r);
-                selectRed();
-                
-                ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
-                
+            setSelected(r);
+        }     
+    }
+
+    /**
+     * Determines whether any "note rectangles" are within the selection 
+     * rectangle or selected gesture. Then sets the selected rectangles to have 
+     * a red border for visual clarity.
+     * @param r the note rectangles being tested for selection
+     */
+    private void setSelected(NoteRectangle r) {
+        if (selectRect.getX() + (selectRect.getWidth()) > r.notes.getX()
+                && selectRect.getX()  < r.notes.getX() + (r.notes.getWidth())
+                && selectRect.getY() + (selectRect.getHeight()) > r.notes.getY()
+                && selectRect.getY()  < r.notes.getY() + (r.notes.getHeight())){
+            // select note rectangles within the selection area
+            selectedNotes.add(r);
+            selectRed();
+            
+            ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
+            
             for (int i=0 ;i < gestureNoteGroups.size();i++) {
                 ArrayList currentGesture = gestureNoteGroups.get(i);
                 if (currentGesture.contains(r)) {
@@ -186,8 +195,7 @@ public class TuneComposerNoteSelection {
             
             selectedNotes.add(r);
             r.notes.getStyleClass().add("strokeRed");
-
-            }
+            
         }     
     }
     
