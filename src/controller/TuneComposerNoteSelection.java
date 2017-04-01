@@ -152,23 +152,31 @@ public class TuneComposerNoteSelection {
         //if control is not down, deselect all other notes
         deselectNotes(w);
 
-        //determine whether any "note rectangles" are within the selection rect
-
         for(NoteRectangle r:rectList){
-            if (selectRect.getX() + (selectRect.getWidth()) > r.notes.getX() 
-                    && selectRect.getX()  < r.notes.getX() + (r.notes.getWidth()) 
-                    && selectRect.getY() + (selectRect.getHeight()) > r.notes.getY() 
-                    && selectRect.getY()  < r.notes.getY() + (r.notes.getHeight())){   
-                // select note rectangles within the selection area
-                selectedNotes.add(r);
-                selectRed();
-                
-                ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
-                
+            setSelected(r);
+        }     
+    }
+
+    /**
+     * Determines whether any "note rectangles" are within the selection 
+     * rectangle or selected gesture. Then sets the selected rectangles to have 
+     * a red border for visual clarity.
+     * @param r the note rectangles being tested for selection
+     */
+    private void setSelected(NoteRectangle r) {
+        if (selectRect.getX() + (selectRect.getWidth()) > r.notes.getX()
+                && selectRect.getX()  < r.notes.getX() + (r.notes.getWidth())
+                && selectRect.getY() + (selectRect.getHeight()) > r.notes.getY()
+                && selectRect.getY()  < r.notes.getY() + (r.notes.getHeight())){
+            // select note rectangles within the selection area
+            selectedNotes.add(r);
+            selectRed();
+            
+            ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
+            
             for (int i=0 ;i < gestureNoteGroups.size();i++) {
                 ArrayList currentGesture = gestureNoteGroups.get(i);
                 if (currentGesture.contains(r)) {
-                    System.out.println("contains");
                     selectNotes = currentGesture;
                     break;
                 } 
@@ -182,13 +190,11 @@ public class TuneComposerNoteSelection {
             } else {
                 selectedNotes.add(r);
             } 
-            System.out.println(selectedNotes);
-            selectRed(); 
+            //selectRed(); 
             
-            selectedNotes.add(r);
-            r.notes.getStyleClass().add("strokeRed");
-
-            }
+            //selectedNotes.add(r);
+            //r.notes.getStyleClass().add("strokeRed");
+            
         }     
     }
     
@@ -339,7 +345,6 @@ public class TuneComposerNoteSelection {
             for (int i=0 ;i < gestureNoteGroups.size();i++) {
                 ArrayList currentGesture = gestureNoteGroups.get(i);
                 if (currentGesture.contains(rect)) {
-                    System.out.println("contains");
                     selectNotes = currentGesture;
                     break;
                 } 
@@ -352,7 +357,6 @@ public class TuneComposerNoteSelection {
             } else {
                 selectedNotes.add(rect);
             }
-            System.out.println(selectedNotes);
             selectRed();
         }
     }
@@ -459,25 +463,44 @@ public class TuneComposerNoteSelection {
             //perform either stretching or dragging operation on all selected rectangles.
             for (int i=0; i<selectedNotes.size();i++) {
                 if (stretch) {
-                    //if it's stretch operation, get the width of rectangles.
-                    double width = originalWidth.get(i);
-                    //if a 'note' rectangle is not 5px or more, change nothing
-                    if (originalWidth.get(i)+offsetX >= STRETCHZONE ){
-                        //set rectangle width
-                        selectedNotes.get(i).setWidth(width+offsetX);
-                    } else {
-                        //if under 5px, change to 5px
-                        selectedNotes.get(i).setWidth(STRETCHZONE);
-                    }                        
+                    doStretchAction(i, offsetX);                        
                 } else if (drag){
-                    //if it's dragging operation, set the position of rectangles 
-                    //based on the distance mouse moved
-                    double newTranslateX = originalX.get(i) + offsetX;
-                    double newTranslateY = originalY.get(i) + offsetY;
-                    selectedNotes.get(i).setX(newTranslateX);
-                    selectedNotes.get(i).setY(newTranslateY);
+                    doDragAction(i, offsetX, offsetY);
                 }
             }
+        }
+
+        /**
+         * Changes the rectangle according to the nature of the stretch action.
+         * @param i the rectangle being acted on
+         * @param offsetX the distance the mouse moves horizontally
+         */
+        private void doStretchAction(int i, double offsetX) {
+            //get the width of rectangles.
+            double width = originalWidth.get(i);
+            //if a 'note' rectangle is not 5px or more, change nothing
+            if (originalWidth.get(i)+offsetX >= STRETCHZONE ){
+                //set rectangle width
+                selectedNotes.get(i).setWidth(width+offsetX);
+            } else {
+                //if under 5px, change to 5px
+                selectedNotes.get(i).setWidth(STRETCHZONE);
+            }
+        }
+        
+        /**
+         * Changes the rectangle according to the nature of the drag action.
+         * @param i the rectangle being acted on
+         * @param offsetX the distance the mouse moves horizontally
+         * @param offsetY the distance the mouse moves vertically
+         */
+        private void doDragAction(int i, double offsetX, double offsetY) {
+            //if it's dragging operation, set the position of rectangles
+            //based on the distance mouse moved
+            double newTranslateX = originalX.get(i) + offsetX;
+            double newTranslateY = originalY.get(i) + offsetY;
+            selectedNotes.get(i).setX(newTranslateX);
+            selectedNotes.get(i).setY(newTranslateY);
         }
     };
     
