@@ -358,27 +358,8 @@ public class TuneComposerNoteSelection {
             } else {
                 selectedNotes.add(rect);
             }
-    /*
-    private void detectInteriorGestures(NoteRectangle rect){
-        ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
-        for (int i=0 ;i < gestureNoteGroups.size();i++) {
-            ArrayList currentGesture = gestureNoteGroups.get(i);
-            if (currentGesture.contains(rect)) {
-                selectNotes = currentGesture;
-                updateGestureRectangle(currentGesture);
-                break;
-            } 
         }
-        */
-            
-        //select the rectangle that has been clicked on
-        if (!selectNotes.isEmpty()) {
-            selectNotes.forEach((e1)-> {
-                selectedNotes.add(e1);
-            });
-        } else {
-            selectedNotes.add(rect);
-        }
+        selectRed();
     }
     
     private void selectRed() {
@@ -558,8 +539,8 @@ public class TuneComposerNoteSelection {
             for (int i=0; i<selectedNotes.size(); i++) {
                 //reset the position of rectangles to fit it between grey lines
                 double currentY = selectedNotes.get(i).getY();
-                double finalY = ((int)(currentY/HEIGHTRECTANGLE))
-                        *HEIGHTRECTANGLE;
+                double finalY = ((int)(currentY/Constants.HEIGHTRECTANGLE))
+                        *Constants.HEIGHTRECTANGLE;
                 selectedNotes.get(i).setY(finalY);   
             }
             resetGestureRectangle();
@@ -577,11 +558,9 @@ public class TuneComposerNoteSelection {
         
     } 
     
-    @FXML Pane gestureRectPane;
     double gestureRectPadding = 5;
     
     private ArrayList<Double> calculateBorder(ArrayList<NoteRectangle> gesture) {
-        if (gesture.isEmpty()) return;
         
         NoteRectangle currentRect = gesture.get(0);
         double gestureMinX = currentRect.getX();
