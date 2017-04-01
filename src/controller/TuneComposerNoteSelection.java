@@ -94,7 +94,7 @@ public class TuneComposerNoteSelection {
     
     //create two new boolean value to determine whether the action is for stretch
     //and drag
-    private boolean stretch;
+    private boolean stretch,drag;
     //private boolean drag;
     
     
@@ -388,6 +388,28 @@ public class TuneComposerNoteSelection {
         }
     };
     
+    
+    /**
+     * Change the boolean value drag based on the current position of mouse
+     * True if within the dragging rather than stretching zone
+     */
+    private void determineDrag() {
+        for (int i=0; i<selectedNotes.size();i++) {
+            //check whether the mouseposition is within the dragging zone
+            if ( xCoordinate >= originalX.get(i)
+                 &&
+                 xCoordinate <= (originalX.get(i)
+                                 +selectedNotes.get(i).getWidth())
+                 && 
+                 yCoordinate >= originalY.get(i)
+                 && yCoordinate <= (originalY.get(i)+HEIGHTRECTANGLE) ) 
+                {
+                 //if true, change the boolean value drag to true
+                drag = true;
+                }
+        }    
+    }
+        
     /**
      * Change the boolean value stretch based on the current position of mouse
      * True if within the stretching rather than dragging zone
@@ -432,7 +454,7 @@ public class TuneComposerNoteSelection {
             
             //determine whether should be performing stretch or drag
             determineStretch();
-            //determineDrag();
+            determineDrag();
             
             //perform either stretching or dragging operation on all selected rectangles.
             for (int i=0; i<selectedNotes.size();i++) {
@@ -447,7 +469,7 @@ public class TuneComposerNoteSelection {
                         //if under 5px, change to 5px
                         selectedNotes.get(i).setWidth(STRETCHZONE);
                     }                        
-                } else {
+                } else if (drag){
                     //if it's dragging operation, set the position of rectangles 
                     //based on the distance mouse moved
                     double newTranslateX = originalX.get(i) + offsetX;
@@ -475,7 +497,7 @@ public class TuneComposerNoteSelection {
         public void handle(MouseEvent t) {
             //reset the stretching operation to false
             stretch = false;
-            //drag = false;
+            drag = false;
             
             //clear all three arraylists, resets coordinates
             originalX.clear();
