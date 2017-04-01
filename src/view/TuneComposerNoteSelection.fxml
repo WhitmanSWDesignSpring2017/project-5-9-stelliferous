@@ -26,7 +26,7 @@
                     <Pane fx:id="compositionPane" onMouseDragged="#paneMouseDrag" onMousePressed="#paneMouseClick" onMouseReleased="#paneMouseRelease" prefHeight="1280.0" prefWidth="2000.0">
                      <children>
                         <fx:include source="TuneComposerBackground.fxml" /> 
-                        <!--<Rectangle fx:id="gestureRect" x="0" y="0" width="0" height="0" />-->                                 
+                        <Pane fx:id="gestureRectPane" />                                
                      </children>
                     </Pane>
                   <Line fx:id="redLine" endX="0.0" endY="1280.0" startX="0.0" startY="0.0" styleClass="redLine" />

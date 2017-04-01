@@ -12,12 +12,12 @@ import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.event.EventHandler;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
 
@@ -115,8 +115,10 @@ public class TuneComposerNoteSelection {
     }
     
     void resetGestureRectangle(){
-        if (compositionPane.getChildren().contains(gestureRect)){
-            compositionPane.getChildren().remove(gestureRect);
+        gestureRectPane.getChildren().clear();
+            for (int j=0 ;j < gestureNoteGroups.size();j++) {
+                ArrayList currentGesture = gestureNoteGroups.get(j);
+                updateGestureRectangle(currentGesture);  
         }
     }
     
@@ -130,7 +132,6 @@ public class TuneComposerNoteSelection {
     @FXML 
     private void paneMouseClick(MouseEvent e) throws IOException{
         reset_coordinates(e);
-        resetGestureRectangle();
     };
     
     /**
@@ -144,9 +145,7 @@ public class TuneComposerNoteSelection {
      */
     @FXML
     private void paneMouseDrag(MouseEvent w){
-        
-        resetGestureRectangle();
-        
+                
         //if the shift-key is down, do not create a selection rectangle
         if (w.isShiftDown()){
             paneMouseRelease(w);
@@ -330,9 +329,6 @@ public class TuneComposerNoteSelection {
         //reset current mouse coordinates
         reset_coordinates(m);
         
-        resetGestureRectangle();
-
-        
         //if the rectangle was selected and 'control' is down, deselect it
         if ((selectedNotes.indexOf(rect)!= -1) && (m.isControlDown())){
             selectedNotes.forEach((e1)-> {
@@ -443,6 +439,9 @@ public class TuneComposerNoteSelection {
         }        
     }
     
+    @FXML AnchorPane backgroundPane;
+    @FXML Canvas linesCanvas;
+    
     /**
      * Crete a new EventHandler for the mouseEvent that happens when dragging 
      * the rectangle.
@@ -487,13 +486,7 @@ public class TuneComposerNoteSelection {
                     selectedNotes.get(i).setY(newTranslateY);
                 }
                 
-                for (int j=0 ;j < gestureNoteGroups.size();j++) {
-                    ArrayList currentGesture = gestureNoteGroups.get(j);
-                    if (currentGesture.contains(selectedNotes.get(j))) {
-                    updateGestureRectangle(currentGesture);
-                    
-                    } 
-                }
+                resetGestureRectangle();
             }
                             
             
@@ -532,6 +525,8 @@ public class TuneComposerNoteSelection {
                  double offset = finalY - currentY;
                 selectedNotes.get(i).setTranslateY(offset);
             }
+            
+            resetGestureRectangle();
         }
     };    
     
@@ -547,7 +542,7 @@ public class TuneComposerNoteSelection {
         
     } 
     
-    @FXML Pane compositionPane;
+    @FXML Pane gestureRectPane;
     double gestureRectPadding = 5;
     //@FXML Rectangle gestureRectangle;
     Rectangle gestureRect = new Rectangle();
@@ -555,8 +550,8 @@ public class TuneComposerNoteSelection {
     
     private void updateGestureRectangle(ArrayList<NoteRectangle> gesture){
         //System.out.println("update");
-        if (compositionPane.getChildren().contains(gestureRect)){
-            compositionPane.getChildren().remove(gestureRect);
+        if (gestureRectPane.getChildren().contains(gestureRect)){
+            gestureRectPane.getChildren().remove(gestureRect);
         }
         
         NoteRectangle currentRect = gesture.get(0);
@@ -581,22 +576,20 @@ public class TuneComposerNoteSelection {
         }
         
         //System.out.println(gestureMaxX + " " + gestureMaxY + " " + gestureMinX + " " + gestureMinY);
-        //gestureRect =  Rectangle(gestureMinX - gestureRectPadding, gestureMinY - gestureRectPadding, gestureMaxX - gestureMinX + 2*gestureRectPadding , gestureMaxY - gestureMinY + 2*gestureRectPadding);
-        compositionPane.getChildren().add(gestureRect);
+        gestureRectPane.getChildren().add(new Rectangle(gestureMinX - gestureRectPadding, gestureMinY - gestureRectPadding, gestureMaxX - gestureMinX + 2*gestureRectPadding , gestureMaxY - gestureMinY + 2*gestureRectPadding));
+        /*compositionPane.getChildren().add(gestureRect);
         gestureRect.setX(gestureMinX - gestureRectPadding);
         gestureRect.setY(gestureMinY - gestureRectPadding);
         gestureRect.setWidth(gestureMaxX - gestureMinX + 2*gestureRectPadding);
-        gestureRect.setHeight(gestureMaxY - gestureMinY + 2*gestureRectPadding);
+        gestureRect.setHeight(gestureMaxY - gestureMinY + 2*gestureRectPadding);*/
     }
     
     @FXML
     private void handleUngroupAction(ActionEvent e){
-        if (compositionPane.getChildren().contains(gestureRect)){
-            compositionPane.getChildren().remove(gestureRect);
-        }
         gestureNoteGroups.remove(selectedNotes);
         selectedNotes.clear();
         selectRed();
+        resetGestureRectangle();
     }  
         
     /**
