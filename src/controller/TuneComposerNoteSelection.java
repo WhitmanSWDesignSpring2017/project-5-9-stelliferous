@@ -190,7 +190,6 @@ public class TuneComposerNoteSelection {
             } else {
                 selectedNotes.add(r);
             } 
-            System.out.println(selectedNotes);
             selectRed(); 
             
             selectedNotes.add(r);
