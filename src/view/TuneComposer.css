@@ -13,6 +13,11 @@
     -fx-stroke-width: 2px;
 }
 
+.dashed{
+    -fx-fill: transparent;
+    -fx-stroke-dash-array: 8 3 8 3;
+}
+
 .strokeBlack{
     -fx-stroke: black;   
     -fx-stroke-width: 2px;
