@@ -63,9 +63,10 @@
     </top>
    <left>
       <VBox fx:id="instrumentsVBox" spacing="50.0">
+          <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
           <fx:define>
-              <ToggleGroup fx:id="instrumentsRadioButton" />
+              <ToggleGroup fx:id="instrumentsRadioButton"/>
           </fx:define>
-      </VBox>          
+      </VBox>         
    </left>
 </BorderPane>
