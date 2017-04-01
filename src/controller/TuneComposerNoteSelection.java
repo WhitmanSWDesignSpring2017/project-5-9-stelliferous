@@ -346,7 +346,6 @@ public class TuneComposerNoteSelection {
             for (int i=0 ;i < gestureNoteGroups.size();i++) {
                 ArrayList currentGesture = gestureNoteGroups.get(i);
                 if (currentGesture.contains(rect)) {
-                    System.out.println("contains");
                     selectNotes = currentGesture;
                     break;
                 } 
