@@ -109,13 +109,15 @@ public class TuneComposerNoteSelection {
         xCoordinate = (int)m.getX();
         yCoordinate = (int)m.getY();
         
-        if (compositionPane.getChildren().contains(gestureRect)){
-            compositionPane.getChildren().remove(gestureRect);
-        }
-        
         //stops ongoing composition-playing events
         MidiComposition.stop();
         redLine.setVisible(false);
+    }
+    
+    void resetGestureRectangle(){
+        if (compositionPane.getChildren().contains(gestureRect)){
+            compositionPane.getChildren().remove(gestureRect);
+        }
     }
     
     /**
@@ -128,6 +130,7 @@ public class TuneComposerNoteSelection {
     @FXML 
     private void paneMouseClick(MouseEvent e) throws IOException{
         reset_coordinates(e);
+        resetGestureRectangle();
     };
     
     /**
@@ -141,6 +144,8 @@ public class TuneComposerNoteSelection {
      */
     @FXML
     private void paneMouseDrag(MouseEvent w){
+        
+        resetGestureRectangle();
         
         //if the shift-key is down, do not create a selection rectangle
         if (w.isShiftDown()){
@@ -325,6 +330,9 @@ public class TuneComposerNoteSelection {
         //reset current mouse coordinates
         reset_coordinates(m);
         
+        resetGestureRectangle();
+
+        
         //if the rectangle was selected and 'control' is down, deselect it
         if ((selectedNotes.indexOf(rect)!= -1) && (m.isControlDown())){
             selectedNotes.forEach((e1)-> {
@@ -342,6 +350,7 @@ public class TuneComposerNoteSelection {
                 ArrayList currentGesture = gestureNoteGroups.get(i);
                 if (currentGesture.contains(rect)) {
                     selectNotes = currentGesture;
+                    updateGestureRectangle(currentGesture);
                     break;
                 } 
             }
@@ -479,12 +488,12 @@ public class TuneComposerNoteSelection {
                 }
                 
                 for (int j=0 ;j < gestureNoteGroups.size();j++) {
-                ArrayList currentGesture = gestureNoteGroups.get(j);
-                if (currentGesture.contains(selectedNotes.get(j))) {
+                    ArrayList currentGesture = gestureNoteGroups.get(j);
+                    if (currentGesture.contains(selectedNotes.get(j))) {
                     updateGestureRectangle(currentGesture);
                     
-                } 
-            }
+                    } 
+                }
             }
                             
             
@@ -545,7 +554,7 @@ public class TuneComposerNoteSelection {
     
     
     private void updateGestureRectangle(ArrayList<NoteRectangle> gesture){
-        System.out.println("update");
+        //System.out.println("update");
         if (compositionPane.getChildren().contains(gestureRect)){
             compositionPane.getChildren().remove(gestureRect);
         }
@@ -571,7 +580,7 @@ public class TuneComposerNoteSelection {
             }
         }
         
-        System.out.println(gestureMaxX + " " + gestureMaxY + " " + gestureMinX + " " + gestureMinY);
+        //System.out.println(gestureMaxX + " " + gestureMaxY + " " + gestureMinX + " " + gestureMinY);
         //gestureRect =  Rectangle(gestureMinX - gestureRectPadding, gestureMinY - gestureRectPadding, gestureMaxX - gestureMinX + 2*gestureRectPadding , gestureMaxY - gestureMinY + 2*gestureRectPadding);
         compositionPane.getChildren().add(gestureRect);
         gestureRect.setX(gestureMinX - gestureRectPadding);
