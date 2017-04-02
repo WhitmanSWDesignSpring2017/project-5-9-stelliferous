@@ -25,5 +25,4 @@ public class Constants {
     
     //defines the padding area around gesture outlines
     public static final double GESTURERECTPADDING = 25.0;
- 
 }
