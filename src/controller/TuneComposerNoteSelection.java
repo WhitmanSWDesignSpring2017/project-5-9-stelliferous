@@ -20,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
+import controller.GestureModel.*;
 
 
 /**
@@ -38,9 +39,6 @@ public class TuneComposerNoteSelection {
     //makes available rectAnchorPane, which stores the rectangles
     @FXML AnchorPane rectAnchorPane;
     
-    //makes available gestureRectPane, which stores gesture outlines
-    @FXML Pane gestureRectPane;
-    
     //makes available redLine, which stores the line object.
     @FXML Line redLine;
     
@@ -54,10 +52,7 @@ public class TuneComposerNoteSelection {
     private ArrayList<NoteRectangle> rectList = new ArrayList<>();
     
     //creates a list to store selected rectangles
-    private ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
-    
-    //creates a list to store all gesture/grouped notes
-    private ArrayList<ArrayList<NoteRectangle>> gestureNoteGroups = new ArrayList<>();
+    public static ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
     
     //constructs the TranslateTransition for use later in animation of redline
     private final TranslateTransition lineTransition = new TranslateTransition();
@@ -86,6 +81,8 @@ public class TuneComposerNoteSelection {
     private boolean stretch;
     private boolean drag;
     
+    private GestureModel gestureModel = new GestureModel();
+    
     
     /**
      * resets the mouse coordinates to allow dragging functionality
@@ -100,20 +97,6 @@ public class TuneComposerNoteSelection {
         //stops ongoing composition-playing events
         MidiComposition.stop();
         redLine.setVisible(false);
-    }
-    
-    
-    void resetGestureRectangle(){
-        gestureRectPane.getChildren().clear();
-        for (int i=0; i < gestureNoteGroups.size();i++) {
-            double a = gestureNoteGroups.get(i).get(0).getX();
-            System.out.println(a);
-        }
-        for (int j=0 ;j < gestureNoteGroups.size();j++) {
-            ArrayList currentGesture = gestureNoteGroups.get(j);
-            updateGestureRectangle(currentGesture);  
-        }
-        
     }
     
     /**
@@ -178,11 +161,11 @@ public class TuneComposerNoteSelection {
             
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
             
-            for (int i=0 ;i < gestureNoteGroups.size();i++) {
-                ArrayList currentGesture = gestureNoteGroups.get(i);
+            for (int i=0 ;i < GestureModel.gestureNoteGroups.size();i++) {
+                ArrayList currentGesture = GestureModel.gestureNoteGroups.get(i);
                 if (currentGesture.contains(r)) {
 
-                    updateGestureRectangle(currentGesture);
+                    gestureModel.updateGestureRectangle(currentGesture);
 
                     selectNotes = currentGesture;
                     break;
@@ -342,11 +325,11 @@ public class TuneComposerNoteSelection {
             deselectNotes(m);
             
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
-            for (int i=0 ;i < gestureNoteGroups.size();i++) {
-                ArrayList currentGesture = gestureNoteGroups.get(i);
+            for (int i=0 ;i < GestureModel.gestureNoteGroups.size();i++) {
+                ArrayList currentGesture = GestureModel.gestureNoteGroups.get(i);
                 if (currentGesture.contains(rect)) {
                     selectNotes = currentGesture;
-                    updateGestureRectangle(currentGesture);
+                    gestureModel.updateGestureRectangle(currentGesture);
                     break;
                 } 
             }
@@ -362,7 +345,7 @@ public class TuneComposerNoteSelection {
         selectRed();
     }
     
-    private void selectRed() {
+    protected static void selectRed() {
         selectedNotes.forEach((e1) -> {
            e1.clearStroke();
            e1.notes.getStyleClass().add("strokeRed");
@@ -472,7 +455,7 @@ public class TuneComposerNoteSelection {
                     doDragAction(i, offsetX, offsetY);
                 }
                 
-                resetGestureRectangle();
+                gestureModel.resetGestureRectangle();
             }
                             
             
@@ -543,68 +526,9 @@ public class TuneComposerNoteSelection {
                         *Constants.HEIGHTRECTANGLE;
                 selectedNotes.get(i).setY(finalY);   
             }
-            resetGestureRectangle();
+            gestureModel.resetGestureRectangle();
         }
     };    
-    
-    @FXML
-    private void handleGroupAction(ActionEvent e){
-        ArrayList<NoteRectangle> newGesture = new ArrayList<>();
-        selectedNotes.forEach((e1)-> {
-            newGesture.add(e1);
-        });
-        gestureNoteGroups.add(0,newGesture);
-        updateGestureRectangle(newGesture);
-        
-    } 
-    
-    double gestureRectPadding = 5;
-    
-    private ArrayList<Double> calculateBorder(ArrayList<NoteRectangle> gesture) {
-        
-        NoteRectangle currentRect = gesture.get(0);
-        double gestureMinX = currentRect.getX();
-        double gestureMinY = currentRect.getY() + Constants.HEIGHTRECTANGLE;
-        double gestureMaxX = currentRect.getX() + currentRect.getWidth();
-        double gestureMaxY = currentRect.getY();
-        
-        for (int i = 1; i < gesture.size(); i++){
-            currentRect = gesture.get(i);
-            if (gestureMinY > currentRect.getY() ){
-                gestureMinY = currentRect.getY() ;
-            }
-            if (gestureMinX > currentRect.getX()){
-                gestureMinX = currentRect.getX();
-            }
-            if (gestureMaxX < currentRect.getX() + currentRect.getWidth()){
-                gestureMaxX = currentRect.getX() + currentRect.getWidth();
-            }
-            if (gestureMaxY < currentRect.getY()  + Constants.HEIGHTRECTANGLE){
-                gestureMaxY = currentRect.getY() + Constants.HEIGHTRECTANGLE ;
-            }
-        }
-        ArrayList<Double> borderCords = new ArrayList<>();
-        borderCords.add(gestureMinX - gestureRectPadding);
-        borderCords.add(gestureMinY - gestureRectPadding);
-        borderCords.add(gestureMaxX - gestureMinX + 2*gestureRectPadding);
-        borderCords.add(gestureMaxY - gestureMinY + 2*gestureRectPadding);
-        return borderCords;
-    }
-    
-    private void updateGestureRectangle(ArrayList<NoteRectangle> gesture){       
-        ArrayList<Double> borderCords = calculateBorder(gesture);        
-        Rectangle gestRect = new Rectangle(borderCords.get(0),borderCords.get(1),borderCords.get(2),borderCords.get(3));
-        gestRect.getStyleClass().add("dashed");
-        gestureRectPane.getChildren().add(gestRect);
-
-    }
-    
-    @FXML
-    private void handleUngroupAction(ActionEvent e){
-        gestureNoteGroups.remove(selectedNotes);
-        selectRed();
-        resetGestureRectangle();
-    }  
         
     /**
      * Exits the program upon user clicking the typical 'close' 
@@ -742,8 +666,28 @@ public class TuneComposerNoteSelection {
         });
         rectList.clear();
         selectedNotes.clear();
-        gestureNoteGroups.clear();
+        GestureModel.gestureNoteGroups.clear();
     }
+    
+    
+    @FXML
+    private void handleGroupAction(ActionEvent e){
+        ArrayList<NoteRectangle> newGesture = new ArrayList<>();
+        TuneComposerNoteSelection.selectedNotes.forEach((e1)-> {
+            newGesture.add(e1);
+        });
+        GestureModel.gestureNoteGroups.add(0,newGesture);
+        gestureModel.updateGestureRectangle(newGesture);
+        
+    }
+    
+        @FXML
+    private void handleUngroupAction(ActionEvent e){
+        GestureModel.gestureNoteGroups.remove(selectedNotes);
+        TuneComposerNoteSelection.selectRed();
+        gestureModel.resetGestureRectangle();
+    }  
+    
     
     private void setupInstruments() {
         boolean firstInstrument = true;
