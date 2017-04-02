@@ -12,11 +12,9 @@ import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.event.EventHandler;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
@@ -170,7 +168,7 @@ public class TuneComposerNoteSelection {
             
             // select note rectangles within the selection area
             selectedNotes.add(r);
-            selectRed();
+            
             
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
             
@@ -193,6 +191,7 @@ public class TuneComposerNoteSelection {
             } else {
                 selectedNotes.add(r);
             } 
+            selectRed();
         }     
     }
     
@@ -686,7 +685,6 @@ public class TuneComposerNoteSelection {
             newGesture.add(e1);
         });
         gestureModelController.gestureNoteGroups.add(0,newGesture);
-        gestureModelController.run();
         gestureModelController.updateGestureRectangle(newGesture);
 
     }
