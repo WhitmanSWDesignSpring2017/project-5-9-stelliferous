@@ -47,6 +47,8 @@ public class TuneComposerNoteSelection {
     //makes available the area where the instrument radio buttons lie
     @FXML VBox instrumentsVBox;
     
+    @FXML GestureModelController gestureModelController;
+    
     //creates a list to store created rectangles, that they may be later erased
     private ArrayList<NoteRectangle> rectList = new ArrayList<>();
     
@@ -80,8 +82,22 @@ public class TuneComposerNoteSelection {
     private boolean stretch;
     private boolean drag;
     
-    private GestureModel gestureModel = new GestureModel();
-    
+    /**
+     * Initializes FXML and assigns animation to the redline FXML shape. 
+     * (with location, duration, and speed). Make the red line invisible 
+     * at the start and when the composition has finished playing
+     */
+    @FXML public void initialize() {
+        redLine.setVisible(false);
+        lineTransition.setNode(redLine);
+        lineTransition.setFromX(0);
+        lineTransition.setInterpolator(Interpolator.LINEAR);
+        lineTransition.setOnFinished((e)->{
+            redLine.setVisible(false);
+        });
+        setupInstruments();
+        gestureModelController.init(this);
+    }
     
     /**
      * resets the mouse coordinates to allow dragging functionality
@@ -160,11 +176,11 @@ public class TuneComposerNoteSelection {
             
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
             
-            for (int i=0 ;i < GestureModel.gestureNoteGroups.size();i++) {
-                ArrayList currentGesture = GestureModel.gestureNoteGroups.get(i);
+            for (int i=0 ;i < gestureModelController.gestureNoteGroups.size();i++) {
+                ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
                 if (currentGesture.contains(r)) {
 
-                    gestureModel.updateGestureRectangle(currentGesture);
+                    gestureModelController.updateGestureRectangle(currentGesture);
 
                     selectNotes = currentGesture;
                     break;
@@ -324,11 +340,11 @@ public class TuneComposerNoteSelection {
             deselectNotes(m);
             
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
-            for (int i=0 ;i < GestureModel.gestureNoteGroups.size();i++) {
-                ArrayList currentGesture = GestureModel.gestureNoteGroups.get(i);
+            for (int i=0 ;i < gestureModelController.gestureNoteGroups.size();i++) {
+                ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
                 if (currentGesture.contains(rect)) {
                     selectNotes = currentGesture;
-                    gestureModel.updateGestureRectangle(currentGesture);
+                    gestureModelController.updateGestureRectangle(currentGesture);
                     break;
                 } 
             }
@@ -451,7 +467,7 @@ public class TuneComposerNoteSelection {
                     doDragAction(i, offsetX, offsetY);
                 }
                 
-                gestureModel.resetGestureRectangle();
+                gestureModelController.resetGestureRectangle();
             }
                             
             
@@ -522,7 +538,7 @@ public class TuneComposerNoteSelection {
                         *Constants.HEIGHTRECTANGLE;
                 selectedNotes.get(i).setY(finalY);   
             }
-            gestureModel.resetGestureRectangle();
+            gestureModelController.resetGestureRectangle();
         }
     };    
         
@@ -662,10 +678,8 @@ public class TuneComposerNoteSelection {
         });
         rectList.clear();
         selectedNotes.clear();
-        GestureModel.gestureNoteGroups.clear();
+        gestureModelController.gestureNoteGroups.clear();
     }
-    
-    @FXML private TuneComposerBackgroundController tuneComposerBackGroundController;
     
     @FXML
     private void handleGroupAction(ActionEvent e){
@@ -673,17 +687,17 @@ public class TuneComposerNoteSelection {
         TuneComposerNoteSelection.selectedNotes.forEach((e1)-> {
             newGesture.add(e1);
         });
-        GestureModel.gestureNoteGroups.add(0,newGesture);
-        tuneComposerBackGroundController.run();
-        gestureModel.updateGestureRectangle(newGesture);
+        gestureModelController.gestureNoteGroups.add(0,newGesture);
+        gestureModelController.run();
+        gestureModelController.updateGestureRectangle(newGesture);
 
     }
     
     @FXML
     private void handleUngroupAction(ActionEvent e){
-        GestureModel.gestureNoteGroups.remove(selectedNotes);
+        gestureModelController.gestureNoteGroups.remove(selectedNotes);
         TuneComposerNoteSelection.selectRed();
-        gestureModel.resetGestureRectangle();
+        gestureModelController.resetGestureRectangle();
     }  
     
     
@@ -704,21 +718,5 @@ public class TuneComposerNoteSelection {
         }
     }
     
-    /**
-     * Initializes FXML and assigns animation to the redline FXML shape. 
-     * (with location, duration, and speed). Make the red line invisible 
-     * at the start and when the composition has finished playing
-     */
-    @FXML
-    public void initialize() {
-        redLine.setVisible(false);
-        lineTransition.setNode(redLine);
-        lineTransition.setFromX(0);
-        lineTransition.setInterpolator(Interpolator.LINEAR);
-        lineTransition.setOnFinished((e)->{
-            redLine.setVisible(false);
-        });
-        setupInstruments();
-        tuneComposerBackGroundController.injectMainController(this);
-    }
+    
 }

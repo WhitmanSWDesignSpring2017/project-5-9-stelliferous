@@ -7,6 +7,7 @@ package controller;
 
 import java.util.ArrayList;
 import javafx.fxml.FXML;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
@@ -14,13 +15,18 @@ import javafx.scene.shape.Rectangle;
  *
  * @author mauletj
  */
-public class GestureModel {
+public class GestureModelController {
     //makes available gestureRectPane, which stores gesture outlines
     
     @FXML Pane gestureRectPane;
-    
     //creates a list to store all gesture/grouped notes
-    public static ArrayList<ArrayList<NoteRectangle>> gestureNoteGroups = new ArrayList<>();        
+    public  ArrayList<ArrayList<NoteRectangle>> gestureNoteGroups;        
+
+    private TuneComposerNoteSelection mainController; 
+ 
+    public GestureModelController() {
+        this.gestureNoteGroups = new ArrayList<>();
+    }
     
     private ArrayList<Double> calculateBorder(ArrayList<NoteRectangle> gesture) {
         
@@ -61,6 +67,9 @@ public class GestureModel {
 
     }
 
+    void run() {
+        System.out.println("yeah");
+    }
     void  resetGestureRectangle(){
         gestureRectPane.getChildren().clear();
         for (int i=0; i < gestureNoteGroups.size();i++) {
@@ -72,5 +81,9 @@ public class GestureModel {
             updateGestureRectangle(currentGesture);  
         }   
     }    
+
+    public void init(TuneComposerNoteSelection aThis) {
+        mainController = aThis; //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
