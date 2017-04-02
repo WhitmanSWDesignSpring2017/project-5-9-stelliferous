@@ -297,7 +297,7 @@ public class TuneComposerNoteSelection {
         
         //creates a new NoteRectangle object
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*Constants.HEIGHTRECTANGLE, 
-                                               selectedInstrument, this);
+                                               selectedInstrument);
 
         //assigns mouse-action events to the created NoteRectangle
         rect.setOnMousePressed(rectangleOnMousePressedEventHandler);

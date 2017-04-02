@@ -9,34 +9,31 @@ import javafx.scene.shape.Rectangle;
  * A NoteRectangle object, which is used to record and display notes on user
  * creation. Includes a rectangle, to be added to the AnchorPane and visually
  * display the rectangle. Includes channel, color, and stroke of the rectangle.
- * @author wangj2
- * @author mauletj
+ * @author Tyler Maule
+ * @author Jingyuan Wang
+ * @author Kaylin Jarriel
  */
 public class NoteRectangle {
     
-    //attributes to hold a NoteRectangle's Rectangle, channel, color, and
-    //associated instrument
-
+    //the rectangle for the NoteRecangle
     protected Rectangle notes;
+    
+    //the channel for the NoteRectangle
     private final int channel;
+    
+    //the instrument of the NoteRectangle
     private final Instrument instrument;
-    private TuneComposerNoteSelection master;
-
     
     /**
-     * Initializer for the NoteRectangle object
+     * Initializes a NoteRectangle object.
      * @param x x-coordinate of upper-left hand corner of the rectangle
      * @param y y-coordinate of upper-left hand corner of the rectangle
      * @param instrument instrument number of the rectangle
      */        
-    public NoteRectangle(double x, int y, Instrument instrument, TuneComposerNoteSelection master) {
+    public NoteRectangle(double x, int y, Instrument instrument) {
         //assigns user-given attribute values of instrument, channel, color
-        this.master = master;
         this.instrument = instrument;
         this.channel = instrument.getChannel();        
-        
-        //assigns user-given attribute values of instrument, channel, color
-        this.master = master;
       
         //creates a new rectangle object for visual representation
         notes = new Rectangle(x,y,100,10);
@@ -47,24 +44,36 @@ public class NoteRectangle {
     }
     
     /**
-     * returns value of the NoteRectangle object's 'instrument' attribute
-     * @return instrument
+     * Returns value of the NoteRectangle object's 'instrument' attribute.
+     * @return the instrument
      */
     public Instrument getInstrument() {
         return instrument;
     }
     
-    protected void clearStroke() {
-        notes.getStyleClass().clear();
-    }
     /**
-     * returns value of the NoteRectangle object's 'channel' attribute
-     * @return channel
+     * Returns value of the NoteRectangle object's 'channel' attribute
+     * @return the channel
      */
     public int getChannel() {
         return channel;
     }
     
+    /**
+     * Allows the user to set the stroke color of a Rectangle Note
+     * @param newColor the color given by the user (should be crimson/black)
+     */
+    public void setStroke(Color newColor) {
+        notes.setStroke(newColor);
+    }    
+    
+    /**
+     * Clears the stroke around the rectangle.
+     */
+    protected void clearStroke() {
+        notes.getStyleClass().clear();
+    }
+
     /**
      * Set the MousePressed event for the Rectangle notes
      * @param mouseEvent an incoming event, when the mouse is pressed
@@ -96,18 +105,10 @@ public class NoteRectangle {
     public void setOnMouseClicked(EventHandler<MouseEvent> mouseEvent) {
         notes.setOnMouseClicked(mouseEvent);
     }
-
-    /**
-     * Allows the user to set the stroke color of a Rectangle Note
-     * @param newColor the color given by the user (should be crimson/black)
-     */
-    public void setStroke(Color newColor) {
-        notes.setStroke(newColor);
-    }
     
     /**
      * Returns the x-coordinate of a Rectangle Note
-     * @return notes.getX() the x-coordinate
+     * @return the x-coordinate
      */
     public double getX() {
         return notes.getX();
@@ -115,7 +116,7 @@ public class NoteRectangle {
     
     /**
      * Returns the y-coordinate of a Rectangle Note
-     * @return notes.getY() the y-coordinate
+     * @return the y-coordinate
      */
     public double getY() {
         return notes.getY();
@@ -123,7 +124,7 @@ public class NoteRectangle {
     
     /**
      * Returns the width of a Rectangle Note
-     * @return notes.getWidth(), the width
+     * @return the width
      */
     public double getWidth() {
         return notes.getWidth();
@@ -131,7 +132,7 @@ public class NoteRectangle {
     
     /**
      * Returns the height of a Rectangle Note
-     * @return notes.getHeight(), the height
+     * @return the height
      */
     public double getHeight() {
         return notes.getHeight();
@@ -144,14 +145,6 @@ public class NoteRectangle {
     public void setWidth(double width) {
         notes.setWidth(width);
     }        
-    
-    /**
-     * Sets the height of a Rectangle Note
-     * @param height the height value given by the user
-     */
-    public void setHeight(double height) {
-        notes.setHeight(height);
-    }
     
     /**
      * Sets the upper-left hand corner x-coordinate of a Rectangle note
@@ -167,13 +160,5 @@ public class NoteRectangle {
      */
     public void setY(double newY) {
         notes.setY(newY);
-    }
-    
-    /**
-     * Sets the amount by which the Rectangle Note is translated in y-direction
-     * @param translateY the translation in the y-direction given by the user
-     */
-    public void setTranslateY(double translateY) {
-        notes.setTranslateY(translateY);
     }
 }
