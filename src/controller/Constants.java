@@ -1,8 +1,10 @@
 package controller;
 
 /**
- *
- * @author mauletj
+ * Stores all the constant for TuneComposer.java to use.
+ * @author Tyler Maule
+ * @author Jingyuan Wang
+ * @author Kaylin Jarriel
  */
 public class Constants {
     //sets volume for the MidiPlayer's notes
