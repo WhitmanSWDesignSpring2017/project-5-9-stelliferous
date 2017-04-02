@@ -168,7 +168,6 @@ public class TuneComposerNoteSelection {
             
             // select note rectangles within the selection area
             selectedNotes.add(r);
-            selectRed();
             
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
             
@@ -190,7 +189,8 @@ public class TuneComposerNoteSelection {
                 });
             } else {
                 selectedNotes.add(r);
-            } 
+            }
+            selectRed();
         }     
     }
     

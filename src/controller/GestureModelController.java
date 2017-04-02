@@ -83,9 +83,6 @@ public class GestureModelController {
      */
     void  resetGestureRectangle(){
         gestureRectPane.getChildren().clear();
-        for (int i=0; i < gestureNoteGroups.size();i++) {
-            double a = gestureNoteGroups.get(i).get(0).getX();
-        }
         for (int j=0 ;j < gestureNoteGroups.size();j++) {
             ArrayList currentGesture = gestureNoteGroups.get(j);
             updateGestureRectangle(currentGesture);  
