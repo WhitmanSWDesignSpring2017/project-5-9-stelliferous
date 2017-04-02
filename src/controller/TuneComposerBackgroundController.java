@@ -19,6 +19,8 @@ public class TuneComposerBackgroundController implements Initializable{
     
     //makes available the canvas from TuneComposerBackground
     @FXML Canvas linesCanvas;
+    
+    //makes available the background from TuneComposerBackground
     @FXML AnchorPane backgroundPane;
 
     /**

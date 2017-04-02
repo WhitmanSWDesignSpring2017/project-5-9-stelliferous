@@ -1,4 +1,3 @@
-/* CS 300-A, 2017S LATEST */
 package controller;
 
 import javafx.fxml.FXML;
@@ -43,6 +42,7 @@ public class TuneComposerNoteSelection {
     //makes available the area where the instrument radio buttons lie
     @FXML VBox instrumentsVBox;
     
+    //makes available the controller for gestures
     @FXML GestureModelController gestureModelController;
     
     //creates a list to store created rectangles, that they may be later erased
@@ -356,6 +356,9 @@ public class TuneComposerNoteSelection {
         selectRed();
     }
     
+    /**
+     * Sets the appearance of any selected rectangles with a red border.
+     */
     protected static void selectRed() {
         selectedNotes.forEach((e1) -> {
            e1.clearStroke();
@@ -434,7 +437,7 @@ public class TuneComposerNoteSelection {
     }
 
     /**
-     * Crete a new EventHandler for the mouseEvent that happens when dragging 
+     * Create a new EventHandler for the mouseEvent that happens when dragging 
      * the rectangle.
      */    
     private final EventHandler<MouseEvent> rectangleOnMouseDraggedEventHandler = 
@@ -504,7 +507,7 @@ public class TuneComposerNoteSelection {
     };
     
     /**
-     * Crete a new EventHandler for the mouseEvent that happens when releasing 
+     * Create a new EventHandler for the mouseEvent that happens when releasing 
      * the rectangle.
      */        
         private final EventHandler<MouseEvent> rectangleOnMouseReleasedEventHandler = 
@@ -657,7 +660,10 @@ public class TuneComposerNoteSelection {
         selectedNotes.clear();
     }
     
-    
+    /**
+     * Creates a new gesture based on the selected note rectangles.
+     * @param e on grouping event
+     */
     @FXML
     private void handleGroupAction(ActionEvent e){
         ArrayList<NoteRectangle> newGesture = new ArrayList<>();
@@ -669,6 +675,10 @@ public class TuneComposerNoteSelection {
 
     }
     
+    /**
+     * Ungroups the selected gesture. Removes the gesture rectangle.
+     * @param e 
+     */
     @FXML
     private void handleUngroupAction(ActionEvent e){
         gestureModelController.gestureNoteGroups.remove(selectedNotes);
@@ -676,7 +686,9 @@ public class TuneComposerNoteSelection {
         gestureModelController.resetGestureRectangle();
     }  
     
-    
+    /**
+     * Sets up the radio buttons for instrument selection.
+     */
     private void setupInstruments() {
         boolean firstInstrument = true;
         for (Instrument inst : Instrument.values()) {
