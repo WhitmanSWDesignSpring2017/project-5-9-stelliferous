@@ -9,15 +9,14 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * @author wangj2
- * This JavaFX application lets the user compose tunes by clicking!
- * @author Janet Davis 
+ * This application allows users to compose a tune by placing and editing notes 
+ * onto a canvas, which are visualized using rectangles.
  * @author Jingyuan Wang
  * @author Tyler Maule
- * @author Kai McConnell
- * @since January 26, 2017
+ * @author Kaylin Jarriel
  */
 public class TuneComposer extends Application {
+    
     /**
      * Construct the scene and start the application.
      * Loads GUI/layout from the TuneComposer.fxml into a scene, which
@@ -26,7 +25,6 @@ public class TuneComposer extends Application {
      * @param primaryStage the stage for the main window
      * @throws java.io.IOException
      */
-    
     @Override
     public void start(Stage primaryStage) throws IOException {
         
@@ -48,6 +46,7 @@ public class TuneComposer extends Application {
     
     
     /**
+     * Launches the application.
      * @param args the command line arguments
      */
     public static void main(String[] args) {

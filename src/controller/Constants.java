@@ -1,10 +1,13 @@
 package controller;
 
 /**
- *
- * @author mauletj
+ * Stores all the constant for TuneComposer.java to use.
+ * @author Tyler Maule
+ * @author Jingyuan Wang
+ * @author Kaylin Jarriel
  */
 public class Constants {
+    
     //sets volume for the MidiPlayer's notes
     public static final int VOLUME = 120;
     
@@ -22,5 +25,4 @@ public class Constants {
     
     //defines the padding area around gesture outlines
     public static final double GESTURERECTPADDING = 25.0;
-    
 }
