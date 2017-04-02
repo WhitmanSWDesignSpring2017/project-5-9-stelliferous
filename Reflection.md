@@ -1,1 +1,20 @@
+>Give a concise overview of your design. How did you divide the code into classes and methods? How does your design for Project >5 differ from the design you inherited for Project 4? How did you respond to feedback?
+
+Our design includes one large package, tunecomposer, with three smaller packages (Model, Control, View) that each containted their own files. Control simply contains the main tunecomposer java files, which initializes the program on the whole, bringing up the stage and setting up the program. The model package contains files that depend on user interaction, and supplementary files. The TuneComposerNoteSelection file contains the bulk of user interactivity, giving the user the ability to create/move/drag/select notes, and the access to the menu bar to play/stop/delete the composition, as well as group/ungroup. That java file relies on the Constants files, which includes a list of constants, the Instrument file, which describes the information related to each type of instrument, and the NoteRectangle class, which defines the duration, location, and visual of created note rectangles. The Gesture class allows for the user's creation and deletion of gestures, along with the accompanying border around said gestures. Finally, the view package contains CSS for styling in the user interface, and two different FXML files to lay out the user interface and area for user interaction.
+
+>Explain why your way was the elegant way to do it. Address any improvements you made based on my feedback.
+
+Our way was the elegant way to do it because it simplified the program and improved maintainability by splitting it across different files, controllers, classes, and packages. We began to use the guiding philosophies of the VCM method, and had different classes communicate with one another rather than one large class. We did rename variables and files for clarity, and fixed as many TODOs as possible, including moving the red line, using fx:include, seperating the gesture class, creating new classes for constants, and avoiding a lot of variable repetition/copying. 
+
+>Explain what, if anything, in your solution is inelegant and why you didn't make it elegant (for example, maybe you didn't >have time or the knowledge to fix it).
+
+In some cases, following the TODOs unfortunantely caused more complexity or errors in our program... for example, without two different boolean variables for Stretch and Drag, dragging and stretching would often move the wrong rectangle or happen at inappropriate time. I think that a lot of inelegance is due to "time or the knowledge to fix it" this time around, since the first week back from Spring Break was quite busy, and we initially didn't know how to implement gestures. In addition, there wasn't much clear information online explaining how to link different controllers/classes/files; it might be helpful to have some references or recommended tutorials on that front.
+
+>Include an estimate of your velocity. How many story points did you estimate you would complete during this project? How many >did you actually complete, how many person-hours did the team spend, and what is the ratio of points/person-hour?
+
+We estimated that we would complete 25 story points, and actually ended up completed about 28 (although we're not very experienced in gauging story points or story point estimation). We spent about 34 hours on this project, so around 12 hours per person, and that means that the rate of points/person-hour was about 0.82.
+
+>Include a short summary of your team retrospective. What went well that your team will keep doing during the next project >assignment? What will you improve? How?
+
+We'll keep working together as a group, as that did allow us to bounce ideas off each other and talk about the design as a whole. If we can, we should meet earlier so that we have more time to think about our design and ask questions during office hours/class. Hopefully we'll have more time to work on future projects, but that's hard to predict or force.
 
