@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Rectangle;
 
 /**
  * The FXML Controller class to draw grey lines in the canvas of 
@@ -14,11 +16,12 @@ import javafx.scene.canvas.GraphicsContext;
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
  */
-public class TuneComposerBackgroundController  implements Initializable {
+public class TuneComposerBackgroundController implements Initializable{
     
     //makes available the canvas from TuneComposerBackground
     @FXML Canvas linesCanvas;
-    
+    @FXML AnchorPane backgroundPane;
+    private TuneComposerNoteSelection tuneComposerNoteSelection;
     /**
      * Initializes the controller class. Draws grey lines on the Canvas named
      * "lines"
@@ -39,5 +42,13 @@ public class TuneComposerBackgroundController  implements Initializable {
             gc.lineTo(2000, y1);
             gc.stroke();
         }
-    }      
+    }    
+    
+    public void injectMainController(TuneComposerNoteSelection tuneComposerNoteSelection) {
+        this.tuneComposerNoteSelection = tuneComposerNoteSelection;
+    }
+    public void run() {
+        Rectangle yes = new Rectangle(0,0,100,100);
+        backgroundPane.getChildren().add(yes);
+    }
 }
