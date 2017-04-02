@@ -17,10 +17,10 @@ import javax.sound.midi.ShortMessage;
 public enum Instrument {
     
     //the enum that stores the program, channel, names, and color for each instrument
-    PIANO         (1,  0, "Piano",        Color.LIGHTGREEN),
+    PIANO         (1,  0, "Piano",        Color.MEDIUMSEAGREEN),
     HARPSICHORD   (7,  1, "Harpsichord",  Color.DARKSEAGREEN),
     MARIMBA       (13, 2, "Marimba",      Color.CADETBLUE),
-    CHURCH_ORGAN  (20, 3, "Church Organ", Color.AQUA),
+    CHURCH_ORGAN  (20, 3, "Church Organ", Color.SKYBLUE),
     ACCORDION     (22, 4, "Accordion",    Color.BLUEVIOLET),
     GUITAR        (25, 5, "Guitar",       Color.MEDIUMPURPLE),
     VIOLIN        (41, 6, "Violin",       Color.MAROON), 

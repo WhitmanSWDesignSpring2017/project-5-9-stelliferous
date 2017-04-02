@@ -11,11 +11,9 @@ import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.event.EventHandler;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
@@ -53,13 +51,12 @@ public class TuneComposerNoteSelection {
     @FXML VBox instrumentsVBox;
     
     //creates a list to store created rectangles that may be later erased
+    @FXML GestureModelController gestureModelController;
+
     private ArrayList<NoteRectangle> rectList = new ArrayList<>();
     
     //creates a list to store selected rectangles
-    private ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
-    
-    //creates a list to store all gesture/grouped notes
-    private ArrayList<ArrayList<NoteRectangle>> gestureNoteGroups = new ArrayList<>();
+    public static ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
     
     //constructs the TranslateTransition for use later in animation of redline
     private final TranslateTransition lineTransition = new TranslateTransition();
@@ -91,6 +88,22 @@ public class TuneComposerNoteSelection {
     //determines whether the action is for drag
     private boolean drag;
     
+    /**
+     * Initializes FXML and assigns animation to the redline FXML shape. 
+     * (with location, duration, and speed). Make the red line invisible 
+     * at the start and when the composition has finished playing
+     */
+    @FXML public void initialize() {
+        redLine.setVisible(false);
+        lineTransition.setNode(redLine);
+        lineTransition.setFromX(0);
+        lineTransition.setInterpolator(Interpolator.LINEAR);
+        lineTransition.setOnFinished((e)->{
+            redLine.setVisible(false);
+        });
+        setupInstruments();
+        gestureModelController.init(this);
+    }
     
     /**
      * Resets the mouse coordinates to allow dragging functionality,
@@ -106,22 +119,6 @@ public class TuneComposerNoteSelection {
         //stops ongoing composition-playing events
         MidiComposition.stop();
         redLine.setVisible(false);
-    }
-    
-    /**
-     * Resets the rectangle surrounding a gesture.
-     */
-    void resetGestureRectangle(){
-        gestureRectPane.getChildren().clear();
-        for (int i=0; i < gestureNoteGroups.size();i++) {
-            double a = gestureNoteGroups.get(i).get(0).getX();
-            System.out.println(a);
-        }
-        for (int j=0 ;j < gestureNoteGroups.size();j++) {
-            ArrayList currentGesture = gestureNoteGroups.get(j);
-            updateGestureRectangle(currentGesture);  
-        }
-        
     }
     
     /**
@@ -183,11 +180,11 @@ public class TuneComposerNoteSelection {
             
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
             
-            for (int i=0 ;i < gestureNoteGroups.size();i++) {
-                ArrayList currentGesture = gestureNoteGroups.get(i);
+            for (int i=0 ;i < gestureModelController.gestureNoteGroups.size();i++) {
+                ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
                 if (currentGesture.contains(r)) {
 
-                    updateGestureRectangle(currentGesture);
+                    gestureModelController.updateGestureRectangle(currentGesture);
 
                     selectNotes = currentGesture;
                     break;
@@ -346,11 +343,11 @@ public class TuneComposerNoteSelection {
             deselectNotes(m);
             
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
-            for (int i=0 ;i < gestureNoteGroups.size();i++) {
-                ArrayList currentGesture = gestureNoteGroups.get(i);
+            for (int i=0 ;i < gestureModelController.gestureNoteGroups.size();i++) {
+                ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
                 if (currentGesture.contains(rect)) {
                     selectNotes = currentGesture;
-                    updateGestureRectangle(currentGesture);
+                    gestureModelController.updateGestureRectangle(currentGesture);
                     break;
                 } 
             }
@@ -370,7 +367,7 @@ public class TuneComposerNoteSelection {
     /**
      * Sets the appearance of any selected rectangles with a red border.
      */
-    private void selectRed() {
+    protected static void selectRed() {
         selectedNotes.forEach((e1) -> {
            e1.clearStroke();
            e1.notes.getStyleClass().add("strokeRed");
@@ -449,7 +446,7 @@ public class TuneComposerNoteSelection {
             }
         }        
     }
-    
+  
     /**
      * Create a new EventHandler for the mouseEvent that happens when dragging 
      * the rectangle.
@@ -480,8 +477,7 @@ public class TuneComposerNoteSelection {
                 } else if (drag){
                     doDragAction(i, offsetX, offsetY);
                 }
-      
-                resetGestureRectangle();
+                gestureModelController.resetGestureRectangle();
             }
         }
 
@@ -557,84 +553,9 @@ public class TuneComposerNoteSelection {
                         *Constants.HEIGHTRECTANGLE;
                 selectedNotes.get(i).setY(finalY);   
             }
-            resetGestureRectangle();
+            gestureModelController.resetGestureRectangle();
         }
-    };    
-    
-    /**
-     * Creates a new gesture based on the selected note rectangles.
-     * @param e on grouping event
-     */
-    @FXML
-    private void handleGroupAction(ActionEvent e){
-        ArrayList<NoteRectangle> newGesture = new ArrayList<>();
-        selectedNotes.forEach((e1)-> {
-            newGesture.add(e1);
-        });
-        gestureNoteGroups.add(0,newGesture);
-        updateGestureRectangle(newGesture);
-        
-    } 
-    
-    /**
-     * Calculates the border of the rectangle which indicates a gesture.
-     * @param gesture the gesture for which the rectangle is being calculated
-     * @return coordinates of the rectangle in an array
-     */
-    private ArrayList<Double> calculateBorder(ArrayList<NoteRectangle> gesture) {
-        
-        NoteRectangle currentRect = gesture.get(0);
-        double gestureMinX = currentRect.getX();
-        double gestureMinY = currentRect.getY() + Constants.HEIGHTRECTANGLE;
-        double gestureMaxX = currentRect.getX() + currentRect.getWidth();
-        double gestureMaxY = currentRect.getY();
-        
-        for (int i = 1; i < gesture.size(); i++){
-            currentRect = gesture.get(i);
-            if (gestureMinY > currentRect.getY() ){
-                gestureMinY = currentRect.getY() ;
-            }
-            if (gestureMinX > currentRect.getX()){
-                gestureMinX = currentRect.getX();
-            }
-            if (gestureMaxX < currentRect.getX() + currentRect.getWidth()){
-                gestureMaxX = currentRect.getX() + currentRect.getWidth();
-            }
-            if (gestureMaxY < currentRect.getY()  + Constants.HEIGHTRECTANGLE){
-                gestureMaxY = currentRect.getY() + Constants.HEIGHTRECTANGLE ;
-            }
-        }
-        ArrayList<Double> borderCords = new ArrayList<>();
-        borderCords.add(gestureMinX - Constants.GESTURERECTPADDING);
-        borderCords.add(gestureMinY - Constants.GESTURERECTPADDING);
-        borderCords.add(gestureMaxX - gestureMinX + 2*Constants.GESTURERECTPADDING);
-        borderCords.add(gestureMaxY - gestureMinY + 2*Constants.GESTURERECTPADDING);
-        return borderCords;
-    }
-    
-    /**
-     * Updates the gesture rectangle by creating a new one according to the new 
-     * coordinates.
-     * @param gesture 
-     */
-    private void updateGestureRectangle(ArrayList<NoteRectangle> gesture){       
-        ArrayList<Double> borderCords = calculateBorder(gesture);        
-        Rectangle gestRect = new Rectangle(borderCords.get(0),borderCords.get(1),borderCords.get(2),borderCords.get(3));
-        gestRect.getStyleClass().add("dashed");
-        gestureRectPane.getChildren().add(gestRect);
-
-    }
-    
-    /**
-     * Ungroups the selected gesture. Removes the gesture rectangle.
-     * @param e the ungrouping event
-     */
-    @FXML
-    private void handleUngroupAction(ActionEvent e){
-        gestureNoteGroups.remove(selectedNotes);
-        selectRed();
-        resetGestureRectangle();
-    }  
+    };   
         
     /**
      * Exits the program upon user clicking the typical 'close' 
@@ -772,12 +693,33 @@ public class TuneComposerNoteSelection {
         //unselected rectangles
         rectList.forEach((e1) -> {
             rectAnchorPane.getChildren().remove(e1.notes);
+    
+    /**
+     * Creates a new gesture based on the selected note rectangles.
+     * @param e on grouping event
+     */
+    @FXML
+    private void handleGroupAction(ActionEvent e){
+        ArrayList<NoteRectangle> newGesture = new ArrayList<>();
+        TuneComposerNoteSelection.selectedNotes.forEach((e1)-> {
+            newGesture.add(e1);
         });
-        rectList.clear();
-        selectedNotes.clear();
-        gestureNoteGroups.clear();
+        gestureModelController.gestureNoteGroups.add(0,newGesture);
+        gestureModelController.updateGestureRectangle(newGesture);
+
     }
     
+    /**
+     * Ungroups the selected gesture. Removes the gesture rectangle.
+     * @param e the ungrouping event
+     */
+    @FXML
+    private void handleUngroupAction(ActionEvent e){
+        gestureModelController.gestureNoteGroups.remove(selectedNotes);
+        TuneComposerNoteSelection.selectRed();
+        gestureModelController.resetGestureRectangle();
+    }  
+
     /**
      * Sets up the radio buttons for instrument selection.
      */
@@ -796,21 +738,5 @@ public class TuneComposerNoteSelection {
                 firstInstrument = false;
             }
         }
-    }
-    
-    /**
-     * Initializes FXML and assigns animation to the redline FXML shape (with 
-     * location, duration, and speed). Make the red line invisible at the start 
-     * and when the composition has finished playing.
-     */
-    public void initialize() {
-        redLine.setVisible(false);
-        lineTransition.setNode(redLine);
-        lineTransition.setFromX(0);
-        lineTransition.setInterpolator(Interpolator.LINEAR);
-        lineTransition.setOnFinished((e)->{
-            redLine.setVisible(false);
-        });
-        setupInstruments();
     }
 }
