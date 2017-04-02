@@ -657,25 +657,6 @@ public class TuneComposerNoteSelection {
         selectedNotes.clear();
     }
     
-    /**
-     * Delete all the rectangles created on the pane
-     * @param e  on user click
-     */        
-    @FXML
-    private void handleClearAction(ActionEvent e){
-        //stops the current MidiComposition and red line animation
-        redLine.setVisible(false);
-        MidiComposition.clear();
-        
-        //removes all notes from Pane and clears list of selected and
-        //unselected rectangles
-        rectList.forEach((e1) -> {
-            rectAnchorPane.getChildren().remove(e1.notes);
-        });
-        rectList.clear();
-        selectedNotes.clear();
-        gestureModelController.gestureNoteGroups.clear();
-    }
     
     @FXML
     private void handleGroupAction(ActionEvent e){
