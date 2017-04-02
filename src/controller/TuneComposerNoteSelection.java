@@ -23,12 +23,10 @@ import javax.sound.midi.ShortMessage;
 
 
 /**
- * This JavaFX application lets the user compose tunes by clicking!
- * @author Janet Davis 
- * @author Kai McConnell
- * @author Jingyuan Wang
+ * This class allows for note creation, selection, editing, and deletion.
  * @author Tyler Maule
- * @since January 26, 2017
+ * @author Jingyuan Wang
+ * @author Kaylin Jarriel
  */
 public class TuneComposerNoteSelection {
     
