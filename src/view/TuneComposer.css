@@ -1,6 +1,5 @@
 /* 
-    Created on : Mar 5, 2017, 3:11:23 PM
-    Author     : mauletj
+    Authors: Tyler Maule, Jingyuan Wang, Kaylin Jarriel
 */
 
 /* Determines background color of Tune Composition pane */
@@ -8,22 +7,26 @@
     -fx-background-color: lavender;
 }
 
+/* Determines the stroke if the rectangle is selected. */
 .strokeRed{
     -fx-stroke: crimson;
     -fx-stroke-width: 2px;
 }
 
+/* Determines the dashed line for gestures. */
 .dashed{
     -fx-stroke: black;
     -fx-fill: transparent;
     -fx-stroke-dash-array: 8 3 8 3;
 }
 
+/* Determines the stroke for unselected rectangles. */
 .strokeBlack{
     -fx-stroke: black;   
     -fx-stroke-width: 2px;
 }
 
+/* Determines the outline of the selection rectangle. */
 .selectRect{
     -fx-stroke: chartreuse;
     -fx-fill: transparent;
@@ -41,7 +44,7 @@
     -fx-fill: olivedrab;
 }
 
-/* Determines text and rectangle fill color of Piano notes */
+/* Determines text and rectangle fill color of Harpsichord notes */
 .harpsichordButton{
     -fx-text-fill: lawngreen;
     -fx-fill: lawngreen;
