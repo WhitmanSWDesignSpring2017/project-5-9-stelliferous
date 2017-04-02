@@ -24,5 +24,5 @@ public class Constants {
     public static final int STRETCHZONE = 5;
     
     //defines the padding area around gesture outlines
-    public static final double GESTURERECTPADDING = 25.0;
+    public static final double GESTURERECTPADDING = 5.0;
 }

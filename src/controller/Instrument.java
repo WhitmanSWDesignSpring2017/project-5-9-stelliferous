@@ -20,11 +20,11 @@ public enum Instrument {
     PIANO         (1,  0, "Piano",        Color.LIGHTGREEN),
     HARPSICHORD   (7,  1, "Harpsichord",  Color.DARKSEAGREEN),
     MARIMBA       (13, 2, "Marimba",      Color.CADETBLUE),
-    CHURCH_ORGAN  (20, 3, "Church organ", Color.AQUA),
+    CHURCH_ORGAN  (20, 3, "Church Organ", Color.AQUA),
     ACCORDION     (22, 4, "Accordion",    Color.BLUEVIOLET),
     GUITAR        (25, 5, "Guitar",       Color.MEDIUMPURPLE),
     VIOLIN        (41, 6, "Violin",       Color.MAROON), 
-    FRENCH_HORN   (61, 7, "French horn",  Color.CORAL);
+    FRENCH_HORN   (61, 7, "French Horn",  Color.CORAL);
     
     //the program which indicates the sound of the chosen instrument
     private final int midiProgram;
