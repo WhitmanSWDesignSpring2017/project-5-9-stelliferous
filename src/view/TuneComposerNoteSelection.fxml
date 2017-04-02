@@ -44,7 +44,6 @@
               <items>
                 <MenuItem accelerator="Shortcut+A" onAction="#handleSelectAllAction" text="Select All" />
                 <MenuItem accelerator="backspace" onAction="#handleDeleteAction" text="Delete" />
-                <MenuItem accelerator="Shortcut+C" onAction="#handleClearAction" text="Clear" />
                 <MenuItem accelerator="Shortcut+G" onAction="#handleGroupAction" text="Group" />
                 <MenuItem accelerator="Shortcut+U" onAction="#handleUngroupAction" text="Ungroup" />  
               </items>

@@ -12,11 +12,9 @@ import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.event.EventHandler;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
@@ -659,25 +657,6 @@ public class TuneComposerNoteSelection {
         selectedNotes.clear();
     }
     
-    /**
-     * Delete all the rectangles created on the pane
-     * @param e  on user click
-     */        
-    @FXML
-    private void handleClearAction(ActionEvent e){
-        //stops the current MidiComposition and red line animation
-        redLine.setVisible(false);
-        MidiComposition.clear();
-        
-        //removes all notes from Pane and clears list of selected and
-        //unselected rectangles
-        rectList.forEach((e1) -> {
-            rectAnchorPane.getChildren().remove(e1.notes);
-        });
-        rectList.clear();
-        selectedNotes.clear();
-        gestureModelController.gestureNoteGroups.clear();
-    }
     
     @FXML
     private void handleGroupAction(ActionEvent e){
