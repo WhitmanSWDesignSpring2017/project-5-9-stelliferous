@@ -46,7 +46,7 @@ public class TuneComposerNoteSelection {
     @FXML GestureModelController gestureModelController;
     
     //creates a list to store created rectangles, that they may be later erased
-    private ArrayList<NoteRectangle> rectList = new ArrayList<>();
+    private final ArrayList<NoteRectangle> rectList = new ArrayList<>();
     
     //creates a list to store selected rectangles
     public static ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
@@ -149,9 +149,9 @@ public class TuneComposerNoteSelection {
         //if control is not down, deselect all other notes
         deselectNotes(w);
 
-        for(NoteRectangle r:rectList){
+        rectList.forEach((r) -> {
             setSelected(r);
-        }     
+        });     
     }
 
     /**
@@ -651,13 +651,20 @@ public class TuneComposerNoteSelection {
         redLine.setVisible(false);
         
         //removes selected notes from Pane and from list of Rectangles
-        selectedNotes.forEach((e1) -> {
+        selectedNotes.forEach((NoteRectangle e1) -> {
             rectAnchorPane.getChildren().remove(e1.notes);
             rectList.remove(e1);
+            for(int p = 0; p < gestureModelController.gestureNoteGroups.size();p++){
+                if(gestureModelController.gestureNoteGroups.get(p).contains(e1)){
+                    gestureModelController.gestureNoteGroups.remove(p);
+                }
+            }
         });
-        
         //clears all selected notes from the list of selected notes
         selectedNotes.clear();
+        
+        //reset gesture rectangles
+        gestureModelController.resetGestureRectangle();
     }
     
     /**
