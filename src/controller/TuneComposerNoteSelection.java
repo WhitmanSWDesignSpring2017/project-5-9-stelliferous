@@ -1,4 +1,3 @@
-/* CS 300-A, 2017S LATEST */
 package controller;
 
 import javafx.fxml.FXML;
@@ -19,7 +18,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
 
-
 /**
  * This class allows for note creation, selection, editing, and deletion.
  * @author Tyler Maule
@@ -31,21 +29,30 @@ public class TuneComposerNoteSelection {
     //creates a MidiPlayer object with 100 ticks per beat, 1 beat per second
     private final MidiPlayer MidiComposition = new MidiPlayer(100,60);
 
-    //makes available rectAnchorPane, which stores the rectangles
+    //stores the rectangles
     @FXML AnchorPane rectAnchorPane;
     
-    //makes available redLine, which stores the line object.
+    //stores gesture outlines
+    @FXML Pane gestureRectPane;
+    
+    //stores the background
+    @FXML AnchorPane backgroundPane;
+    
+    //stores the canvas with the horizontal lines
+    @FXML Canvas linesCanvas;
+    
+    //stores the line object
     @FXML Line redLine;
     
-    //makes available a toggle group of radio buttons where instruments can be selected
+    //a toggle group of radio buttons where instruments can be selected
     @FXML ToggleGroup instrumentsRadioButton;
     
-    //makes available the area where the instrument radio buttons lie
+    //the area where the instrument radio buttons lie
     @FXML VBox instrumentsVBox;
     
+    //creates a list to store created rectangles that may be later erased
     @FXML GestureModelController gestureModelController;
-    
-    //creates a list to store created rectangles, that they may be later erased
+
     private ArrayList<NoteRectangle> rectList = new ArrayList<>();
     
     //creates a list to store selected rectangles
@@ -57,8 +64,10 @@ public class TuneComposerNoteSelection {
     //refers to the end of the current notes
     public double endcomp;
 
-    //stores x and y coordinates, to later calculate distance moved by the mouse
+    //stores x coordinate, to later calculate distance moved by the mouse
     private double yCoordinate = 0;
+    
+    //stores y coordinate, to later claculate distance moved by the mouse
     private double xCoordinate = 0;
     
     //creates a rectangle that users will control by dragging
@@ -73,9 +82,10 @@ public class TuneComposerNoteSelection {
     //create a new ArrayList to store original widths of selected rectangles
     private final ArrayList<Double> originalWidth = new ArrayList<>();
     
-    //create two new boolean value to determine whether the action is for stretch
-    //and drag
+    //determines whether the action is for stretch
     private boolean stretch;
+    
+    //determines whether the action is for drag
     private boolean drag;
     
     /**
@@ -96,11 +106,12 @@ public class TuneComposerNoteSelection {
     }
     
     /**
-     * resets the mouse coordinates to allow dragging functionality
-     * stops ongoing composition-playing events
-     * @param m a mouse event (on-click, on-release, on-drag, etc)
+     * Resets the mouse coordinates to allow dragging functionality,
+     * stopping ongoing composition-playing events.
+     * @param m a mouse event (on-click, on-release, on-drag, et cetera)
      */
-    void reset_coordinates(MouseEvent m){
+    void resetCoordinates(MouseEvent m){
+        
         //resets mouse coordinates
         xCoordinate = (int)m.getX();
         yCoordinate = (int)m.getY();
@@ -111,24 +122,21 @@ public class TuneComposerNoteSelection {
     }
     
     /**
-     * Creates a rectangle at the point clicked and adds a note to the composition
-     * based on the coordinates of the point clicked. Adds that rectangle
-     * to a list, for clearing them in the future.
+     * Calls resetCoordinates() on a mouse click event.
      * @param e occurs on mouse click event
      * @throws IOException
      */
     @FXML 
     private void paneMouseClick(MouseEvent e) throws IOException{
-        reset_coordinates(e);
+        resetCoordinates(e);
     };
     
     /**
-     * When the user drags the mouse on the composition pane, current
-     * ' selection rectangles ' are cleared from the screen. Calls 
-     * formatSelectionRectangle() to determine coordinates, size, style
-     * of the rectangle. All notes within the
-     * area of the ' selection rectangle ' are selected. If control is not held 
-     * down, all other notes are deselected.
+     * When the user drags the mouse on the composition pane, calls 
+     * formatSelectionRectangle() to determine appearance of the selection 
+     * rectangle. Current selection rectangle is cleared from the screen. All 
+     * notes within the area of the selection rectangle are selected. If control 
+     * is not held down, all other notes are deselected.
      * @param w a mouse dragging event
      */
     @FXML
@@ -155,8 +163,8 @@ public class TuneComposerNoteSelection {
     }
 
     /**
-     * Determines whether any "note rectangles" are within the selection 
-     * rectangle or selected gesture. Then sets the selected rectangles to have 
+     * Determines whether any note rectangles are within the current selection, 
+     * selection rectangle, or selected gesture. Sets selected rectangles to have 
      * a red border for visual clarity.
      * @param r the note rectangles being tested for selection
      */
@@ -195,10 +203,11 @@ public class TuneComposerNoteSelection {
     }
     
     /**
-     * If the control key is not held down, deselect all notes
+     * If the control key is not held down, deselect all notes.
      * @param m a mouse event
      */
     private void deselectNotes(MouseEvent m){
+        
         //determine whether previously selected notes remain selected
         if(!m.isControlDown()){
             rectList.forEach((e1) -> {
@@ -210,12 +219,12 @@ public class TuneComposerNoteSelection {
     }
     
     /**
-     * Determines size, coordinates, and style of Selection Rectangle. 
-     * Current mouse coordinates are fetched, and a ' selection rectangle ' 
+     * Determines size, coordinates, and style of selection rectangle which 
      * indicates points from initial mouse click to current mouse location.
      * @param w mouse event of the user dragging on the CompositionPane
      */
     private void formatSelectionRectangle(MouseEvent w){
+        
         //get and store current coordinates
         int currentX = (int)w.getX();
         int currentY = (int)w.getY();
@@ -232,7 +241,6 @@ public class TuneComposerNoteSelection {
             selectRect.setY(currentY);
         }
         
-        
         //detail, style, and display selection rectangle
         selectRect.setWidth(abs(currentX-xCoordinate));
         selectRect.setHeight(abs(currentY-yCoordinate));
@@ -241,13 +249,12 @@ public class TuneComposerNoteSelection {
     }
 
     /**
-     * When the user releases the mouse, if they have created a ' selection
-     * rectangle ' by dragging, that selection rectangle is removed from the 
-     * screen. Otherwise, newNote() creates and places new rectangle. If the 
-     * user has held down control while clicking, all other selected notes 
-     * remain selected; otherwise all other notes are unselected. Clicking or 
-     * control-clicking on an already-created note is delegated to the 
-     * onNoteClick() function
+     * Determines the events that happen upon a mouse release event. If a 
+     * selection rectangle was created, it is removed from the screen. Otherwise, 
+     * newNote() creates and places new rectangle. If the user has held down 
+     * control while clicking, all other selected notes remain selected; 
+     * otherwise all other notes are unselected. Clicking or control-clicking on 
+     * an already-created note is delegated to the onNoteClick() function.
      * @param e a mouse click event on the composition Pane
      */
     @FXML
@@ -274,15 +281,15 @@ public class TuneComposerNoteSelection {
     };
     
     /**
-     * Find the current coordinates to place a 100px x 20px Note Rectangle.
-     * Assigns mouse events to that rectangle. Adds that rectangle to the
-     * list of rectangles, list of selected rectangles, and the visual 
-     * rectAnchorPane
+     * Set the current coordinates for placement of a 100px x 20px Note Rectangle.
+     * Assigns mouse events to that rectangle. Adds that rectangle to the list 
+     * of rectangles, list of selected rectangles, and the visual rectAnchorPane.
      * @param t an on-click mouse event
      */
     private void prepareNoteRectangle(MouseEvent t){
+        
         //gets new mouse coordinates; calculates effective y coordinate
-        reset_coordinates(t);            
+        resetCoordinates(t);            
         int y = (int) ((yCoordinate)/Constants.HEIGHTRECTANGLE);
         
         //checks which instrument is selected
@@ -311,17 +318,17 @@ public class TuneComposerNoteSelection {
 
     /**
      * When a user clicks on a Rectangle, the event handler calls this method.
-     * If a rectangle is already selected and control is down, that 
-     * rectangle is deselected and removed from the relevant list. If it is
-     * not selected and control is held, it is added to selected rectangles.
-     * If it is not selected and control is not held, it is selected
-     * and all other rectangles are unselected.
+     * If a rectangle is already selected and control is down, that rectangle is
+     * deselected and removed from the relevant list. If it is not selected and 
+     * control is held, it is added to selected rectangles.If it is not selected
+     * and control is not held, it is selected and all other rectangles are unselected.
      * @param m an on-click mouse event
      * @param rect a NoteRectangle object
      */
     private void onNoteClick(MouseEvent m, NoteRectangle rect){
+        
         //reset current mouse coordinates
-        reset_coordinates(m);
+        resetCoordinates(m);
         
         //if the rectangle was selected and 'control' is down, deselect it
         if ((selectedNotes.indexOf(rect)!= -1) && (m.isControlDown())){
@@ -331,8 +338,8 @@ public class TuneComposerNoteSelection {
             });
             selectedNotes.clear();
         } else if ((selectedNotes.indexOf(rect) == -1)){
-            //if the rectangle is not selected and control is not down, 
-            //deselect all other rectangles
+            
+            //if the rectangle is not selected and control is not down, deselect all other rectangles
             deselectNotes(m);
             
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
@@ -344,6 +351,7 @@ public class TuneComposerNoteSelection {
                     break;
                 } 
             }
+            
             //select the rectangle that has been clicked on
             if (!selectNotes.isEmpty()) {
                 selectNotes.forEach((e1)-> {
@@ -356,6 +364,9 @@ public class TuneComposerNoteSelection {
         selectRed();
     }
     
+    /**
+     * Sets the appearance of any selected rectangles with a red border.
+     */
     protected static void selectRed() {
         selectedNotes.forEach((e1) -> {
            e1.clearStroke();
@@ -364,19 +375,19 @@ public class TuneComposerNoteSelection {
     }
     
     /**
-     * Crete a new EventHandler for the mouseEvent that happens when pressed 
-     * on the rectangle.
+     * Create a new EventHandler when the mouse is pressed on the rectangle. 
      */
     private final EventHandler<MouseEvent> rectangleOnMousePressedEventHandler = 
         new EventHandler<MouseEvent>() {
+            
         /**
-        * override the handle method in the EventHandler class to create event when
-        * the rectangle got pressed
+        * Override the handle method in the EventHandler class to create event when
+        * the rectangle is pressed.
         * @param t occurs on mouse press event 
         */
         @Override
         public void handle(MouseEvent t) {
-            reset_coordinates(t);
+            resetCoordinates(t);
             for (int i=0; i<selectedNotes.size();i++) {
                 //add all orginal positions of the selected rectangles to arraylists
                 originalX.add(selectedNotes.get(i).getX()); 
@@ -389,11 +400,12 @@ public class TuneComposerNoteSelection {
     
     
     /**
-     * Change the boolean value drag based on the current position of mouse
-     * True if within the dragging rather than stretching zone
+     * Change the boolean value drag based on the current position of mouse.
+     * True if within the dragging rather than stretching zone.
      */
     private void determineDrag() {
         for (int i=0; i<selectedNotes.size();i++) {
+            
             //check whether the mouseposition is within the dragging zone
             if ( xCoordinate >= originalX.get(i)
                  &&
@@ -403,19 +415,21 @@ public class TuneComposerNoteSelection {
                  yCoordinate >= originalY.get(i)
                  && yCoordinate <= (originalY.get(i)+Constants.HEIGHTRECTANGLE) ) 
                 {
-                 //if true, change the boolean value drag to true
+                //if true, change the boolean value drag to true
                 drag = true;
                 }
         }    
     }
         
     /**
-     * Change the boolean value stretch based on the current position of mouse
-     * True if within the stretching rather than dragging zone
+     * Change the boolean value stretch based on the current position of mouse.
+     * True if within the stretching rather than dragging zone.
      */    
     private void determineStretch() {
+        
         //define the dragzone to be 5 pixels
         for (int i=0; i<selectedNotes.size();i++) {
+            
             //check whether the mouseposition is within the stretching zone
             if ( xCoordinate >= (originalX.get(i)
                                 +selectedNotes.get(i).getWidth()- Constants.STRETCHZONE)
@@ -432,21 +446,22 @@ public class TuneComposerNoteSelection {
             }
         }        
     }
-
+  
     /**
-     * Crete a new EventHandler for the mouseEvent that happens when dragging 
+     * Create a new EventHandler for the mouseEvent that happens when dragging 
      * the rectangle.
      */    
     private final EventHandler<MouseEvent> rectangleOnMouseDraggedEventHandler = 
         new EventHandler<MouseEvent>() {
 
         /**
-        * override the handle method in the EventHandler class to create event when
-        * the rectangle got dragged
+        * Override the handle method in the EventHandler class to create event when
+        * the rectangle is dragged.
         * @param t occurs on mouse drag event 
         */ 
         @Override
         public void handle(MouseEvent t) {
+            
             //calculate the distance that mouse moved both in x and y axis
             double offsetX = t.getX() - xCoordinate;
             double offsetY = t.getY() - yCoordinate;
@@ -462,11 +477,8 @@ public class TuneComposerNoteSelection {
                 } else if (drag){
                     doDragAction(i, offsetX, offsetY);
                 }
-                
                 gestureModelController.resetGestureRectangle();
             }
-                            
-            
         }
 
         /**
@@ -475,13 +487,18 @@ public class TuneComposerNoteSelection {
          * @param offsetX the distance the mouse moves horizontally
          */
         private void doStretchAction(int i, double offsetX) {
+            
             //get the width of rectangles.
             double width = originalWidth.get(i);
+            
             //if a 'note' rectangle is not 5px or more, change nothing
             if (originalWidth.get(i)+offsetX >= Constants.STRETCHZONE ){
+                
                 //set rectangle width
                 selectedNotes.get(i).setWidth(width+offsetX);
+                
             } else {
+                
                 //if under 5px, change to 5px
                 selectedNotes.get(i).setWidth(Constants.STRETCHZONE);
             }
@@ -494,8 +511,9 @@ public class TuneComposerNoteSelection {
          * @param offsetY the distance the mouse moves vertically
          */
         private void doDragAction(int i, double offsetX, double offsetY) {
-            //if it's dragging operation, set the position of rectangles
-            //based on the distance mouse moved
+            
+            //if it's a dragging operation, set the position of rectangles
+            //based on the distance the mouse moved
             double newTranslateX = originalX.get(i) + offsetX;
             double newTranslateY = originalY.get(i) + offsetY;
             selectedNotes.get(i).setX(newTranslateX);
@@ -504,19 +522,20 @@ public class TuneComposerNoteSelection {
     };
     
     /**
-     * Crete a new EventHandler for the mouseEvent that happens when releasing 
+     * Create a new EventHandler for the mouseEvent that happens when releasing 
      * the rectangle.
      */        
         private final EventHandler<MouseEvent> rectangleOnMouseReleasedEventHandler = 
         new EventHandler<MouseEvent>() {
  
         /**
-        * override the handle method in the EventHandler class to create event when
-        * the rectangle got released
+        * Override the handle method in the EventHandler class to create event when
+        * the rectangle is released.
         * @param t occurs on mouse release event 
         */             
         @Override
         public void handle(MouseEvent t) {
+            
             //reset the stretching operation to false
             stretch = false;
             drag = false;
@@ -525,7 +544,7 @@ public class TuneComposerNoteSelection {
             originalX.clear();
             originalY.clear();
             originalWidth.clear();
-            reset_coordinates(t);
+            resetCoordinates(t);
             
             for (int i=0; i<selectedNotes.size(); i++) {
                 //reset the position of rectangles to fit it between grey lines
@@ -536,7 +555,7 @@ public class TuneComposerNoteSelection {
             }
             gestureModelController.resetGestureRectangle();
         }
-    };    
+    };   
         
     /**
      * Exits the program upon user clicking the typical 'close' 
@@ -548,14 +567,15 @@ public class TuneComposerNoteSelection {
     }
                 
     /**
-     * Stops current playing composition, plays the composition from the
-     * start and resets the red line to be visible and play from start of animation.
+     * Stops current playing composition, plays the composition from the start 
+     * and resets the red line to be visible and play from start of animation.
      * Note: alteration in MidiPlayer.java play() method makes playing from
      * the start in this manner possible.
      * @param e  on user click
      */
     @FXML
     private void handlePlayAction(ActionEvent e){
+        
         //clears all current MidiPlayer events
         endcomp = 0;
         MidiComposition.clear();
@@ -578,9 +598,10 @@ public class TuneComposerNoteSelection {
     
     /**
      * Adds MidiEvent notes to the composition based on NoteRectangles in 
-     * RectList, changing instruments when interesting
+     * RectList, changing instruments when necessary.
      */
     private void buildMidiComposition(){
+        
         //initialize a NoteRectangle object
         NoteRectangle rect;
         
@@ -608,8 +629,7 @@ public class TuneComposerNoteSelection {
     }
     
     /**
-     * Stops the player from playing, stops and 
-     * sets the red line to be invisible.
+     * Stops the player from playing, stops and sets the red line to be invisible.
      * @param e  on user click
      */
     @FXML
@@ -620,7 +640,7 @@ public class TuneComposerNoteSelection {
     }
     
     /**
-     * Select all the rectangle created on the pane
+     * Select all the rectangle created on the pane.
      * @param e  on user click
      */    
     @FXML
@@ -638,11 +658,12 @@ public class TuneComposerNoteSelection {
     }
     
     /**
-     * Delete all the selected rectangles
-     * @param e  on user click
+     * Delete all the selected rectangles.
+     * @param e on user click
      */        
     @FXML
     private void handleDeleteAction(ActionEvent e){
+        
         //stops the current MidiComposition and red line animation
         MidiComposition.stop();
         redLine.setVisible(false);
@@ -657,7 +678,26 @@ public class TuneComposerNoteSelection {
         selectedNotes.clear();
     }
     
+    /**
+     * Delete all the rectangles created on the pane.
+     * @param e  on user click
+     */        
+    @FXML
+    private void handleClearAction(ActionEvent e){
+        
+        //stops the current MidiComposition and red line animation
+        redLine.setVisible(false);
+        MidiComposition.clear();
+        
+        //removes all notes from Pane and clears list of selected and
+        //unselected rectangles
+        rectList.forEach((e1) -> {
+            rectAnchorPane.getChildren().remove(e1.notes);
     
+    /**
+     * Creates a new gesture based on the selected note rectangles.
+     * @param e on grouping event
+     */
     @FXML
     private void handleGroupAction(ActionEvent e){
         ArrayList<NoteRectangle> newGesture = new ArrayList<>();
@@ -669,14 +709,20 @@ public class TuneComposerNoteSelection {
 
     }
     
+    /**
+     * Ungroups the selected gesture. Removes the gesture rectangle.
+     * @param e the ungrouping event
+     */
     @FXML
     private void handleUngroupAction(ActionEvent e){
         gestureModelController.gestureNoteGroups.remove(selectedNotes);
         TuneComposerNoteSelection.selectRed();
         gestureModelController.resetGestureRectangle();
     }  
-    
-    
+
+    /**
+     * Sets up the radio buttons for instrument selection.
+     */
     private void setupInstruments() {
         boolean firstInstrument = true;
         for (Instrument inst : Instrument.values()) {
@@ -693,6 +739,4 @@ public class TuneComposerNoteSelection {
             }
         }
     }
-    
-    
 }
