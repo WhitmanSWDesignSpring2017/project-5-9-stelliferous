@@ -20,7 +20,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
-import controller.GestureModel.*;
 
 
 /**
@@ -421,10 +420,7 @@ public class TuneComposerNoteSelection {
             }
         }        
     }
-    
-    @FXML AnchorPane backgroundPane;
-    @FXML Canvas linesCanvas;
-    
+
     /**
      * Crete a new EventHandler for the mouseEvent that happens when dragging 
      * the rectangle.
@@ -669,6 +665,7 @@ public class TuneComposerNoteSelection {
         GestureModel.gestureNoteGroups.clear();
     }
     
+    @FXML private TuneComposerBackgroundController tuneComposerBackGroundController;
     
     @FXML
     private void handleGroupAction(ActionEvent e){
@@ -677,11 +674,12 @@ public class TuneComposerNoteSelection {
             newGesture.add(e1);
         });
         GestureModel.gestureNoteGroups.add(0,newGesture);
+        tuneComposerBackGroundController.run();
         gestureModel.updateGestureRectangle(newGesture);
-        
+
     }
     
-        @FXML
+    @FXML
     private void handleUngroupAction(ActionEvent e){
         GestureModel.gestureNoteGroups.remove(selectedNotes);
         TuneComposerNoteSelection.selectRed();
@@ -711,6 +709,7 @@ public class TuneComposerNoteSelection {
      * (with location, duration, and speed). Make the red line invisible 
      * at the start and when the composition has finished playing
      */
+    @FXML
     public void initialize() {
         redLine.setVisible(false);
         lineTransition.setNode(redLine);
@@ -720,5 +719,6 @@ public class TuneComposerNoteSelection {
             redLine.setVisible(false);
         });
         setupInstruments();
+        tuneComposerBackGroundController.injectMainController(this);
     }
 }

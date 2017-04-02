@@ -5,9 +5,7 @@
  */
 package controller;
 
-import static controller.TuneComposerNoteSelection.selectedNotes;
 import java.util.ArrayList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -18,24 +16,11 @@ import javafx.scene.shape.Rectangle;
  */
 public class GestureModel {
     //makes available gestureRectPane, which stores gesture outlines
+    
     @FXML Pane gestureRectPane;
     
     //creates a list to store all gesture/grouped notes
-    public static ArrayList<ArrayList<NoteRectangle>> gestureNoteGroups = new ArrayList<>();
-    
-    void  resetGestureRectangle(){
-        gestureRectPane.getChildren().clear();
-        for (int i=0; i < gestureNoteGroups.size();i++) {
-            double a = gestureNoteGroups.get(i).get(0).getX();
-            System.out.println(a);
-        }
-        for (int j=0 ;j < gestureNoteGroups.size();j++) {
-            ArrayList currentGesture = gestureNoteGroups.get(j);
-            updateGestureRectangle(currentGesture);  
-        }   
-    }
-    
-    
+    public static ArrayList<ArrayList<NoteRectangle>> gestureNoteGroups = new ArrayList<>();        
     
     private ArrayList<Double> calculateBorder(ArrayList<NoteRectangle> gesture) {
         
@@ -72,9 +57,20 @@ public class GestureModel {
         ArrayList<Double> borderCords = calculateBorder(gesture);        
         Rectangle gestRect = new Rectangle(borderCords.get(0),borderCords.get(1),borderCords.get(2),borderCords.get(3));
         gestRect.getStyleClass().add("dashed");
-        gestureRectPane.getChildren().clear();
+        gestureRectPane.getChildren().add(gestRect);
 
     }
-    
 
+    void  resetGestureRectangle(){
+        gestureRectPane.getChildren().clear();
+        for (int i=0; i < gestureNoteGroups.size();i++) {
+            double a = gestureNoteGroups.get(i).get(0).getX();
+            System.out.println(a);
+        }
+        for (int j=0 ;j < gestureNoteGroups.size();j++) {
+            ArrayList currentGesture = gestureNoteGroups.get(j);
+            updateGestureRectangle(currentGesture);  
+        }   
+    }    
+    
 }
