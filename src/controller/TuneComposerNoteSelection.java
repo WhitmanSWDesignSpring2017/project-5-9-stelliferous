@@ -84,6 +84,7 @@ public class TuneComposerNoteSelection {
      * at the start and when the composition has finished playing
      */
     @FXML public void initialize() {
+        //insert, intialize, and govern visibility of the red line
         redLine.setVisible(false);
         lineTransition.setNode(redLine);
         lineTransition.setFromX(0);
@@ -91,7 +92,11 @@ public class TuneComposerNoteSelection {
         lineTransition.setOnFinished((e)->{
             redLine.setVisible(false);
         });
+        
+        //set up the pane of instrument choices for the user
         setupInstruments();
+        
+        //connect TuneComposerNoteSelection to the gesture class
         gestureModelController.init(this);
     }
     
@@ -111,9 +116,8 @@ public class TuneComposerNoteSelection {
     }
     
     /**
-     * Creates a rectangle at the point clicked and adds a note to the composition
-     * based on the coordinates of the point clicked. Adds that rectangle
-     * to a list, for clearing them in the future.
+     * Simply resets coordinates of current mouse position when the pane's
+     * clicked.
      * @param e occurs on mouse click event
      * @throws IOException
      */
@@ -149,6 +153,7 @@ public class TuneComposerNoteSelection {
         //if control is not down, deselect all other notes
         deselectNotes(w);
 
+        //selects all notes within the selection rectangle
         rectList.forEach((r) -> {
             setSelected(r);
         });     
@@ -161,6 +166,7 @@ public class TuneComposerNoteSelection {
      * @param r the note rectangles being tested for selection
      */
     private void setSelected(NoteRectangle r) {
+        //check if the rectangle is within the selection rectangle
         if (selectRect.getX() + (selectRect.getWidth()) > r.notes.getX()
                 && selectRect.getX()  < r.notes.getX() + (r.notes.getWidth())
                 && selectRect.getY() + (selectRect.getHeight()) > r.notes.getY()
@@ -169,20 +175,22 @@ public class TuneComposerNoteSelection {
             // select note rectangles within the selection area
             selectedNotes.add(r);
             
+            //create a list of NoteRectangles for use in gestures
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
             
+            //check to see if selected notes are in any gestures
             for (int i=0 ;i < gestureModelController.gestureNoteGroups.size();i++) {
                 ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
                 if (currentGesture.contains(r)) {
-
+                    //if selected notes are in gestures, update gestures
+                    //and take note of other notes in those gestures
                     gestureModelController.updateGestureRectangle(currentGesture);
-
                     selectNotes = currentGesture;
                     break;
                 } 
             }
             
-            //select the rectangle that has been clicked on
+            //select the other notes in selected gestures
             if (!selectNotes.isEmpty()) {
                 selectNotes.forEach((e1)-> {
                     selectedNotes.add(e1);
@@ -190,6 +198,8 @@ public class TuneComposerNoteSelection {
             } else {
                 selectedNotes.add(r);
             }
+            
+            //style selected notes
             selectRed();
         }     
     }
@@ -201,10 +211,13 @@ public class TuneComposerNoteSelection {
     private void deselectNotes(MouseEvent m){
         //determine whether previously selected notes remain selected
         if(!m.isControlDown()){
+            //if control isn't held down, restyle all non-selected notes
             rectList.forEach((e1) -> {
                 e1.clearStroke();
                 e1.notes.getStyleClass().add("strokeBlack");
             });
+            
+            //clear the list of selected notes
             selectedNotes.clear();
         }  
     }
@@ -325,12 +338,6 @@ public class TuneComposerNoteSelection {
         
         //if the rectangle was selected and 'control' is down, deselect it
         if ((selectedNotes.indexOf(rect)!= -1) && (m.isControlDown())){
-            /*
-            selectedNotes.forEach((e1)-> {
-                e1.clearStroke();            
-                e1.notes.getStyleClass().add("strokeBlack");
-            });
-            */
             rect.clearStroke();
             rect.notes.getStyleClass().add("strokeBlack");
             selectedNotes.remove(rect);
@@ -339,6 +346,7 @@ public class TuneComposerNoteSelection {
             //deselect all other rectangles
             deselectNotes(m);
             
+            //if a selected note is in a gesture, select other notes in that gesture
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
             for (int i=0 ;i < gestureModelController.gestureNoteGroups.size();i++) {
                 ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
@@ -705,17 +713,20 @@ public class TuneComposerNoteSelection {
         for (Instrument inst : Instrument.values()) {
             RadioButton rb = new RadioButton();
             
+            //sets radio button text, color, toggle group
             rb.setText(inst.getDisplayName());
             rb.setTextFill(inst.getDisplayColor());
             rb.setUserData(inst);
             rb.setToggleGroup(instrumentsRadioButton);
+            
+            //adds radio buttons to the display
             instrumentsVBox.getChildren().add(rb);
+            
+            //selects the 'Piano' instrument button as default
             if (firstInstrument) {
                 instrumentsRadioButton.selectToggle(rb);
                 firstInstrument = false;
             }
         }
-    }
-    
-    
+    }  
 }

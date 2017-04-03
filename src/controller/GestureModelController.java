@@ -35,13 +35,15 @@ public class GestureModelController {
      * @return  coordinates of the rectangle stored in an array
      */
     private ArrayList<Double> calculateBorder(ArrayList<NoteRectangle> gesture) {
-        
+        //generates coordinates for comparison
         NoteRectangle currentRect = gesture.get(0);
         double gestureMinX = currentRect.getX();
         double gestureMinY = currentRect.getY();
         double gestureMaxX = currentRect.getX() + currentRect.getWidth();
         double gestureMaxY = currentRect.getY() + Constants.GESTURERECTPADDING;
         
+        //compares coordinates of all notes in a gesture to determine the
+        //maximum and minimum X and Y values
         for (int i = 1; i < gesture.size(); i++){
             currentRect = gesture.get(i);
             if (gestureMinY > currentRect.getY() ){
@@ -57,6 +59,8 @@ public class GestureModelController {
                 gestureMaxY = currentRect.getY() + Constants.HEIGHTRECTANGLE ;
             }
         }
+        
+        //calculates and returns the proper coordinates
         ArrayList<Double> borderCords = new ArrayList<>();
         borderCords.add(gestureMinX - Constants.GESTURERECTPADDING);
         borderCords.add(gestureMinY - Constants.GESTURERECTPADDING);
@@ -71,6 +75,7 @@ public class GestureModelController {
      * @param gesture the gesture whose rectangle is to be updated
      */
     public void updateGestureRectangle(ArrayList<NoteRectangle> gesture){       
+        //uses coordinates to create and style gesture rectangle
         ArrayList<Double> borderCords = calculateBorder(gesture);        
         Rectangle gestRect = new Rectangle(borderCords.get(0),borderCords.get(1),borderCords.get(2),borderCords.get(3));
         gestRect.getStyleClass().add("dashed");
@@ -79,10 +84,13 @@ public class GestureModelController {
     }
     
     /**
-     * Resets the rectangle surrounding a gesture.
+     * Resets the rectangles surrounding gestures.
      */
     void  resetGestureRectangle(){
+        //clears all gesture rectangles
         gestureRectPane.getChildren().clear();
+        
+        //recalculates
         for (int j=0 ;j < gestureNoteGroups.size();j++) {
             ArrayList currentGesture = gestureNoteGroups.get(j);
             updateGestureRectangle(currentGesture);  
