@@ -38,9 +38,9 @@ public class GestureModelController {
         
         NoteRectangle currentRect = gesture.get(0);
         double gestureMinX = currentRect.getX();
-        double gestureMinY = currentRect.getY() + Constants.HEIGHTRECTANGLE;
+        double gestureMinY = currentRect.getY();
         double gestureMaxX = currentRect.getX() + currentRect.getWidth();
-        double gestureMaxY = currentRect.getY();
+        double gestureMaxY = currentRect.getY() + Constants.GESTURERECTPADDING;
         
         for (int i = 1; i < gesture.size(); i++){
             currentRect = gesture.get(i);
