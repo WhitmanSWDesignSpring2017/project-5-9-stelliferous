@@ -325,11 +325,15 @@ public class TuneComposerNoteSelection {
         
         //if the rectangle was selected and 'control' is down, deselect it
         if ((selectedNotes.indexOf(rect)!= -1) && (m.isControlDown())){
+            /*
             selectedNotes.forEach((e1)-> {
                 e1.clearStroke();            
                 e1.notes.getStyleClass().add("strokeBlack");
             });
-            selectedNotes.clear();
+            */
+            rect.clearStroke();
+            rect.notes.getStyleClass().add("strokeBlack");
+            selectedNotes.remove(rect);
         } else if ((selectedNotes.indexOf(rect) == -1)){
             //if the rectangle is not selected and control is not down, 
             //deselect all other rectangles
