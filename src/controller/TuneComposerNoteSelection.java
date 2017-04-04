@@ -694,6 +694,9 @@ public class TuneComposerNoteSelection {
      */
     @FXML
     private void handleGroupAction(ActionEvent e){
+        if (selectedNotes.isEmpty()) {
+            return;
+        }
         ArrayList<NoteRectangle> newGesture = new ArrayList<>();
         TuneComposerNoteSelection.selectedNotes.forEach((e1)-> {
             newGesture.add(e1);
