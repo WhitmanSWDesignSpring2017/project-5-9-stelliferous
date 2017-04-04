@@ -94,20 +94,27 @@ public class GestureModelController {
         gestureRectPane.getChildren().clear();
         
         //recalculates
+        
+        ArrayList<NoteRectangle> copySelected = new ArrayList();
+        selectedGesture.forEach((e1)->{
+            copySelected.add(e1);
+        });
+        
         for (int j=0 ;j < gestureNoteGroups.size();j++) {
-            int isFirst = 0;
             ArrayList currentGesture = gestureNoteGroups.get(j);
             boolean match = true;
             for (int i=0;i<currentGesture.size();i++) {
-                if (!selectedGesture.contains(currentGesture.get(i))) {
+                if (!copySelected.contains(currentGesture.get(i))) {
                     match = false;
                     break;
                 }
                 if (i == currentGesture.size()-1) {
-                    isFirst++;
+                    currentGesture.forEach((e1)-> {
+                        copySelected.remove(e1);
+                    });
                 }
             }
-            if (match && isFirst == 1) {
+            if (match) {
                 updateGestureRectangle(currentGesture,"red");
             } else {
                 updateGestureRectangle(currentGesture,"black");
