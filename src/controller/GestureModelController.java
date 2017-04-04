@@ -74,26 +74,29 @@ public class GestureModelController {
      * coordinates.
      * @param gesture the gesture whose rectangle is to be updated
      */
-    public void updateGestureRectangle(ArrayList<NoteRectangle> gesture){       
+    public void updateGestureRectangle(ArrayList<NoteRectangle> gesture,ArrayList<NoteRectangle> selectedGesture){       
         //uses coordinates to create and style gesture rectangle
         ArrayList<Double> borderCords = calculateBorder(gesture);        
         Rectangle gestRect = new Rectangle(borderCords.get(0),borderCords.get(1),borderCords.get(2),borderCords.get(3));
-        gestRect.getStyleClass().add("dashed");
+        if (gesture.equals(selectedGesture)) {
+            gestRect.getStyleClass().add("dashedRed");    
+        } else {
+            gestRect.getStyleClass().add("dashedBlack");
+        }
         gestureRectPane.getChildren().add(gestRect);
-
     }
     
     /**
      * Resets the rectangles surrounding gestures.
      */
-    void  resetGestureRectangle(){
+    void  resetGestureRectangle(ArrayList<NoteRectangle> selectedGesture){
         //clears all gesture rectangles
         gestureRectPane.getChildren().clear();
         
         //recalculates
         for (int j=0 ;j < gestureNoteGroups.size();j++) {
             ArrayList currentGesture = gestureNoteGroups.get(j);
-            updateGestureRectangle(currentGesture);  
+            updateGestureRectangle(currentGesture, selectedGesture);  
         }   
     }    
 

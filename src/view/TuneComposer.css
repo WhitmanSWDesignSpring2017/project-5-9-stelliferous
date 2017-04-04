@@ -14,10 +14,17 @@
 }
 
 /* Determines the dashed line for gestures. */
-.dashed{
+.dashedBlack{
     -fx-stroke: black;
     -fx-fill: transparent;
     -fx-stroke-dash-array: 8 3 8 3;
+}
+
+.dashedRed{
+    -fx-stroke: red;
+    -fx-fill: transparent;
+    -fx-stroke-dash-array: 8 3 8 3;
+
 }
 
 /* Determines the stroke for unselected rectangles. */

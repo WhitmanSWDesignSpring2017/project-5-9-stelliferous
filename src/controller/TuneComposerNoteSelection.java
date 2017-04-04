@@ -1,3 +1,4 @@
+
 package controller;
 
 import javafx.fxml.FXML;
@@ -184,7 +185,7 @@ public class TuneComposerNoteSelection {
                 if (currentGesture.contains(r)) {
                     //if selected notes are in gestures, update gestures
                     //and take note of other notes in those gestures
-                    gestureModelController.updateGestureRectangle(currentGesture);
+                    gestureModelController.updateGestureRectangle(currentGesture,selectedNotes);
                     selectNotes = currentGesture;
                     break;
                 } 
@@ -352,7 +353,7 @@ public class TuneComposerNoteSelection {
                 ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
                 if (currentGesture.contains(rect)) {
                     selectNotes = currentGesture;
-                    gestureModelController.updateGestureRectangle(currentGesture);
+                    gestureModelController.updateGestureRectangle(currentGesture,selectedNotes);
                     break;
                 } 
             }
@@ -371,11 +372,14 @@ public class TuneComposerNoteSelection {
     /**
      * Sets the appearance of any selected rectangles with a red border.
      */
-    protected static void selectRed() {
+    protected void selectRed() {
         selectedNotes.forEach((e1) -> {
            e1.clearStroke();
            e1.notes.getStyleClass().add("strokeRed");
         });
+        if (gestureModelController.gestureNoteGroups.contains(selectedNotes)){
+            gestureModelController.updateGestureRectangle(selectedNotes,selectedNotes);
+        }
     }
     
     /**
@@ -478,7 +482,7 @@ public class TuneComposerNoteSelection {
                     doDragAction(i, offsetX, offsetY);
                 }
                 
-                gestureModelController.resetGestureRectangle();
+                gestureModelController.resetGestureRectangle(selectedNotes);
             }
                             
             
@@ -549,7 +553,7 @@ public class TuneComposerNoteSelection {
                         *Constants.HEIGHTRECTANGLE;
                 selectedNotes.get(i).setY(finalY);   
             }
-            gestureModelController.resetGestureRectangle();
+            gestureModelController.resetGestureRectangle(selectedNotes);
         }
     };    
         
@@ -676,7 +680,7 @@ public class TuneComposerNoteSelection {
         selectedNotes.clear();
         
         //reset gesture rectangles
-        gestureModelController.resetGestureRectangle();
+        gestureModelController.resetGestureRectangle(selectedNotes);
     }
     
     /**
@@ -690,7 +694,7 @@ public class TuneComposerNoteSelection {
             newGesture.add(e1);
         });
         gestureModelController.gestureNoteGroups.add(0,newGesture);
-        gestureModelController.updateGestureRectangle(newGesture);
+        gestureModelController.updateGestureRectangle(newGesture,selectedNotes);
 
     }
     
@@ -701,8 +705,8 @@ public class TuneComposerNoteSelection {
     @FXML
     private void handleUngroupAction(ActionEvent e){
         gestureModelController.gestureNoteGroups.remove(selectedNotes);
-        TuneComposerNoteSelection.selectRed();
-        gestureModelController.resetGestureRectangle();
+        selectRed();
+        gestureModelController.resetGestureRectangle(selectedNotes);
     }  
     
     /**
