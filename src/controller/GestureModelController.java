@@ -40,8 +40,8 @@ public class GestureModelController {
         double gestureMinX = currentRect.getX();
         double gestureMinY = currentRect.getY();
         double gestureMaxX = currentRect.getX() + currentRect.getWidth();
-        double gestureMaxY = currentRect.getY() + Constants.GESTURERECTPADDING;
-        
+        double gestureMaxY = currentRect.getY() + Constants.HEIGHTRECTANGLE;
+       
         //compares coordinates of all notes in a gesture to determine the
         //maximum and minimum X and Y values
         for (int i = 1; i < gesture.size(); i++){
@@ -74,12 +74,12 @@ public class GestureModelController {
      * coordinates.
      * @param gesture the gesture whose rectangle is to be updated
      */
-    public void updateGestureRectangle(ArrayList<NoteRectangle> gesture,ArrayList<NoteRectangle> selectedGesture){       
+    public void updateGestureRectangle(ArrayList<NoteRectangle> gesture, String color){       
         //uses coordinates to create and style gesture rectangle
         ArrayList<Double> borderCords = calculateBorder(gesture);        
         Rectangle gestRect = new Rectangle(borderCords.get(0),borderCords.get(1),borderCords.get(2),borderCords.get(3));
-        if (gesture.equals(selectedGesture)) {
-            gestRect.getStyleClass().add("dashedRed");    
+        if (color.equals("red")) {
+            gestRect.getStyleClass().add("dashedRed");
         } else {
             gestRect.getStyleClass().add("dashedBlack");
         }
@@ -96,9 +96,13 @@ public class GestureModelController {
         //recalculates
         for (int j=0 ;j < gestureNoteGroups.size();j++) {
             ArrayList currentGesture = gestureNoteGroups.get(j);
-            updateGestureRectangle(currentGesture, selectedGesture);  
-        }   
-    }    
+            if (currentGesture.equals(selectedGesture)) {
+                updateGestureRectangle(currentGesture,"red");
+            } else {
+                updateGestureRectangle(currentGesture,"black");
+            }  
+        }
+    }
 
     /**
      * Initializes the main controller. This method was necessary for the 

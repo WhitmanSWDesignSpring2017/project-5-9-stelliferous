@@ -185,7 +185,6 @@ public class TuneComposerNoteSelection {
                 if (currentGesture.contains(r)) {
                     //if selected notes are in gestures, update gestures
                     //and take note of other notes in those gestures
-                    gestureModelController.updateGestureRectangle(currentGesture,selectedNotes);
                     selectNotes = currentGesture;
                     break;
                 } 
@@ -319,7 +318,11 @@ public class TuneComposerNoteSelection {
         
         //add newly created rectangles to lists, visual
         rectList.add(rect);
-        selectedNotes.add(rect);        
+        if (!t.isControlDown()) {
+            selectedNotes.clear();
+        }
+        selectedNotes.add(rect);      
+        gestureModelController.resetGestureRectangle(selectedNotes);
         rectAnchorPane.getChildren().add(rect.notes);
     }
 
@@ -353,11 +356,15 @@ public class TuneComposerNoteSelection {
                 ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
                 if (currentGesture.contains(rect)) {
                     selectNotes = currentGesture;
-                    gestureModelController.updateGestureRectangle(currentGesture,selectedNotes);
+                    //gestureModelController.updateGestureRectangle(currentGesture,selectedNotes);
+                    selectRed();
                     break;
                 } 
             }
             //select the rectangle that has been clicked on
+            if (!m.isControlDown()) {
+                selectedNotes.clear();
+            }
             if (!selectNotes.isEmpty()) {
                 selectNotes.forEach((e1)-> {
                     selectedNotes.add(e1);
@@ -377,9 +384,7 @@ public class TuneComposerNoteSelection {
            e1.clearStroke();
            e1.notes.getStyleClass().add("strokeRed");
         });
-        if (gestureModelController.gestureNoteGroups.contains(selectedNotes)){
-            gestureModelController.updateGestureRectangle(selectedNotes,selectedNotes);
-        }
+        gestureModelController.resetGestureRectangle(selectedNotes);
     }
     
     /**
@@ -693,8 +698,9 @@ public class TuneComposerNoteSelection {
         TuneComposerNoteSelection.selectedNotes.forEach((e1)-> {
             newGesture.add(e1);
         });
+       
         gestureModelController.gestureNoteGroups.add(0,newGesture);
-        gestureModelController.updateGestureRectangle(newGesture,selectedNotes);
+        gestureModelController.resetGestureRectangle(selectedNotes);
 
     }
     
