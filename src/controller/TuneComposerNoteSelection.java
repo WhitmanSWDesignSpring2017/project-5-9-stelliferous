@@ -746,8 +746,7 @@ public class TuneComposerNoteSelection {
     }
     
     private void copyGesture(ArrayList<NoteRectangle> gestureCopy){
-            System.out.println("attempting to copy");
-            System.out.println(gestureCopy.size());
+            ArrayList<NoteRectangle> newGesture = new ArrayList<>();
             for (int n = 0; n <gestureCopy.size(); n+=2){
                 NoteRectangle oldNote = gestureCopy.get(n);
                 System.out.println(oldNote);
@@ -765,7 +764,11 @@ public class TuneComposerNoteSelection {
                  
                 rectList.add(newRect);
                 rectAnchorPane.getChildren().add(newRect.notes);
-            };
+                selectedNotes.add(newRect);
+                newGesture.add(newRect);
+            }
+            gestureModelController.gestureNoteGroups.add(newGesture);
+            gestureModelController.updateGestureRectangle(newGesture, "dashedRed");
             /*gestureModelController.gestureNoteGroups.add(newGesture);
             gestureModelController.resetGestureRectangle(selectedNotes);
             gestureModelController.updateGestureRectangle(newGesture, "red");*/   
