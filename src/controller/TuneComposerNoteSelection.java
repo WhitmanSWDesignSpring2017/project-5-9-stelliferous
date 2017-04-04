@@ -346,6 +346,19 @@ public class TuneComposerNoteSelection {
             rect.clearStroke();
             rect.notes.getStyleClass().add("strokeBlack");
             selectedNotes.remove(rect);
+            //if the note is in a gesture, deselect that gesture
+            for (int i=0 ;i < gestureModelController.gestureNoteGroups.size();i++) {
+                ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
+                if (currentGesture.contains(rect)) {
+                   for(int u=0; u < currentGesture.size();u++){
+                       NoteRectangle rectInGesture = (NoteRectangle) currentGesture.get(u);
+                       rectInGesture.clearStroke();
+                       rectInGesture.notes.getStyleClass().add("strokeBlack");
+                       if(selectedNotes.contains(rectInGesture)) selectedNotes.remove(rectInGesture);
+                   }
+                   break;
+                } 
+            }
         } else if ((selectedNotes.indexOf(rect) == -1)){
             //if the rectangle is not selected and control is not down, 
             //deselect all other rectangles
