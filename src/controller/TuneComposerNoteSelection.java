@@ -719,6 +719,45 @@ public class TuneComposerNoteSelection {
         gestureModelController.resetGestureRectangle(selectedNotes);
     }  
     
+    @FXML
+    private void handleCopyAGroupAction(ActionEvent e){
+        for (int p = 0; p < selectedNotes.size(); p++){
+            for (int q = 0; q <gestureModelController.gestureNoteGroups.size(); q++){
+                if(gestureModelController.gestureNoteGroups.get(q).contains(selectedNotes.get(p))){
+                    copyGesture(gestureModelController.gestureNoteGroups.get(q));
+                    return;
+                }
+            
+            }
+        }
+    }
+    
+    private void copyGesture(ArrayList<NoteRectangle> gestureCopy){
+            System.out.println("attempting to copy");
+            System.out.println(gestureCopy.size());
+            for (int n = 0; n <gestureCopy.size(); n+=2){
+                NoteRectangle oldNote = gestureCopy.get(n);
+                System.out.println(oldNote);
+                NoteRectangle newRect = new NoteRectangle(oldNote.getX()+15, ((int) oldNote.getY()), 
+                                               oldNote.getInstrument());
+                
+                newRect.setOnMouseClicked((MouseEvent o) -> {
+                    onNoteClick(o, newRect);
+                }); 
+                 
+                 //assigns mouse-action events to the created NoteRectangle
+                newRect.setOnMousePressed(rectangleOnMousePressedEventHandler);
+                newRect.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);   
+                newRect.setOnMouseReleased(rectangleOnMouseReleasedEventHandler);
+                 
+                rectList.add(newRect);
+                rectAnchorPane.getChildren().add(newRect.notes);
+            };
+            /*gestureModelController.gestureNoteGroups.add(newGesture);
+            gestureModelController.resetGestureRectangle(selectedNotes);
+            gestureModelController.updateGestureRectangle(newGesture, "red");*/   
+    }
+    
     /**
      * Sets up the radio buttons for instrument selection.
      */
