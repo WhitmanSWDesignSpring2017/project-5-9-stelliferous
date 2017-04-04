@@ -220,6 +220,7 @@ public class TuneComposerNoteSelection {
             //clear the list of selected notes
             selectedNotes.clear();
         }  
+        gestureModelController.resetGestureRectangle(selectedNotes);
     }
     
     /**

@@ -93,10 +93,28 @@ public class GestureModelController {
         //clears all gesture rectangles
         gestureRectPane.getChildren().clear();
         
+        int isFirst = 0;
         //recalculates
         for (int j=0 ;j < gestureNoteGroups.size();j++) {
             ArrayList currentGesture = gestureNoteGroups.get(j);
-            if (currentGesture.equals(selectedGesture)) {
+            /*
+            currentGesture.forEach((e1)-> {
+                if (!selectedGesture.contains(e1)){
+                    return;
+                }
+            }); 
+            */
+            boolean match = true;
+            for (int i=0;i<currentGesture.size();i++) {
+                if (!selectedGesture.contains(currentGesture.get(i))) {
+                    match = false;
+                    break;
+                }
+                if (i == currentGesture.size()-1) {
+                    isFirst++;
+                }
+            }
+            if (match && isFirst == 1) {
                 updateGestureRectangle(currentGesture,"red");
             } else {
                 updateGestureRectangle(currentGesture,"black");
