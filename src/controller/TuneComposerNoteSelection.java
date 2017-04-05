@@ -732,8 +732,16 @@ public class TuneComposerNoteSelection {
         gestureModelController.resetGestureRectangle(selectedNotes);
     }  
     
+    
+    /**
+     * Identifies and copies a selected gesture when the user chooses
+     * Edit -> Copy Gesture. Only copies a single gesture and creates an 
+     * identical gesture 5px to the right. If multiple gestures are selected,
+     * the most recently created gesture is copied.
+    */
     @FXML
     private void handleCopyAGroupAction(ActionEvent e){
+        //iterates through selected notes to find a selected note in a gesture
         for (int p = 0; p < selectedNotes.size(); p++){
             for (int q = 0; q <gestureModelController.gestureNoteGroups.size(); q++){
                 if(gestureModelController.gestureNoteGroups.get(q).contains(selectedNotes.get(p))){
@@ -745,33 +753,42 @@ public class TuneComposerNoteSelection {
         }
     }
     
+    /**
+     * Copies a gesture. Copies all notes in a given gesture, adds those notes
+     * to the composition and screen, and groups those notes into a gesture.
+     * @param gestureCopy 
+     */
     private void copyGesture(ArrayList<NoteRectangle> gestureCopy){
-            ArrayList<NoteRectangle> newGesture = new ArrayList<>();
-            for (int n = 0; n <gestureCopy.size(); n+=2){
-                NoteRectangle oldNote = gestureCopy.get(n);
-                System.out.println(oldNote);
-                NoteRectangle newRect = new NoteRectangle(oldNote.getX()+15, ((int) oldNote.getY()), 
-                                               oldNote.getInstrument());
-                
-                newRect.setOnMouseClicked((MouseEvent o) -> {
-                    onNoteClick(o, newRect);
-                }); 
-                 
-                 //assigns mouse-action events to the created NoteRectangle
-                newRect.setOnMousePressed(rectangleOnMousePressedEventHandler);
-                newRect.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);   
-                newRect.setOnMouseReleased(rectangleOnMouseReleasedEventHandler);
-                 
-                rectList.add(newRect);
-                rectAnchorPane.getChildren().add(newRect.notes);
-                selectedNotes.add(newRect);
-                newGesture.add(newRect);
-            }
-            gestureModelController.gestureNoteGroups.add(newGesture);
-            gestureModelController.updateGestureRectangle(newGesture, "dashedRed");
-            /*gestureModelController.gestureNoteGroups.add(newGesture);
-            gestureModelController.resetGestureRectangle(selectedNotes);
-            gestureModelController.updateGestureRectangle(newGesture, "red");*/   
+        //creates a new array to store notes 
+        ArrayList<NoteRectangle> newGesture = new ArrayList<>();
+        
+        for (int n = 0; n <gestureCopy.size(); n+=2){
+            //copy an individual note
+            NoteRectangle oldNote = gestureCopy.get(n);
+            NoteRectangle newRect = new NoteRectangle(oldNote.getX()+15, ((int) oldNote.getY()), 
+                                           oldNote.getInstrument());
+            
+            //assigns on-click action to the new note
+            newRect.setOnMouseClicked((MouseEvent o) -> {
+                onNoteClick(o, newRect);
+            }); 
+
+             //assigns mouse-action events to the created NoteRectangle
+            newRect.setOnMousePressed(rectangleOnMousePressedEventHandler);
+            newRect.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);   
+            newRect.setOnMouseReleased(rectangleOnMouseReleasedEventHandler);
+            
+            //adds the new note to the composition pane, list of notes,
+            //list of selected notes, and the new gesture
+            rectList.add(newRect);
+            rectAnchorPane.getChildren().add(newRect.notes);
+            selectedNotes.add(newRect);
+            newGesture.add(newRect);
+        }
+        
+        //adds the newly created gesture, creates gesture boundary outline
+        gestureModelController.gestureNoteGroups.add(newGesture);
+        gestureModelController.updateGestureRectangle(newGesture, "dashedRed");  
     }
     
     /**
