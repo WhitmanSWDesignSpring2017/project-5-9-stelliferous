@@ -798,6 +798,17 @@ public class TuneComposerNoteSelection {
     }
     
     /**
+     * Ungroups all groups of NoteRectangles. Returns all notes to
+     * individual notes
+     * @param e 
+     */
+    @FXML
+    private void handleUngroupAllAction(ActionEvent e){
+        gestureModelController.gestureNoteGroups.clear();
+        gestureModelController.resetGestureRectangle(rectList);
+    }
+    
+    /**
      * Sets up the radio buttons for instrument selection.
      */
     private void setupInstruments() {
