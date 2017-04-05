@@ -307,13 +307,14 @@ public class TuneComposerNoteSelection {
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*Constants.HEIGHTRECTANGLE, 
                                                selectedInstrument);
 
+
         //create a new rectangle while make sure selectedNotes contains only itself
+
         if (!t.isControlDown()) {
             selectedNotes.clear();
         }
         //initialize rectangle mouse events, add to selected notes and visual
         initializeNoteRectangle(rect);
-        
     }
     
     /**
@@ -791,6 +792,7 @@ public class TuneComposerNoteSelection {
             NoteRectangle oldNote = gestureCopy.get(n);
             NoteRectangle newRect = new NoteRectangle(oldNote.getX()+15, ((int) oldNote.getY()), 
                                            oldNote.getInstrument());
+            newRect.setWidth(oldNote.getWidth());
             
             //add mouse events to rectangle, add rectangle to screen
             initializeNoteRectangle(newRect);
