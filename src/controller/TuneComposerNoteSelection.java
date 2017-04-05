@@ -307,6 +307,21 @@ public class TuneComposerNoteSelection {
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*Constants.HEIGHTRECTANGLE, 
                                                selectedInstrument);
 
+        //initialize rectangle mouse events, add to selected notes and visual
+        initializeNoteRectangle(rect);
+        
+        //add newly created rectangles to lists
+        if (!t.isControlDown()) {
+            selectedNotes.clear();
+        }
+        
+    }
+    
+    /**
+     * Assigns mouse events to a given rectangle, such that the user
+     * can select/drag/stretch the rectangle
+     */
+    private void initializeNoteRectangle(NoteRectangle rect){
         //assigns mouse-action events to the created NoteRectangle
         rect.setOnMousePressed(rectangleOnMousePressedEventHandler);
         rect.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);   
@@ -315,13 +330,10 @@ public class TuneComposerNoteSelection {
         //when an existing NoteRectangle is clicked on, begin selection process
         rect.setOnMouseClicked((MouseEvent o) -> {
             onNoteClick(o, rect);
-        }); 
+        });
         
-        //add newly created rectangles to lists, visual
+        
         rectList.add(rect);
-        if (!t.isControlDown()) {
-            selectedNotes.clear();
-        }
         selectedNotes.add(rect);      
         gestureModelController.resetGestureRectangle(selectedNotes);
         rectAnchorPane.getChildren().add(rect.notes);
@@ -768,21 +780,8 @@ public class TuneComposerNoteSelection {
             NoteRectangle newRect = new NoteRectangle(oldNote.getX()+15, ((int) oldNote.getY()), 
                                            oldNote.getInstrument());
             
-            //assigns on-click action to the new note
-            newRect.setOnMouseClicked((MouseEvent o) -> {
-                onNoteClick(o, newRect);
-            }); 
-
-             //assigns mouse-action events to the created NoteRectangle
-            newRect.setOnMousePressed(rectangleOnMousePressedEventHandler);
-            newRect.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);   
-            newRect.setOnMouseReleased(rectangleOnMouseReleasedEventHandler);
-            
-            //adds the new note to the composition pane, list of notes,
-            //list of selected notes, and the new gesture
-            rectList.add(newRect);
-            rectAnchorPane.getChildren().add(newRect.notes);
-            selectedNotes.add(newRect);
+            //add mouse events to rectangle, add rectangle to screen
+            initializeNoteRectangle(newRect);
             newGesture.add(newRect);
         }
         
