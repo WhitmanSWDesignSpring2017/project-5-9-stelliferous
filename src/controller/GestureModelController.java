@@ -40,8 +40,8 @@ public class GestureModelController {
         double gestureMinX = currentRect.getX();
         double gestureMinY = currentRect.getY();
         double gestureMaxX = currentRect.getX() + currentRect.getWidth();
-        double gestureMaxY = currentRect.getY() + Constants.GESTURERECTPADDING;
-        
+        double gestureMaxY = currentRect.getY() + Constants.HEIGHTRECTANGLE;
+       
         //compares coordinates of all notes in a gesture to determine the
         //maximum and minimum X and Y values
         for (int i = 1; i < gesture.size(); i++){
@@ -74,28 +74,53 @@ public class GestureModelController {
      * coordinates.
      * @param gesture the gesture whose rectangle is to be updated
      */
-    public void updateGestureRectangle(ArrayList<NoteRectangle> gesture){       
+    public void updateGestureRectangle(ArrayList<NoteRectangle> gesture, String color){       
         //uses coordinates to create and style gesture rectangle
         ArrayList<Double> borderCords = calculateBorder(gesture);        
         Rectangle gestRect = new Rectangle(borderCords.get(0),borderCords.get(1),borderCords.get(2),borderCords.get(3));
-        gestRect.getStyleClass().add("dashed");
+        if (color.equals("red")) {
+            gestRect.getStyleClass().add("dashedRed");
+        } else {
+            gestRect.getStyleClass().add("dashedBlack");
+        }
         gestureRectPane.getChildren().add(gestRect);
-
     }
     
     /**
      * Resets the rectangles surrounding gestures.
      */
-    void  resetGestureRectangle(){
+    void  resetGestureRectangle(ArrayList<NoteRectangle> selectedGesture){
         //clears all gesture rectangles
         gestureRectPane.getChildren().clear();
         
         //recalculates
+        
+        ArrayList<NoteRectangle> copySelected = new ArrayList();
+        selectedGesture.forEach((e1)->{
+            copySelected.add(e1);
+        });
+        
         for (int j=0 ;j < gestureNoteGroups.size();j++) {
             ArrayList currentGesture = gestureNoteGroups.get(j);
-            updateGestureRectangle(currentGesture);  
-        }   
-    }    
+            boolean match = true;
+            for (int i=0;i<currentGesture.size();i++) {
+                if (!copySelected.contains(currentGesture.get(i))) {
+                    match = false;
+                    break;
+                }
+                if (i == currentGesture.size()-1) {
+                    currentGesture.forEach((e1)-> {
+                        copySelected.remove(e1);
+                    });
+                }
+            }
+            if (match) {
+                updateGestureRectangle(currentGesture,"red");
+            } else {
+                updateGestureRectangle(currentGesture,"black");
+            }  
+        }
+    }
 
     /**
      * Initializes the main controller. This method was necessary for the 

@@ -1,4 +1,4 @@
-package tunecomposer;
+package model;
 
 import java.io.IOException;
 import javafx.application.Application;
