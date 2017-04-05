@@ -306,14 +306,15 @@ public class TuneComposerNoteSelection {
         //creates a new NoteRectangle object
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*Constants.HEIGHTRECTANGLE, 
                                                selectedInstrument);
- 
-        //add newly created rectangles to lists
+
+
+        //create a new rectangle while make sure selectedNotes contains only itself
+
         if (!t.isControlDown()) {
             selectedNotes.clear();
         }
-        
         //initialize rectangle mouse events, add to selected notes and visual
-        initializeNoteRectangle(rect);  
+        initializeNoteRectangle(rect);
     }
     
     /**
@@ -333,7 +334,8 @@ public class TuneComposerNoteSelection {
         
         
         rectList.add(rect);
-        selectedNotes.add(rect);      
+        selectedNotes.add(rect);
+        System.out.println("create");
         gestureModelController.resetGestureRectangle(selectedNotes);
         rectAnchorPane.getChildren().add(rect.notes);
     }
@@ -351,7 +353,7 @@ public class TuneComposerNoteSelection {
     private void onNoteClick(MouseEvent m, NoteRectangle rect){
         //reset current mouse coordinates
         reset_coordinates(m);
-        
+
         //if the rectangle was selected and 'control' is down, deselect it
         if ((selectedNotes.indexOf(rect)!= -1) && (m.isControlDown())){
             deselectWhenControlDown(rect);
@@ -434,6 +436,7 @@ public class TuneComposerNoteSelection {
         public void handle(MouseEvent t) {
             reset_coordinates(t);
             for (int i=0; i<selectedNotes.size();i++) {
+                System.out.println("pressed");
                 //add all orginal positions of the selected rectangles to arraylists
                 originalX.add(selectedNotes.get(i).getX()); 
                 originalY.add(selectedNotes.get(i).getY());
@@ -503,6 +506,7 @@ public class TuneComposerNoteSelection {
         */ 
         @Override
         public void handle(MouseEvent t) {
+            System.out.println("dragged");
             //calculate the distance that mouse moved both in x and y axis
             double offsetX = t.getX() - xCoordinate;
             double offsetY = t.getY() - yCoordinate;
@@ -533,7 +537,9 @@ public class TuneComposerNoteSelection {
         private void doStretchAction(int i, double offsetX) {
             //get the width of rectangles.
             double width = originalWidth.get(i);
+            selectedNotes.get(i).setWidth(width+offsetX);
             //if a 'note' rectangle is not 5px or more, change nothing
+            /*
             if (originalWidth.get(i)+offsetX >= Constants.STRETCHZONE ){
                 //set rectangle width
                 selectedNotes.get(i).setWidth(width+offsetX);
@@ -541,6 +547,7 @@ public class TuneComposerNoteSelection {
                 //if under 5px, change to 5px
                 selectedNotes.get(i).setWidth(Constants.STRETCHZONE);
             }
+            */
         }
         
         /**
