@@ -307,7 +307,7 @@ public class TuneComposerNoteSelection {
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*Constants.HEIGHTRECTANGLE, 
                                                selectedInstrument);
 
-        //add newly created rectangles to lists
+        //create a new rectangle while make sure selectedNotes contains only itself
         if (!t.isControlDown()) {
             selectedNotes.clear();
         }
