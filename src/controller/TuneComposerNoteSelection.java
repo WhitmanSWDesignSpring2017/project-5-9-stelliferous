@@ -367,7 +367,6 @@ public class TuneComposerNoteSelection {
                 ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
                 if (currentGesture.contains(rect)) {
                     selectNotes = currentGesture;
-                    //gestureModelController.updateGestureRectangle(currentGesture,selectedNotes);
                     selectRed();
                     break;
                 } 
