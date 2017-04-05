@@ -1,3 +1,4 @@
+
 package controller;
 
 import javafx.fxml.FXML;
@@ -184,7 +185,6 @@ public class TuneComposerNoteSelection {
                 if (currentGesture.contains(r)) {
                     //if selected notes are in gestures, update gestures
                     //and take note of other notes in those gestures
-                    gestureModelController.updateGestureRectangle(currentGesture);
                     selectNotes = currentGesture;
                     break;
                 } 
@@ -220,6 +220,7 @@ public class TuneComposerNoteSelection {
             //clear the list of selected notes
             selectedNotes.clear();
         }  
+        gestureModelController.resetGestureRectangle(selectedNotes);
     }
     
     /**
@@ -306,6 +307,21 @@ public class TuneComposerNoteSelection {
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*Constants.HEIGHTRECTANGLE, 
                                                selectedInstrument);
 
+        //initialize rectangle mouse events, add to selected notes and visual
+        initializeNoteRectangle(rect);
+        
+        //add newly created rectangles to lists
+        if (!t.isControlDown()) {
+            selectedNotes.clear();
+        }
+        
+    }
+    
+    /**
+     * Assigns mouse events to a given rectangle, such that the user
+     * can select/drag/stretch the rectangle
+     */
+    private void initializeNoteRectangle(NoteRectangle rect){
         //assigns mouse-action events to the created NoteRectangle
         rect.setOnMousePressed(rectangleOnMousePressedEventHandler);
         rect.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);   
@@ -314,11 +330,12 @@ public class TuneComposerNoteSelection {
         //when an existing NoteRectangle is clicked on, begin selection process
         rect.setOnMouseClicked((MouseEvent o) -> {
             onNoteClick(o, rect);
-        }); 
+        });
         
-        //add newly created rectangles to lists, visual
+        
         rectList.add(rect);
-        selectedNotes.add(rect);        
+        selectedNotes.add(rect);      
+        gestureModelController.resetGestureRectangle(selectedNotes);
         rectAnchorPane.getChildren().add(rect.notes);
     }
 
@@ -338,9 +355,7 @@ public class TuneComposerNoteSelection {
         
         //if the rectangle was selected and 'control' is down, deselect it
         if ((selectedNotes.indexOf(rect)!= -1) && (m.isControlDown())){
-            rect.clearStroke();
-            rect.notes.getStyleClass().add("strokeBlack");
-            selectedNotes.remove(rect);
+            deselectWhenControlDown(rect);
         } else if ((selectedNotes.indexOf(rect) == -1)){
             //if the rectangle is not selected and control is not down, 
             //deselect all other rectangles
@@ -352,11 +367,14 @@ public class TuneComposerNoteSelection {
                 ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
                 if (currentGesture.contains(rect)) {
                     selectNotes = currentGesture;
-                    gestureModelController.updateGestureRectangle(currentGesture);
+                    selectRed();
                     break;
                 } 
             }
             //select the rectangle that has been clicked on
+            if (!m.isControlDown()) {
+                selectedNotes.clear();
+            }
             if (!selectNotes.isEmpty()) {
                 selectNotes.forEach((e1)-> {
                     selectedNotes.add(e1);
@@ -369,13 +387,37 @@ public class TuneComposerNoteSelection {
     }
     
     /**
+     * Deselects a note or gesture when control is held down.
+     * @param rect a NoteRectangle object
+     */
+    private void deselectWhenControlDown(NoteRectangle rect){
+        rect.clearStroke();
+            rect.notes.getStyleClass().add("strokeBlack");
+            selectedNotes.remove(rect);
+            //if the note is in a gesture, deselect that gesture
+            for (int i=0 ;i < gestureModelController.gestureNoteGroups.size();i++) {
+                ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
+                if (currentGesture.contains(rect)) {
+                   for(int u=0; u < currentGesture.size();u++){
+                       NoteRectangle rectInGesture = (NoteRectangle) currentGesture.get(u);
+                       rectInGesture.clearStroke();
+                       rectInGesture.notes.getStyleClass().add("strokeBlack");
+                       if(selectedNotes.contains(rectInGesture)) selectedNotes.remove(rectInGesture);
+                   }
+                   break;
+                } 
+            }
+    }
+    
+    /**
      * Sets the appearance of any selected rectangles with a red border.
      */
-    protected static void selectRed() {
+    protected void selectRed() {
         selectedNotes.forEach((e1) -> {
            e1.clearStroke();
            e1.notes.getStyleClass().add("strokeRed");
         });
+        gestureModelController.resetGestureRectangle(selectedNotes);
     }
     
     /**
@@ -478,7 +520,7 @@ public class TuneComposerNoteSelection {
                     doDragAction(i, offsetX, offsetY);
                 }
                 
-                gestureModelController.resetGestureRectangle();
+                gestureModelController.resetGestureRectangle(selectedNotes);
             }
                             
             
@@ -549,7 +591,7 @@ public class TuneComposerNoteSelection {
                         *Constants.HEIGHTRECTANGLE;
                 selectedNotes.get(i).setY(finalY);   
             }
-            gestureModelController.resetGestureRectangle();
+            gestureModelController.resetGestureRectangle(selectedNotes);
         }
     };    
         
@@ -676,7 +718,7 @@ public class TuneComposerNoteSelection {
         selectedNotes.clear();
         
         //reset gesture rectangles
-        gestureModelController.resetGestureRectangle();
+        gestureModelController.resetGestureRectangle(selectedNotes);
     }
     
     /**
@@ -685,12 +727,16 @@ public class TuneComposerNoteSelection {
      */
     @FXML
     private void handleGroupAction(ActionEvent e){
+        if (selectedNotes.isEmpty()) {
+            return;
+        }
         ArrayList<NoteRectangle> newGesture = new ArrayList<>();
         TuneComposerNoteSelection.selectedNotes.forEach((e1)-> {
             newGesture.add(e1);
         });
+       
         gestureModelController.gestureNoteGroups.add(0,newGesture);
-        gestureModelController.updateGestureRectangle(newGesture);
+        gestureModelController.resetGestureRectangle(selectedNotes);
 
     }
     
@@ -701,9 +747,66 @@ public class TuneComposerNoteSelection {
     @FXML
     private void handleUngroupAction(ActionEvent e){
         gestureModelController.gestureNoteGroups.remove(selectedNotes);
-        TuneComposerNoteSelection.selectRed();
-        gestureModelController.resetGestureRectangle();
+        selectRed();
+        gestureModelController.resetGestureRectangle(selectedNotes);
     }  
+    
+    
+    /**
+     * Identifies and copies a selected gesture when the user chooses
+     * Edit -> Copy Gesture. Only copies a single gesture and creates an 
+     * identical gesture 5px to the right. If multiple gestures are selected,
+     * the most recently created gesture is copied.
+    */
+    @FXML
+    private void handleCopyAGroupAction(ActionEvent e){
+        //iterates through selected notes to find a selected note in a gesture
+        for (int p = 0; p < selectedNotes.size(); p++){
+            for (int q = 0; q <gestureModelController.gestureNoteGroups.size(); q++){
+                if(gestureModelController.gestureNoteGroups.get(q).contains(selectedNotes.get(p))){
+                    copyGesture(gestureModelController.gestureNoteGroups.get(q));
+                    return;
+                }
+            
+            }
+        }
+    }
+    
+    /**
+     * Copies a gesture. Copies all notes in a given gesture, adds those notes
+     * to the composition and screen, and groups those notes into a gesture.
+     * @param gestureCopy 
+     */
+    private void copyGesture(ArrayList<NoteRectangle> gestureCopy){
+        //creates a new array to store notes 
+        ArrayList<NoteRectangle> newGesture = new ArrayList<>();
+        
+        for (int n = 0; n <gestureCopy.size(); n+=2){
+            //copy an individual note
+            NoteRectangle oldNote = gestureCopy.get(n);
+            NoteRectangle newRect = new NoteRectangle(oldNote.getX()+15, ((int) oldNote.getY()), 
+                                           oldNote.getInstrument());
+            
+            //add mouse events to rectangle, add rectangle to screen
+            initializeNoteRectangle(newRect);
+            newGesture.add(newRect);
+        }
+        
+        //adds the newly created gesture, creates gesture boundary outline
+        gestureModelController.gestureNoteGroups.add(newGesture);
+        gestureModelController.updateGestureRectangle(newGesture, "dashedRed");  
+    }
+    
+    /**
+     * Ungroups all groups of NoteRectangles. Returns all notes to
+     * individual notes
+     * @param e 
+     */
+    @FXML
+    private void handleUngroupAllAction(ActionEvent e){
+        gestureModelController.gestureNoteGroups.clear();
+        gestureModelController.resetGestureRectangle(rectList);
+    }
     
     /**
      * Sets up the radio buttons for instrument selection.
