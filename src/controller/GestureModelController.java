@@ -17,7 +17,7 @@ public class GestureModelController {
     @FXML Pane gestureRectPane;
     
     //creates a list to store all gesture/grouped notes
-    public  ArrayList<ArrayList<NoteRectangle>> gestureNoteGroups;        
+    public ArrayList<ArrayList<NoteRectangle>> gestureNoteGroups;        
 
     //the main controller of the program
     private TuneComposerNoteSelection mainController; 

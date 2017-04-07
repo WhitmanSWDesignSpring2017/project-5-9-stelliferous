@@ -47,7 +47,9 @@
                 <MenuItem accelerator="Shortcut+G" onAction="#handleGroupAction" text="Group" />
                 <MenuItem accelerator="Shortcut+U" onAction="#handleUngroupAction" text="Ungroup" />  
                 <MenuItem accelerator="Shortcut+C" onAction="#handleCopyAGroupAction" text="Copy Group" />  
-                <MenuItem accelerator="Shortcut+N" onAction="#handleUngroupAllAction" text="Ungroup All" />  
+                <MenuItem accelerator="Shortcut+N" onAction="#handleUngroupAllAction" text="Ungroup All" /> 
+                <MenuItem accelerator="Shortcut+Z" onAction="#handleUndoAction" text="Undo"/> 
+                <MenuItem accelerator="Shortcut+Y" onAction="#handleRedoAction" text="Redo"/> 
               </items>
             </Menu>
                 <Menu text="Action">
