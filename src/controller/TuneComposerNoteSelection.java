@@ -44,7 +44,7 @@ public class TuneComposerNoteSelection {
     @FXML VBox instrumentsVBox;
     
     //makes available the controller for gestures
-    @FXML GestureModelController gestureModelController;
+    @FXML GestureModelController gestureModelController = new GestureModelController();
     
     //creates a list to store created rectangles, that they may be later erased
     protected static ArrayList<NoteRectangle> rectList = new ArrayList<>();
@@ -79,6 +79,9 @@ public class TuneComposerNoteSelection {
     private boolean stretch;
     private boolean drag;
     
+    protected static ArrayList<ArrayList<NoteRectangle>> gestureModelNotes = new ArrayList<>();
+    
+    protected UndoRedoActions undoRedoActions = new UndoRedoActions(this, gestureModelController);
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
      * (with location, duration, and speed). Make the red line invisible 
@@ -99,6 +102,7 @@ public class TuneComposerNoteSelection {
         
         //connect TuneComposerNoteSelection to the gesture class
         gestureModelController.init(this);
+        gestureModelNotes = gestureModelController.gestureNoteGroups;
     }
     
     /**
@@ -180,8 +184,8 @@ public class TuneComposerNoteSelection {
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
             
             //check to see if selected notes are in any gestures
-            for (int i=0 ;i < gestureModelController.gestureNoteGroups.size();i++) {
-                ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
+            for (int i=0 ;i < gestureModelNotes.size();i++) {
+                ArrayList currentGesture = gestureModelNotes.get(i);
                 if (currentGesture.contains(r)) {
                     //if selected notes are in gestures, update gestures
                     //and take note of other notes in those gestures
@@ -202,7 +206,7 @@ public class TuneComposerNoteSelection {
             //style selected notes
             selectRed();
             
-            UndoRedoActions.undoableAction();
+            undoRedoActions.undoableAction();
         }     
     }
     
@@ -221,7 +225,7 @@ public class TuneComposerNoteSelection {
             
             //clear the list of selected notes
             selectedNotes.clear();
-            //UndoRedoActions.undoableAction();
+            //undoRedoActions.undoableAction();
         }  
         gestureModelController.resetGestureRectangle(selectedNotes);
     }
@@ -340,7 +344,7 @@ public class TuneComposerNoteSelection {
         selectedNotes.add(rect);
         gestureModelController.resetGestureRectangle(selectedNotes);
         rectAnchorPane.getChildren().add(rect.notes);
-        UndoRedoActions.undoableAction();
+        undoRedoActions.undoableAction();
     }
 
     /**
@@ -367,8 +371,8 @@ public class TuneComposerNoteSelection {
             
             //if a selected note is in a gesture, select other notes in that gesture
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
-            for (int i=0 ;i < gestureModelController.gestureNoteGroups.size();i++) {
-                ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
+            for (int i=0 ;i < gestureModelNotes.size();i++) {
+                ArrayList currentGesture = gestureModelNotes.get(i);
                 if (currentGesture.contains(rect)) {
                     selectNotes = currentGesture;
                     selectRed();
@@ -388,7 +392,7 @@ public class TuneComposerNoteSelection {
             }
         }
         selectRed();
-        UndoRedoActions.undoableAction();
+        undoRedoActions.undoableAction();
     }
     
     /**
@@ -400,8 +404,8 @@ public class TuneComposerNoteSelection {
             rect.notes.getStyleClass().add("strokeBlack");
             selectedNotes.remove(rect);
             //if the note is in a gesture, deselect that gesture
-            for (int i=0 ;i < gestureModelController.gestureNoteGroups.size();i++) {
-                ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
+            for (int i=0 ;i < gestureModelNotes.size();i++) {
+                ArrayList currentGesture = gestureModelNotes.get(i);
                 if (currentGesture.contains(rect)) {
                    for(int u=0; u < currentGesture.size();u++){
                        NoteRectangle rectInGesture = (NoteRectangle) currentGesture.get(u);
@@ -412,7 +416,7 @@ public class TuneComposerNoteSelection {
                    break;
                 } 
             }
-        UndoRedoActions.undoableAction();
+        undoRedoActions.undoableAction();
     }
     
     /**
@@ -424,7 +428,7 @@ public class TuneComposerNoteSelection {
            e1.notes.getStyleClass().add("strokeRed");
         });
         gestureModelController.resetGestureRectangle(selectedNotes);
-        UndoRedoActions.undoableAction();
+        undoRedoActions.undoableAction();
     }
     
     /**
@@ -530,7 +534,7 @@ public class TuneComposerNoteSelection {
                 }
                 
                 gestureModelController.resetGestureRectangle(selectedNotes);
-                UndoRedoActions.undoableAction();
+                undoRedoActions.undoableAction();
             }
                             
             
@@ -605,7 +609,7 @@ public class TuneComposerNoteSelection {
                 selectedNotes.get(i).setY(finalY);   
             }
             gestureModelController.resetGestureRectangle(selectedNotes);
-            UndoRedoActions.undoableAction();
+            undoRedoActions.undoableAction();
         }
     };    
         
@@ -722,9 +726,9 @@ public class TuneComposerNoteSelection {
         selectedNotes.forEach((NoteRectangle e1) -> {
             rectAnchorPane.getChildren().remove(e1.notes);
             rectList.remove(e1);
-            for(int p = 0; p < gestureModelController.gestureNoteGroups.size();p++){
-                if(gestureModelController.gestureNoteGroups.get(p).contains(e1)){
-                    gestureModelController.gestureNoteGroups.remove(p);
+            for(int p = 0; p < gestureModelNotes.size();p++){
+                if(gestureModelNotes.get(p).contains(e1)){
+                    gestureModelNotes.remove(p);
                 }
             }
         });
@@ -749,9 +753,9 @@ public class TuneComposerNoteSelection {
             newGesture.add(e1);
         });
        
-        gestureModelController.gestureNoteGroups.add(0,newGesture);
+        gestureModelNotes.add(0,newGesture);
         gestureModelController.resetGestureRectangle(selectedNotes);
-        UndoRedoActions.undoableAction();
+        undoRedoActions.undoableAction();
 
     }
     
@@ -761,10 +765,10 @@ public class TuneComposerNoteSelection {
      */
     @FXML
     private void handleUngroupAction(ActionEvent e){
-        gestureModelController.gestureNoteGroups.remove(selectedNotes);
+        gestureModelNotes.remove(selectedNotes);
         selectRed();
         gestureModelController.resetGestureRectangle(selectedNotes);
-        UndoRedoActions.undoableAction();
+        undoRedoActions.undoableAction();
     }  
     
     
@@ -778,15 +782,15 @@ public class TuneComposerNoteSelection {
     private void handleCopyAGroupAction(ActionEvent e){
         //iterates through selected notes to find a selected note in a gesture
         for (int p = 0; p < selectedNotes.size(); p++){
-            for (int q = 0; q <gestureModelController.gestureNoteGroups.size(); q++){
-                if(gestureModelController.gestureNoteGroups.get(q).contains(selectedNotes.get(p))){
-                    copyGesture(gestureModelController.gestureNoteGroups.get(q));
+            for (int q = 0; q <gestureModelNotes.size(); q++){
+                if(gestureModelNotes.get(q).contains(selectedNotes.get(p))){
+                    copyGesture(gestureModelNotes.get(q));
                     return;
                 }
             
             }
         }
-        UndoRedoActions.undoableAction();
+        undoRedoActions.undoableAction();
     }
     
     /**
@@ -811,7 +815,7 @@ public class TuneComposerNoteSelection {
         }
         
         //adds the newly created gesture, creates gesture boundary outline
-        gestureModelController.gestureNoteGroups.add(newGesture);
+        gestureModelNotes.add(newGesture);
         gestureModelController.updateGestureRectangle(newGesture, "dashedRed");  
     }
     
@@ -822,30 +826,30 @@ public class TuneComposerNoteSelection {
      */
     @FXML
     private void handleUngroupAllAction(ActionEvent e){
-        gestureModelController.gestureNoteGroups.clear();
+        gestureModelNotes.clear();
         gestureModelController.resetGestureRectangle(rectList);
-        UndoRedoActions.undoableAction();
+        undoRedoActions.undoableAction();
     }
     
     @FXML
     private void handleUndoAction(ActionEvent e){
-        CompositionState state = UndoRedoActions.getUndoableState();
+        CompositionState state = undoRedoActions.getUndoableState();
         restoreState(state);
     }
     
     @FXML
     private void handleRedoAction(ActionEvent e){
-        CompositionState state = UndoRedoActions.getRedoableState();
+        CompositionState state = undoRedoActions.getRedoableState();
         restoreState(state);
     }
     
     private void restoreState(CompositionState state){
-        gestureModelController.gestureNoteGroups = state.getGesturesState();
+        gestureModelNotes = state.getGesturesState();
         rectList = state.getRectListState();
         selectedNotes = state.getSelectedNotesState();
         gestureModelController.resetGestureRectangle(rectList);
-        for (int i = 0; i < gestureModelController.gestureNoteGroups.size(); i++){
-            ArrayList<NoteRectangle> gesture = gestureModelController.gestureNoteGroups.get(i);
+        for (int i = 0; i < gestureModelNotes.size(); i++){
+            ArrayList<NoteRectangle> gesture = gestureModelNotes.get(i);
             gestureModelController.updateGestureRectangle(gesture, "red");
         }
     }

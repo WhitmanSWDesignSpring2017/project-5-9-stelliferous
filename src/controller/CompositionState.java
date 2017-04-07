@@ -14,9 +14,9 @@ public class CompositionState {
     private ArrayList<ArrayList<NoteRectangle>> gestureState = new ArrayList<>();
     
     protected CompositionState(ArrayList<NoteRectangle> rectList, ArrayList<NoteRectangle> selected, ArrayList<ArrayList<NoteRectangle>> gestures){
-        this.rectListState = rectList;
-        this.selectedNotesState = selected;
-        this.gestureState = gestures;
+        this.rectListState.addAll(rectList);
+        this.selectedNotesState.addAll(selected);
+        this.gestureState.addAll(gestures);
     }
     
     protected ArrayList<NoteRectangle> getRectListState(){

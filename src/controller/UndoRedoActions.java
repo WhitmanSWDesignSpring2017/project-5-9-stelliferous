@@ -8,13 +8,21 @@ import javafx.fxml.FXML;
  * @author mauletj
  */
 public class UndoRedoActions {
-    @FXML static GestureModelController gestureModelController;
+    @FXML GestureModelController gestureModelController;
+    protected TuneComposerNoteSelection tuneComposerNoteSelection;
 
-    static Stack<CompositionState> undoableStates = new Stack<>();
-    static Stack<CompositionState> redoableStates = new Stack<>();
+    protected Stack<CompositionState> undoableStates = new Stack<>();
+    protected Stack<CompositionState> redoableStates = new Stack<>();
+
+    
+    public UndoRedoActions(TuneComposerNoteSelection tuneComposerNoteSelection,
+                           GestureModelController gestureModelController) {
+        this.tuneComposerNoteSelection = tuneComposerNoteSelection;
+        this.gestureModelController = gestureModelController;
+    }
 
 
-    protected static void undoableAction(){
+    protected void undoableAction(){
         System.out.println(TuneComposerNoteSelection.selectedNotes);
         System.out.println(1);
                 System.out.println(TuneComposerNoteSelection.rectList);
@@ -23,18 +31,18 @@ public class UndoRedoActions {
                         System.out.println(gestureModelController.gestureNoteGroups);
                         System.out.println(3);
 
-        CompositionState currentState = new CompositionState(TuneComposerNoteSelection.selectedNotes, TuneComposerNoteSelection.rectList, gestureModelController.gestureNoteGroups);
+        CompositionState currentState = new CompositionState(TuneComposerNoteSelection.selectedNotes, TuneComposerNoteSelection.rectList, TuneComposerNoteSelection.gestureModelNotes);
         undoableStates.push(currentState);
         redoableStates.removeAllElements();
     }
     
-    protected static CompositionState getUndoableState(){
+    protected CompositionState getUndoableState(){
         CompositionState currentState = undoableStates.pop();
         redoableStates.push(currentState);
         return undoableStates.peek();
     }
     
-    protected static CompositionState getRedoableState(){
+    protected CompositionState getRedoableState(){
         CompositionState reinstatedState = redoableStates.pop();
         undoableStates.push(reinstatedState);
         return reinstatedState;
