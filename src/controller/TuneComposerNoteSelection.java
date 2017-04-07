@@ -102,7 +102,7 @@ public class TuneComposerNoteSelection {
         //connect TuneComposerNoteSelection to the gesture class
         gestureModelController.init(this);
         undoRedoActions.undoableAction();
-        undoRedoActions.undoableAction();
+        System.out.println("ini");
     }
     
     /**
@@ -761,7 +761,6 @@ public class TuneComposerNoteSelection {
         });
        
         gestureModelController.gestureNoteGroups.add(0,newGesture);
-        System.out.println("TuneComposergroup"+gestureModelController.gestureNoteGroups);
         undoRedoActions.undoableAction();
         gestureModelController.resetGestureRectangle(selectedNotes);
         
@@ -853,9 +852,6 @@ public class TuneComposerNoteSelection {
         }
         */
         undoRedoActions.undoAction();
-        System.out.println("sizeofthestack"+undoRedoActions.undoableStates.size());
-        System.out.println("TuneComposer.rectList"+rectList);
-        System.out.println("TuneComposer.select"+selectedNotes);
         rectList.forEach((e1)-> {
            initializeNoteRectangle(e1); 
         });

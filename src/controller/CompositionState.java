@@ -17,21 +17,27 @@ public class CompositionState {
                             ArrayList<ArrayList<NoteRectangle>> gestures){
         ArrayList<Integer> indexSelect = new ArrayList<>();
         ArrayList<ArrayList<Integer>> indexGesture = new ArrayList<>();
+        selected.forEach((e1)-> {
+           indexSelect.add(rectList.indexOf(e1)); 
+        });
+        /*
         rectList.forEach((e1)-> {
            if (selected.contains(e1)){
                indexSelect.add(rectList.indexOf(e1));
            } 
         });
+        */
         
         rectList.forEach((e1)-> {
             NoteRectangle cloneRect = new NoteRectangle(e1.getX(),e1.getY(),e1.getInstrument(),e1.getWidth());
             rectListState.add(cloneRect);
         });
         
+        //System.out.println("CompositionState"+rectList+rectListState);
         //this.rectListState.addAll(rectList);
-        indexSelect.forEach((e1)-> {
-            selectedNotesState.add(rectListState.get(e1));
-        });
+        for (int i=0; i<indexSelect.size();i++) {
+            selectedNotesState.add(rectListState.get(indexSelect.get(i)));        
+        }
         
         gestures.forEach((e1)-> {
             ArrayList<Integer> cloneArray = new ArrayList<>();
@@ -41,7 +47,16 @@ public class CompositionState {
             indexGesture.add(cloneArray);
         });
         
+        for (int i=0; i<indexGesture.size();i++) {
+            ArrayList<NoteRectangle> cloneArray = new ArrayList<>();
+            for (int j=0; j<indexGesture.get(i).size(); j++) {
+                cloneArray.add(rectListState.get(j));
+            }       
+            gestureState.add(cloneArray);
+        }
+        
         //this.selectedNotesState.addAll(selected);
+        /*
         indexGesture.forEach((e1)-> {
             ArrayList<NoteRectangle> cloneArray = new ArrayList<>();
             e1.forEach((e2)-> {
@@ -49,6 +64,7 @@ public class CompositionState {
             });
             gestureState.add(cloneArray);
         });
+        */
         //this.gestureState.addAll(gestures);
 /*
         rectListState.addAll(rectList);
