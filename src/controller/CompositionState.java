@@ -29,7 +29,7 @@ public class CompositionState {
         
         //this.rectListState.addAll(rectList);
         index.forEach((e1)-> {
-            selected.add(rectList.get(e1));
+            selectedNotesState.add(rectListState.get(e1));
         });
         
         

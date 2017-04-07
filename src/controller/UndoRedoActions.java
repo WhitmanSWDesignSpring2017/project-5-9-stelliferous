@@ -24,7 +24,7 @@ public class UndoRedoActions {
 
     protected void undoableAction(){
         
-        System.out.println("selectedNotes"+tuneComposerNoteSelection.selectedNotes);
+        System.out.println("selectedNotesundoable"+tuneComposerNoteSelection.selectedNotes);
         CompositionState currentState = new CompositionState(tuneComposerNoteSelection.rectList, tuneComposerNoteSelection.selectedNotes, tuneComposerNoteSelection.gestureModelNotes);
         undoableStates.push(currentState);
         //redoableStates.removeAllElements();
@@ -40,6 +40,8 @@ public class UndoRedoActions {
                         System.out.println(gestureModelController.gestureNoteGroups);
                         System.out.println(3);
 */
+        if (undoableStates.size() > 1){
+        System.out.println(undoableStates.size());
         CompositionState oldState = undoableStates.pop();
         redoableStates.push(oldState);
         tuneComposerNoteSelection.rectList.forEach((e1)->{
@@ -47,7 +49,6 @@ public class UndoRedoActions {
         }); 
         tuneComposerNoteSelection.gestureModelController.removeEverything();
         System.out.println("stack"+undoableStates);
-        System.out.println("peek"+undoableStates.peek());
         CompositionState currentState = undoableStates.peek();
         System.out.println("currentState"+currentState.gestureState);
         tuneComposerNoteSelection.rectList = currentState.rectListState;
@@ -64,6 +65,8 @@ public class UndoRedoActions {
 
                         System.out.println(gestureModelController.gestureNoteGroups);
                         System.out.println(6);
+        
+    }
     }
     
     protected CompositionState getRedoableState(){

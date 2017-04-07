@@ -12,6 +12,7 @@ import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.event.EventHandler;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
@@ -103,6 +104,10 @@ public class TuneComposerNoteSelection {
         //connect TuneComposerNoteSelection to the gesture class
         gestureModelController.init(this);
         gestureModelNotes = gestureModelController.gestureNoteGroups;
+        System.out.println("initialize");
+        undoRedoActions.undoableAction();
+        System.out.println("sizeofthestackini"+undoRedoActions.undoableStates.size());
+        
     }
     
     /**
@@ -206,7 +211,7 @@ public class TuneComposerNoteSelection {
             //style selected notes
             selectRed();
             
-            undoRedoActions.undoableAction();
+            //undoRedoActions.undoableAction();
         }     
     }
     
@@ -225,7 +230,7 @@ public class TuneComposerNoteSelection {
             
             //clear the list of selected notes
             selectedNotes.clear();
-            undoRedoActions.undoableAction();
+            //undoRedoActions.undoableAction();
         }  
         gestureModelController.resetGestureRectangle(selectedNotes);
     }
@@ -273,7 +278,6 @@ public class TuneComposerNoteSelection {
      */
     @FXML
     private void paneMouseRelease(MouseEvent e){
-        
         //removes 'selection rectangles,' created by dragging, from screen
         rectAnchorPane.getChildren().remove(selectRect);
         
@@ -283,12 +287,14 @@ public class TuneComposerNoteSelection {
         if (((xCoordinate != (int)e.getX()) 
             || (yCoordinate != (int)e.getY()))
             && !e.isShiftDown()){
+                undoRedoActions.undoableAction();
                 return;
         } 
         
         //determine whether previously selected notes remain selected when
         //a new note is created; if control is not down, deselect all old notes
         deselectNotes(e);
+        
         
         //creates and places a new NoteRectangle
         prepareNoteRectangle(e);
@@ -392,7 +398,10 @@ public class TuneComposerNoteSelection {
             }
         }
         selectRed();
-        undoRedoActions.undoableAction();
+        if (m.isStillSincePress()) {
+            System.out.println("clicked");
+            undoRedoActions.undoableAction();
+        }
     }
     
     /**
@@ -416,13 +425,17 @@ public class TuneComposerNoteSelection {
                    break;
                 } 
             }
-        undoRedoActions.undoableAction();
+        //undoRedoActions.undoableAction();
     }
     
     /**
      * Sets the appearance of any selected rectangles with a red border.
      */
     protected void selectRed() {
+        rectList.forEach((e2)-> {
+           e2.clearStroke();
+           e2.notes.getStyleClass().add("strokeBlack");
+        });
         selectedNotes.forEach((e1) -> {
            e1.clearStroke();
            e1.notes.getStyleClass().add("strokeRed");
@@ -609,6 +622,7 @@ public class TuneComposerNoteSelection {
                 selectedNotes.get(i).setY(finalY);   
             }
             gestureModelController.resetGestureRectangle(selectedNotes);
+            System.out.println("releaseonrect"+selectedNotes);
             undoRedoActions.undoableAction();
         }
     };    
@@ -832,11 +846,19 @@ public class TuneComposerNoteSelection {
         undoRedoActions.undoableAction();
     }
     
+    @FXML MenuItem undoAction;
+    
     @FXML
     private void handleUndoAction(ActionEvent e){
         //CompositionState state = undoRedoActions.getUndoableState();
         //restoreState(state);
+        if (undoRedoActions.undoableStates.isEmpty()) {
+            undoAction.setDisable(true);
+        } else {
+            undoAction.setDisable(false);
+        }
         undoRedoActions.undoAction();
+        System.out.println("sizeofthestack"+undoRedoActions.undoableStates.size());
         System.out.println("TuneComposer.rectList"+rectList);
         System.out.println("TuneComposer.select"+selectedNotes);
         rectList.forEach((e1)-> {

@@ -48,8 +48,8 @@
                 <MenuItem accelerator="Shortcut+U" onAction="#handleUngroupAction" text="Ungroup" />  
                 <MenuItem accelerator="Shortcut+C" onAction="#handleCopyAGroupAction" text="Copy Group" />  
                 <MenuItem accelerator="Shortcut+N" onAction="#handleUngroupAllAction" text="Ungroup All" /> 
-                <MenuItem accelerator="Shortcut+Z" onAction="#handleUndoAction" text="Undo"/> 
-                <MenuItem accelerator="Shortcut+Y" onAction="#handleRedoAction" text="Redo"/> 
+                <MenuItem fx:id="undoAction" accelerator="Shortcut+Z" onAction="#handleUndoAction" text="Undo" /> 
+                <MenuItem accelerator="Shortcut+Y" onAction="#handleRedoAction" text="Redo" /> 
               </items>
             </Menu>
                 <Menu text="Action">
@@ -66,9 +66,9 @@
     </top>
    <left>
       <VBox fx:id="instrumentsVBox" spacing="50.0">
-          <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
+          <padding><Insets bottom="25" left="25" right="25" top="25" /></padding>
           <fx:define>
-              <ToggleGroup fx:id="instrumentsRadioButton"/>
+              <ToggleGroup fx:id="instrumentsRadioButton" />
           </fx:define>
       </VBox>         
    </left>
