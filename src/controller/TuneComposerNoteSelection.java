@@ -312,7 +312,7 @@ public class TuneComposerNoteSelection {
         
         //creates a new NoteRectangle object
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*Constants.HEIGHTRECTANGLE, 
-                                               selectedInstrument);
+                                               selectedInstrument, 100);
 
         //create a new rectangle while make sure selectedNotes contains only itself
         if (!t.isControlDown()) {
@@ -392,7 +392,7 @@ public class TuneComposerNoteSelection {
             }
         }
         selectRed();
-        undoRedoActions.undoableAction();
+        //undoRedoActions.undoableAction();
     }
     
     /**
@@ -754,8 +754,10 @@ public class TuneComposerNoteSelection {
         });
        
         gestureModelNotes.add(0,newGesture);
-        gestureModelController.resetGestureRectangle(selectedNotes);
+        System.out.println("TuneComposer"+gestureModelNotes);
         undoRedoActions.undoableAction();
+        gestureModelController.resetGestureRectangle(selectedNotes);
+        
 
     }
     
@@ -806,8 +808,7 @@ public class TuneComposerNoteSelection {
             //copy an individual note
             NoteRectangle oldNote = gestureCopy.get(n);
             NoteRectangle newRect = new NoteRectangle(oldNote.getX()+15, ((int) oldNote.getY()), 
-                                           oldNote.getInstrument());
-            newRect.setWidth(oldNote.getWidth());
+                                           oldNote.getInstrument(), oldNote.getWidth());
             
             //add mouse events to rectangle, add rectangle to screen
             initializeNoteRectangle(newRect);
@@ -837,6 +838,7 @@ public class TuneComposerNoteSelection {
         //restoreState(state);
         undoRedoActions.undoAction();
         selectRed();
+        System.out.println("TuneComposer.rectList"+rectList);
         rectList.forEach((e1)-> {
            initializeNoteRectangle(e1); 
         });

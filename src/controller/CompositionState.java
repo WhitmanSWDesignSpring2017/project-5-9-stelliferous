@@ -13,16 +13,18 @@ public class CompositionState {
     protected ArrayList<NoteRectangle> selectedNotesState = new ArrayList<>();
     protected ArrayList<ArrayList<NoteRectangle>> gestureState = new ArrayList<>();
     
-    public CompositionState(ArrayList<NoteRectangle> rectList, ArrayList<NoteRectangle> selected, ArrayList<ArrayList<NoteRectangle>> gestures){
+    public CompositionState(ArrayList<NoteRectangle> rectList, ArrayList<NoteRectangle> selected,
+                            ArrayList<ArrayList<NoteRectangle>> gestures){
+        
         rectList.forEach((e1)-> {
-            NoteRectangle cloneRect = new NoteRectangle(e1.getX(),e1.getY(),e1.getInstrument());
+            NoteRectangle cloneRect = new NoteRectangle(e1.getX(),e1.getY(),e1.getInstrument(),e1.getWidth());
             rectListState.add(cloneRect);
         });
         System.out.println("rectList" + rectList);
         System.out.println("rectListState"+rectListState);
         //this.rectListState.addAll(rectList);
         selected.forEach((e1)-> {
-            NoteRectangle cloneRect = new NoteRectangle(e1.getX(),e1.getY(),e1.getInstrument());
+            NoteRectangle cloneRect = new NoteRectangle(e1.getX(),e1.getY(),e1.getInstrument(),e1.getWidth());
             selectedNotesState.add(cloneRect);
         });
         
@@ -30,12 +32,17 @@ public class CompositionState {
         gestures.forEach((e1)-> {
             ArrayList<NoteRectangle> cloneArray = new ArrayList<>();
             e1.forEach(e2-> {
-                NoteRectangle cloneRect = new NoteRectangle(e2.getX(),e2.getY(),e2.getInstrument());
+                NoteRectangle cloneRect = new NoteRectangle(e2.getX(),e2.getY(),e2.getInstrument(),e2.getWidth());
                 cloneArray.add(cloneRect);
             });
             gestureState.add(cloneArray);
         });
         //this.gestureState.addAll(gestures);
+/*
+        rectListState.addAll(rectList);
+        selectedNotesState.addAll(selected);
+        gestureState.addAll(gestures);
+*/
     }
     
     protected ArrayList<NoteRectangle> getRectListState(){
