@@ -47,10 +47,10 @@ public class TuneComposerNoteSelection {
     @FXML GestureModelController gestureModelController = new GestureModelController();
     
     //creates a list to store created rectangles, that they may be later erased
-    protected static ArrayList<NoteRectangle> rectList = new ArrayList<>();
+    protected ArrayList<NoteRectangle> rectList = new ArrayList<>();
     
     //creates a list to store selected rectangles
-    protected static ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
+    protected ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
     
     //constructs the TranslateTransition for use later in animation of redline
     private final TranslateTransition lineTransition = new TranslateTransition();
@@ -79,7 +79,7 @@ public class TuneComposerNoteSelection {
     private boolean stretch;
     private boolean drag;
     
-    protected static ArrayList<ArrayList<NoteRectangle>> gestureModelNotes = new ArrayList<>();
+    protected ArrayList<ArrayList<NoteRectangle>> gestureModelNotes = new ArrayList<>();
     
     protected UndoRedoActions undoRedoActions = new UndoRedoActions(this, gestureModelController);
     /**
@@ -225,7 +225,7 @@ public class TuneComposerNoteSelection {
             
             //clear the list of selected notes
             selectedNotes.clear();
-            //undoRedoActions.undoableAction();
+            undoRedoActions.undoableAction();
         }  
         gestureModelController.resetGestureRectangle(selectedNotes);
     }
@@ -343,6 +343,7 @@ public class TuneComposerNoteSelection {
         rectList.add(rect);
         selectedNotes.add(rect);
         gestureModelController.resetGestureRectangle(selectedNotes);
+        //rectAnchorPane.removeAll();
         rectAnchorPane.getChildren().add(rect.notes);
         undoRedoActions.undoableAction();
     }
@@ -428,7 +429,7 @@ public class TuneComposerNoteSelection {
            e1.notes.getStyleClass().add("strokeRed");
         });
         gestureModelController.resetGestureRectangle(selectedNotes);
-        undoRedoActions.undoableAction();
+        //undoRedoActions.undoableAction();
     }
     
     /**
@@ -534,7 +535,7 @@ public class TuneComposerNoteSelection {
                 }
                 
                 gestureModelController.resetGestureRectangle(selectedNotes);
-                undoRedoActions.undoableAction();
+                //undoRedoActions.undoableAction();
             }
                             
             
@@ -749,7 +750,7 @@ public class TuneComposerNoteSelection {
             return;
         }
         ArrayList<NoteRectangle> newGesture = new ArrayList<>();
-        TuneComposerNoteSelection.selectedNotes.forEach((e1)-> {
+        selectedNotes.forEach((e1)-> {
             newGesture.add(e1);
         });
        
@@ -833,8 +834,9 @@ public class TuneComposerNoteSelection {
     
     @FXML
     private void handleUndoAction(ActionEvent e){
-        CompositionState state = undoRedoActions.getUndoableState();
-        restoreState(state);
+        //CompositionState state = undoRedoActions.getUndoableState();
+        //restoreState(state);
+        undoRedoActions.undoAction();
     }
     
     @FXML

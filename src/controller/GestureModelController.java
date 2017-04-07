@@ -29,6 +29,10 @@ public class GestureModelController {
         this.gestureNoteGroups = new ArrayList<>();
     }
     
+    protected void removeEverything() {
+        gestureRectPane.getChildren().clear();
+    }
+    
     /**
      * Calculates the border of the rectangle which indicates a gesture.
      * @param gesture the gesture for which the rectangle is being calculated

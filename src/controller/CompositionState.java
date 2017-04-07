@@ -9,9 +9,9 @@ import java.util.ArrayList;
 public class CompositionState {
     
     
-    private ArrayList<NoteRectangle> rectListState = new ArrayList<>();
-    private ArrayList<NoteRectangle> selectedNotesState = new ArrayList<>();
-    private ArrayList<ArrayList<NoteRectangle>> gestureState = new ArrayList<>();
+    protected ArrayList<NoteRectangle> rectListState = new ArrayList<>();
+    protected ArrayList<NoteRectangle> selectedNotesState = new ArrayList<>();
+    protected ArrayList<ArrayList<NoteRectangle>> gestureState = new ArrayList<>();
     
     protected CompositionState(ArrayList<NoteRectangle> rectList, ArrayList<NoteRectangle> selected, ArrayList<ArrayList<NoteRectangle>> gestures){
         this.rectListState.addAll(rectList);
