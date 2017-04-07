@@ -15,10 +15,11 @@ public class CompositionState {
     
     public CompositionState(ArrayList<NoteRectangle> rectList, ArrayList<NoteRectangle> selected,
                             ArrayList<ArrayList<NoteRectangle>> gestures){
-        ArrayList<Integer> index = new ArrayList<>();
+        ArrayList<Integer> indexSelect = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> indexGesture = new ArrayList<>();
         rectList.forEach((e1)-> {
            if (selected.contains(e1)){
-               index.add(rectList.indexOf(e1));
+               indexSelect.add(rectList.indexOf(e1));
            } 
         });
         
@@ -28,17 +29,23 @@ public class CompositionState {
         });
         
         //this.rectListState.addAll(rectList);
-        index.forEach((e1)-> {
+        indexSelect.forEach((e1)-> {
             selectedNotesState.add(rectListState.get(e1));
         });
         
+        gestures.forEach((e1)-> {
+            ArrayList<Integer> cloneArray = new ArrayList<>();
+            e1.forEach((e2)-> {
+                cloneArray.add(rectList.indexOf(e2));
+            });
+            indexGesture.add(cloneArray);
+        });
         
         //this.selectedNotesState.addAll(selected);
-        gestures.forEach((e1)-> {
+        indexGesture.forEach((e1)-> {
             ArrayList<NoteRectangle> cloneArray = new ArrayList<>();
-            e1.forEach(e2-> {
-                NoteRectangle cloneRect = new NoteRectangle(e2.getX(),e2.getY(),e2.getInstrument(),e2.getWidth());
-                cloneArray.add(cloneRect);
+            e1.forEach((e2)-> {
+                cloneArray.add(rectListState.get(e2));
             });
             gestureState.add(cloneArray);
         });
