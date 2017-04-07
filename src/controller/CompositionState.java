@@ -50,7 +50,7 @@ public class CompositionState {
         for (int i=0; i<indexGesture.size();i++) {
             ArrayList<NoteRectangle> cloneArray = new ArrayList<>();
             for (int j=0; j<indexGesture.get(i).size(); j++) {
-                cloneArray.add(rectListState.get(j));
+                cloneArray.add(rectListState.get(indexGesture.get(i).get(j)));
             }       
             gestureState.add(cloneArray);
         }

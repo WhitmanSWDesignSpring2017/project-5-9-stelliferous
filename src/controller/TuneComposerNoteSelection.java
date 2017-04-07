@@ -856,7 +856,6 @@ public class TuneComposerNoteSelection {
            initializeNoteRectangle(e1); 
         });
         selectRed();
-        gestureModelController.resetGestureRectangle(selectedNotes);
     }
     
     @FXML
@@ -866,7 +865,6 @@ public class TuneComposerNoteSelection {
            initializeNoteRectangle(e1); 
         });
         selectRed();
-        gestureModelController.resetGestureRectangle(selectedNotes);
     }
     /*
     private void restoreState(CompositionState state){

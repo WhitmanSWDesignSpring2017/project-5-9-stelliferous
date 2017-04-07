@@ -105,7 +105,7 @@ public class GestureModelController {
         });
         
         for (int j=0 ;j < gestureNoteGroups.size();j++) {
-            ArrayList currentGesture = gestureNoteGroups.get(j);
+            ArrayList<NoteRectangle> currentGesture = gestureNoteGroups.get(j);
             boolean match = true;
             for (int i=0;i<currentGesture.size();i++) {
                 if (!copySelected.contains(currentGesture.get(i))) {

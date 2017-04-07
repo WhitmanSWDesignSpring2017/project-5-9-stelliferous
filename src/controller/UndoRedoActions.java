@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.Stack;
 import javafx.fxml.FXML;
 
@@ -56,17 +57,25 @@ public class UndoRedoActions {
             tuneComposerNoteSelection.rectList.add(e1);
             tuneComposerNoteSelection.rectAnchorPane.getChildren().add(e1.notes);
         });
-        System.out.println("currentState"+currentState+currentState.rectListState);
      
+       // System.out.println("rectList"+tuneComposerNoteSelection.rectList);
+
         tuneComposerNoteSelection.selectedNotes.clear();
         currentState.selectedNotesState.forEach((e1)->{
             tuneComposerNoteSelection.selectedNotes.add(e1);
         });
         
-        System.out.println(tuneComposerNoteSelection.selectedNotes);
+      //  System.out.println("selected"+tuneComposerNoteSelection.selectedNotes);
         
-        tuneComposerNoteSelection.gestureModelController.gestureNoteGroups = currentState.gestureState;
-        tuneComposerNoteSelection.gestureModelController.resetGestureRectangle(tuneComposerNoteSelection.selectedNotes);
+        tuneComposerNoteSelection.gestureModelController.gestureNoteGroups.clear();
+        currentState.gestureState.forEach((e1)->{
+            ArrayList<NoteRectangle> newArray = new ArrayList<>();
+            e1.forEach((e2)-> {
+                newArray.add(e2);
+            });
+            tuneComposerNoteSelection.gestureModelController.gestureNoteGroups.add(newArray);
+        });
+     //   System.out.println("gesturegroup"+tuneComposerNoteSelection.gestureModelController.gestureNoteGroups);
         
         }
     }
@@ -91,8 +100,18 @@ public class UndoRedoActions {
             tuneComposerNoteSelection.selectedNotes.add(e1);
         });
         
-        tuneComposerNoteSelection.gestureModelController.gestureNoteGroups = currentState.gestureState;
-        tuneComposerNoteSelection.gestureModelController.resetGestureRectangle(tuneComposerNoteSelection.selectedNotes);
+        tuneComposerNoteSelection.gestureModelController.gestureNoteGroups.clear();
+        currentState.gestureState.forEach((e1)->{
+            ArrayList<NoteRectangle> newArray = new ArrayList<>();
+            e1.forEach((e2)-> {
+                newArray.add(e2);
+            });
+            tuneComposerNoteSelection.gestureModelController.gestureNoteGroups.add(newArray);
+        });
+        System.out.println("rectList"+tuneComposerNoteSelection.rectList);
+        System.out.println("selected"+tuneComposerNoteSelection.selectedNotes);
+        System.out.println("gesturegroup"+tuneComposerNoteSelection.gestureModelController.gestureNoteGroups);
+        
         }
     }
 }
