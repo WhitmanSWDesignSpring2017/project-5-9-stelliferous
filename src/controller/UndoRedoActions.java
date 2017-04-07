@@ -39,7 +39,7 @@ public class UndoRedoActions {
                         System.out.println(gestureModelController.gestureNoteGroups);
                         System.out.println(3);
 */
-        if (undoableStates.size() > 1){
+        if (undoableStates.size() > 2){
         CompositionState oldState = undoableStates.pop();
         redoableStates.push(oldState);
         tuneComposerNoteSelection.rectList.forEach((e1)->{

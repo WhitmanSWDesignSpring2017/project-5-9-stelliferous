@@ -102,6 +102,7 @@ public class TuneComposerNoteSelection {
         //connect TuneComposerNoteSelection to the gesture class
         gestureModelController.init(this);
         undoRedoActions.undoableAction();
+        undoRedoActions.undoableAction();
     }
     
     /**
