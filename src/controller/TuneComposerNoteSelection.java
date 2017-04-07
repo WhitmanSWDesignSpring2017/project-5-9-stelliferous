@@ -392,7 +392,7 @@ public class TuneComposerNoteSelection {
             }
         }
         selectRed();
-        //undoRedoActions.undoableAction();
+        undoRedoActions.undoableAction();
     }
     
     /**
@@ -837,19 +837,20 @@ public class TuneComposerNoteSelection {
         //CompositionState state = undoRedoActions.getUndoableState();
         //restoreState(state);
         undoRedoActions.undoAction();
-        selectRed();
         System.out.println("TuneComposer.rectList"+rectList);
+        System.out.println("TuneComposer.select"+selectedNotes);
         rectList.forEach((e1)-> {
            initializeNoteRectangle(e1); 
         });
+        selectRed();
     }
     
     @FXML
     private void handleRedoAction(ActionEvent e){
         CompositionState state = undoRedoActions.getRedoableState();
-        restoreState(state);
+        //restoreState(state);
     }
-    
+    /*
     private void restoreState(CompositionState state){
         gestureModelNotes = state.getGesturesState();
         rectList = state.getRectListState();
@@ -860,6 +861,7 @@ public class TuneComposerNoteSelection {
             gestureModelController.updateGestureRectangle(gesture, "red");
         }
     }
+    */
     
     /**
      * Sets up the radio buttons for instrument selection.

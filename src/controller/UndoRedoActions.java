@@ -24,7 +24,7 @@ public class UndoRedoActions {
 
     protected void undoableAction(){
         
-
+        System.out.println("selectedNotes"+tuneComposerNoteSelection.selectedNotes);
         CompositionState currentState = new CompositionState(tuneComposerNoteSelection.rectList, tuneComposerNoteSelection.selectedNotes, tuneComposerNoteSelection.gestureModelNotes);
         undoableStates.push(currentState);
         //redoableStates.removeAllElements();

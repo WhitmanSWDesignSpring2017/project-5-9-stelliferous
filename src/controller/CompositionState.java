@@ -15,18 +15,23 @@ public class CompositionState {
     
     public CompositionState(ArrayList<NoteRectangle> rectList, ArrayList<NoteRectangle> selected,
                             ArrayList<ArrayList<NoteRectangle>> gestures){
+        ArrayList<Integer> index = new ArrayList<>();
+        rectList.forEach((e1)-> {
+           if (selected.contains(e1)){
+               index.add(rectList.indexOf(e1));
+           } 
+        });
         
         rectList.forEach((e1)-> {
             NoteRectangle cloneRect = new NoteRectangle(e1.getX(),e1.getY(),e1.getInstrument(),e1.getWidth());
             rectListState.add(cloneRect);
         });
-        System.out.println("rectList" + rectList);
-        System.out.println("rectListState"+rectListState);
+        
         //this.rectListState.addAll(rectList);
-        selected.forEach((e1)-> {
-            NoteRectangle cloneRect = new NoteRectangle(e1.getX(),e1.getY(),e1.getInstrument(),e1.getWidth());
-            selectedNotesState.add(cloneRect);
+        index.forEach((e1)-> {
+            selected.add(rectList.get(e1));
         });
+        
         
         //this.selectedNotesState.addAll(selected);
         gestures.forEach((e1)-> {
