@@ -869,8 +869,14 @@ public class TuneComposerNoteSelection {
     
     @FXML
     private void handleRedoAction(ActionEvent e){
-        CompositionState state = undoRedoActions.getRedoableState();
-        //restoreState(state);
+        undoRedoActions.redoAction();
+        System.out.println("sizeofthestack"+undoRedoActions.undoableStates.size());
+        System.out.println("TuneComposer.rectList"+rectList);
+        System.out.println("TuneComposer.select"+selectedNotes);
+        rectList.forEach((e1)-> {
+           initializeNoteRectangle(e1); 
+        });
+        selectRed();
     }
     /*
     private void restoreState(CompositionState state){

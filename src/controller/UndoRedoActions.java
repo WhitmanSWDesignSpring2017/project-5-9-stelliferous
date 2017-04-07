@@ -27,7 +27,7 @@ public class UndoRedoActions {
         System.out.println("selectedNotesundoable"+tuneComposerNoteSelection.selectedNotes);
         CompositionState currentState = new CompositionState(tuneComposerNoteSelection.rectList, tuneComposerNoteSelection.selectedNotes, tuneComposerNoteSelection.gestureModelNotes);
         undoableStates.push(currentState);
-        //redoableStates.removeAllElements();
+        redoableStates.removeAllElements();
     }
     
     protected void undoAction(){
@@ -41,16 +41,13 @@ public class UndoRedoActions {
                         System.out.println(3);
 */
         if (undoableStates.size() > 1){
-        System.out.println(undoableStates.size());
         CompositionState oldState = undoableStates.pop();
         redoableStates.push(oldState);
         tuneComposerNoteSelection.rectList.forEach((e1)->{
             tuneComposerNoteSelection.rectAnchorPane.getChildren().remove(e1.notes);
         }); 
         tuneComposerNoteSelection.gestureModelController.removeEverything();
-        System.out.println("stack"+undoableStates);
         CompositionState currentState = undoableStates.peek();
-        System.out.println("currentState"+currentState.gestureState);
         tuneComposerNoteSelection.rectList = currentState.rectListState;
         tuneComposerNoteSelection.rectList.forEach((e1)->{
             tuneComposerNoteSelection.rectAnchorPane.getChildren().add(e1.notes);
@@ -58,20 +55,26 @@ public class UndoRedoActions {
         tuneComposerNoteSelection.selectedNotes = currentState.selectedNotesState;
         tuneComposerNoteSelection.gestureModelNotes = currentState.gestureState;
         tuneComposerNoteSelection.gestureModelController.resetGestureRectangle(tuneComposerNoteSelection.selectedNotes);
-        System.out.println(tuneComposerNoteSelection.selectedNotes);
-        System.out.println(4);
-                System.out.println(tuneComposerNoteSelection.gestureModelNotes);
-                System.out.println(5);
-
-                        System.out.println(gestureModelController.gestureNoteGroups);
-                        System.out.println(6);
         
-    }
+        }
     }
     
-    protected CompositionState getRedoableState(){
-        CompositionState reinstatedState = redoableStates.pop();
-        undoableStates.push(reinstatedState);
-        return reinstatedState;
+    protected void redoAction(){
+        if (!redoableStates.isEmpty()){
+        CompositionState currentState = redoableStates.pop();
+        undoableStates.push(currentState);
+        tuneComposerNoteSelection.rectList.forEach((e1)->{
+            tuneComposerNoteSelection.rectAnchorPane.getChildren().remove(e1.notes);
+        }); 
+        tuneComposerNoteSelection.gestureModelController.removeEverything();
+        tuneComposerNoteSelection.rectList = currentState.rectListState;
+        tuneComposerNoteSelection.rectList.forEach((e1)->{
+            tuneComposerNoteSelection.rectAnchorPane.getChildren().add(e1.notes);
+        });
+        tuneComposerNoteSelection.selectedNotes = currentState.selectedNotesState;
+        tuneComposerNoteSelection.gestureModelNotes = currentState.gestureState;
+        tuneComposerNoteSelection.gestureModelController.resetGestureRectangle(tuneComposerNoteSelection.selectedNotes);
+        
+        }
     }
 }
