@@ -23,6 +23,14 @@ public class UndoRedoActions {
 
 
     protected void undoableAction(){
+        
+
+        CompositionState currentState = new CompositionState(tuneComposerNoteSelection.rectList, tuneComposerNoteSelection.selectedNotes, tuneComposerNoteSelection.gestureModelNotes);
+        undoableStates.push(currentState);
+        //redoableStates.removeAllElements();
+    }
+    
+    protected void undoAction(){
         System.out.println(tuneComposerNoteSelection.selectedNotes);
         System.out.println(1);
                 System.out.println(tuneComposerNoteSelection.rectList);
@@ -30,27 +38,30 @@ public class UndoRedoActions {
 
                         System.out.println(gestureModelController.gestureNoteGroups);
                         System.out.println(3);
-
-        CompositionState currentState = new CompositionState(tuneComposerNoteSelection.selectedNotes, tuneComposerNoteSelection.rectList, tuneComposerNoteSelection.gestureModelNotes);
-        undoableStates.push(currentState);
-        redoableStates.removeAllElements();
-    }
-    
-    protected void undoAction(){
         CompositionState oldState = undoableStates.pop();
         redoableStates.push(oldState);
         tuneComposerNoteSelection.rectList.forEach((e1)->{
             tuneComposerNoteSelection.rectAnchorPane.getChildren().remove(e1.notes);
         }); 
-        gestureModelController.removeEverything();
+        tuneComposerNoteSelection.gestureModelController.removeEverything();
+        System.out.println("stack"+undoableStates);
+        System.out.println("peek"+undoableStates.peek().rectListState);
         CompositionState currentState = undoableStates.peek();
+        System.out.println("currentState"+currentState);
         tuneComposerNoteSelection.rectList = currentState.rectListState;
         tuneComposerNoteSelection.rectList.forEach((e1)->{
             tuneComposerNoteSelection.rectAnchorPane.getChildren().add(e1.notes);
         });
         tuneComposerNoteSelection.selectedNotes = currentState.selectedNotesState;
         tuneComposerNoteSelection.gestureModelNotes = currentState.gestureState;
-        gestureModelController.resetGestureRectangle(tuneComposerNoteSelection.selectedNotes);
+        tuneComposerNoteSelection.gestureModelController.resetGestureRectangle(tuneComposerNoteSelection.selectedNotes);
+        System.out.println(tuneComposerNoteSelection.selectedNotes);
+        System.out.println(4);
+                System.out.println(tuneComposerNoteSelection.rectList);
+                System.out.println(5);
+
+                        System.out.println(gestureModelController.gestureNoteGroups);
+                        System.out.println(6);
     }
     
     protected CompositionState getRedoableState(){

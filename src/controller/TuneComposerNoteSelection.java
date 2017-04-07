@@ -321,6 +321,13 @@ public class TuneComposerNoteSelection {
         
         //initialize rectangle mouse events, add to selected notes and visual
         initializeNoteRectangle(rect);
+                
+        rectList.add(rect);
+        selectedNotes.add(rect);
+        gestureModelController.resetGestureRectangle(selectedNotes);
+        //rectAnchorPane.removeAll();
+        rectAnchorPane.getChildren().add(rect.notes);
+        undoRedoActions.undoableAction();
         
     }
     
@@ -338,14 +345,6 @@ public class TuneComposerNoteSelection {
         rect.setOnMouseClicked((MouseEvent o) -> {
             onNoteClick(o, rect);
         });
-        
-        
-        rectList.add(rect);
-        selectedNotes.add(rect);
-        gestureModelController.resetGestureRectangle(selectedNotes);
-        //rectAnchorPane.removeAll();
-        rectAnchorPane.getChildren().add(rect.notes);
-        undoRedoActions.undoableAction();
     }
 
     /**
@@ -837,6 +836,10 @@ public class TuneComposerNoteSelection {
         //CompositionState state = undoRedoActions.getUndoableState();
         //restoreState(state);
         undoRedoActions.undoAction();
+        selectRed();
+        rectList.forEach((e1)-> {
+           initializeNoteRectangle(e1); 
+        });
     }
     
     @FXML

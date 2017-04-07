@@ -29,7 +29,7 @@ public class GestureModelController {
         this.gestureNoteGroups = new ArrayList<>();
     }
     
-    protected void removeEverything() {
+    public void removeEverything() {
         gestureRectPane.getChildren().clear();
     }
     
@@ -93,7 +93,7 @@ public class GestureModelController {
     /**
      * Resets the rectangles surrounding gestures.
      */
-    void  resetGestureRectangle(ArrayList<NoteRectangle> selectedGesture){
+    void resetGestureRectangle(ArrayList<NoteRectangle> selectedGesture){
         //clears all gesture rectangles
         gestureRectPane.getChildren().clear();
         

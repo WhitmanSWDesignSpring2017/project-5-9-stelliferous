@@ -30,7 +30,7 @@ public class NoteRectangle {
      * @param y y-coordinate of upper-left hand corner of the rectangle
      * @param instrument instrument number of the rectangle
      */        
-    public NoteRectangle(double x, int y, Instrument instrument) {
+    public NoteRectangle(double x, double y, Instrument instrument) {
         //assigns user-given attribute values of instrument, channel, color
         this.instrument = instrument;
         this.channel = instrument.getChannel();        
