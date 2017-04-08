@@ -2,7 +2,6 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Stack;
-import javafx.fxml.FXML;
 
 /**
  *
@@ -32,7 +31,6 @@ public class UndoRedoActions {
                                             tuneComposerNoteSelection.gestureModelController.gestureNoteGroups);
         undoableStates.push(currentState);
         deepClone(currentState);
-        System.out.println("undoecurrentundoStack"+undoableStates);
         redoableStates.removeAllElements();
         tuneComposerNoteSelection.menuBarController.checkButtons();
     }
@@ -56,10 +54,7 @@ public class UndoRedoActions {
             CompositionState currentState = redoableStates.pop();
             undoableStates.push(currentState);
             deepClone(currentState);
-            
-            System.out.println("rectList"+tuneComposerNoteSelection.rectList);
-            System.out.println("selected"+tuneComposerNoteSelection.selectedNotes);
-            System.out.println("gesturegroup"+tuneComposerNoteSelection.gestureModelController.gestureNoteGroups);
+
             tuneComposerNoteSelection.menuBarController.checkButtons();
         
         }
