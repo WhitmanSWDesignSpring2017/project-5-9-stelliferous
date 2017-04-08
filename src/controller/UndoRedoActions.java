@@ -11,24 +11,27 @@ import javafx.fxml.FXML;
 public class UndoRedoActions {
     protected GestureModelController gestureModelController;
     protected TuneComposerNoteSelection tuneComposerNoteSelection;
+    protected MenuBarController menuBarController;
 
     protected Stack<CompositionState> undoableStates = new Stack<>();
     protected Stack<CompositionState> redoableStates = new Stack<>();
 
     
     public UndoRedoActions(TuneComposerNoteSelection tuneComposerNoteSelection,
-                           GestureModelController gestureModelController) {
+                           GestureModelController gestureModelController,
+                           MenuBarController menuBarController) {
         this.tuneComposerNoteSelection = tuneComposerNoteSelection;
         this.gestureModelController = gestureModelController;
+        this.menuBarController = menuBarController;
     }
 
 
     protected void undoableAction(){
-                    System.out.println("Action Size: "+undoableStates.size());
-            tuneComposerNoteSelection.redoAction.setDisable(true);
+        System.out.println("Action Size: "+undoableStates.size());
+        tuneComposerNoteSelection.menuBarController.redoAction.setDisable(true);
 
         if (undoableStates.size()>0){
-            tuneComposerNoteSelection.undoAction.setDisable(false);
+            tuneComposerNoteSelection.menuBarController.undoAction.setDisable(false);
             System.out.println("enabled");
         }
         final CompositionState currentState = new CompositionState(tuneComposerNoteSelection.rectList, 
@@ -40,7 +43,7 @@ public class UndoRedoActions {
     
     protected void undoAction(){
         if (undoableStates.size() > 1){
-        tuneComposerNoteSelection.redoAction.setDisable(false);
+        tuneComposerNoteSelection.menuBarController.redoAction.setDisable(false);
         CompositionState oldState = undoableStates.pop();
         redoableStates.push(oldState);
         
@@ -76,7 +79,7 @@ public class UndoRedoActions {
 
         } //else {
         if (undoableStates.size() == 1 ){
-            tuneComposerNoteSelection.undoAction.setDisable(true);
+            tuneComposerNoteSelection.menuBarController.undoAction.setDisable(true);
             System.out.println("disabling menu item");
         }
     }
@@ -111,10 +114,11 @@ public class UndoRedoActions {
         });
         
         if (redoableStates.isEmpty()){
-            tuneComposerNoteSelection.redoAction.setDisable(true);
+            tuneComposerNoteSelection.menuBarController.redoAction.setDisable(true);
         }
         
-        tuneComposerNoteSelection.undoAction.setDisable(false);
+       
+        tuneComposerNoteSelection.menuBarController.undoAction.setDisable(false);
         
         }
     }
