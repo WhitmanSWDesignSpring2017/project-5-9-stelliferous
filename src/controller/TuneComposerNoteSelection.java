@@ -75,7 +75,7 @@ public class TuneComposerNoteSelection {
     private final ArrayList<Double> originalWidth = new ArrayList<>();
     
     //to store a list of selected notes before selection rectangle is dragged
-    ArrayList<NoteRectangle> originallySelected = new ArrayList<>();
+    private ArrayList<NoteRectangle> originallySelected = new ArrayList<>();
 
     //create two new boolean value to determine whether the action is for stretch
     //and drag
@@ -97,7 +97,7 @@ public class TuneComposerNoteSelection {
         //connect TuneComposerNoteSelection to the gesture class
         menuBarController.init(this, undoRedoActions, redLineController);
         gestureModelController.init(this);
-        redLineController.init(this, menuBarController);
+        redLineController.init(this);
         undoRedoActions.undoableAction();
 
         redLineController.initializeRedLine();
@@ -314,7 +314,8 @@ public class TuneComposerNoteSelection {
         if (((xCoordinate != (int)e.getX()) 
             || (yCoordinate != (int)e.getY()))
             && !e.isShiftDown()){
-                if (((!selectedNotes.contains(originallySelected))||!originallySelected.contains(selectedNotes))&& (!selectedNotes.isEmpty())){
+                if (((!selectedNotes.contains(originallySelected))||
+                    !originallySelected.contains(selectedNotes))&& (!selectedNotes.isEmpty())){
                     undoRedoActions.undoableAction();
                 }
                 return;
