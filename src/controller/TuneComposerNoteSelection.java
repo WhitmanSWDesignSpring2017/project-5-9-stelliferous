@@ -746,6 +746,8 @@ public class TuneComposerNoteSelection {
         //clears all selected notes from the list of selected notes
         selectedNotes.clear();
         
+        undoRedoActions.undoableAction();
+        
         //reset gesture rectangles
         gestureModelController.resetGestureRectangle(selectedNotes);
     }
