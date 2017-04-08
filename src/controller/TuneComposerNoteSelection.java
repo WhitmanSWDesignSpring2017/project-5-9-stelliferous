@@ -33,9 +33,6 @@ public class TuneComposerNoteSelection {
     //makes available rectAnchorPane, which stores the rectangles
     @FXML AnchorPane rectAnchorPane;
     
-    //makes available redLine, which stores the line object.
-    @FXML Line redLine;
-    
     //makes available a toggle group of radio buttons where instruments can be selected
     @FXML ToggleGroup instrumentsRadioButton;
     
@@ -48,14 +45,15 @@ public class TuneComposerNoteSelection {
     //makes available the controller for menu items
     @FXML MenuBarController menuBarController = new MenuBarController();
 
+    //makes available the controller for red line
+    @FXML RedLineController redLineController = new RedLineController();
+        
+
     //creates a list to store created rectangles, that they may be later erased
     protected ArrayList<NoteRectangle> rectList = new ArrayList<>();
     
     //creates a list to store selected rectangles
     protected ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
-    
-    //constructs the TranslateTransition for use later in animation of redline
-    protected final TranslateTransition lineTransition = new TranslateTransition();
     
     //refers to the end of the current notes
     public double endcomp;
@@ -91,22 +89,19 @@ public class TuneComposerNoteSelection {
      * at the start and when the composition has finished playing
      */
     @FXML public void initialize() {
-        //insert, intialize, and govern visibility of the red line
-        redLine.setVisible(false);
-        lineTransition.setNode(redLine);
-        lineTransition.setFromX(0);
-        lineTransition.setInterpolator(Interpolator.LINEAR);
-        lineTransition.setOnFinished((e)->{
-            redLine.setVisible(false);
-        });
+        
         
         //set up the pane of instrument choices for the user
         setupInstruments();
         
         //connect TuneComposerNoteSelection to the gesture class
-        menuBarController.init(this, undoRedoActions);
+        menuBarController.init(this, undoRedoActions, redLineController);
         gestureModelController.init(this);
+        redLineController.init(this, menuBarController);
         undoRedoActions.undoableAction();
+
+        redLineController.initializeRedLine();
+
         menuBarController.everythingDisable();
 
     }
@@ -148,7 +143,7 @@ public class TuneComposerNoteSelection {
         
         //stops ongoing composition-playing events
         MidiComposition.stop();
-        redLine.setVisible(false);
+        redLineController.redLine.setVisible(false);
     }
     
     /**

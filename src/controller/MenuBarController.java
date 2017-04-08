@@ -24,6 +24,9 @@ public class MenuBarController  {
     //undo/redo controller addition
     private UndoRedoActions undoController;
     
+    //redLine controller addition
+    private RedLineController redLineController;
+    
     //makes available redo/undo menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
     @FXML MenuItem redoAction;
@@ -39,11 +42,12 @@ public class MenuBarController  {
      * class to work.
      * @param aThis the controller that is main
      * @param aThat
+     * @param aRed
      */
-    public void init(TuneComposerNoteSelection aThis, UndoRedoActions aThat) {
+    public void init(TuneComposerNoteSelection aThis, UndoRedoActions aThat, RedLineController aRed) {
         mainController = aThis; 
         undoController = aThat;
-        
+        redLineController = aRed;
     }
     
      /**
@@ -72,16 +76,16 @@ public class MenuBarController  {
         mainController.buildMidiComposition();
      
         //defines end of the composition for the red line to stop at
-        mainController.lineTransition.setToX(mainController.endcomp);
+        mainController.redLineController.lineTransition.setToX(mainController.endcomp);
         
         //convert endcomp from miliseconds to seconds and set it to be duration
-        mainController.lineTransition.setDuration(Duration.seconds(mainController.endcomp/100));
+        mainController.redLineController.lineTransition.setDuration(Duration.seconds(mainController.endcomp/100));
         
         //makes red line visible, starts MidiComposition notes, moves red line
-        mainController.redLine.setVisible(true);
-        mainController.redLine.toFront();
+        mainController.redLineController.redLine.setVisible(true);
+        mainController.redLineController.redLine.toFront();
         mainController.MidiComposition.play();
-        mainController.lineTransition.playFromStart();
+        mainController.redLineController.lineTransition.playFromStart();
     }
     
      /**
@@ -92,8 +96,8 @@ public class MenuBarController  {
     @FXML
     private void handleStopAction(ActionEvent e){
         mainController.MidiComposition.stop();
-        mainController.lineTransition.stop();
-        mainController.redLine.setVisible(false);
+        mainController.redLineController.lineTransition.stop();
+        mainController.redLineController.redLine.setVisible(false);
     }
     
     /**
@@ -104,7 +108,7 @@ public class MenuBarController  {
     private void handleSelectAllAction(ActionEvent e){
         //stops the current MidiComposition and red line animation
         mainController.MidiComposition.stop();
-        mainController.redLine.setVisible(false);
+        mainController.redLineController.redLine.setVisible(false);
         
         //clears currently selected notes, adds and 'highlights' all notes
         mainController.selectedNotes.clear();
@@ -122,7 +126,7 @@ public class MenuBarController  {
     private void handleDeleteAction(ActionEvent e){
         //stops the current MidiComposition and red line animation
         mainController.MidiComposition.stop();
-        mainController.redLine.setVisible(false);
+        mainController.redLineController.redLine.setVisible(false);
         
         //removes selected notes from Pane and from list of Rectangles
         mainController.selectedNotes.forEach((NoteRectangle e1) -> {

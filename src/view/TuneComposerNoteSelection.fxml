@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.control.ToggleGroup?>
 
 <BorderPane stylesheets="@TuneComposer.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TuneComposerNoteSelection">
@@ -22,8 +21,7 @@
                         <fx:include fx:id="gestureModel" source="GestureModel.fxml" />
                      </children>
                     </Pane>
-                  <Line fx:id="redLine" endX="0.0" endY="1280.0" startX="0.0" startY="0.0" styleClass="redLine" />
-                        
+                  <fx:include fx:id="redLine" source="redLine.fxml"/>
                </children>
             </AnchorPane>
             </content>
