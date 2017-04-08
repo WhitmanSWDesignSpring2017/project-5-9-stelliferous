@@ -11,20 +11,22 @@ import javafx.fxml.FXML;
 public class UndoRedoActions {
     protected GestureModelController gestureModelController;
     protected TuneComposerNoteSelection tuneComposerNoteSelection;
+    protected MenuBarController menuBarController;
 
     protected Stack<CompositionState> undoableStates = new Stack<>();
     protected Stack<CompositionState> redoableStates = new Stack<>();
 
     
     public UndoRedoActions(TuneComposerNoteSelection tuneComposerNoteSelection,
-                           GestureModelController gestureModelController) {
+                           GestureModelController gestureModelController,
+                           MenuBarController menuBarController) {
         this.tuneComposerNoteSelection = tuneComposerNoteSelection;
         this.gestureModelController = gestureModelController;
+        this.menuBarController = menuBarController;
     }
 
 
     protected void undoableAction(){
-        //tuneComposerNoteSelection.redoAction.setDisable(true);
         final CompositionState currentState = new CompositionState(tuneComposerNoteSelection.rectList, 
                                             tuneComposerNoteSelection.selectedNotes, 
                                             tuneComposerNoteSelection.gestureModelController.gestureNoteGroups);
@@ -38,7 +40,6 @@ public class UndoRedoActions {
     
     protected void undoAction(){
         if (undoableStates.size() > 1){
-
             CompositionState oldState = undoableStates.pop();
             redoableStates.push(oldState);
         
@@ -46,8 +47,6 @@ public class UndoRedoActions {
             deepClone(currentState);
         //  System.out.println("selected"+tuneComposerNoteSelection.selectedNotes);
             tuneComposerNoteSelection.checkButtons();
-        
-
         }
     }
     
@@ -100,10 +99,11 @@ public class UndoRedoActions {
 
         
         if (redoableStates.isEmpty()){
-            tuneComposerNoteSelection.redoAction.setDisable(true);
+            tuneComposerNoteSelection.menuBarController.redoAction.setDisable(true);
         }
         
-        tuneComposerNoteSelection.undoAction.setDisable(false);
+       
+        tuneComposerNoteSelection.menuBarController.undoAction.setDisable(false);
         
         if (tuneComposerNoteSelection.rectList.isEmpty()) {
             tuneComposerNoteSelection.selectAllAction.setDisable(true);

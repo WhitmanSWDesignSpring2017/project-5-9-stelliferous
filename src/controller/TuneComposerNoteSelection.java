@@ -2,17 +2,14 @@
 package controller;
 
 import javafx.fxml.FXML;
-import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
 import java.io.IOException;
 import static java.lang.Math.abs;
 import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
 import javafx.animation.TranslateTransition;
-import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.event.EventHandler;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
@@ -30,7 +27,7 @@ import javax.sound.midi.ShortMessage;
 public class TuneComposerNoteSelection {
     
     //creates a MidiPlayer object with 100 ticks per beat, 1 beat per second
-    private final MidiPlayer MidiComposition = new MidiPlayer(100,60);
+    protected final MidiPlayer MidiComposition = new MidiPlayer(100,60);
 
     //makes available rectAnchorPane, which stores the rectangles
     @FXML AnchorPane rectAnchorPane;
@@ -47,9 +44,8 @@ public class TuneComposerNoteSelection {
     //makes available the controller for gestures
     @FXML GestureModelController gestureModelController = new GestureModelController();
     
-    //makes available redo/undo menu items, that they may be enabled/disabled
-    @FXML MenuItem undoAction;
-    @FXML MenuItem redoAction;
+    //makes available the controller for menu items
+    @FXML MenuBarController menuBarController = new MenuBarController();
     
     @FXML MenuItem selectAllAction;
     @FXML MenuItem deleteAction;
@@ -61,7 +57,7 @@ public class TuneComposerNoteSelection {
     protected ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
     
     //constructs the TranslateTransition for use later in animation of redline
-    private final TranslateTransition lineTransition = new TranslateTransition();
+    protected final TranslateTransition lineTransition = new TranslateTransition();
     
     //refers to the end of the current notes
     public double endcomp;
@@ -90,7 +86,7 @@ public class TuneComposerNoteSelection {
     private boolean stretch;
     private boolean drag;
     
-    protected UndoRedoActions undoRedoActions = new UndoRedoActions(this, gestureModelController);
+    protected UndoRedoActions undoRedoActions = new UndoRedoActions(this, gestureModelController, menuBarController);
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
      * (with location, duration, and speed). Make the red line invisible 
@@ -110,13 +106,40 @@ public class TuneComposerNoteSelection {
         setupInstruments();
         
         //connect TuneComposerNoteSelection to the gesture class
+        menuBarController.init(this, undoRedoActions);
         gestureModelController.init(this);
         undoRedoActions.undoableAction();
-        undoAction.setDisable(true);
-        redoAction.setDisable(true);
-        selectAllAction.setDisable(true);
-        deleteAction.setDisable(true);
+        menuBarController.undoAction.setDisable(true);
+        menuBarController.redoAction.setDisable(true);
+        menuBarController.selectAllAction.setDisable(true);
+        menuBarController.deleteAction.setDisable(true);
+
     }
+    
+     /**
+     * Sets up the radio buttons for instrument selection.
+     */
+    private void setupInstruments() {
+        boolean firstInstrument = true;
+        for (Instrument inst : Instrument.values()) {
+            RadioButton rb = new RadioButton();
+            
+            //sets radio button text, color, toggle group
+            rb.setText(inst.getDisplayName());
+            rb.setTextFill(inst.getDisplayColor());
+            rb.setUserData(inst);
+            rb.setToggleGroup(instrumentsRadioButton);
+            
+            //adds radio buttons to the display
+            instrumentsVBox.getChildren().add(rb);
+            
+            //selects the 'Piano' instrument button as default
+            if (firstInstrument) {
+                instrumentsRadioButton.selectToggle(rb);
+                firstInstrument = false;
+            }
+        }
+    }  
     
     /**
      * resets the mouse coordinates to allow dragging functionality
@@ -176,10 +199,7 @@ public class TuneComposerNoteSelection {
         //selects all notes within the selection rectangle
         rectList.forEach((r) -> {
             setSelected(r);
-        });    
-        
-        
-        
+        });      
     }
 
     /**
@@ -653,50 +673,12 @@ public class TuneComposerNoteSelection {
             
         }
     };    
-        
-    /**
-     * Exits the program upon user clicking the typical 'close' 
-     * @param e on user click
-     */
-    @FXML
-    private void handleExitAction(ActionEvent e){
-        System.exit(0);
-    }
-                
-    /**
-     * Stops current playing composition, plays the composition from the
-     * start and resets the red line to be visible and play from start of animation.
-     * Note: alteration in MidiPlayer.java play() method makes playing from
-     * the start in this manner possible.
-     * @param e  on user click
-     */
-    @FXML
-    private void handlePlayAction(ActionEvent e){
-        //clears all current MidiPlayer events
-        endcomp = 0;
-        MidiComposition.clear();
-        
-        //build the MidiComposition based off of TuneRectangles
-        buildMidiComposition();
-     
-        //defines end of the composition for the red line to stop at
-        lineTransition.setToX(endcomp);
-        
-        //convert endcomp from miliseconds to seconds and set it to be duration
-        lineTransition.setDuration(Duration.seconds(endcomp/100));
-        
-        //makes red line visible, starts MidiComposition notes, moves red line
-        redLine.setVisible(true);
-        redLine.toFront();
-        MidiComposition.play();
-        lineTransition.playFromStart();
-    }
     
     /**
      * Adds MidiEvent notes to the composition based on NoteRectangles in 
      * RectList, changing instruments when interesting
      */
-    private void buildMidiComposition(){
+    protected void buildMidiComposition(){
         //initialize a NoteRectangle object
         NoteRectangle rect;
         
@@ -722,172 +704,7 @@ public class TuneComposerNoteSelection {
                     duration, curInstru.getChannel(), Constants.TRACK_INDEX);  
         }
     }
-    
-    /**
-     * Stops the player from playing, stops and 
-     * sets the red line to be invisible.
-     * @param e  on user click
-     */
-    @FXML
-    private void handleStopAction(ActionEvent e){
-        MidiComposition.stop();
-        lineTransition.stop();
-        redLine.setVisible(false);
-    }
-    
-    /**
-     * Select all the rectangle created on the pane
-     * @param e  on user click
-     */    
-    @FXML
-    private void handleSelectAllAction(ActionEvent e){
-        //stops the current MidiComposition and red line animation
-        MidiComposition.stop();
-        redLine.setVisible(false);
-        
-        //clears currently selected notes, adds and 'highlights' all notes
-        selectedNotes.clear();
-        for (int i =0; i<rectList.size(); i++){
-            selectedNotes.add(rectList.get(i));
-        }   
-        selectRed();
-        undoRedoActions.undoableAction();
-    }
-    
-    /**
-     * Delete all the selected rectangles
-     * @param e  on user click
-     */        
-    @FXML
-    private void handleDeleteAction(ActionEvent e){
-        //stops the current MidiComposition and red line animation
-        MidiComposition.stop();
-        redLine.setVisible(false);
-        
-        //removes selected notes from Pane and from list of Rectangles
-        selectedNotes.forEach((NoteRectangle e1) -> {
-            rectAnchorPane.getChildren().remove(e1.notes);
-            rectList.remove(e1);
-            for(int p = 0; p < gestureModelController.gestureNoteGroups.size();p++){
-                if(gestureModelController.gestureNoteGroups.get(p).contains(e1)){
-                    gestureModelController.gestureNoteGroups.remove(p);
-                }
-            }
-        });
-        //clears all selected notes from the list of selected notes
-        selectedNotes.clear();
-        
-        undoRedoActions.undoableAction();
-        
-        //reset gesture rectangles
-        gestureModelController.resetGestureRectangle(selectedNotes);
-        
-                        undoRedoActions.undoableAction();
-        /*
-        if (rectList.isEmpty()) {
-            selectAllAction.setDisable(true);
-        }
-                        */
-    }
-    
-    /**
-     * Creates a new gesture based on the selected note rectangles.
-     * @param e on grouping event
-     */
-    @FXML
-    private void handleGroupAction(ActionEvent e){
-        if (selectedNotes.isEmpty()) {
-            return;
-        }
-        ArrayList<NoteRectangle> newGesture = new ArrayList<>();
-        selectedNotes.forEach((e1)-> {
-            newGesture.add(e1);
-        });
-       
-        gestureModelController.gestureNoteGroups.add(0,newGesture);
-        undoRedoActions.undoableAction();
-        gestureModelController.resetGestureRectangle(selectedNotes);
-        
-
-    }
-    
-    /**
-     * Ungroups the selected gesture. Removes the gesture rectangle.
-     * @param e 
-     */
-    @FXML
-    private void handleUngroupAction(ActionEvent e){
-        gestureModelController.gestureNoteGroups.remove(selectedNotes);
-        selectRed();
-        gestureModelController.resetGestureRectangle(selectedNotes);
-        undoRedoActions.undoableAction();
-    }  
-    
-    
-    /**
-     * Identifies and copies a selected gesture when the user chooses
-     * Edit -> Copy Gesture. Only copies a single gesture and creates an 
-     * identical gesture 5px to the right. If multiple gestures are selected,
-     * the most recently created gesture is copied.
-    */
-    @FXML
-    private void handleCopyAGroupAction(ActionEvent e){
-        //iterates through selected notes to find a selected note in a gesture
-        for (int p = 0; p < selectedNotes.size(); p++){
-            for (int q = 0; q <gestureModelController.gestureNoteGroups.size(); q++){
-                if(gestureModelController.gestureNoteGroups.get(q).contains(selectedNotes.get(p))){
-                    copyGesture(gestureModelController.gestureNoteGroups.get(q));
-                    return;
-                }
-            
-            }
-        }
-    }
-    
-    /**
-     * Copies a gesture. Copies all notes in a given gesture, adds those notes
-     * to the composition and screen, and groups those notes into a gesture.
-     * @param gestureCopy 
-     */
-    private void copyGesture(ArrayList<NoteRectangle> gestureCopy){
-        //creates a new array to store notes 
-        ArrayList<NoteRectangle> newGesture = new ArrayList<>();
-        
-        for (int n = 0; n <gestureCopy.size(); n+=2){
-            //copy an individual note
-            NoteRectangle oldNote = gestureCopy.get(n);
-            NoteRectangle newRect = new NoteRectangle(oldNote.getX()+15, ((int) oldNote.getY()), 
-                                           oldNote.getInstrument(), oldNote.getWidth());
-            
-            //add mouse events to rectangle, add rectangle to screen
-            initializeNoteRectangle(newRect);
-            newGesture.add(newRect);
-        }
-        
-        //undoRedoActions.undoableAction();
-        //adds the newly created gesture, creates gesture boundary outline
-        gestureModelController.gestureNoteGroups.add(newGesture);
-        gestureModelController.updateGestureRectangle(newGesture, "dashedRed");  
-    }
-    
-    /**
-     * Ungroups all groups of NoteRectangles. Returns all notes to
-     * individual notes
-     * @param e 
-     */
-    @FXML
-    private void handleUngroupAllAction(ActionEvent e){
-        gestureModelController.gestureNoteGroups.clear();
-        gestureModelController.resetGestureRectangle(rectList);
-        undoRedoActions.undoableAction();
-    }
-    
-    @FXML
-    private void handleUndoAction(ActionEvent e){
-
-        undoRedoActions.undoAction();
-        
-    }
+}
     
     @FXML
     private void handleRedoAction(ActionEvent e){
@@ -946,3 +763,4 @@ public class TuneComposerNoteSelection {
         }
     }
 }
+
