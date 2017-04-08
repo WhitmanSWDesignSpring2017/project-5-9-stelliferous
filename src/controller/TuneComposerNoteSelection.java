@@ -336,7 +336,7 @@ public class TuneComposerNoteSelection {
      * Assigns mouse events to a given rectangle, such that the user
      * can select/drag/stretch the rectangle
      */
-    private void initializeNoteRectangle(NoteRectangle rect){
+    protected void initializeNoteRectangle(NoteRectangle rect){
         //assigns mouse-action events to the created NoteRectangle
         rect.setOnMousePressed(rectangleOnMousePressedEventHandler);
         rect.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);   
@@ -346,6 +346,7 @@ public class TuneComposerNoteSelection {
         rect.setOnMouseClicked((MouseEvent o) -> {
             onNoteClick(o, rect);
         });
+        selectRed();
     }
 
     /**
@@ -804,7 +805,6 @@ public class TuneComposerNoteSelection {
             
             }
         }
-        undoRedoActions.undoableAction();
     }
     
     /**
@@ -827,6 +827,7 @@ public class TuneComposerNoteSelection {
             newGesture.add(newRect);
         }
         
+        //undoRedoActions.undoableAction();
         //adds the newly created gesture, creates gesture boundary outline
         gestureModelController.gestureNoteGroups.add(newGesture);
         gestureModelController.updateGestureRectangle(newGesture, "dashedRed");  
@@ -858,10 +859,7 @@ public class TuneComposerNoteSelection {
         }
         */
         undoRedoActions.undoAction();
-        rectList.forEach((e1)-> {
-           initializeNoteRectangle(e1); 
-        });
-        selectRed();
+        
     }
     
     @FXML
