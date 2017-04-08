@@ -24,6 +24,13 @@ public class UndoRedoActions {
 
 
     protected void undoableAction(){
+                    System.out.println("Action Size: "+undoableStates.size());
+            tuneComposerNoteSelection.redoAction.setDisable(true);
+
+        if (undoableStates.size()>0){
+            tuneComposerNoteSelection.undoAction.setDisable(false);
+            System.out.println("enabled");
+        }
         final CompositionState currentState = new CompositionState(tuneComposerNoteSelection.rectList, 
                                             tuneComposerNoteSelection.selectedNotes, 
                                             tuneComposerNoteSelection.gestureModelController.gestureNoteGroups);
@@ -34,16 +41,8 @@ public class UndoRedoActions {
     }
     
     protected void undoAction(){
-        /*
-        System.out.println(tuneComposerNoteSelection.selectedNotes);
-        System.out.println(1);
-                System.out.println(tuneComposerNoteSelection.rectList);
-                System.out.println(2);
-
-                        System.out.println(gestureModelController.gestureNoteGroups);
-                        System.out.println(3);
-*/
         if (undoableStates.size() > 1){
+
             CompositionState oldState = undoableStates.pop();
             redoableStates.push(oldState);
         
@@ -51,6 +50,7 @@ public class UndoRedoActions {
             deepClone(currentState);
         //  System.out.println("selected"+tuneComposerNoteSelection.selectedNotes);
         
+
         }
     }
     
@@ -99,6 +99,21 @@ public class UndoRedoActions {
         tuneComposerNoteSelection.rectList.forEach((e1)-> {
            tuneComposerNoteSelection.initializeNoteRectangle(e1); 
         });
+
+        
+        if (redoableStates.isEmpty()){
+            tuneComposerNoteSelection.redoAction.setDisable(true);
+        }
+        
+        tuneComposerNoteSelection.undoAction.setDisable(false);
+        
+        if (tuneComposerNoteSelection.rectList.isEmpty()) {
+            tuneComposerNoteSelection.selectAllAction.setDisable(true);
+        }
+        if (tuneComposerNoteSelection.selectedNotes.isEmpty()) {
+            tuneComposerNoteSelection.deleteAction.setDisable(true);
+        }
+
         
     }
 }
