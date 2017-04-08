@@ -720,6 +720,7 @@ public class TuneComposerNoteSelection {
             selectedNotes.add(rectList.get(i));
         }   
         selectRed();
+        undoRedoActions.undoableAction();
     }
     
     /**
