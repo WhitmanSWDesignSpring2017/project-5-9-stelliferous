@@ -17,7 +17,7 @@ public class GestureModelController {
     @FXML Pane gestureRectPane;
     
     //creates a list to store all gesture/grouped notes
-    public  ArrayList<ArrayList<NoteRectangle>> gestureNoteGroups;        
+    public ArrayList<ArrayList<NoteRectangle>> gestureNoteGroups;        
 
     //the main controller of the program
     private TuneComposerNoteSelection mainController; 
@@ -27,6 +27,10 @@ public class GestureModelController {
      */
     public GestureModelController() {
         this.gestureNoteGroups = new ArrayList<>();
+    }
+    
+    public void removeEverything() {
+        gestureRectPane.getChildren().clear();
     }
     
     /**
@@ -89,7 +93,7 @@ public class GestureModelController {
     /**
      * Resets the rectangles surrounding gestures.
      */
-    void  resetGestureRectangle(ArrayList<NoteRectangle> selectedGesture){
+    void resetGestureRectangle(ArrayList<NoteRectangle> selectedGesture){
         //clears all gesture rectangles
         gestureRectPane.getChildren().clear();
         
@@ -101,7 +105,7 @@ public class GestureModelController {
         });
         
         for (int j=0 ;j < gestureNoteGroups.size();j++) {
-            ArrayList currentGesture = gestureNoteGroups.get(j);
+            ArrayList<NoteRectangle> currentGesture = gestureNoteGroups.get(j);
             boolean match = true;
             for (int i=0;i<currentGesture.size();i++) {
                 if (!copySelected.contains(currentGesture.get(i))) {

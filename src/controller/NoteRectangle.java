@@ -24,19 +24,22 @@ public class NoteRectangle {
     //the instrument of the NoteRectangle
     private final Instrument instrument;
     
+    private double width;
+    
     /**
      * Initializes a NoteRectangle object.
      * @param x x-coordinate of upper-left hand corner of the rectangle
      * @param y y-coordinate of upper-left hand corner of the rectangle
      * @param instrument instrument number of the rectangle
+     * @param width
      */        
-    public NoteRectangle(double x, int y, Instrument instrument) {
+    public NoteRectangle(double x, double y, Instrument instrument, double width) {
         //assigns user-given attribute values of instrument, channel, color
         this.instrument = instrument;
         this.channel = instrument.getChannel();        
-      
+        this.width = 100;
         //creates a new rectangle object for visual representation
-        notes = new Rectangle(x,y,100,10);
+        notes = new Rectangle(x,y,width,10);
         notes.getStyleClass().add("strokeRed");
         
         //creates a new rectangle object for visual representation
