@@ -245,9 +245,11 @@ public class TuneComposerNoteSelection {
             selectedNotes.clear();
         }  
         gestureModelController.resetGestureRectangle(selectedNotes);
+        /*
         if (selectedNotes.isEmpty()) {
             deleteAction.setDisable(true);
         }
+        */
     }
     
     /**
@@ -351,7 +353,7 @@ public class TuneComposerNoteSelection {
         //rectAnchorPane.removeAll();
         rectAnchorPane.getChildren().add(rect.notes);
         undoRedoActions.undoableAction();
-        selectAllAction.setDisable(false);
+        //selectAllAction.setDisable(false);
     }
     
     /**
@@ -439,9 +441,11 @@ public class TuneComposerNoteSelection {
                        rectInGesture.notes.getStyleClass().add("strokeBlack");
                        if(selectedNotes.contains(rectInGesture)) selectedNotes.remove(rectInGesture);
                    }
+                   /*
                    if (selectedNotes.isEmpty()) {
                        deleteAction.setDisable(true);
                    }
+                   */
                    break;
                 } 
             }
@@ -462,7 +466,7 @@ public class TuneComposerNoteSelection {
         });
         gestureModelController.resetGestureRectangle(selectedNotes);
         //undoRedoActions.undoableAction();
-        deleteAction.setDisable(false);
+        //deleteAction.setDisable(false);
     }
     
     /**
@@ -779,10 +783,11 @@ public class TuneComposerNoteSelection {
         gestureModelController.resetGestureRectangle(selectedNotes);
         
                         undoRedoActions.undoableAction();
-
+        /*
         if (rectList.isEmpty()) {
             selectAllAction.setDisable(true);
         }
+                        */
     }
     
     /**
@@ -916,5 +921,28 @@ public class TuneComposerNoteSelection {
                 firstInstrument = false;
             }
         }
-    }  
+    }
+    
+    protected void checkButtons() {
+        if (rectList.isEmpty()) {
+            selectAllAction.setDisable(true);
+        } else {
+            selectAllAction.setDisable(false);
+        }
+        if (selectedNotes.isEmpty()) {
+            deleteAction.setDisable(true);
+        } else {
+            deleteAction.setDisable(false);
+        }
+        if (undoRedoActions.undoableStates.size()> 1 ){
+            undoAction.setDisable(false);
+        } else {
+            undoAction.setDisable(true);
+        }
+        if (undoRedoActions.redoableStates.size()> 0 ){
+            redoAction.setDisable(false);
+        } else {
+            redoAction.setDisable(true);
+        }
+    }
 }
