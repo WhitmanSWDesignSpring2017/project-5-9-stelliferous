@@ -46,30 +46,6 @@ public class MenuBarController  {
         
     }
     
-        protected void checkButtons() {
-        if (mainController.rectList.isEmpty()) {
-            selectAllAction.setDisable(true);
-        } else {
-            selectAllAction.setDisable(false);
-        }
-        if (mainController.selectedNotes.isEmpty()) {
-            deleteAction.setDisable(true);
-        } else {
-            deleteAction.setDisable(false);
-        }
-        if (mainController.undoRedoActions.undoableStates.size()> 1 ){
-            undoAction.setDisable(false);
-        } else {
-            undoAction.setDisable(true);
-        }
-        if (mainController.undoRedoActions.redoableStates.size()> 0 ){
-            redoAction.setDisable(false);
-        } else {
-            redoAction.setDisable(true);
-        }
-    }
-    
-    
      /**
      * Exits the program upon user clicking the typical 'close' 
      * @param e on user click

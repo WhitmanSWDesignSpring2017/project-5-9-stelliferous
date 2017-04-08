@@ -699,6 +699,7 @@ public class TuneComposerNoteSelection {
                     duration, curInstru.getChannel(), Constants.TRACK_INDEX);  
         }
     }
+}
 
 
 
