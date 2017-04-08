@@ -35,6 +35,8 @@ public class MenuBarController  {
     @FXML MenuItem groupAction;
     @FXML MenuItem ungroupAction;
     @FXML MenuItem ungroupAllAction;
+    @FXML MenuItem playButton;
+    @FXML MenuItem stopButton;
 
 
     /**
@@ -86,6 +88,7 @@ public class MenuBarController  {
         mainController.redLineController.redLine.toFront();
         mainController.MidiComposition.play();
         mainController.redLineController.lineTransition.playFromStart();
+        stopButton.setDisable(false);
     }
     
      /**
@@ -95,9 +98,8 @@ public class MenuBarController  {
      */
     @FXML
     private void handleStopAction(ActionEvent e){
-        mainController.MidiComposition.stop();
-        mainController.redLineController.lineTransition.stop();
-        mainController.redLineController.redLine.setVisible(false);
+        stopTune();
+        stopButton.setDisable(true);
     }
     
     /**
@@ -107,8 +109,7 @@ public class MenuBarController  {
     @FXML
     private void handleSelectAllAction(ActionEvent e){
         //stops the current MidiComposition and red line animation
-        mainController.MidiComposition.stop();
-        mainController.redLineController.redLine.setVisible(false);
+        stopTune();
         
         //clears currently selected notes, adds and 'highlights' all notes
         mainController.selectedNotes.clear();
@@ -125,8 +126,7 @@ public class MenuBarController  {
     @FXML
     private void handleDeleteAction(ActionEvent e){
         //stops the current MidiComposition and red line animation
-        mainController.MidiComposition.stop();
-        mainController.redLineController.redLine.setVisible(false);
+        stopTune();
         
         //removes selected notes from Pane and from list of Rectangles
         mainController.selectedNotes.forEach((NoteRectangle e1) -> {
@@ -154,6 +154,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleGroupAction(ActionEvent e){
+        stopTune();
         if (mainController.selectedNotes.isEmpty()) {
             return;
         }
@@ -175,6 +176,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleUngroupAction(ActionEvent e){
+        stopTune();
         mainController.gestureModelController.gestureNoteGroups.remove(mainController.selectedNotes);
         mainController.selectRed();
         mainController.gestureModelController.resetGestureRectangle(mainController.selectedNotes);
@@ -189,6 +191,7 @@ public class MenuBarController  {
      */
     private void copyGesture(ArrayList<NoteRectangle> gestureCopy){
         //creates a new array to store notes 
+        stopTune();
         ArrayList<NoteRectangle> newGesture = new ArrayList<>();
         
         for (int n = 0; n <gestureCopy.size(); n+=2){
@@ -214,6 +217,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleUngroupAllAction(ActionEvent e){
+        stopTune();
         mainController.gestureModelController.gestureNoteGroups.clear();
         mainController.gestureModelController.resetGestureRectangle(mainController.rectList);
         mainController.undoRedoActions.undoableAction();
@@ -221,7 +225,7 @@ public class MenuBarController  {
     
     @FXML
     private void handleUndoAction(ActionEvent e){
-
+        stopTune();
         mainController.undoRedoActions.undoAction();
         mainController.rectList.forEach((e1)-> {
            mainController.initializeNoteRectangle(e1); 
@@ -231,6 +235,7 @@ public class MenuBarController  {
     
     @FXML
     private void handleRedoAction(ActionEvent e){
+        stopTune();
         mainController.undoRedoActions.redoAction();
         mainController.rectList.forEach((e1)-> {
            mainController.initializeNoteRectangle(e1); 
@@ -241,8 +246,10 @@ public class MenuBarController  {
     protected void checkButtons() {
         if (mainController.rectList.isEmpty()) {
             selectAllAction.setDisable(true);
+            playButton.setDisable(true);
         } else {
             selectAllAction.setDisable(false);
+            playButton.setDisable(false);
         }
         if (mainController.selectedNotes.isEmpty()) {
             deleteAction.setDisable(true);
@@ -281,5 +288,13 @@ public class MenuBarController  {
         undoAction.setDisable(true);
         ungroupAction.setDisable(true);
         ungroupAllAction.setDisable(true);
+        playButton.setDisable(true);
+        stopButton.setDisable(true);
+    }
+    
+    private void stopTune() {
+        mainController.MidiComposition.stop();
+        mainController.redLineController.lineTransition.stop();
+        mainController.redLineController.redLine.setVisible(false);
     }
 }
