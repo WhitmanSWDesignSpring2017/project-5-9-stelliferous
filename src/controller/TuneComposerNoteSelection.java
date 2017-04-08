@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
 import javafx.animation.TranslateTransition;
 import javafx.animation.Interpolator;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -46,9 +47,7 @@ public class TuneComposerNoteSelection {
     
     //makes available the controller for menu items
     @FXML MenuBarController menuBarController = new MenuBarController();
-    
 
-    
     //creates a list to store created rectangles, that they may be later erased
     protected ArrayList<NoteRectangle> rectList = new ArrayList<>();
     
@@ -108,10 +107,7 @@ public class TuneComposerNoteSelection {
         menuBarController.init(this, undoRedoActions);
         gestureModelController.init(this);
         undoRedoActions.undoableAction();
-        menuBarController.undoAction.setDisable(true);
-        menuBarController.redoAction.setDisable(true);
-        menuBarController.selectAllAction.setDisable(true);
-        menuBarController.deleteAction.setDisable(true);
+        menuBarController.everythingDisable();
 
     }
     
@@ -703,12 +699,6 @@ public class TuneComposerNoteSelection {
                     duration, curInstru.getChannel(), Constants.TRACK_INDEX);  
         }
     }
-}
-    
-
-
-
-    
 
 
 

@@ -29,6 +29,10 @@ public class MenuBarController  {
     @FXML MenuItem redoAction;
     @FXML MenuItem selectAllAction;
     @FXML MenuItem deleteAction;
+    @FXML MenuItem groupAction;
+    @FXML MenuItem ungroupAction;
+    @FXML MenuItem ungroupAllAction;
+
 
     /**
      * Initializes the main controller. This method was necessary for the 
@@ -252,5 +256,50 @@ public class MenuBarController  {
            mainController.initializeNoteRectangle(e1); 
         });
         mainController.selectRed();
+    }
+    
+    protected void checkButtons() {
+        if (mainController.rectList.isEmpty()) {
+            selectAllAction.setDisable(true);
+        } else {
+            selectAllAction.setDisable(false);
+        }
+        if (mainController.selectedNotes.isEmpty()) {
+            deleteAction.setDisable(true);
+            groupAction.setDisable(true);
+        } else {
+            deleteAction.setDisable(false);
+            groupAction.setDisable(false);
+        }
+        if (mainController.undoRedoActions.undoableStates.size()> 1 ){
+            undoAction.setDisable(false);
+        } else {
+            undoAction.setDisable(true);
+        }
+        if (mainController.undoRedoActions.redoableStates.size()> 0 ){
+            redoAction.setDisable(false);
+        } else {
+            redoAction.setDisable(true);
+        }
+        if (mainController.gestureModelController.gestureNoteGroups.isEmpty()) {
+            ungroupAllAction.setDisable(true);
+        } else {
+            ungroupAllAction.setDisable(false);
+        }
+        if (mainController.gestureModelController.gestureNoteGroups.contains(mainController.selectedNotes)){
+            ungroupAction.setDisable(false);
+        } else {
+            ungroupAction.setDisable(true);
+        }
+    }
+    
+    protected void everythingDisable() {
+        redoAction.setDisable(true);
+        selectAllAction.setDisable(true);
+        deleteAction.setDisable(true);
+        groupAction.setDisable(true);
+        undoAction.setDisable(true);
+        ungroupAction.setDisable(true);
+        ungroupAllAction.setDisable(true);
     }
 }
