@@ -19,7 +19,7 @@ import javafx.util.Duration;
 public class MenuBarController  {
     
     //the main controller of the program
-    private TuneComposerNoteSelection mainController; 
+    private TuneController mainController; 
     
     //undo/redo controller addition
     private UndoRedoActions undoController;
@@ -44,7 +44,7 @@ public class MenuBarController  {
      * @param aThat
      * @param aRed
      */
-    public void init(TuneComposerNoteSelection aThis, UndoRedoActions aThat, RedLineController aRed) {
+    public void init(TuneController aThis, UndoRedoActions aThat, RedLineController aRed) {
         mainController = aThis; 
         undoController = aThat;
         redLineController = aRed;

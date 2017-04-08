@@ -18,7 +18,7 @@ import javafx.scene.shape.Line;
 public class RedLineController {
 
     //the main controller of the program
-    private TuneComposerNoteSelection mainController; 
+    private TuneController mainController; 
     
     private MenuBarController menuBarController;
     
@@ -34,12 +34,12 @@ public class RedLineController {
      * class to work.
      * @param aThis the controller that is main
      */
-    public void init(TuneComposerNoteSelection aThis, MenuBarController aThat) {
+    public void init(TuneController aThis, MenuBarController aThat) {
         mainController = aThis; 
         menuBarController= aThat;
     }
     
-        /**
+     /**
      * Initializes red line's location, movement, visibility
      */
     protected void initializeRedLine(){
