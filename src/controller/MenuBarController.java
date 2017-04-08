@@ -41,7 +41,7 @@ public class MenuBarController  {
     }
     
     
-        /**
+     /**
      * Exits the program upon user clicking the typical 'close' 
      * @param e on user click
      */
@@ -79,7 +79,7 @@ public class MenuBarController  {
         mainController.lineTransition.playFromStart();
     }
     
-        /**
+     /**
      * Stops the player from playing, stops and 
      * sets the red line to be invisible.
      * @param e  on user click
@@ -172,27 +172,6 @@ public class MenuBarController  {
         mainController.undoRedoActions.undoableAction();
     }  
     
-    
-    /**
-     * Identifies and copies a selected gesture when the user chooses
-     * Edit -> Copy Gesture. Only copies a single gesture and creates an 
-     * identical gesture 5px to the right. If multiple gestures are selected,
-     * the most recently created gesture is copied.
-    */
-    @FXML
-    private void handleCopyAGroupAction(ActionEvent e){
-        //iterates through selected notes to find a selected note in a gesture
-        for (int p = 0; p < mainController.selectedNotes.size(); p++){
-            for (int q = 0; q <mainController.gestureModelController.gestureNoteGroups.size(); q++){
-                if(mainController.gestureModelController.gestureNoteGroups.get(q).contains(mainController.selectedNotes.get(p))){
-                    copyGesture(mainController.gestureModelController.gestureNoteGroups.get(q));
-                    return;
-                }
-            
-            }
-        }
-        mainController.undoRedoActions.undoableAction();
-    }
     
     /**
      * Copies a gesture. Copies all notes in a given gesture, adds those notes

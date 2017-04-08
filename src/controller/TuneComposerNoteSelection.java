@@ -10,7 +10,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.animation.TranslateTransition;
 import javafx.animation.Interpolator;
 import javafx.event.EventHandler;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
@@ -111,6 +110,31 @@ public class TuneComposerNoteSelection {
         menuBarController.redoAction.setDisable(true);
     }
     
+     /**
+     * Sets up the radio buttons for instrument selection.
+     */
+    private void setupInstruments() {
+        boolean firstInstrument = true;
+        for (Instrument inst : Instrument.values()) {
+            RadioButton rb = new RadioButton();
+            
+            //sets radio button text, color, toggle group
+            rb.setText(inst.getDisplayName());
+            rb.setTextFill(inst.getDisplayColor());
+            rb.setUserData(inst);
+            rb.setToggleGroup(instrumentsRadioButton);
+            
+            //adds radio buttons to the display
+            instrumentsVBox.getChildren().add(rb);
+            
+            //selects the 'Piano' instrument button as default
+            if (firstInstrument) {
+                instrumentsRadioButton.selectToggle(rb);
+                firstInstrument = false;
+            }
+        }
+    }  
+    
     /**
      * resets the mouse coordinates to allow dragging functionality
      * stops ongoing composition-playing events
@@ -169,10 +193,7 @@ public class TuneComposerNoteSelection {
         //selects all notes within the selection rectangle
         rectList.forEach((r) -> {
             setSelected(r);
-        });    
-        
-        
-        
+        });      
     }
 
     /**
@@ -662,31 +683,4 @@ public class TuneComposerNoteSelection {
                     duration, curInstru.getChannel(), Constants.TRACK_INDEX);  
         }
     }
-    
-
-
-    /**
-     * Sets up the radio buttons for instrument selection.
-     */
-    private void setupInstruments() {
-        boolean firstInstrument = true;
-        for (Instrument inst : Instrument.values()) {
-            RadioButton rb = new RadioButton();
-            
-            //sets radio button text, color, toggle group
-            rb.setText(inst.getDisplayName());
-            rb.setTextFill(inst.getDisplayColor());
-            rb.setUserData(inst);
-            rb.setToggleGroup(instrumentsRadioButton);
-            
-            //adds radio buttons to the display
-            instrumentsVBox.getChildren().add(rb);
-            
-            //selects the 'Piano' instrument button as default
-            if (firstInstrument) {
-                instrumentsRadioButton.selectToggle(rb);
-                firstInstrument = false;
-            }
-        }
-    }  
 }
