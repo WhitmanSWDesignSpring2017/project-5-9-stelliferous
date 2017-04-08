@@ -47,7 +47,7 @@ public class TuneComposerNoteSelection {
     
     //makes available the controller for menu items
     @FXML MenuBarController menuBarController = new MenuBarController();
-    
+
     //creates a list to store created rectangles, that they may be later erased
     protected ArrayList<NoteRectangle> rectList = new ArrayList<>();
     
@@ -700,21 +700,5 @@ public class TuneComposerNoteSelection {
         }
     }
 
-    
-    @FXML
-    private void handleRedoAction(ActionEvent e){
-        undoRedoActions.redoAction();
-        rectList.forEach((e1)-> {
-           initializeNoteRectangle(e1); 
-        });
-        selectRed();
-    }
 
-    /**
-     * Sets up the radio buttons for instrument selection.
-     */
-    
-    
-
-}
 
