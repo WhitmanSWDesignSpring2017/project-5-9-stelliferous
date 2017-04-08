@@ -24,6 +24,13 @@ public class UndoRedoActions {
 
 
     protected void undoableAction(){
+                    System.out.println("Action Size: "+undoableStates.size());
+            tuneComposerNoteSelection.redoAction.setDisable(true);
+
+        if (undoableStates.size()>0){
+            tuneComposerNoteSelection.undoAction.setDisable(false);
+            System.out.println("enabled");
+        }
         final CompositionState currentState = new CompositionState(tuneComposerNoteSelection.rectList, 
                                             tuneComposerNoteSelection.selectedNotes, 
                                             tuneComposerNoteSelection.gestureModelController.gestureNoteGroups);
@@ -33,25 +40,17 @@ public class UndoRedoActions {
     }
     
     protected void undoAction(){
-        /*
-        System.out.println(tuneComposerNoteSelection.selectedNotes);
-        System.out.println(1);
-                System.out.println(tuneComposerNoteSelection.rectList);
-                System.out.println(2);
-
-                        System.out.println(gestureModelController.gestureNoteGroups);
-                        System.out.println(3);
-*/
         if (undoableStates.size() > 1){
+        tuneComposerNoteSelection.redoAction.setDisable(false);
         CompositionState oldState = undoableStates.pop();
         redoableStates.push(oldState);
         
-        System.out.println("Oldstate"+oldState+oldState.rectListState);
         tuneComposerNoteSelection.gestureModelController.removeEverything();
         CompositionState currentState = undoableStates.peek();
         tuneComposerNoteSelection.rectList.forEach((e1)->{
             tuneComposerNoteSelection.rectAnchorPane.getChildren().remove(e1.notes);
         });
+        
         tuneComposerNoteSelection.rectList.clear();
         currentState.rectListState.forEach((e1)-> {
             tuneComposerNoteSelection.rectList.add(e1);
@@ -65,7 +64,6 @@ public class UndoRedoActions {
             tuneComposerNoteSelection.selectedNotes.add(e1);
         });
         
-      //  System.out.println("selected"+tuneComposerNoteSelection.selectedNotes);
         
         tuneComposerNoteSelection.gestureModelController.gestureNoteGroups.clear();
         currentState.gestureState.forEach((e1)->{
@@ -75,8 +73,18 @@ public class UndoRedoActions {
             });
             tuneComposerNoteSelection.gestureModelController.gestureNoteGroups.add(newArray);
         });
-     //   System.out.println("gesturegroup"+tuneComposerNoteSelection.gestureModelController.gestureNoteGroups);
-        
+                    System.out.println("Undoing Size: "+undoableStates.size());
+
+        } //else {
+        if (undoableStates.size() == 1 ){
+            tuneComposerNoteSelection.undoAction.setDisable(true);
+            System.out.println("disabling menu item");
+        }
+        if (tuneComposerNoteSelection.rectList.isEmpty()) {
+            tuneComposerNoteSelection.selectAllAction.setDisable(true);
+        }
+        if (tuneComposerNoteSelection.selectedNotes.isEmpty()) {
+            tuneComposerNoteSelection.deleteAction.setDisable(true);
         }
     }
     
@@ -108,9 +116,19 @@ public class UndoRedoActions {
             });
             tuneComposerNoteSelection.gestureModelController.gestureNoteGroups.add(newArray);
         });
-        System.out.println("rectList"+tuneComposerNoteSelection.rectList);
-        System.out.println("selected"+tuneComposerNoteSelection.selectedNotes);
-        System.out.println("gesturegroup"+tuneComposerNoteSelection.gestureModelController.gestureNoteGroups);
+        
+        if (redoableStates.isEmpty()){
+            tuneComposerNoteSelection.redoAction.setDisable(true);
+        }
+        
+        tuneComposerNoteSelection.undoAction.setDisable(false);
+        
+        if (tuneComposerNoteSelection.rectList.isEmpty()) {
+            tuneComposerNoteSelection.selectAllAction.setDisable(true);
+        }
+        if (tuneComposerNoteSelection.selectedNotes.isEmpty()) {
+            tuneComposerNoteSelection.deleteAction.setDisable(true);
+        }
         
         }
     }

@@ -47,6 +47,13 @@ public class TuneComposerNoteSelection {
     //makes available the controller for gestures
     @FXML GestureModelController gestureModelController = new GestureModelController();
     
+    //makes available redo/undo menu items, that they may be enabled/disabled
+    @FXML MenuItem undoAction;
+    @FXML MenuItem redoAction;
+    
+    @FXML MenuItem selectAllAction;
+    @FXML MenuItem deleteAction;
+    
     //creates a list to store created rectangles, that they may be later erased
     protected ArrayList<NoteRectangle> rectList = new ArrayList<>();
     
@@ -75,6 +82,9 @@ public class TuneComposerNoteSelection {
     //create a new ArrayList to store original widths of selected rectangles
     private final ArrayList<Double> originalWidth = new ArrayList<>();
     
+    //to store a list of selected notes before selection rectangle is dragged
+    ArrayList<NoteRectangle> originallySelected = new ArrayList<>();
+
     //create two new boolean value to determine whether the action is for stretch
     //and drag
     private boolean stretch;
@@ -102,7 +112,10 @@ public class TuneComposerNoteSelection {
         //connect TuneComposerNoteSelection to the gesture class
         gestureModelController.init(this);
         undoRedoActions.undoableAction();
-        System.out.println("ini");
+        undoAction.setDisable(true);
+        redoAction.setDisable(true);
+        selectAllAction.setDisable(true);
+        deleteAction.setDisable(true);
     }
     
     /**
@@ -157,11 +170,16 @@ public class TuneComposerNoteSelection {
         
         //if control is not down, deselect all other notes
         deselectNotes(w);
+        
+        originallySelected.addAll(selectedNotes);
 
         //selects all notes within the selection rectangle
         rectList.forEach((r) -> {
             setSelected(r);
-        });     
+        });    
+        
+        
+        
     }
 
     /**
@@ -199,6 +217,7 @@ public class TuneComposerNoteSelection {
                 selectNotes.forEach((e1)-> {
                     selectedNotes.add(e1);
                 });
+
             } else {
                 selectedNotes.add(r);
             }
@@ -206,7 +225,6 @@ public class TuneComposerNoteSelection {
             //style selected notes
             selectRed();
             
-            //undoRedoActions.undoableAction();
         }     
     }
     
@@ -225,9 +243,11 @@ public class TuneComposerNoteSelection {
             
             //clear the list of selected notes
             selectedNotes.clear();
-            //undoRedoActions.undoableAction();
         }  
         gestureModelController.resetGestureRectangle(selectedNotes);
+        if (selectedNotes.isEmpty()) {
+            deleteAction.setDisable(true);
+        }
     }
     
     /**
@@ -282,7 +302,9 @@ public class TuneComposerNoteSelection {
         if (((xCoordinate != (int)e.getX()) 
             || (yCoordinate != (int)e.getY()))
             && !e.isShiftDown()){
-                undoRedoActions.undoableAction();
+                if (((!selectedNotes.contains(originallySelected))||!originallySelected.contains(selectedNotes))&& (!selectedNotes.isEmpty())){
+                    undoRedoActions.undoableAction();
+                }
                 return;
         } 
         
@@ -329,7 +351,7 @@ public class TuneComposerNoteSelection {
         //rectAnchorPane.removeAll();
         rectAnchorPane.getChildren().add(rect.notes);
         undoRedoActions.undoableAction();
-        
+        selectAllAction.setDisable(false);
     }
     
     /**
@@ -416,6 +438,9 @@ public class TuneComposerNoteSelection {
                        rectInGesture.notes.getStyleClass().add("strokeBlack");
                        if(selectedNotes.contains(rectInGesture)) selectedNotes.remove(rectInGesture);
                    }
+                   if (selectedNotes.isEmpty()) {
+                       deleteAction.setDisable(true);
+                   }
                    break;
                 } 
             }
@@ -436,6 +461,7 @@ public class TuneComposerNoteSelection {
         });
         gestureModelController.resetGestureRectangle(selectedNotes);
         //undoRedoActions.undoableAction();
+        deleteAction.setDisable(false);
     }
     
     /**
@@ -750,6 +776,12 @@ public class TuneComposerNoteSelection {
         
         //reset gesture rectangles
         gestureModelController.resetGestureRectangle(selectedNotes);
+        
+                        undoRedoActions.undoableAction();
+
+        if (rectList.isEmpty()) {
+            selectAllAction.setDisable(true);
+        }
     }
     
     /**
@@ -844,19 +876,9 @@ public class TuneComposerNoteSelection {
         undoRedoActions.undoableAction();
     }
     
-    @FXML MenuItem undoAction;
-    
     @FXML
     private void handleUndoAction(ActionEvent e){
-        //CompositionState state = undoRedoActions.getUndoableState();
-        //restoreState(state);
-        /*
-        if (undoRedoActions.undoableStates.isEmpty()) {
-            undoAction.setDisable(true);
-        } else {
-            undoAction.setDisable(false);
-        }
-        */
+
         undoRedoActions.undoAction();
         rectList.forEach((e1)-> {
            initializeNoteRectangle(e1); 
@@ -872,19 +894,7 @@ public class TuneComposerNoteSelection {
         });
         selectRed();
     }
-    /*
-    private void restoreState(CompositionState state){
-        gestureModelController.gestureNoteGroups = state.getGesturesState();
-        rectList = state.getRectListState();
-        selectedNotes = state.getSelectedNotesState();
-        gestureModelController.resetGestureRectangle(rectList);
-        for (int i = 0; i < gestureModelController.gestureNoteGroups.size(); i++){
-            ArrayList<NoteRectangle> gesture = gestureModelController.gestureNoteGroups.get(i);
-            gestureModelController.updateGestureRectangle(gesture, "red");
-        }
-    }
-    */
-    
+
     /**
      * Sets up the radio buttons for instrument selection.
      */

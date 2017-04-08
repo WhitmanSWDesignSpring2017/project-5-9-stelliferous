@@ -44,10 +44,10 @@
             <Menu text="Edit">
               <items> 
                 <MenuItem fx:id="undoAction" accelerator="Shortcut+Z" onAction="#handleUndoAction" text="Undo" /> 
-                <MenuItem accelerator="Shortcut+Y" onAction="#handleRedoAction" text="Redo" />
+                <MenuItem fx:id="redoAction" accelerator="Shortcut+Y" onAction="#handleRedoAction" text="Redo" /> 
                   <SeparatorMenuItem mnemonicParsing="false" />
-                <MenuItem accelerator="Shortcut+A" onAction="#handleSelectAllAction" text="Select All" />
-                <MenuItem accelerator="backspace" onAction="#handleDeleteAction" text="Delete" />
+                <MenuItem fx:id="selectAllAction" accelerator="Shortcut+A" onAction="#handleSelectAllAction" text="Select All" />
+                <MenuItem fx:id="deleteAction" accelerator="backspace" onAction="#handleDeleteAction" text="Delete" />
                 <MenuItem accelerator="Shortcut+G" onAction="#handleGroupAction" text="Group" />
                 <MenuItem accelerator="Shortcut+U" onAction="#handleUngroupAction" text="Ungroup" />  
                 <MenuItem accelerator="Shortcut+C" onAction="#handleCopyAGroupAction" text="Copy Group" />  
