@@ -598,9 +598,6 @@ public class TuneComposerNoteSelection {
         */             
         @Override
         public void handle(MouseEvent t) {
-            //reset the stretching operation to false
-            stretch = false;
-            drag = false;
             
             //clear all three arraylists, resets coordinates
             originalX.clear();
@@ -616,7 +613,13 @@ public class TuneComposerNoteSelection {
                 selectedNotes.get(i).setY(finalY);   
             }
             gestureModelController.resetGestureRectangle(selectedNotes);
-            undoRedoActions.undoableAction();
+            if (drag || stretch ) {
+                undoRedoActions.undoableAction();
+            }
+            //reset the stretching operation to false
+            stretch = false;
+            drag = false;
+            
         }
     };    
         

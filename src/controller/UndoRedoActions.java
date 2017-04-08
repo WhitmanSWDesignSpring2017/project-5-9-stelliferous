@@ -28,7 +28,7 @@ public class UndoRedoActions {
                                             tuneComposerNoteSelection.selectedNotes, 
                                             tuneComposerNoteSelection.gestureModelController.gestureNoteGroups);
         undoableStates.push(currentState);
-        System.out.println("currentundoStack"+undoableStates);
+        System.out.println("undoecurrentundoStack"+undoableStates);
         redoableStates.removeAllElements();
     }
     
