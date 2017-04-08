@@ -49,7 +49,7 @@
                 <MenuItem accelerator="Shortcut+C" onAction="#handleCopyAGroupAction" text="Copy Group" />  
                 <MenuItem accelerator="Shortcut+N" onAction="#handleUngroupAllAction" text="Ungroup All" /> 
                 <MenuItem fx:id="undoAction" accelerator="Shortcut+Z" onAction="#handleUndoAction" text="Undo" /> 
-                <MenuItem accelerator="Shortcut+Y" onAction="#handleRedoAction" text="Redo" /> 
+                <MenuItem fx:id="redoAction" accelerator="Shortcut+Y" onAction="#handleRedoAction" text="Redo" /> 
               </items>
             </Menu>
                 <Menu text="Action">
