@@ -34,7 +34,7 @@ public class UndoRedoActions {
         deepClone(currentState);
         System.out.println("undoecurrentundoStack"+undoableStates);
         redoableStates.removeAllElements();
-        tuneComposerNoteSelection.checkButtons();
+        tuneComposerNoteSelection.menuBarController.checkButtons();
     }
     
     
@@ -46,7 +46,7 @@ public class UndoRedoActions {
             CompositionState currentState = undoableStates.peek();
             deepClone(currentState);
         //  System.out.println("selected"+tuneComposerNoteSelection.selectedNotes);
-            tuneComposerNoteSelection.checkButtons();
+            tuneComposerNoteSelection.menuBarController.checkButtons();
         }
     }
     
@@ -60,7 +60,7 @@ public class UndoRedoActions {
             System.out.println("rectList"+tuneComposerNoteSelection.rectList);
             System.out.println("selected"+tuneComposerNoteSelection.selectedNotes);
             System.out.println("gesturegroup"+tuneComposerNoteSelection.gestureModelController.gestureNoteGroups);
-            tuneComposerNoteSelection.checkButtons();
+            tuneComposerNoteSelection.menuBarController.checkButtons();
         
         }
     }
@@ -106,10 +106,10 @@ public class UndoRedoActions {
         tuneComposerNoteSelection.menuBarController.undoAction.setDisable(false);
         
         if (tuneComposerNoteSelection.rectList.isEmpty()) {
-            tuneComposerNoteSelection.selectAllAction.setDisable(true);
+            tuneComposerNoteSelection.menuBarController.selectAllAction.setDisable(true);
         }
         if (tuneComposerNoteSelection.selectedNotes.isEmpty()) {
-            tuneComposerNoteSelection.deleteAction.setDisable(true);
+            tuneComposerNoteSelection.menuBarController.deleteAction.setDisable(true);
         }
 
         

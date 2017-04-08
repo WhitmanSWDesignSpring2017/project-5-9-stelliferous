@@ -19,8 +19,8 @@
                 </Menu>
             <Menu text="Edit">
               <items>
-                <MenuItem accelerator="Shortcut+A" onAction="#handleSelectAllAction" text="Select All" />
-                <MenuItem accelerator="backspace" onAction="#handleDeleteAction" text="Delete" />
+                <MenuItem fx:id ="selectAllAction" accelerator="Shortcut+A" onAction="#handleSelectAllAction" text="Select All" />
+                <MenuItem fx:id = "deleteAction" accelerator="backspace" onAction="#handleDeleteAction" text="Delete" />
                 <MenuItem accelerator="Shortcut+G" onAction="#handleGroupAction" text="Group" />
                 <MenuItem accelerator="Shortcut+U" onAction="#handleUngroupAction" text="Ungroup" />  
                 <MenuItem accelerator="Shortcut+N" onAction="#handleUngroupAllAction" text="Ungroup All" /> 

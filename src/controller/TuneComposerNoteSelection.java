@@ -47,8 +47,7 @@ public class TuneComposerNoteSelection {
     //makes available the controller for menu items
     @FXML MenuBarController menuBarController = new MenuBarController();
     
-    @FXML MenuItem selectAllAction;
-    @FXML MenuItem deleteAction;
+
     
     //creates a list to store created rectangles, that they may be later erased
     protected ArrayList<NoteRectangle> rectList = new ArrayList<>();
@@ -706,61 +705,10 @@ public class TuneComposerNoteSelection {
     }
 }
     
-    @FXML
-    private void handleRedoAction(ActionEvent e){
-        undoRedoActions.redoAction();
-        rectList.forEach((e1)-> {
-           initializeNoteRectangle(e1); 
-        });
-        selectRed();
-    }
 
-    /**
-     * Sets up the radio buttons for instrument selection.
-     */
-    private void setupInstruments() {
-        boolean firstInstrument = true;
-        for (Instrument inst : Instrument.values()) {
-            RadioButton rb = new RadioButton();
-            
-            //sets radio button text, color, toggle group
-            rb.setText(inst.getDisplayName());
-            rb.setTextFill(inst.getDisplayColor());
-            rb.setUserData(inst);
-            rb.setToggleGroup(instrumentsRadioButton);
-            
-            //adds radio buttons to the display
-            instrumentsVBox.getChildren().add(rb);
-            
-            //selects the 'Piano' instrument button as default
-            if (firstInstrument) {
-                instrumentsRadioButton.selectToggle(rb);
-                firstInstrument = false;
-            }
-        }
-    }
+
+
     
-    protected void checkButtons() {
-        if (rectList.isEmpty()) {
-            selectAllAction.setDisable(true);
-        } else {
-            selectAllAction.setDisable(false);
-        }
-        if (selectedNotes.isEmpty()) {
-            deleteAction.setDisable(true);
-        } else {
-            deleteAction.setDisable(false);
-        }
-        if (undoRedoActions.undoableStates.size()> 1 ){
-            undoAction.setDisable(false);
-        } else {
-            undoAction.setDisable(true);
-        }
-        if (undoRedoActions.redoableStates.size()> 0 ){
-            redoAction.setDisable(false);
-        } else {
-            redoAction.setDisable(true);
-        }
-    }
-}
+
+
 
