@@ -25,6 +25,7 @@ public class UndoRedoActions {
 
     protected void undoableAction(){
                     System.out.println("Action Size: "+undoableStates.size());
+            tuneComposerNoteSelection.redoAction.setDisable(true);
 
         if (undoableStates.size()>0){
             tuneComposerNoteSelection.undoAction.setDisable(false);
