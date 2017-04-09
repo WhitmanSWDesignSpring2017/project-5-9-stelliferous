@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="rectAnchorPane" prefHeight="2000.0" prefWidth="1280.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CompositionController">
+    
+               <children>           
+                    <Pane fx:id="compositionPane" onMouseDragged="#paneMouseDrag" onMousePressed="#paneMouseClick" onMouseReleased="#paneMouseRelease">
+                     <children>
+                        <fx:include fx:id="tuneComposerBackground" source="TuneComposerBackground.fxml" /> 
+                        <fx:include fx:id="gestureModel" source="GestureModel.fxml" />
+                     </children>
+                    </Pane>
+                  <fx:include fx:id="redLine" source="redLine.fxml"/>
+               </children>
+       
+</AnchorPane>
