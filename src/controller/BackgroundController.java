@@ -15,7 +15,7 @@ import javafx.scene.layout.AnchorPane;
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
  */
-public class TuneComposerBackgroundController implements Initializable{
+public class BackgroundController implements Initializable{
     
     //makes available the canvas from TuneComposerBackground
     @FXML Canvas linesCanvas;
