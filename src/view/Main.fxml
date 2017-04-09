@@ -14,7 +14,7 @@
          <content>
             <AnchorPane layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1280.0" prefWidth="2000.0">
                <children>      
-                    <Pane>
+                    <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1280.0" prefWidth="2000.0">
                      <children>
                         <fx:include fx:id="background" source="Background.fxml" /> 
                         <fx:include fx:id="gestureModel" source="GestureModel.fxml" />
