@@ -5,7 +5,9 @@
  */
 package controller;
 
-import static controller.Instrument.PIANO;
+import static controller.Instrument.MARIMBA;
+import static controller.Instrument.BOTTLE;
+import static controller.Instrument.WOOD_BLOCK;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,6 +32,9 @@ public class MenuBarController  {
     
     //compositionPane controller addition
     private CompositionController compositionController;
+    
+    //stores saved beats as a listarray of NoteRectangles
+    private ArrayList<NoteRectangle> savedBeat = new ArrayList<>();
     
     //makes available redo/undo menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
@@ -251,12 +256,40 @@ public class MenuBarController  {
     
     @FXML
     private void handleBeat1Action(ActionEvent e){
-        for (int b= 0; b < 2000; b += 120){
-            NoteRectangle beat = new NoteRectangle(b, 100*Constants.HEIGHTRECTANGLE, PIANO ,100);
-            mainController.compositionController.initializeNoteRectangle(beat);
-            mainController.compositionController.rectAnchorPane.getChildren().add(beat.notes);  
-            mainController.compositionController.rectList.add(beat);
+        for (int b= 0; b < 2000; b += 40){
+            mainController.compositionController.createBeat(WOOD_BLOCK,b,50,25);
+            mainController.compositionController.createBeat(WOOD_BLOCK,b+20,60,25);
+            if(b%160==0){
+                mainController.compositionController.createBeat(MARIMBA, b, 45, 50);
+            }
         }
+        checkButtons();
+    }
+    
+    @FXML
+    private void handleBeat2Action(ActionEvent e){
+        for (int b = 0; b < 2000; b += 50){
+            mainController.compositionController.createBeat(MARIMBA, b, 80, 40);
+            mainController.compositionController.createBeat(BOTTLE, b+38, 65, 15);
+        }
+        checkButtons();
+    }
+    
+    @FXML
+    private void handleSaveAsBeat(ActionEvent e){
+        mainController.compositionController.selectedNotes.forEach((note)->{
+            savedBeat.add(new NoteRectangle(
+                    note.getX(), note.getY(),  note.getInstrument(), note.getWidth()));
+        });
+    }
+    
+    @FXML
+    private void handleSavedBeat(ActionEvent e){
+        savedBeat.forEach((note)->{
+            mainController.compositionController.createBeat(
+                    note.getInstrument(), note.getX(), note.getY()/10, note.getWidth());
+        });
+        checkButtons();
     }
     
     protected void checkButtons() {

@@ -5,19 +5,15 @@
  */
 package controller;
 
+import static controller.Instrument.PIANO;
 import java.io.IOException;
 import static java.lang.Math.abs;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -92,7 +88,6 @@ public class CompositionController {
     @FXML 
     private void paneMouseClick(MouseEvent e) throws IOException{
         reset_coordinates(e);
-        System.out.println("clicked");
     };
     
     /**
@@ -500,7 +495,6 @@ public class CompositionController {
         */ 
         @Override
         public void handle(MouseEvent t) {
-            System.out.println("draggedrect");
             //calculate the distance that mouse moved both in x and y axis
             double offsetX = t.getX() - xCoordinate;
             double offsetY = t.getY() - yCoordinate;
@@ -514,7 +508,6 @@ public class CompositionController {
                 if (stretch) {
                     doStretchAction(i, offsetX);                        
                 } else if (drag){
-                    System.out.println(i);
                     doDragAction(i, offsetX, offsetY);
                 } else {
                     return;
@@ -612,5 +605,12 @@ public class CompositionController {
         mainController = aThis;
         this.rectList = aThis.rectList;
         this.selectedNotes = aThis.selectedNotes;
+    }
+
+    void createBeat(Instrument instrument, double beatX, double beatY, double beatW) {
+        NoteRectangle beat = new NoteRectangle(beatX, beatY*Constants.HEIGHTRECTANGLE, instrument ,beatW);
+        initializeNoteRectangle(beat);
+        rectAnchorPane.getChildren().add(beat.notes);  
+        rectList.add(beat);
     }
 }

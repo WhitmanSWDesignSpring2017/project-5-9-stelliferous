@@ -34,7 +34,10 @@
                 </Menu>
                 <Menu text="Beats">
                     <items>
-                        <MenuItem fx:id = "bigBeat" onAction = "#handleBeat1Action" text = "Add A Beat" />
+                        <MenuItem onAction = "#handleBeat1Action" text = "Beat 1" />
+                        <MenuItem onAction = "#handleBeat2Action" text = "Beat 2" />
+                        <MenuItem onAction = "#handleSaveAsBeat" text = "Save As Beat" />
+                        <MenuItem onAction = "#handleSavedBeat" text = "Insert Saved Beat"/>
                     </items>
                 </Menu>
             </menus>
