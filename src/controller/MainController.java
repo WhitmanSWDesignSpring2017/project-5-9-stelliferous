@@ -52,11 +52,12 @@ public class MainController {
     
     //refers to the end of the current notes
     public double endcomp;
-
+ /*
     //stores x and y coordinates, to later calculate distance moved by the mouse
     private double yCoordinate = 0;
     private double xCoordinate = 0;
     
+   
     //creates a rectangle that users will control by dragging
     private final Rectangle selectRect = new Rectangle();
     
@@ -76,6 +77,7 @@ public class MainController {
     //and drag
     private boolean stretch;
     private boolean drag;
+    */
     
     protected UndoRedoActions undoRedoActions = new UndoRedoActions(this);
     /**

@@ -31,16 +31,6 @@ public class CompositionController {
     @FXML AnchorPane rectAnchorPane;
     
     private MainController mainController;
-    
-    //makes available the controller for gestures
-    @FXML GestureModelController gestureModelController = new GestureModelController();
-    
-    //makes available the controller for menu items
-    @FXML MenuBarController menuBarController = new MenuBarController();
-
-    //makes available the controller for red line
-    @FXML RedLineController redLineController = new RedLineController();
-        
 
     //creates a list to store created rectangles, that they may be later erased
     protected ArrayList<NoteRectangle> rectList = new ArrayList<>();
@@ -89,7 +79,7 @@ public class CompositionController {
         
         //stops ongoing composition-playing events
         mainController.MidiComposition.stop();
-        redLineController.redLine.setVisible(false);
+        mainController.redLineController.redLine.setVisible(false);
     }
     
     /**
@@ -101,6 +91,7 @@ public class CompositionController {
     @FXML 
     private void paneMouseClick(MouseEvent e) throws IOException{
         reset_coordinates(e);
+        System.out.println("clicked");
     };
     
     /**
@@ -158,8 +149,8 @@ public class CompositionController {
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
             
             //check to see if selected notes are in any gestures
-            for (int i=0 ;i < gestureModelController.gestureNoteGroups.size();i++) {
-                ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
+            for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
+                ArrayList currentGesture = mainController.gestureModelController.gestureNoteGroups.get(i);
                 if (currentGesture.contains(r)) {
                     //if selected notes are in gestures, update gestures
                     //and take note of other notes in those gestures
@@ -200,7 +191,7 @@ public class CompositionController {
             //clear the list of selected notes
             selectedNotes.clear();
         }  
-        gestureModelController.resetGestureRectangle(selectedNotes);
+        mainController.gestureModelController.resetGestureRectangle(selectedNotes);
         /*
         if (selectedNotes.isEmpty()) {
             deleteAction.setDisable(true);
@@ -306,7 +297,7 @@ public class CompositionController {
                 
         rectList.add(rect);
         selectedNotes.add(rect);
-        gestureModelController.resetGestureRectangle(selectedNotes);
+        mainController.gestureModelController.resetGestureRectangle(selectedNotes);
         //rectAnchorPane.removeAll();
         rectAnchorPane.getChildren().add(rect.notes);
         mainController.undoRedoActions.undoableAction();
@@ -354,8 +345,8 @@ public class CompositionController {
             
             //if a selected note is in a gesture, select other notes in that gesture
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
-            for (int i=0 ;i < gestureModelController.gestureNoteGroups.size();i++) {
-                ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
+            for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
+                ArrayList currentGesture = mainController.gestureModelController.gestureNoteGroups.get(i);
                 if (currentGesture.contains(rect)) {
                     selectNotes = currentGesture;
                     selectRed();
@@ -389,8 +380,8 @@ public class CompositionController {
             rect.notes.getStyleClass().add("strokeBlack");
             selectedNotes.remove(rect);
             //if the note is in a gesture, deselect that gesture
-            for (int i=0 ;i < gestureModelController.gestureNoteGroups.size();i++) {
-                ArrayList currentGesture = gestureModelController.gestureNoteGroups.get(i);
+            for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
+                ArrayList currentGesture = mainController.gestureModelController.gestureNoteGroups.get(i);
                 if (currentGesture.contains(rect)) {
                    for(int u=0; u < currentGesture.size();u++){
                        NoteRectangle rectInGesture = (NoteRectangle) currentGesture.get(u);
@@ -421,7 +412,7 @@ public class CompositionController {
            e1.clearStroke();
            e1.notes.getStyleClass().add("strokeRed");
         });
-        gestureModelController.resetGestureRectangle(selectedNotes);
+        mainController.gestureModelController.resetGestureRectangle(selectedNotes);
         //undoRedoActions.undoableAction();
         //deleteAction.setDisable(false);
     }
@@ -528,7 +519,7 @@ public class CompositionController {
                     return;
                 }
                 
-                gestureModelController.resetGestureRectangle(selectedNotes);
+                mainController.gestureModelController.resetGestureRectangle(selectedNotes);
                 //undoRedoActions.undoableAction();
             }
                             
@@ -600,7 +591,7 @@ public class CompositionController {
                         *Constants.HEIGHTRECTANGLE;
                 selectedNotes.get(i).setY(finalY);   
             }
-            gestureModelController.resetGestureRectangle(selectedNotes);
+            mainController.gestureModelController.resetGestureRectangle(selectedNotes);
             if (drag || stretch ) {
                 mainController.undoRedoActions.undoableAction();
             }
