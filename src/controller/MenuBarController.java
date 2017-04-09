@@ -116,7 +116,7 @@ public class MenuBarController  {
         for (int i =0; i<mainController.rectList.size(); i++){
             mainController.selectedNotes.add(mainController.rectList.get(i));
         }   
-        mainController.selectRed();
+        mainController.compositionController.selectRed();
     }
     
     /**
@@ -130,7 +130,7 @@ public class MenuBarController  {
         
         //removes selected notes from Pane and from list of Rectangles
         mainController.selectedNotes.forEach((NoteRectangle e1) -> {
-            mainController.rectAnchorPane.getChildren().remove(e1.notes);
+            mainController.compositionController.rectAnchorPane.getChildren().remove(e1.notes);
             mainController.rectList.remove(e1);
             for(int p = 0; p < mainController.gestureModelController.gestureNoteGroups.size();p++){
                 if(mainController.gestureModelController.gestureNoteGroups.get(p).contains(e1)){
@@ -178,7 +178,7 @@ public class MenuBarController  {
     private void handleUngroupAction(ActionEvent e){
         stopTune();
         mainController.gestureModelController.gestureNoteGroups.remove(mainController.selectedNotes);
-        mainController.selectRed();
+        mainController.compositionController.selectRed();
         mainController.gestureModelController.resetGestureRectangle(mainController.selectedNotes);
         mainController.undoRedoActions.undoableAction();
     }  
@@ -201,7 +201,7 @@ public class MenuBarController  {
                                            oldNote.getInstrument(), oldNote.getWidth());
             
             //add mouse events to rectangle, add rectangle to screen
-        mainController.initializeNoteRectangle(newRect);
+        mainController.compositionController.initializeNoteRectangle(newRect);
             newGesture.add(newRect);
         }
         
@@ -228,9 +228,9 @@ public class MenuBarController  {
         stopTune();
         mainController.undoRedoActions.undoAction();
         mainController.rectList.forEach((e1)-> {
-           mainController.initializeNoteRectangle(e1); 
+           mainController.compositionController.initializeNoteRectangle(e1); 
         });
-        mainController.selectRed();
+        mainController.compositionController.selectRed();
     }
     
     @FXML
@@ -238,9 +238,9 @@ public class MenuBarController  {
         stopTune();
         mainController.undoRedoActions.redoAction();
         mainController.rectList.forEach((e1)-> {
-           mainController.initializeNoteRectangle(e1); 
+           mainController.compositionController.initializeNoteRectangle(e1); 
         });
-        mainController.selectRed();
+        mainController.compositionController.selectRed();
     }
     
     protected void checkButtons() {
