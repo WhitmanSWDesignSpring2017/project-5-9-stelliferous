@@ -92,7 +92,7 @@ public class MainController {
         setupInstruments();
         
         //connect MainController to the gesture class
-        menuBarController.init(this, undoRedoActions, redLineController);
+        menuBarController.init(this, undoRedoActions, redLineController, compositionController);
         gestureModelController.init(this);
         redLineController.init(this);
         compositionController.init(this);

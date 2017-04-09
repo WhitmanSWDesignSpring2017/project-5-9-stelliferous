@@ -32,6 +32,11 @@
                         <MenuItem fx:id="stopButton" accelerator="Shortcut+S" onAction="#handleStopAction" text="Stop" />
                     </items>
                 </Menu>
+                <Menu text="Beats">
+                    <items>
+                        <MenuItem fx:id = "bigBeat" onAction = "#handleBeat1Action" text = "Add A Beat" />
+                    </items>
+                </Menu>
             </menus>
          <opaqueInsets>
             <Insets />

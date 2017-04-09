@@ -5,6 +5,7 @@
  */
 package controller;
 
+import static controller.Instrument.PIANO;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,6 +28,9 @@ public class MenuBarController  {
     //redLine controller addition
     private RedLineController redLineController;
     
+    //compositionPane controller addition
+    private CompositionController compositionController;
+    
     //makes available redo/undo menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
     @FXML MenuItem redoAction;
@@ -45,11 +49,13 @@ public class MenuBarController  {
      * @param aThis the controller that is main
      * @param aThat
      * @param aRed
+     * @param aComp
      */
-    public void init(MainController aThis, UndoRedoActions aThat, RedLineController aRed) {
+    public void init(MainController aThis, UndoRedoActions aThat, RedLineController aRed, CompositionController aComp) {
         mainController = aThis; 
         undoController = aThat;
         redLineController = aRed;
+        compositionController = aComp;
     }
     
      /**
@@ -241,6 +247,16 @@ public class MenuBarController  {
            mainController.compositionController.initializeNoteRectangle(e1); 
         });
         mainController.compositionController.selectRed();
+    }
+    
+    @FXML
+    private void handleBeat1Action(ActionEvent e){
+        for (int b= 0; b < 2000; b += 120){
+            NoteRectangle beat = new NoteRectangle(b, 100*Constants.HEIGHTRECTANGLE, PIANO ,100);
+            mainController.compositionController.initializeNoteRectangle(beat);
+            mainController.compositionController.rectAnchorPane.getChildren().add(beat.notes);  
+            mainController.compositionController.rectList.add(beat);
+        }
     }
     
     protected void checkButtons() {
