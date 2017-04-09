@@ -7,15 +7,11 @@ import java.io.IOException;
 import static java.lang.Math.abs;
 import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
-import javafx.animation.TranslateTransition;
-import javafx.animation.Interpolator;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
 import javax.sound.midi.ShortMessage;
 
 
@@ -25,7 +21,7 @@ import javax.sound.midi.ShortMessage;
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
  */
-public class TuneComposerNoteSelection {
+public class MainController {
     
     //creates a MidiPlayer object with 100 ticks per beat, 1 beat per second
     protected final MidiPlayer MidiComposition = new MidiPlayer(100,60);
@@ -94,7 +90,7 @@ public class TuneComposerNoteSelection {
         //set up the pane of instrument choices for the user
         setupInstruments();
         
-        //connect TuneComposerNoteSelection to the gesture class
+        //connect MainController to the gesture class
         menuBarController.init(this, undoRedoActions, redLineController);
         gestureModelController.init(this);
         redLineController.init(this);

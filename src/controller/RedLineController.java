@@ -19,7 +19,7 @@ import javafx.scene.shape.Line;
 public class RedLineController {
 
     //the main controller of the program
-    private TuneComposerNoteSelection mainController;
+    private MainController mainController;
     
     //constructs the TranslateTransition for use later in animation of redline
     protected final TranslateTransition lineTransition = new TranslateTransition();
@@ -33,7 +33,7 @@ public class RedLineController {
      * class to work.
      * @param aThis the controller that is main
      */
-    public void init(TuneComposerNoteSelection aThis) {
+    public void init(MainController aThis) {
         mainController = aThis; 
       
     }

@@ -9,14 +9,14 @@ import java.util.Stack;
  */
 public class UndoRedoActions {
     protected GestureModelController gestureModelController;
-    protected TuneComposerNoteSelection tuneComposerNoteSelection;
+    protected MainController tuneComposerNoteSelection;
     protected MenuBarController menuBarController;
 
     protected Stack<CompositionState> undoableStates = new Stack<>();
     protected Stack<CompositionState> redoableStates = new Stack<>();
 
     
-    public UndoRedoActions(TuneComposerNoteSelection tuneComposerNoteSelection,
+    public UndoRedoActions(MainController tuneComposerNoteSelection,
                            GestureModelController gestureModelController,
                            MenuBarController menuBarController) {
         this.tuneComposerNoteSelection = tuneComposerNoteSelection;

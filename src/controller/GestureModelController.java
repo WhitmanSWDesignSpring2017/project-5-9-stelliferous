@@ -20,7 +20,7 @@ public class GestureModelController {
     public ArrayList<ArrayList<NoteRectangle>> gestureNoteGroups;        
 
     //the main controller of the program
-    private TuneComposerNoteSelection mainController; 
+    private MainController mainController; 
  
     /**
      * Creates a group of notes for a gesture.
@@ -131,7 +131,7 @@ public class GestureModelController {
      * class to work.
      * @param aThis the controller that is main
      */
-    public void init(TuneComposerNoteSelection aThis) {
+    public void init(MainController aThis) {
         mainController = aThis; 
     }
     
