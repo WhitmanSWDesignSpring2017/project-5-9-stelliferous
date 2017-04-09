@@ -82,6 +82,7 @@ public class CompositionController {
         mainController.redLineController.redLine.setVisible(false);
     }
     
+    @FXML AnchorPane compositionPane;
     /**
      * Simply resets coordinates of current mouse position when the pane's
      * clicked.
@@ -126,7 +127,7 @@ public class CompositionController {
         //selects all notes within the selection rectangle
         rectList.forEach((r) -> {
             setSelected(r);
-        });      
+        });    
     }
 
     /**
@@ -413,8 +414,6 @@ public class CompositionController {
            e1.notes.getStyleClass().add("strokeRed");
         });
         mainController.gestureModelController.resetGestureRectangle(selectedNotes);
-        //undoRedoActions.undoableAction();
-        //deleteAction.setDisable(false);
     }
     
     /**
@@ -501,6 +500,7 @@ public class CompositionController {
         */ 
         @Override
         public void handle(MouseEvent t) {
+            System.out.println("draggedrect");
             //calculate the distance that mouse moved both in x and y axis
             double offsetX = t.getX() - xCoordinate;
             double offsetY = t.getY() - yCoordinate;
@@ -514,6 +514,7 @@ public class CompositionController {
                 if (stretch) {
                     doStretchAction(i, offsetX);                        
                 } else if (drag){
+                    System.out.println(i);
                     doDragAction(i, offsetX, offsetY);
                 } else {
                     return;
@@ -608,6 +609,8 @@ public class CompositionController {
      * @param aThis the controller that is main
      */
     public void init(MainController aThis) {
-        mainController = aThis; 
+        mainController = aThis;
+        this.rectList = aThis.rectList;
+        this.selectedNotes = aThis.selectedNotes;
     }
 }
