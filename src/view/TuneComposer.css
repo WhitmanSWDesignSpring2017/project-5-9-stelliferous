@@ -7,30 +7,31 @@
     -fx-background-color: lavender;
 }
 
+/* Determines the stroke for unselected rectangles. */
+.strokeBlack{
+    -fx-stroke: black;   
+    -fx-stroke-width: 2px;
+}
+
 /* Determines the stroke if the rectangle is selected. */
 .strokeRed{
     -fx-stroke: crimson;
     -fx-stroke-width: 2px;
 }
 
-/* Determines the dashed line for gestures. */
+/* Determines the dashed line for unselected gestures. */
 .dashedBlack{
     -fx-stroke: black;
     -fx-fill: transparent;
     -fx-stroke-dash-array: 8 3 8 3;
 }
 
+/* Determines the dashed line for selected gestures. */
 .dashedRed{
     -fx-stroke: red;
     -fx-fill: transparent;
     -fx-stroke-dash-array: 8 3 8 3;
 
-}
-
-/* Determines the stroke for unselected rectangles. */
-.strokeBlack{
-    -fx-stroke: black;   
-    -fx-stroke-width: 2px;
 }
 
 /* Determines the outline of the selection rectangle. */
