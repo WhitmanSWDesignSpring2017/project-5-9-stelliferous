@@ -7,11 +7,12 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.ToggleGroup?>
+
 <BorderPane stylesheets="@TuneComposer.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
    <center>
       <ScrollPane fx:id="compositionScroll" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1280.0" prefWidth="2000.0">
          <content>
-            <AnchorPane layoutY="30.0" prefHeight="1280.0" prefWidth="2000.0">
+            <AnchorPane layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1280.0" prefWidth="2000.0">
                <children>      
                     <Pane>
                      <children>

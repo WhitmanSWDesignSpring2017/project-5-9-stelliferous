@@ -4,8 +4,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane fx:id = "backgroundPane"  prefHeight="1280.0" prefWidth="2000.0" styleClass="compositionPane" stylesheets="@TuneComposer.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BackgroundController">
+<AnchorPane fx:controller="controller.BackgroundController"
+            fx:id = "backgroundPane"  
+            maxHeight="-Infinity"
+            maxWidth="-Infinity"
+            prefHeight="1280.0" 
+            prefWidth="2000.0" 
+            styleClass="compositionPane" 
+            stylesheets="@TuneComposer.css" 
+            xmlns="http://javafx.com/javafx/8.0.111" 
+            xmlns:fx="http://javafx.com/fxml/1" >
    <children>
-      <Canvas fx:id="linesCanvas" height="1280.0" width="2000.0" />
+      <Canvas fx:id="linesCanvas" 
+              height="1280.0" 
+              width="2000.0" />
    </children>
 </AnchorPane>
