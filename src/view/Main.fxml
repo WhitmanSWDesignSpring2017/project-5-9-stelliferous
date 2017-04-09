@@ -15,7 +15,7 @@
                <children>      
                     <Pane>
                      <children>
-                        <fx:include fx:id="tuneComposerBackground" source="TuneComposerBackground.fxml" /> 
+                        <fx:include fx:id="background" source="Background.fxml" /> 
                         <fx:include fx:id="gestureModel" source="GestureModel.fxml" />
                         <fx:include fx:id="composition" source="Composition.fxml" />
                      </children>
