@@ -41,6 +41,8 @@ public class MenuBarController  {
     @FXML MenuItem ungroupAllAction;
     @FXML MenuItem playButton;
     @FXML MenuItem stopButton;
+    @FXML MenuItem markButton;
+    @FXML MenuItem revertButton;
 
 
     /**
@@ -66,7 +68,17 @@ public class MenuBarController  {
     private void handleExitAction(ActionEvent e){
         System.exit(0);
     }
-                
+    
+    @FXML
+    private void handleRevertAction(ActionEvent e) {
+        mainController.undoRedoActions.revertMark();
+    }
+    
+    @FXML
+    private void handleMarkAction(ActionEvent e){
+        mainController.undoRedoActions.initializeMarkState();
+    }
+    
     /**
      * Stops current playing composition, plays the composition from the
      * start and resets the red line to be visible and play from start of animation.

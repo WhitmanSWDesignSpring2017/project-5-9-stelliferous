@@ -14,6 +14,7 @@ public class UndoRedoActions {
 
     protected Stack<CompositionState> undoableStates = new Stack<>();
     protected Stack<CompositionState> redoableStates = new Stack<>();
+    protected Stack<CompositionState> markedStates = new Stack<>();
 
     
     public UndoRedoActions(MainController tuneComposerNoteSelection
@@ -25,6 +26,21 @@ public class UndoRedoActions {
         //this.menuBarController = menuBarController;
     }
 
+    protected void initializeMarkState() {
+        markedStates.clear();
+        undoableStates.forEach((e1)-> {
+            markedStates.add(e1);
+        });
+    }
+    
+    protected void revertMark() {
+        undoableStates.clear();
+        redoableStates.clear();
+        markedStates.forEach((e1)-> {
+           undoableStates.add(e1); 
+        });
+        deepClone(undoableStates.peek());
+    }
 
     protected void undoableAction(){
         final CompositionState currentState = new CompositionState(MainController.rectList, 
