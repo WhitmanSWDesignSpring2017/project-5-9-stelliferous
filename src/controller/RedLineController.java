@@ -5,7 +5,6 @@
  */
 package controller;
 
-import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
@@ -13,7 +12,10 @@ import javafx.scene.shape.Line;
 
 /**
  * FXML Controller class
- *
+ * Controls the movement and appearance of a red line that designates
+ * time into the composition.
+ * @see RedLine.fxml which allows the visual of the red line to be on-screen
+ * @see mainController which connects the red line to the composition playing
  * @author mauletj
  */
 public class RedLineController {
@@ -38,8 +40,8 @@ public class RedLineController {
       
     }
     
-        /**
-     * Initializes red line's location, movement, visibility
+     /**
+     * Initializes red line's location, movement, constant speed, visibility.
      */
     protected void initializeRedLine(){
         //insert, intialize, and govern visibility of the red line
@@ -52,5 +54,4 @@ public class RedLineController {
             mainController.menuBarController.stopButton.setDisable(true);
         });
     }
-    
 }
