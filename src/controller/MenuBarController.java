@@ -69,11 +69,19 @@ public class MenuBarController  {
         System.exit(0);
     }
     
+    /**
+     * Revert to the marked states
+     * @param e on user click 
+     */
     @FXML
     private void handleRevertAction(ActionEvent e) {
         mainController.undoRedoActions.revertMark();
     }
     
+    /**
+     * Marked the current state and allow user to go back to this particular state
+     * @param e on user click
+     */
     @FXML
     private void handleMarkAction(ActionEvent e){
         mainController.undoRedoActions.initializeMarkState();
