@@ -23,12 +23,15 @@ public class GestureModelController {
     private MainController mainController; 
  
     /**
-     * Creates a group of notes for a gesture.
+     * Creates space for a group of notes (a gesture).
      */
     public GestureModelController() {
         this.gestureNoteGroups = new ArrayList<>();
     }
     
+    /**
+     * Removes all gesture rectangles from the gesture pane.
+     */
     public void removeEverything() {
         gestureRectPane.getChildren().clear();
     }
@@ -91,14 +94,13 @@ public class GestureModelController {
     }
     
     /**
-     * Resets the rectangles surrounding gestures.
+     * Resets the rectangle surrounding a gesture.
      */
     void resetGestureRectangle(ArrayList<NoteRectangle> selectedGesture){
         //clears all gesture rectangles
         gestureRectPane.getChildren().clear();
         
         //recalculates
-        
         ArrayList<NoteRectangle> copySelected = new ArrayList();
         selectedGesture.forEach((e1)->{
             copySelected.add(e1);
