@@ -117,6 +117,7 @@ public class MenuBarController  {
             mainController.selectedNotes.add(mainController.rectList.get(i));
         }   
         mainController.compositionController.selectRed();
+        mainController.undoRedoActions.undoableAction();
     }
     
     /**
@@ -237,6 +238,7 @@ public class MenuBarController  {
             mainController.compositionController.rectAnchorPane.getChildren().add(beat.notes);  
             mainController.compositionController.rectList.add(beat);
         }
+        mainController.undoRedoActions.undoableAction();
     }
     
     /**
