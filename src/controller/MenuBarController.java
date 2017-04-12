@@ -22,15 +22,6 @@ public class MenuBarController  {
     //the main controller of the program
     private MainController mainController; 
     
-    //undo/redo controller addition
-    private UndoRedoActions undoController;
-    
-    //redLine controller addition
-    private RedLineController redLineController;
-    
-    //compositionPane controller addition
-    private CompositionController compositionController;
-    
     //makes available redo/undo menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
     @FXML MenuItem redoAction;
@@ -49,15 +40,9 @@ public class MenuBarController  {
      * Initializes the main controller. This method was necessary for the 
      * class to work.
      * @param aThis the controller that is main
-     * @param aThat
-     * @param aRed
-     * @param aComp
      */
-    public void init(MainController aThis, UndoRedoActions aThat, RedLineController aRed, CompositionController aComp) {
+    public void init(MainController aThis) {
         mainController = aThis; 
-        undoController = aThat;
-        redLineController = aRed;
-        compositionController = aComp;
     }
     
      /**

@@ -69,7 +69,7 @@ public class CompositionController {
      * stops ongoing composition-playing events
      * @param m a mouse event (on-click, on-release, on-drag, etc)
      */
-    void reset_coordinates(MouseEvent m){
+    private void reset_coordinates(MouseEvent m){
         //resets mouse coordinates
         xCoordinate = (int)m.getX();
         yCoordinate = (int)m.getY();

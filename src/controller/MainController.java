@@ -51,33 +51,7 @@ public class MainController {
     protected ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
     
     //refers to the end of the current notes
-    public double endcomp;
- /*
-    //stores x and y coordinates, to later calculate distance moved by the mouse
-    private double yCoordinate = 0;
-    private double xCoordinate = 0;
-    
-   
-    //creates a rectangle that users will control by dragging
-    private final Rectangle selectRect = new Rectangle();
-    
-    //create a new ArrayList to store original X positions of selected rectangles
-    private final ArrayList<Double> originalX = new ArrayList<>();
-
-    //create a new ArrayList to store original Y positions of selected rectangles
-    private final ArrayList<Double> originalY = new ArrayList<>();
-    
-    //create a new ArrayList to store original widths of selected rectangles
-    private final ArrayList<Double> originalWidth = new ArrayList<>();
-    
-    //to store a list of selected notes before selection rectangle is dragged
-    private ArrayList<NoteRectangle> originallySelected = new ArrayList<>();
-
-    //create two new boolean value to determine whether the action is for stretch
-    //and drag
-    private boolean stretch;
-    private boolean drag;
-    */
+    protected double endcomp;
     
     protected UndoRedoActions undoRedoActions = new UndoRedoActions(this);
     /**
@@ -92,7 +66,7 @@ public class MainController {
         setupInstruments();
         
         //connect MainController to the gesture class
-        menuBarController.init(this, undoRedoActions, redLineController, compositionController);
+        menuBarController.init(this);
         gestureModelController.init(this);
         redLineController.init(this);
         compositionController.init(this);
