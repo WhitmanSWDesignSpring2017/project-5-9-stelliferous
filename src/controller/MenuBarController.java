@@ -256,23 +256,27 @@ public class MenuBarController  {
     
     @FXML
     private void handleBeat1Action(ActionEvent e){
+        ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
         for (int b= 0; b < 2000; b += 40){
-            mainController.compositionController.createBeat(WOOD_BLOCK,b,50,25);
-            mainController.compositionController.createBeat(WOOD_BLOCK,b+20,60,25);
+            mainController.compositionController.createBeat(WOOD_BLOCK,b,50,25, beatGesture);
+            mainController.compositionController.createBeat(WOOD_BLOCK,b+20,60,25, beatGesture);
             if(b%160==0){
-                mainController.compositionController.createBeat(MARIMBA, b, 45, 50);
+                mainController.compositionController.createBeat(MARIMBA, b, 45, 50, beatGesture);
             }
         }
-        checkButtons();
+        
+        addBeatGesture(beatGesture);
     }
     
     @FXML
     private void handleBeat2Action(ActionEvent e){
+        ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
         for (int b = 0; b < 2000; b += 50){
-            mainController.compositionController.createBeat(MARIMBA, b, 80, 40);
-            mainController.compositionController.createBeat(BOTTLE, b+38, 65, 15);
+            mainController.compositionController.createBeat(MARIMBA, b, 80, 40, beatGesture);
+            mainController.compositionController.createBeat(BOTTLE, b+38, 65, 15, beatGesture);
         }
-        checkButtons();
+        
+        addBeatGesture(beatGesture);
     }
     
     @FXML
@@ -285,11 +289,24 @@ public class MenuBarController  {
     
     @FXML
     private void handleSavedBeat(ActionEvent e){
+        ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
         savedBeat.forEach((note)->{
             mainController.compositionController.createBeat(
-                    note.getInstrument(), note.getX(), note.getY()/10, note.getWidth());
+                    note.getInstrument(), note.getX(), note.getY()/10, note.getWidth(),beatGesture);
         });
+        
+        addBeatGesture(beatGesture);
+    }
+    
+    /**
+     * Adds notes created by a beat menu item to a gesture and to the screen.
+     * @param gesture 
+     */
+    private void addBeatGesture(ArrayList<NoteRectangle> gesture){
         checkButtons();
+        mainController.gestureModelController.gestureNoteGroups.add(gesture);
+        mainController.gestureModelController.updateGestureRectangle(gesture, "black");
+        mainController.undoRedoActions.undoableAction();
     }
     
     protected void checkButtons() {
