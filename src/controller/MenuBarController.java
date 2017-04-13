@@ -289,6 +289,7 @@ public class MenuBarController  {
     
     @FXML
     private void handleSavedBeat(ActionEvent e){
+        savedBeat.clear();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
         savedBeat.forEach((note)->{
             mainController.compositionController.createBeat(

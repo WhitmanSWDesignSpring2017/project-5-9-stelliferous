@@ -26,9 +26,10 @@ public enum Instrument {
     VIOLIN        (41, 6, "Violin",       Color.MAROON), 
     FRENCH_HORN   (61, 7, "French Horn",  Color.CORAL),
     WOOD_BLOCK    (115, 8, "Wood Block",  Color.CHOCOLATE),
-    PAN_FLUTE     (75, 10, "Pan Flute",   Color.VIOLET),
+    OCARINA       (81, 10, "Ocarina",     Color.VIOLET),
     BOTTLE        (78, 11, "Bottle",      Color.NAVY),
-    CHOIR         (52, 12, "Choir",       Color.GOLDENROD);
+    CHOIR         (52, 12, "Choir",       Color.GOLDENROD),
+    APPLAUSE      (126, 13, "Applause",Color.DIMGREY);
     
     //the program which indicates the sound of the chosen instrument
     private final int midiProgram;
