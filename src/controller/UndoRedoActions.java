@@ -10,8 +10,8 @@ import java.util.Stack;
  */
 public class UndoRedoActions {
     
-    //allows MainController to connect to this redo/undo connect
-    protected MainController MainController;
+    //allows mainController to connect to this redo/undo connect
+    protected MainController mainController;
 
     //Stacks to store a collection of actions that can be undone, and have been
     protected Stack<CompositionState> undoableStates = new Stack<>();
@@ -24,7 +24,7 @@ public class UndoRedoActions {
      * @param tuneComposerNoteSelection 
      */
     public UndoRedoActions(MainController tuneComposerNoteSelection) {
-        this.MainController = tuneComposerNoteSelection;
+        this.mainController = tuneComposerNoteSelection;
     }
     
     /**
@@ -54,15 +54,15 @@ public class UndoRedoActions {
      * composition and storing that state in UndoableStates.
      */
     protected void undoableAction(){
-        final CompositionState currentState = new CompositionState(MainController.rectList, 
-                                            MainController.selectedNotes, 
-                                            MainController.gestureModelController.gestureNoteGroups);
+        final CompositionState currentState = new CompositionState(mainController.rectList, 
+                                            mainController.selectedNotes, 
+                                            mainController.gestureModelController.gestureNoteGroups);
         undoableStates.push(currentState);
         deepClone(currentState);
         
         //ensure that other stacks and buttons reflect the change
         redoableStates.removeAllElements();
-        MainController.menuBarController.checkButtons();
+        mainController.menuBarController.checkButtons();
     }
     
     /**
@@ -77,7 +77,7 @@ public class UndoRedoActions {
         
             CompositionState currentState = undoableStates.peek();
             deepClone(currentState);
-            MainController.menuBarController.checkButtons();
+            mainController.menuBarController.checkButtons();
         }
     }
     
@@ -94,7 +94,7 @@ public class UndoRedoActions {
             deepClone(currentState);
 
             //ensure that other menu items reflect the action
-            MainController.menuBarController.checkButtons();
+            mainController.menuBarController.checkButtons();
         }
     }
     
@@ -110,61 +110,62 @@ public class UndoRedoActions {
         //deep clone all notes in the rectangle list
         currentState.rectListState.forEach((e1)-> {
             NoteRectangle cloneRect = new NoteRectangle(e1.getX(),e1.getY(),e1.getInstrument(),e1.getWidth());
-            MainController.rectList.add(cloneRect);
-            MainController.compositionController.rectAnchorPane.getChildren().add(cloneRect.notes);
+            mainController.rectList.add(cloneRect);
+            mainController.compositionController.rectAnchorPane.getChildren().add(cloneRect.notes);
         });
         
         //deep clone all notes in the selected notes list
         currentState.selectedNotesState.forEach((e1)-> {
-            MainController.selectedNotes.add(MainController.rectList.get(e1)); 
+            mainController.selectedNotes.add(mainController.rectList.get(e1)); 
         });
         
         //deep clone all gestures
         currentState.gestureState.forEach((e1)-> {
             ArrayList<NoteRectangle> cloneArray = new ArrayList<>();
             e1.forEach((e2)-> {
-                cloneArray.add(MainController.rectList.get(e2));
+                cloneArray.add(mainController.rectList.get(e2));
             });
-            MainController.gestureModelController.gestureNoteGroups.add(cloneArray);
+            mainController.gestureModelController.gestureNoteGroups.add(cloneArray);
         });
         
         //initialize all rectangles in the RectList
-        MainController.rectList.forEach((e1)-> {
-           MainController.compositionController.initializeNoteRectangle(e1); 
+        mainController.rectList.forEach((e1)-> {
+           mainController.compositionController.initializeNoteRectangle(e1); 
         });
 
-        postCloneButtonCheck(); 
+        //postCloneButtonCheck(); 
     }
     
     /**
      * Clear all ArrayLists and visuals gestures/notes in the current state.
      */
     private void clearCurrentState(){
-        MainController.rectList.forEach((e1)->{
-                MainController.compositionController.rectAnchorPane.getChildren().remove(e1.notes);
+        mainController.rectList.forEach((e1)->{
+                mainController.compositionController.rectAnchorPane.getChildren().remove(e1.notes);
         });
-        MainController.gestureModelController.removeEverything();
-        MainController.rectList.clear();
-        MainController.selectedNotes.clear();
-        MainController.gestureModelController.gestureNoteGroups.clear();
+        mainController.gestureModelController.removeEverything();
+        mainController.rectList.clear();
+        mainController.selectedNotes.clear();
+        mainController.gestureModelController.gestureNoteGroups.clear();
     }
     
     /**
      * Ensure that menu items reflect the changes made by deep cloning a 
      * state of the composition.
-     */
+     
     private void postCloneButtonCheck(){
         if (redoableStates.isEmpty()){
-            MainController.menuBarController.redoAction.setDisable(true);
+            mainController.menuBarController.redoAction.setDisable(true);
         }
        
-        MainController.menuBarController.undoAction.setDisable(false);
+        mainController.menuBarController.undoAction.setDisable(false);
         
-        if (MainController.rectList.isEmpty()) {
-            MainController.menuBarController.selectAllAction.setDisable(true);
+        if (mainController.rectList.isEmpty()) {
+            mainController.menuBarController.selectAllAction.setDisable(true);
         }
-        if (MainController.selectedNotes.isEmpty()) {
-            MainController.menuBarController.deleteAction.setDisable(true);
+        if (mainController.selectedNotes.isEmpty()) {
+            mainController.menuBarController.deleteAction.setDisable(true);
         }   
     }
+    */
 }
