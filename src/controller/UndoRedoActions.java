@@ -10,7 +10,6 @@ import java.util.Stack;
 public class UndoRedoActions {
    // protected GestureModelController gestureModelController;
     protected MainController MainController;
-    //protected MenuBarController menuBarController;
 
     protected Stack<CompositionState> undoableStates = new Stack<>();
     protected Stack<CompositionState> redoableStates = new Stack<>();
@@ -42,8 +41,8 @@ public class UndoRedoActions {
         });
         deepClone(undoableStates.peek());
     }
-
-    protected void undoableAction(){
+ 
+   protected void undoableAction(){
         final CompositionState currentState = new CompositionState(MainController.rectList, 
                                             MainController.selectedNotes, 
                                             MainController.gestureModelController.gestureNoteGroups);
@@ -61,7 +60,6 @@ public class UndoRedoActions {
         
             CompositionState currentState = undoableStates.peek();
             deepClone(currentState);
-        //  System.out.println("selected"+MainController.selectedNotes);
             MainController.menuBarController.checkButtons();
         }
     }
