@@ -6,17 +6,20 @@ We also created some "stretch goals." They included (1) letting the user add "be
 
 >Explain why your way was the elegant way to do it. Address any improvements you made based on my feedback.
 
-Our way was the elegant way to do it because it simplified the program and improved maintainability by splitting it across different files, controllers, classes, and packages. We began to use the guiding philosophies of the VCM method, and had different classes communicate with one another rather than one large class. We did rename variables and files for clarity, and fixed as many TODOs as possible, including moving the red line, using fx:include, seperating the gesture class, creating new classes for constants, and avoiding a lot of variable repetition/copying. 
+We split up different fxml and javaFX classes into different classes and controllers to meet the guideline of Single Responsibility Principle. We meet the Liskov Substitution Principle in that we don't really use subclassing, and favor composition over inheritance. Whenever possible, we made methods and fields private or protected to work towards the Open/Closed principle; greater encapsulation closes the program to modification. Simply breaking classes into smaller controllers allows for more extensibility and "openess." Because we don't use inheritance, our program cannot violate the Dependency Inversion principle or the Interface Segregation Principle. We included documentation for clarity. As always, we continue to refactor and decompose on a smaller scale. 
 
 >Explain what, if anything, in your solution is inelegant and why you didn't make it elegant (for example, maybe you didn't >have time or the knowledge to fix it).
 
-In some cases, following the TODOs unfortunantely caused more complexity or errors in our program... for example, without two different boolean variables for Stretch and Drag, dragging and stretching would often move the wrong rectangle or happen at inappropriate time. I think that a lot of inelegance is due to "time or the knowledge to fix it" this time around, since the first week back from Spring Break was quite busy, and we initially didn't know how to implement gestures. We hope to refactor and increase elegance more in the future, and sort of favored features/project 5 guidelines over TODO's. In addition, there wasn't much clear information online explaining how to link different controllers/classes/files; it might be helpful to have some references or recommended tutorials on that front.
+Our program does violate the Law of Demeter, in that many controllers go through the main controller to get something done. We wish we didn't have to write our own deep-clone information for undoing and redoing, but with the time we had couldn't find a simpler way to do it built into Java. (Since there wasn't much information to store in each Composition State, only three arrays, we chose to implement undo/redo by saving each state rather than storing the actions themselves). We hadn't received feedback by the time that we submitted the project. As always, with more time and knowledge, more refactoring could be done.
 
 >Include an estimate of your velocity. How many story points did you estimate you would complete during this project? How many >did you actually complete, how many person-hours did the team spend, and what is the ratio of points/person-hour?
 
-We estimated that we would complete 25 story points, and actually ended up completed about 28 (although we're not very experienced in gauging story points or story point estimation). We spent about 34 hours on this project, so around 12 hours per person, and that means that the rate of points/person-hour was about 0.82.
+We estimated that we would complete 26 story points, and actually ended up completed about 23 (although we're not very experienced in gauging story points or story point estimation). We spent about 37 hours on this project, so around 12 hours per person, and that means that the rate of points/person-hour was about 0.62162162162.
 
 >Include a short summary of your team retrospective. What went well that your team will keep doing during the next project >assignment? What will you improve? How?
 
-We'll keep working together as a group, as that did allow us to bounce ideas off each other and talk about the design as a whole. If we can, we should meet earlier so that we have more time to think about our design and ask questions during office hours/class. Hopefully we'll have more time to work on future projects, but that's hard to predict (or schedule) as finals approach.
+We met on the earlier side and in-person, which really helped with communication and planning. We will keep doing that, as time allows. In the future, we may *also* work additional hours on our own. We would like to talk to you about the project and the choices we are making. Thank you,
+
+Tyler, Jing, and Kaylin
+
 
