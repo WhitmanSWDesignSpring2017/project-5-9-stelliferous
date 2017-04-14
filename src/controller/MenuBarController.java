@@ -250,8 +250,8 @@ public class MenuBarController  {
     }
     
     /**
-     * Adds a beat to the composition.
-     * @param e on beat addition event
+     * Adds a beat (#1) to the composition.
+     * @param e on beat 1 addition event
      */
     @FXML
     private void handleBeat1Action(ActionEvent e){
@@ -264,6 +264,10 @@ public class MenuBarController  {
         addBeatGesture(beatGesture);
     }
     
+    /**
+     * Adds a beat (#2) to the composition.
+     * @param e on beat 2 addition event
+     */
     @FXML
     private void handleBeat2Action(ActionEvent e){
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
@@ -275,6 +279,10 @@ public class MenuBarController  {
         addBeatGesture(beatGesture);
     }
     
+    /**
+     * Adds a beat (#3, based on tangent) to the composition.
+     * @param e on beat 3 addition event
+     */
     @FXML
     private void handleBeat3Action(ActionEvent e){
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
@@ -285,6 +293,10 @@ public class MenuBarController  {
         addBeatGesture(beatGesture);
     }
     
+    /**
+     * Adds a beat (#4, based on sine) to the composition.
+     * @param e on beat 4 addition event
+     */
     @FXML
     private void handleBeat4Action(ActionEvent e){
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
@@ -295,6 +307,10 @@ public class MenuBarController  {
         addBeatGesture(beatGesture);
     }
     
+    /**
+     * Saves the selected notes as a beat which can be added again later.
+     * @param e on save as beat event
+     */
     @FXML
     private void handleSaveAsBeat(ActionEvent e){
         savedBeat.clear();
@@ -304,6 +320,10 @@ public class MenuBarController  {
         });
     }
     
+    /**
+     * Adds the most recently saved beat to the composition.
+     * @param e on saved beat event
+     */
     @FXML
     private void handleSavedBeat(ActionEvent e){
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
