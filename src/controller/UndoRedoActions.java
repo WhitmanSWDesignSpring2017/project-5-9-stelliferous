@@ -17,15 +17,13 @@ public class UndoRedoActions {
     protected Stack<CompositionState> markedStates = new Stack<>();
 
     
-    public UndoRedoActions(MainController tuneComposerNoteSelection
-            /*
-                           GestureModelController gestureModelController,
-                           MenuBarController menuBarController*/) {
+    public UndoRedoActions(MainController tuneComposerNoteSelection) {
         this.MainController = tuneComposerNoteSelection;
-        //this.gestureModelController = gestureModelController;
-        //this.menuBarController = menuBarController;
     }
-
+    
+    /**
+     * Mark the current state and create a new stack to store all the compositionState 
+     */
     protected void initializeMarkState() {
         markedStates.clear();
         undoableStates.forEach((e1)-> {
@@ -33,6 +31,9 @@ public class UndoRedoActions {
         });
     }
     
+    /**
+     * Revert to the marked state by reverting all the components in the undoableStates
+     */
     protected void revertMark() {
         undoableStates.clear();
         redoableStates.clear();
