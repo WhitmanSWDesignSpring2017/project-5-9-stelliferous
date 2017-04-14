@@ -24,6 +24,7 @@ public class NoteRectangle {
     //the instrument of the NoteRectangle
     private final Instrument instrument;
     
+    //stores the width of the NoteRectangle, that it may be retrieved/set
     private double width;
     
     /**
@@ -38,6 +39,7 @@ public class NoteRectangle {
         this.instrument = instrument;
         this.channel = instrument.getChannel();        
         this.width = 100;
+        
         //creates a new rectangle object for visual representation
         notes = new Rectangle(x,y,width,10);
         notes.getStyleClass().add("strokeRed");

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import static controller.Instrument.PIANO;
@@ -13,16 +8,16 @@ import javafx.scene.control.MenuItem;
 import javafx.util.Duration;
 
 /**
- * FXML Controller class
- *
- * @author mauletj
+ * A controller class for the menu bar that sets the actions for each button.
+ * @author Tyler Maule
+ * @author Jingyuan Wang
+ * @author Kaylin Jarriel
  */
 public class MenuBarController  {
     
     //the main controller of the program
     private MainController mainController; 
-    
-    //makes available redo/undo menu items, that they may be enabled/disabled
+  
     @FXML MenuItem undoAction;
     @FXML MenuItem redoAction;
     @FXML MenuItem selectAllAction;
@@ -35,7 +30,6 @@ public class MenuBarController  {
     @FXML MenuItem markButton;
     @FXML MenuItem revertButton;
 
-
     /**
      * Initializes the main controller. This method was necessary for the 
      * class to work.
@@ -46,7 +40,7 @@ public class MenuBarController  {
     }
     
      /**
-     * Exits the program upon user clicking the typical 'close' 
+     * Exits the program upon user clicking the X or exit button.
      * @param e on user click
      */
     @FXML
@@ -103,8 +97,7 @@ public class MenuBarController  {
     }
     
      /**
-     * Stops the player from playing, stops and 
-     * sets the red line to be invisible.
+     * Stops the player from playing, stops and sets the red line to be invisible.
      * @param e  on user click
      */
     @FXML
@@ -114,7 +107,7 @@ public class MenuBarController  {
     }
     
     /**
-     * Select all the rectangle created on the pane
+     * Select all the rectangles created on the pane.
      * @param e  on user click
      */    
     @FXML
@@ -128,10 +121,11 @@ public class MenuBarController  {
             mainController.selectedNotes.add(mainController.rectList.get(i));
         }   
         mainController.compositionController.selectRed();
+        mainController.undoRedoActions.undoableAction();
     }
     
     /**
-     * Delete all the selected rectangles
+     * Delete all the selected rectangles.
      * @param e  on user click
      */        
     @FXML
@@ -183,7 +177,7 @@ public class MenuBarController  {
     
     /**
      * Ungroups the selected gesture. Removes the gesture rectangle.
-     * @param e 
+     * @param e on ungrouping event
      */
     @FXML
     private void handleUngroupAction(ActionEvent e){
@@ -194,37 +188,10 @@ public class MenuBarController  {
         mainController.undoRedoActions.undoableAction();
     }  
     
-    
-    /**
-     * Copies a gesture. Copies all notes in a given gesture, adds those notes
-     * to the composition and screen, and groups those notes into a gesture.
-     * @param gestureCopy 
-     */
-    private void copyGesture(ArrayList<NoteRectangle> gestureCopy){
-        //creates a new array to store notes 
-        stopTune();
-        ArrayList<NoteRectangle> newGesture = new ArrayList<>();
-        
-        for (int n = 0; n <gestureCopy.size(); n+=2){
-            //copy an individual note
-            NoteRectangle oldNote = gestureCopy.get(n);
-            NoteRectangle newRect = new NoteRectangle(oldNote.getX()+15, ((int) oldNote.getY()), 
-                                           oldNote.getInstrument(), oldNote.getWidth());
-            
-            //add mouse events to rectangle, add rectangle to screen
-        mainController.compositionController.initializeNoteRectangle(newRect);
-            newGesture.add(newRect);
-        }
-        
-        //adds the newly created gesture, creates gesture boundary outline
-        mainController.gestureModelController.gestureNoteGroups.add(newGesture);
-        mainController.gestureModelController.updateGestureRectangle(newGesture, "dashedRed");  
-    }
-    
     /**
      * Ungroups all groups of NoteRectangles. Returns all notes to
-     * individual notes
-     * @param e 
+     * individual notes.
+     * @param e on ungroup all event
      */
     @FXML
     private void handleUngroupAllAction(ActionEvent e){
@@ -234,6 +201,10 @@ public class MenuBarController  {
         mainController.undoRedoActions.undoableAction();
     }
     
+    /**
+     * Undoes the most recent change to the composition.
+     * @param e on undo event
+     */
     @FXML
     private void handleUndoAction(ActionEvent e){
         stopTune();
@@ -244,6 +215,11 @@ public class MenuBarController  {
         mainController.compositionController.selectRed();
     }
     
+    /**
+     * Redoes the most recently undone change. Does not redo if the last event 
+     * on the pane was not an undo event.
+     * @param e 
+     */
     @FXML
     private void handleRedoAction(ActionEvent e){
         stopTune();
@@ -254,6 +230,10 @@ public class MenuBarController  {
         mainController.compositionController.selectRed();
     }
     
+    /**
+     * Adds a beat to the composition.
+     * @param e on beat addition event
+     */
     @FXML
     private void handleBeat1Action(ActionEvent e){
         for (int b= 0; b < 2000; b += 120){
@@ -262,8 +242,12 @@ public class MenuBarController  {
             mainController.compositionController.rectAnchorPane.getChildren().add(beat.notes);  
             mainController.compositionController.rectList.add(beat);
         }
+        mainController.undoRedoActions.undoableAction();
     }
     
+    /**
+     * Sets the buttons as enabled or disabled as appropriate.
+     */
     protected void checkButtons() {
         if (mainController.rectList.isEmpty()) {
             selectAllAction.setDisable(true);
@@ -301,6 +285,9 @@ public class MenuBarController  {
         }
     }
     
+    /**
+     * Disables everything that should be disabled at the start of the program.
+     */
     protected void everythingDisable() {
         redoAction.setDisable(true);
         selectAllAction.setDisable(true);
@@ -313,6 +300,9 @@ public class MenuBarController  {
         stopButton.setDisable(true);
     }
     
+    /**
+     * Stops the midiplayer and redline from playing.
+     */
     private void stopTune() {
         mainController.MidiComposition.stop();
         mainController.redLineController.lineTransition.stop();
