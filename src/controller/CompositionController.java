@@ -5,6 +5,7 @@
  */
 package controller;
 
+import static controller.Instrument.PIANO;
 import java.io.IOException;
 import static java.lang.Math.abs;
 import java.util.ArrayList;
@@ -590,5 +591,13 @@ public class CompositionController {
         mainController = aThis;
         this.rectList = aThis.rectList;
         this.selectedNotes = aThis.selectedNotes;
+    }
+
+    void createBeat(Instrument instrument, double beatX, double beatY, double beatW, ArrayList<NoteRectangle> beatGesture) {
+        NoteRectangle beat = new NoteRectangle(beatX, beatY*Constants.HEIGHTRECTANGLE, instrument ,beatW);
+        initializeNoteRectangle(beat);
+        rectAnchorPane.getChildren().add(beat.notes);  
+        rectList.add(beat);
+        beatGesture.add(beat);
     }
 }
