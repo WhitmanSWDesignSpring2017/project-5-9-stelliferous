@@ -26,7 +26,10 @@ public class UndoRedoActions {
     public UndoRedoActions(MainController tuneComposerNoteSelection) {
         this.MainController = tuneComposerNoteSelection;
     }
-
+    
+    /**
+     * Mark the current state and create a new stack to store all the compositionState 
+     */
     protected void initializeMarkState() {
         markedStates.clear();
         undoableStates.forEach((e1)-> {
@@ -34,6 +37,9 @@ public class UndoRedoActions {
         });
     }
     
+    /**
+     * Revert to the marked state by reverting all the components in the undoableStates
+     */
     protected void revertMark() {
         undoableStates.clear();
         redoableStates.clear();
@@ -71,8 +77,6 @@ public class UndoRedoActions {
         
             CompositionState currentState = undoableStates.peek();
             deepClone(currentState);
-            
-            //ensure that other menu items reflect the action
             MainController.menuBarController.checkButtons();
         }
     }
