@@ -1,4 +1,3 @@
-
 package controller;
 
 import javafx.fxml.FXML;
@@ -16,7 +15,8 @@ import javax.sound.midi.ShortMessage;
 
 
 /**
- * This class allows for note creation, selection, editing, and deletion.
+ * This controller class initializes the other controllers, the instrument 
+ * radio buttons, and the midi player.
  * @author Tyler Maule
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
@@ -41,9 +41,9 @@ public class MainController {
     //makes available the controller for red line
     @FXML RedLineController redLineController = new RedLineController();
     
+    //makes available the controller for the composition
     @FXML CompositionController compositionController = new CompositionController();
         
-
     //creates a list to store created rectangles, that they may be later erased
     protected ArrayList<NoteRectangle> rectList = new ArrayList<>();
     
@@ -52,6 +52,7 @@ public class MainController {
     
     //refers to the end of the current notes
     protected double endcomp;
+
     
     protected UndoRedoActions undoRedoActions = new UndoRedoActions(this);
     /**
@@ -60,22 +61,23 @@ public class MainController {
      * at the start and when the composition has finished playing
      */
     @FXML public void initialize() {
-        
-        
         //set up the pane of instrument choices for the user
         setupInstruments();
-        
+
         //connect MainController to the gesture class
         menuBarController.init(this);
+
         gestureModelController.init(this);
         redLineController.init(this);
         compositionController.init(this);
+        
+        redLineController.initializeRedLine();
+        
+        //creates a new composition state for use with undo and redo
         undoRedoActions.undoableAction();
 
-        redLineController.initializeRedLine();
-
+        //disables every menu item that needs to be when program first starts
         menuBarController.everythingDisable();
-
     }
     
      /**
@@ -105,7 +107,7 @@ public class MainController {
     
     /**
      * Adds MidiEvent notes to the composition based on NoteRectangles in 
-     * RectList, changing instruments when interesting
+     * RectList, changing instruments when appropriate.
      */
     protected void buildMidiComposition(){
         //initialize a NoteRectangle object
