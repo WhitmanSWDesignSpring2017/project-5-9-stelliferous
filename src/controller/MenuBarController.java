@@ -7,9 +7,11 @@ package controller;
 
 import static controller.Instrument.MARIMBA;
 import static controller.Instrument.BOTTLE;
-import static controller.Instrument.CHOIR;
+import static controller.Instrument.FRENCH_HORN;
 import static controller.Instrument.WOOD_BLOCK;
+import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static java.lang.Math.tan;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -282,10 +284,19 @@ public class MenuBarController  {
     private void handleBeat3Action(ActionEvent e){
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
         for (int b = 0; b < 2000; b += 10){
-            int yPattern = (int)(10*sin(b/30)) +40;
-            mainController.compositionController.createBeat(MARIMBA, b, yPattern, 20, beatGesture);
+            int yPattern = (int)(10*tan(b/30)) +40;
+            mainController.compositionController.createBeat(WOOD_BLOCK, b, yPattern, 20, beatGesture);
         }
-        
+        addBeatGesture(beatGesture);
+    }
+    
+    @FXML
+    private void handleBeat4Action(ActionEvent e){
+        ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
+        for (int b = 0; b < 2000; b += 10){
+            int yPattern = (int)(10*sin(b/30)) +40;
+            mainController.compositionController.createBeat(WOOD_BLOCK, b, yPattern, 20, beatGesture);
+        }
         addBeatGesture(beatGesture);
     }
     
