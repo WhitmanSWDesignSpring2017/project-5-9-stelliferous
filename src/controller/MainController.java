@@ -1,4 +1,3 @@
-
 package controller;
 
 import javafx.fxml.FXML;
@@ -16,7 +15,8 @@ import javax.sound.midi.ShortMessage;
 
 
 /**
- * This class allows for note creation, selection, editing, and deletion.
+ * This controller class initializes the other controllers, the instrument 
+ * radio buttons, and the midi player.
  * @author Tyler Maule
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
@@ -41,9 +41,9 @@ public class MainController {
     //makes available the controller for red line
     @FXML RedLineController redLineController = new RedLineController();
     
+    //makes available the controller for the composition
     @FXML CompositionController compositionController = new CompositionController();
         
-
     //creates a list to store created rectangles, that they may be later erased
     protected ArrayList<NoteRectangle> rectList = new ArrayList<>();
     
@@ -51,33 +51,8 @@ public class MainController {
     protected ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
     
     //refers to the end of the current notes
-    public double endcomp;
- /*
-    //stores x and y coordinates, to later calculate distance moved by the mouse
-    private double yCoordinate = 0;
-    private double xCoordinate = 0;
-    
-   
-    //creates a rectangle that users will control by dragging
-    private final Rectangle selectRect = new Rectangle();
-    
-    //create a new ArrayList to store original X positions of selected rectangles
-    private final ArrayList<Double> originalX = new ArrayList<>();
+    protected double endcomp;
 
-    //create a new ArrayList to store original Y positions of selected rectangles
-    private final ArrayList<Double> originalY = new ArrayList<>();
-    
-    //create a new ArrayList to store original widths of selected rectangles
-    private final ArrayList<Double> originalWidth = new ArrayList<>();
-    
-    //to store a list of selected notes before selection rectangle is dragged
-    private ArrayList<NoteRectangle> originallySelected = new ArrayList<>();
-
-    //create two new boolean value to determine whether the action is for stretch
-    //and drag
-    private boolean stretch;
-    private boolean drag;
-    */
     
     protected UndoRedoActions undoRedoActions = new UndoRedoActions(this);
     /**
@@ -86,22 +61,23 @@ public class MainController {
      * at the start and when the composition has finished playing
      */
     @FXML public void initialize() {
-        
-        
         //set up the pane of instrument choices for the user
         setupInstruments();
-        
+
         //connect MainController to the gesture class
-        menuBarController.init(this, undoRedoActions, redLineController, compositionController);
+        menuBarController.init(this);
+
         gestureModelController.init(this);
         redLineController.init(this);
         compositionController.init(this);
+        
+        redLineController.initializeRedLine();
+        
+        //creates a new composition state for use with undo and redo
         undoRedoActions.undoableAction();
 
-        redLineController.initializeRedLine();
-
+        //disables every menu item that needs to be when program first starts
         menuBarController.everythingDisable();
-
     }
     
      /**
@@ -131,7 +107,7 @@ public class MainController {
     
     /**
      * Adds MidiEvent notes to the composition based on NoteRectangles in 
-     * RectList, changing instruments when interesting
+     * RectList, changing instruments when appropriate.
      */
     protected void buildMidiComposition(){
         //initialize a NoteRectangle object

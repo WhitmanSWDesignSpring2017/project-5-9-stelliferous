@@ -19,6 +19,8 @@
                 <MenuItem fx:id="undoAction" accelerator="Shortcut+Z" onAction="#handleUndoAction" text="Undo" /> 
                 <MenuItem fx:id="redoAction" accelerator="Shortcut+Y" onAction="#handleRedoAction" text="Redo" />
             <SeparatorMenuItem mnemonicParsing="false" />
+                <MenuItem fx:id="markButton" accelerator="Shortcut+M" onAction="#handleMarkAction" text="Mark State" />
+                <MenuItem fx:id="revertButton" accelerator="Shortcut+V" onAction="#handleRevertAction" text="Revert to Mark State" />
                 <MenuItem fx:id="selectAllAction" accelerator="Shortcut+A" onAction="#handleSelectAllAction" text="Select All" />
                 <MenuItem fx:id="deleteAction" accelerator="backspace" onAction="#handleDeleteAction" text="Delete" />
                 <MenuItem fx:id="groupAction" accelerator="Shortcut+G" onAction="#handleGroupAction" text="Group" />

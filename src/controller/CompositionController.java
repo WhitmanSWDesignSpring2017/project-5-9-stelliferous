@@ -17,15 +17,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 
 /**
- * FXML Controller class
- *
- * @author jarrieks
+ * the controller for compositionPane to control all the note actions.
+ * @author Tyler Maule
+ * @author Jingyuan Wang
+ * @author Kaylin Jarriel
  */
 public class CompositionController {
 
     //makes available rectAnchorPane, which stores the rectangles
     @FXML AnchorPane rectAnchorPane;
     
+    //the main controller of the program
     private MainController mainController;
 
     //creates a list to store created rectangles, that they may be later erased
@@ -68,7 +70,7 @@ public class CompositionController {
      * stops ongoing composition-playing events
      * @param m a mouse event (on-click, on-release, on-drag, etc)
      */
-    void reset_coordinates(MouseEvent m){
+    private void reset_coordinates(MouseEvent m){
         //resets mouse coordinates
         xCoordinate = (int)m.getX();
         yCoordinate = (int)m.getY();
@@ -78,7 +80,6 @@ public class CompositionController {
         mainController.redLineController.redLine.setVisible(false);
     }
     
-    @FXML AnchorPane compositionPane;
     /**
      * Simply resets coordinates of current mouse position when the pane's
      * clicked.
@@ -160,14 +161,12 @@ public class CompositionController {
                 selectNotes.forEach((e1)-> {
                     selectedNotes.add(e1);
                 });
-
             } else {
                 selectedNotes.add(r);
             }
             
             //style selected notes
             selectRed();
-            
         }     
     }
     
@@ -187,12 +186,9 @@ public class CompositionController {
             //clear the list of selected notes
             selectedNotes.clear();
         }  
+        
+        //reset the gestures depending on the new selectedNotes arrayList
         mainController.gestureModelController.resetGestureRectangle(selectedNotes);
-        /*
-        if (selectedNotes.isEmpty()) {
-            deleteAction.setDisable(true);
-        }
-        */
     }
     
     /**
@@ -217,7 +213,6 @@ public class CompositionController {
         } else {
             selectRect.setY(currentY);
         }
-        
         
         //detail, style, and display selection rectangle
         selectRect.setWidth(abs(currentX-xCoordinate));
@@ -247,8 +242,9 @@ public class CompositionController {
         if (((xCoordinate != (int)e.getX()) 
             || (yCoordinate != (int)e.getY()))
             && !e.isShiftDown()){
-                if (((!selectedNotes.contains(originallySelected))||
-                    !originallySelected.contains(selectedNotes))&& (!selectedNotes.isEmpty())){
+                //if the selectedNotes is changed, a new compositionState is created
+                if (((!selectedNotes.equals(originallySelected))||
+                    !originallySelected.equals(selectedNotes))&& (!selectedNotes.isEmpty())){
                     mainController.undoRedoActions.undoableAction();
                 }
                 return;
@@ -257,7 +253,6 @@ public class CompositionController {
         //determine whether previously selected notes remain selected when
         //a new note is created; if control is not down, deselect all old notes
         deselectNotes(e);
-        
         
         //creates and places a new NoteRectangle
         prepareNoteRectangle(e);
@@ -294,15 +289,13 @@ public class CompositionController {
         rectList.add(rect);
         selectedNotes.add(rect);
         mainController.gestureModelController.resetGestureRectangle(selectedNotes);
-        //rectAnchorPane.removeAll();
-        rectAnchorPane.getChildren().add(rect.notes);
         mainController.undoRedoActions.undoableAction();
-        //selectAllAction.setDisable(false);
     }
     
     /**
      * Assigns mouse events to a given rectangle, such that the user
      * can select/drag/stretch the rectangle
+     * @param rect the rectangle needs to be initialized
      */
     protected void initializeNoteRectangle(NoteRectangle rect){
         //assigns mouse-action events to the created NoteRectangle
@@ -385,19 +378,14 @@ public class CompositionController {
                        rectInGesture.notes.getStyleClass().add("strokeBlack");
                        if(selectedNotes.contains(rectInGesture)) selectedNotes.remove(rectInGesture);
                    }
-                   /*
-                   if (selectedNotes.isEmpty()) {
-                       deleteAction.setDisable(true);
-                   }
-                   */
                    break;
                 } 
             }
-        //undoRedoActions.undoableAction();
     }
     
     /**
-     * Sets the appearance of any selected rectangles with a red border.
+     * Sets the appearance of any selected rectangles with a red border. and reset
+     * the gestures
      */
     protected void selectRed() {
         rectList.forEach((e2)-> {
@@ -512,13 +500,12 @@ public class CompositionController {
                 } else {
                     return;
                 }
-                
-                mainController.gestureModelController.resetGestureRectangle(selectedNotes);
-                //undoRedoActions.undoableAction();
-            }
-                            
             
+                //reset gestureRectangles
+                mainController.gestureModelController.resetGestureRectangle(selectedNotes);
+            }
         }
+    };
 
         /**
          * Changes the rectangle according to the nature of the stretch action.
@@ -538,7 +525,6 @@ public class CompositionController {
                 //if under 5px, change to 5px
                 selectedNotes.get(i).setWidth(Constants.STRETCHZONE);
             }
-            
         }
         
         /**
@@ -555,7 +541,7 @@ public class CompositionController {
             selectedNotes.get(i).setX(newTranslateX);
             selectedNotes.get(i).setY(newTranslateY);
         }
-    };
+    
     
     /**
      * Create a new EventHandler for the mouseEvent that happens when releasing 
