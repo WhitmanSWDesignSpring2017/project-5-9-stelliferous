@@ -51,7 +51,8 @@ public class MainController {
     protected ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
     
     //refers to the end of the current notes
-    public double endcomp;
+    protected double endcomp;
+
     
     protected UndoRedoActions undoRedoActions = new UndoRedoActions(this);
     /**
@@ -62,9 +63,10 @@ public class MainController {
     @FXML public void initialize() {
         //set up the pane of instrument choices for the user
         setupInstruments();
-        
-        //connect MainController to the other controllers
-        menuBarController.init(this, undoRedoActions, redLineController, compositionController);
+
+        //connect MainController to the gesture class
+        menuBarController.init(this);
+
         gestureModelController.init(this);
         redLineController.init(this);
         compositionController.init(this);

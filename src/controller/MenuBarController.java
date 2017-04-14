@@ -17,17 +17,7 @@ public class MenuBarController  {
     
     //the main controller of the program
     private MainController mainController; 
-    
-    //allows for acces of the undo-redo controller
-    private UndoRedoActions undoController;
-    
-    //allows for access of the redLine controller
-    private RedLineController redLineController;
-    
-    //allows for access of the composition controller
-    private CompositionController compositionController;
-    
-    //makes available menu items, that they may be enabled/disabled
+  
     @FXML MenuItem undoAction;
     @FXML MenuItem redoAction;
     @FXML MenuItem selectAllAction;
@@ -37,20 +27,16 @@ public class MenuBarController  {
     @FXML MenuItem ungroupAllAction;
     @FXML MenuItem playButton;
     @FXML MenuItem stopButton;
+    @FXML MenuItem markButton;
+    @FXML MenuItem revertButton;
 
     /**
      * Initializes the main controller. This method was necessary for the 
      * class to work.
      * @param aThis the controller that is main
-     * @param aThat the controller for undo-redo
-     * @param aRed the controller for the redline
-     * @param aComp the controller for the composition
      */
-    public void init(MainController aThis, UndoRedoActions aThat, RedLineController aRed, CompositionController aComp) {
+    public void init(MainController aThis) {
         mainController = aThis; 
-        undoController = aThat;
-        redLineController = aRed;
-        compositionController = aComp;
     }
     
      /**
@@ -61,7 +47,25 @@ public class MenuBarController  {
     private void handleExitAction(ActionEvent e){
         System.exit(0);
     }
-                
+    
+    /**
+     * Revert to the marked states
+     * @param e on user click 
+     */
+    @FXML
+    private void handleRevertAction(ActionEvent e) {
+        mainController.undoRedoActions.revertMark();
+    }
+    
+    /**
+     * Marked the current state and allow user to go back to this particular state
+     * @param e on user click
+     */
+    @FXML
+    private void handleMarkAction(ActionEvent e){
+        mainController.undoRedoActions.initializeMarkState();
+    }
+    
     /**
      * Stops current playing composition, plays the composition from the
      * start and resets the red line to be visible and play from start of animation.

@@ -16,6 +16,7 @@ public class UndoRedoActions {
     //Stacks to store a collection of actions that can be undone, and have been
     protected Stack<CompositionState> undoableStates = new Stack<>();
     protected Stack<CompositionState> redoableStates = new Stack<>();
+    protected Stack<CompositionState> markedStates = new Stack<>();
 
     /**
      * Constructs an UndoRedoActions object and connects it to the main
@@ -26,6 +27,22 @@ public class UndoRedoActions {
         this.MainController = tuneComposerNoteSelection;
     }
 
+    protected void initializeMarkState() {
+        markedStates.clear();
+        undoableStates.forEach((e1)-> {
+            markedStates.add(e1);
+        });
+    }
+    
+    protected void revertMark() {
+        undoableStates.clear();
+        redoableStates.clear();
+        markedStates.forEach((e1)-> {
+           undoableStates.add(e1); 
+        });
+        deepClone(undoableStates.peek());
+    }
+  
     /**
      * Registers an undoableAction, by creating a state describing the current
      * composition and storing that state in UndoableStates.
