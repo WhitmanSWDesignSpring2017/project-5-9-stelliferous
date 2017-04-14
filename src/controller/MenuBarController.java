@@ -7,7 +7,9 @@ package controller;
 
 import static controller.Instrument.MARIMBA;
 import static controller.Instrument.BOTTLE;
+import static controller.Instrument.CHOIR;
 import static controller.Instrument.WOOD_BLOCK;
+import static java.lang.Math.sin;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -258,11 +260,8 @@ public class MenuBarController  {
     private void handleBeat1Action(ActionEvent e){
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
         for (int b= 0; b < 2000; b += 40){
-            mainController.compositionController.createBeat(WOOD_BLOCK,b,50,25, beatGesture);
-            mainController.compositionController.createBeat(WOOD_BLOCK,b+20,60,25, beatGesture);
-            if(b%160==0){
-                mainController.compositionController.createBeat(MARIMBA, b, 45, 50, beatGesture);
-            }
+            mainController.compositionController.createBeat(WOOD_BLOCK,b,60,25, beatGesture);
+            mainController.compositionController.createBeat(WOOD_BLOCK,b+20,65,25, beatGesture);
         }
         
         addBeatGesture(beatGesture);
@@ -274,6 +273,17 @@ public class MenuBarController  {
         for (int b = 0; b < 2000; b += 50){
             mainController.compositionController.createBeat(MARIMBA, b, 80, 40, beatGesture);
             mainController.compositionController.createBeat(BOTTLE, b+38, 65, 15, beatGesture);
+        }
+        
+        addBeatGesture(beatGesture);
+    }
+    
+    @FXML
+    private void handleBeat3Action(ActionEvent e){
+        ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
+        for (int b = 0; b < 2000; b += 10){
+            int yPattern = (int)(10*sin(b/30)) +40;
+            mainController.compositionController.createBeat(MARIMBA, b, yPattern, 20, beatGesture);
         }
         
         addBeatGesture(beatGesture);

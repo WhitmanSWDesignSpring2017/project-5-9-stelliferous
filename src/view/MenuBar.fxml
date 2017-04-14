@@ -36,6 +36,7 @@
                     <items>
                         <MenuItem onAction = "#handleBeat1Action" text = "Beat 1" />
                         <MenuItem onAction = "#handleBeat2Action" text = "Beat 2" />
+                        <MenuItem onAction = "#handleBeat3Action" text = "Beat 3" />
                         <MenuItem onAction = "#handleSaveAsBeat" text = "Save As Beat" />
                         <MenuItem onAction = "#handleSavedBeat" text = "Insert Saved Beat"/>
                     </items>
