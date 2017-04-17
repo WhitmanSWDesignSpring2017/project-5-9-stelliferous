@@ -5,7 +5,6 @@
  */
 package controller;
 
-import static controller.Instrument.PIANO;
 import java.io.IOException;
 import static java.lang.Math.abs;
 import java.util.ArrayList;
@@ -420,9 +419,11 @@ public class CompositionController {
                 //add all widths of the selected rectangles to the arraylist
                 originalWidth.add(selectedNotes.get(i).getWidth());
             }
+            //determine whether should be performing stretch or drag
+            determineStretch();
+            determineDrag();
         }
     };
-    
     
     /**
      * Change the boolean value drag based on the current position of mouse
@@ -487,10 +488,6 @@ public class CompositionController {
             double offsetX = t.getX() - xCoordinate;
             double offsetY = t.getY() - yCoordinate;
             
-            //determine whether should be performing stretch or drag
-            determineStretch();
-            determineDrag();
-            
             //perform either stretching or dragging operation on all selected rectangles.
             for (int i=0; i<selectedNotes.size();i++) {
                 if (stretch) {
@@ -500,6 +497,7 @@ public class CompositionController {
                 } else {
                     return;
                 }
+            
             
                 //reset gestureRectangles
                 mainController.gestureModelController.resetGestureRectangle(selectedNotes);
