@@ -1,4 +1,4 @@
-package controller;
+package tunecomposer;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;

@@ -2,7 +2,7 @@
  * Provided for use only in CS 370 at Whitman College.
  * DO NOT DISTRIBUTE.
  */
-package controller;
+package tunecomposer;
 
 import javafx.scene.paint.Color;
 import javax.sound.midi.ShortMessage;

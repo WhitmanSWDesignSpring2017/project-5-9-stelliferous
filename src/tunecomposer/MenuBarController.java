@@ -1,9 +1,9 @@
-package controller;
+package tunecomposer;
 
-import static controller.Instrument.MARIMBA;
-import static controller.Instrument.BOTTLE;
-import static controller.Instrument.FRENCH_HORN;
-import static controller.Instrument.WOOD_BLOCK;
+import static tunecomposer.Instrument.MARIMBA;
+import static tunecomposer.Instrument.BOTTLE;
+import static tunecomposer.Instrument.FRENCH_HORN;
+import static tunecomposer.Instrument.WOOD_BLOCK;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.tan;

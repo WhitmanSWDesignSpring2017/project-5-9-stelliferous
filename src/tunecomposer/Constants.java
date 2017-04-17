@@ -1,4 +1,4 @@
-package controller;
+package tunecomposer;
 
 /**
  * Stores all the constant for TuneComposer.java to use.

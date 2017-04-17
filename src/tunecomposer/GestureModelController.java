@@ -1,4 +1,4 @@
-package controller;
+package tunecomposer;
 
 import java.util.ArrayList;
 import javafx.fxml.FXML;

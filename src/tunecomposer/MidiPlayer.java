@@ -2,7 +2,7 @@
  * CS 300-A, 2017S
  * Note: altered play() method so that it always starts at the beginning
  */
-package controller;
+package tunecomposer;
 
 import javax.sound.midi.*;
 

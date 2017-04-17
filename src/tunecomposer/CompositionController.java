@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package tunecomposer;
 
-import static controller.Instrument.PIANO;
+import static tunecomposer.Instrument.PIANO;
 import java.io.IOException;
 import static java.lang.Math.abs;
 import java.util.ArrayList;
