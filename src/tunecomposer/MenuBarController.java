@@ -12,6 +12,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 /**
@@ -43,6 +46,7 @@ public class MenuBarController  {
     @FXML MenuItem copyAction;
     @FXML MenuItem cutAction;
     @FXML MenuItem pasteAction;
+    @FXML MenuItem copyCompositionAction;
 
     /**
      * Initializes the main controller. This method was necessary for the 
@@ -250,7 +254,15 @@ public class MenuBarController  {
     
     @FXML
     private void handleCopyAction(ActionEvent e){
-        content.put(DataFormat.PLAIN_TEXT, mainController.notesToString());
+        content.put(DataFormat.PLAIN_TEXT, mainController.notesToString(mainController.selectedNotes));
+        clipboard.setContent(content);
+        System.out.println(content);
+        pasteAction.setDisable(false);
+    }
+    
+    @FXML
+    private void handleCopyCompositionAction(ActionEvent e){
+        content.put(DataFormat.PLAIN_TEXT, mainController.notesToString(mainController.rectList));
         clipboard.setContent(content);
         System.out.println(content);
         pasteAction.setDisable(false);
@@ -357,15 +369,23 @@ public class MenuBarController  {
         addBeatGesture(beatGesture);
     }
     
+ 
+    
     /**
      * Adds notes created by a beat menu item to a gesture and to the screen.
      * @param gesture 
      */
     private void addBeatGesture(ArrayList<NoteRectangle> gesture){
-        checkButtons();
+        Stage fileStage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        fileChooser.showOpenDialog(fileStage);
+        fileStage.show();
+         
+        /**checkButtons();
         mainController.gestureModelController.gestureNoteGroups.add(gesture);
         mainController.gestureModelController.updateGestureRectangle(gesture, "black");
-        mainController.undoRedoActions.undoableAction();
+        mainController.undoRedoActions.undoableAction();**/
     }
     
     /**
@@ -384,11 +404,13 @@ public class MenuBarController  {
             groupAction.setDisable(true);
             copyAction.setDisable(true);
             cutAction.setDisable(true);
+            copyCompositionAction.setDisable(true);
         } else {
             deleteAction.setDisable(false);
             groupAction.setDisable(false);
             copyAction.setDisable(false);
             cutAction.setDisable(false);
+            copyCompositionAction.setDisable(false);
         }
         if (mainController.undoRedoActions.undoableStates.size()> 1 ){
             undoAction.setDisable(false);
@@ -426,6 +448,7 @@ public class MenuBarController  {
         playButton.setDisable(true);
         stopButton.setDisable(true);
         copyAction.setDisable(true);
+        copyCompositionAction.setDisable(true);
         cutAction.setDisable(true);
         pasteAction.setDisable(true);
     }

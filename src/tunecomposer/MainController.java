@@ -1,16 +1,10 @@
 package tunecomposer;
 
 import javafx.fxml.FXML;
-import javafx.scene.input.MouseEvent;
-import java.io.IOException;
-import static java.lang.Math.abs;
 import java.util.ArrayList;
 import java.util.Arrays;
-import javafx.scene.shape.Rectangle;
-import javafx.event.EventHandler;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javax.sound.midi.ShortMessage;
 
@@ -81,14 +75,14 @@ public class MainController {
         menuBarController.everythingDisable();
     }
     
-    protected String notesToString(){
+    protected String notesToString(ArrayList<NoteRectangle> copiedNotes){
         String noteString = "";
         String gestureString = "";
         final String DELIMETER = "";
         ArrayList<ArrayList<NoteRectangle>> copiedGestureList = new ArrayList<>();
-        for(int w = 0; w < selectedNotes.size(); w++){
+        for(int w = 0; w < copiedNotes.size(); w++){
             
-            NoteRectangle currentRect = selectedNotes.get(w);
+            NoteRectangle currentRect = copiedNotes.get(w);
             noteString += DELIMETER + currentRect.getX() + DELIMETER + ";";
             noteString += DELIMETER + currentRect.getY() + DELIMETER + ";";
             noteString += DELIMETER + currentRect.getWidth() + DELIMETER + ";";
@@ -104,7 +98,7 @@ public class MainController {
                     copiedGestureList.add(currentGesture);
                     for(int p=0; p < currentGesture.size();p++){
                         System.out.println("looking THROUGH a gesture");
-                        gestureString += DELIMETER + selectedNotes.indexOf(currentGesture.get(p))+DELIMETER +"&";
+                        gestureString += DELIMETER + copiedNotes.indexOf(currentGesture.get(p))+DELIMETER +"&";
                     }
                     gestureString += DELIMETER + "@";
                 }

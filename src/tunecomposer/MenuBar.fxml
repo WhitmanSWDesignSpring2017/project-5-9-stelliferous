@@ -20,6 +20,7 @@
                 <MenuItem fx:id="redoAction" accelerator="Shortcut+Z+SHIFT" onAction="#handleRedoAction" text="Redo" />
                 <SeparatorMenuItem />
                 <MenuItem fx:id="copyAction" accelerator="Shortcut+C" onAction="#handleCopyAction" text="Copy" />
+                <MenuItem fx:id="copyCompositionAction" accelerator="Shortcut+C+SHIFT" onAction="#handleCopyCompositionAction" text="Copy Composition" />
                 <MenuItem fx:id="cutAction" accelerator="Shortcut+X" onAction="#handleCutAction" text="Cut" />
                 <MenuItem fx:id="pasteAction" accelerator="Shortcut+V" onAction="#handlePasteAction" text="Paste" />
                 <SeparatorMenuItem />
