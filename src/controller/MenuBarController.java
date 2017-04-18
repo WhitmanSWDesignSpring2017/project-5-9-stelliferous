@@ -228,9 +228,7 @@ public class MenuBarController  {
     private void handleUndoAction(ActionEvent e){
         stopTune();
         mainController.undoRedoActions.undoAction();
-        mainController.rectList.forEach((e1)-> {
-           mainController.compositionController.initializeNoteRectangle(e1); 
-        });
+        mainController.compositionController.selectRed();
         mainController.compositionController.selectRed();
     }
     
@@ -244,7 +242,7 @@ public class MenuBarController  {
         stopTune();
         mainController.undoRedoActions.redoAction();
         mainController.rectList.forEach((e1)-> {
-           mainController.compositionController.initializeNoteRectangle(e1); 
+           mainController.compositionController.selectRed();
         });
         mainController.compositionController.selectRed();
     }
@@ -316,7 +314,7 @@ public class MenuBarController  {
         savedBeat.clear();
         mainController.compositionController.selectedNotes.forEach((note)->{
             savedBeat.add(new NoteRectangle(
-                    note.getX(), note.getY(),  note.getInstrument(), note.getWidth()));
+                    note.getX(), note.getY(),  note.getInstrument(), note.getWidth(),mainController));
         });
     }
     
