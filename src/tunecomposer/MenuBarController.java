@@ -260,7 +260,7 @@ public class MenuBarController  {
     
     @FXML
     private void handleCopyAction(ActionEvent e){
-        content.put(DataFormat.RTF, mainController.notesToString());
+        content.put(DataFormat.PLAIN_TEXT, mainController.notesToString());
         clipboard.setContent(content);
         System.out.println(content);
     }
@@ -274,6 +274,8 @@ public class MenuBarController  {
     private void handlePasteAction(ActionEvent e){
         String pastedNotes = clipboard.getString();
         System.out.println(pastedNotes);
+        mainController.notesFromString(pastedNotes);
+        
     }
     
     /**
