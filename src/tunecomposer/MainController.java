@@ -83,21 +83,34 @@ public class MainController {
     protected String notesToString(){
         String noteString = "";
         String gestureString = "";
+        final String DELIMETER = ">";
         ArrayList<ArrayList<NoteRectangle>> copiedGestureList = new ArrayList<>();
         for(int w = 0; w < selectedNotes.size(); w++){
+            noteString += "&";
+            
             NoteRectangle currentRect = selectedNotes.get(w);
-            noteString += currentRect.getX() + "|";
-            noteString += currentRect.getY() + "|";
-            noteString += currentRect.getWidth() + "|";
-            noteString += currentRect.getInstrument() + "&";
+            noteString += DELIMETER + currentRect.getX() + DELIMETER + "|";
+            noteString += DELIMETER + currentRect.getY() + DELIMETER + "|";
+            noteString += DELIMETER + currentRect.getWidth() + DELIMETER + "|";
+            noteString += DELIMETER + currentRect.getInstrument() + DELIMETER;
+            
+            //adding notes in their gestures...
             for (int g = 0; g < gestureModelController.gestureNoteGroups.size(); g++){
+                System.out.println("looking at a gesture");
                 ArrayList<NoteRectangle> currentGesture = gestureModelController.gestureNoteGroups.get(g);
-                if (currentGesture.contains(currentRect) && 
-                        !copiedGestureList.isEmpty() && !copiedGestureList.contains(currentGesture)){
+                if (currentGesture.contains(currentRect) && !copiedGestureList.contains(currentGesture)){
+                    System.out.println("found a gesture");
                     copiedGestureList.add(currentGesture);
+                    for(int p=0; p < currentGesture.size();p++){
+                        System.out.println("looking THROUGH a gesture");
+                        gestureString += DELIMETER + selectedNotes.indexOf(currentGesture.get(p))+DELIMETER +"&";
+                    }
+                    gestureString += DELIMETER + "*";
+                }
                 }
             }
-        }
+        
+        noteString +=  "--"  + gestureString;
         return noteString;
     }
     
