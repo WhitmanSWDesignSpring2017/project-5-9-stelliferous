@@ -5,7 +5,6 @@
  */
 package tunecomposer;
 
-import static tunecomposer.Instrument.PIANO;
 import java.io.IOException;
 import static java.lang.Math.abs;
 import java.util.ArrayList;
@@ -585,7 +584,7 @@ public class CompositionController {
     /**
      * Initializes the main controller. This method was necessary for the 
      * class to work.
-     * @param aThis the controller that is main
+     * @param aThis the main controller 
      */
     public void init(MainController aThis) {
         mainController = aThis;

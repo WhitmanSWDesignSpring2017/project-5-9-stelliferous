@@ -2,21 +2,16 @@ package tunecomposer;
 
 import static tunecomposer.Instrument.MARIMBA;
 import static tunecomposer.Instrument.BOTTLE;
-import static tunecomposer.Instrument.FRENCH_HORN;
 import static tunecomposer.Instrument.WOOD_BLOCK;
-import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.tan;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
-import tunecomposer.CompositionState;
 import javafx.util.Duration;
 
 /**
@@ -30,17 +25,8 @@ public class MenuBarController  {
     //the main controller of the program
     private MainController mainController; 
     
-   /** //undo/redo controller addition
-    private UndoRedoActions undoController;
-    
-    //redLine controller addition
-    private RedLineController redLineController;
-    
-    //compositionPane controller addition
-    private CompositionController compositionController; */
-    
     //stores saved beats as a listarray of NoteRectangles
-    private ArrayList<NoteRectangle> savedBeat = new ArrayList<>();
+    private final ArrayList<NoteRectangle> savedBeat = new ArrayList<>();
     
     //makes available menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
@@ -171,6 +157,7 @@ public class MenuBarController  {
                 }
             }
         });
+        
         //clears all selected notes from the list of selected notes
         mainController.selectedNotes.clear();
         
