@@ -4,7 +4,7 @@
 
 
 <AnchorPane fx:id="rectAnchorPane" 
-            fx:controller="controller.CompositionController"
+            fx:controller="tunecomposer.CompositionController"
             maxHeight="-Infinity" 
             maxWidth="-Infinity" 
             prefHeight="1280.0" 

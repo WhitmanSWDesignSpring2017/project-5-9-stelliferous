@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane fx:controller="controller.BackgroundController"
+<AnchorPane fx:controller="tunecomposer.BackgroundController"
             fx:id = "backgroundPane"  
             maxHeight="-Infinity"
             maxWidth="-Infinity"

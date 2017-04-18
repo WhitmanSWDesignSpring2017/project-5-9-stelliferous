@@ -7,4 +7,4 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Line?>
 
-<Line fx:id="redLine" endX="0.0" endY="1280.0" startX="0.0" startY="0.0" styleClass="redLine" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RedLineController"/>
+<Line fx:id="redLine" endX="0.0" endY="1280.0" startX="0.0" startY="0.0" styleClass="redLine" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.RedLineController"/>
