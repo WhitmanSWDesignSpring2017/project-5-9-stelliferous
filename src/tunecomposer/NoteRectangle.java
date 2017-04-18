@@ -1,5 +1,6 @@
 package tunecomposer;
 
+import java.io.Serializable;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -13,10 +14,10 @@ import javafx.scene.shape.Rectangle;
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
  */
-public class NoteRectangle {
+public class NoteRectangle implements Serializable{
     
     //the rectangle for the NoteRecangle
-    protected Rectangle notes;
+    protected transient Rectangle notes;
     
     //the channel for the NoteRectangle
     private final int channel;

@@ -8,9 +8,15 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.tan;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import tunecomposer.CompositionState;
 import javafx.util.Duration;
 
 /**
@@ -249,9 +255,13 @@ public class MenuBarController  {
         mainController.compositionController.selectRed();
     }
     
+    final Clipboard clipboard = Clipboard.getSystemClipboard();
+    final ClipboardContent content = new ClipboardContent();
+    
     @FXML
     private void handleCopyAction(ActionEvent e){
-        
+        content.put(DataFormat.RTF, mainController.notesToString());
+        clipboard.setContent(content);
     }
     
     @FXML
@@ -261,7 +271,6 @@ public class MenuBarController  {
     
     @FXML
     private void handlePasteAction(ActionEvent e){
-        
     }
     
     /**

@@ -80,6 +80,27 @@ public class MainController {
         menuBarController.everythingDisable();
     }
     
+    protected String notesToString(){
+        String noteString = "";
+        String gestureString = "";
+        ArrayList<ArrayList<NoteRectangle>> copiedGestureList = new ArrayList<>();
+        for(int w = 0; w < selectedNotes.size(); w++){
+            NoteRectangle currentRect = selectedNotes.get(w);
+            noteString += currentRect.getX() + "|";
+            noteString += currentRect.getY() + "|";
+            noteString += currentRect.getWidth() + "|";
+            noteString += currentRect.getInstrument() + "&";
+            for (int g = 0; g < gestureModelController.gestureNoteGroups.size(); g++){
+                ArrayList<NoteRectangle> currentGesture = gestureModelController.gestureNoteGroups.get(g);
+                if (currentGesture.contains(currentRect) && 
+                        !copiedGestureList.isEmpty() && !copiedGestureList.contains(currentGesture)){
+                    copiedGestureList.add(currentGesture);
+                }
+            }
+        }
+        return noteString;
+    }
+    
      /**
      * Sets up the radio buttons for instrument selection.
      */
