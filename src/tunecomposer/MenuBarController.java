@@ -267,7 +267,8 @@ public class MenuBarController  {
     
     @FXML
     private void handleCutAction(ActionEvent e){
-        
+        handleCopyAction(e);
+        handleDeleteAction(e);
     }
     
     @FXML
