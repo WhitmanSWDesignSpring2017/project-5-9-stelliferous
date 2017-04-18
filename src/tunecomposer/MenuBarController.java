@@ -249,6 +249,21 @@ public class MenuBarController  {
         mainController.compositionController.selectRed();
     }
     
+    @FXML
+    private void handleCopyAction(ActionEvent e){
+        
+    }
+    
+    @FXML
+    private void handleCutAction(ActionEvent e){
+        
+    }
+    
+    @FXML
+    private void handlePasteAction(ActionEvent e){
+        
+    }
+    
     /**
      * Adds a beat (#1) to the composition.
      * @param e on beat 1 addition event

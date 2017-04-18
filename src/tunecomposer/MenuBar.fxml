@@ -17,10 +17,14 @@
             <Menu text="Edit">
               <items>
                 <MenuItem fx:id="undoAction" accelerator="Shortcut+Z" onAction="#handleUndoAction" text="Undo" /> 
-                <MenuItem fx:id="redoAction" accelerator="Shortcut+Y" onAction="#handleRedoAction" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
+                <MenuItem fx:id="redoAction" accelerator="Shortcut+Z+SHIFT" onAction="#handleRedoAction" text="Redo" />
+                <SeparatorMenuItem />
+                <MenuItem fx:id="copyAction" accelerator="Shortcut+C" onAction="#handleCopyAction" text="Copy" />
+                <MenuItem fx:id="cutAction" accelerator="Shortcut+X" onAction="#handleCutAction" text="Cut" />
+                <MenuItem fx:id="pasteAction" accelerator="Shortcut+V" onAction="#handlePasteAction" text="Paste" />
+                <SeparatorMenuItem />
                 <MenuItem fx:id="markButton" accelerator="Shortcut+M" onAction="#handleMarkAction" text="Mark State" />
-                <MenuItem fx:id="revertButton" accelerator="Shortcut+V" onAction="#handleRevertAction" text="Revert to Mark State" />
+                <MenuItem fx:id="revertButton" accelerator="Shortcut+R" onAction="#handleRevertAction" text="Revert to Mark State" />
                 <MenuItem fx:id="selectAllAction" accelerator="Shortcut+A" onAction="#handleSelectAllAction" text="Select All" />
                 <MenuItem fx:id="deleteAction" accelerator="backspace" onAction="#handleDeleteAction" text="Delete" />
                 <MenuItem fx:id="groupAction" accelerator="Shortcut+G" onAction="#handleGroupAction" text="Group" />
