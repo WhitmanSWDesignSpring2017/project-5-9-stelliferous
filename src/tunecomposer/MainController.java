@@ -133,6 +133,13 @@ public class MainController {
            pastedNotes.add(new NoteRectangle(xLocation,yLocation,instrument, width));
        }
        
+       for (int o = 0; o < pastedNotes.size(); o++){
+           NoteRectangle note = pastedNotes.get(o);
+           compositionController.initializeNoteRectangle(note);
+           rectList.add(note);
+           compositionController.rectAnchorPane.getChildren().add(note.notes);
+       }
+       
        if(notesAndGestures.length > 1){
            ArrayList<ArrayList<NoteRectangle>> pastedGestures = new ArrayList<>();
            String[] individualGestureArray = (notesAndGestures[1]).split("@");
@@ -143,8 +150,12 @@ public class MainController {
                    notesInGesture.add(pastedNotes.get(q));
                }
                pastedGestures.add(notesInGesture);
+               gestureModelController.gestureNoteGroups.add(notesInGesture);
+               gestureModelController.resetGestureRectangle(notesInGesture);
+               gestureModelController.updateGestureRectangle(notesInGesture, "red");
            }
            System.out.println("Gestures: "+pastedGestures);
+           
        }
        
        

@@ -275,7 +275,7 @@ public class MenuBarController  {
         String pastedNotes = clipboard.getString();
         System.out.println(pastedNotes);
         mainController.notesFromString(pastedNotes);
-        
+        mainController.undoRedoActions.undoableAction();
     }
     
     /**
