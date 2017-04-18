@@ -1,13 +1,17 @@
 package tunecomposer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import static tunecomposer.Instrument.MARIMBA;
 import static tunecomposer.Instrument.BOTTLE;
 import static tunecomposer.Instrument.WOOD_BLOCK;
 import static java.lang.Math.sin;
 import static java.lang.Math.tan;
 import java.util.ArrayList;
+import java.util.Scanner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -283,6 +287,28 @@ public class MenuBarController  {
         mainController.undoRedoActions.undoableAction();
     }
     
+    @FXML
+    private void handleNotesFromFileAction(ActionEvent e) throws FileNotFoundException{
+        mainController.notesFromString(readFile());
+        mainController.undoRedoActions.undoableAction();
+    }
+    
+    private String readFile() throws FileNotFoundException{
+        String noteString = "";
+        Stage fileStage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT", "*.txt"));
+        fileChooser.setTitle("Open Resource File");
+        File selectedFile = fileChooser.showOpenDialog(fileStage);
+        fileStage.show();
+        if (selectedFile != null) {
+            Scanner scanner = new Scanner(selectedFile);
+            while (scanner.hasNext())
+            noteString += scanner.next();
+        }
+        return noteString;
+    }
+    
     /**
      * Adds a beat (#1) to the composition.
      * @param e on beat 1 addition event
@@ -375,19 +401,17 @@ public class MenuBarController  {
      * Adds notes created by a beat menu item to a gesture and to the screen.
      * @param gesture 
      */
-    private void addBeatGesture(ArrayList<NoteRectangle> gesture){
-        Stage fileStage = new Stage();
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
-        fileChooser.showOpenDialog(fileStage);
-        fileStage.show();
-         
-        /**checkButtons();
+    private void addBeatGesture(ArrayList<NoteRectangle> gesture) { 
+        checkButtons();
         mainController.gestureModelController.gestureNoteGroups.add(gesture);
         mainController.gestureModelController.updateGestureRectangle(gesture, "black");
-        mainController.undoRedoActions.undoableAction();**/
+        mainController.undoRedoActions.undoableAction();
     }
     
+ 
+    /**
+     * Sets the buttons as enabled or disabled as appropriate.
+     */    
     /**
      * Sets the buttons as enabled or disabled as appropriate.
      */
@@ -461,4 +485,6 @@ public class MenuBarController  {
         mainController.redLineController.lineTransition.stop();
         mainController.redLineController.redLine.setVisible(false);
     }
+
+
 }
