@@ -83,15 +83,15 @@ public class MainController {
     protected String notesToString(){
         String noteString = "";
         String gestureString = "";
-        final String DELIMETER = ">";
+        final String DELIMETER = "";
         ArrayList<ArrayList<NoteRectangle>> copiedGestureList = new ArrayList<>();
         for(int w = 0; w < selectedNotes.size(); w++){
             noteString += "&";
             
             NoteRectangle currentRect = selectedNotes.get(w);
-            noteString += DELIMETER + currentRect.getX() + DELIMETER + "|";
-            noteString += DELIMETER + currentRect.getY() + DELIMETER + "|";
-            noteString += DELIMETER + currentRect.getWidth() + DELIMETER + "|";
+            noteString += DELIMETER + currentRect.getX() + DELIMETER + ";";
+            noteString += DELIMETER + currentRect.getY() + DELIMETER + ";";
+            noteString += DELIMETER + currentRect.getWidth() + DELIMETER + ";";
             noteString += DELIMETER + currentRect.getInstrument() + DELIMETER;
             
             //adding notes in their gestures...
@@ -105,13 +105,42 @@ public class MainController {
                         System.out.println("looking THROUGH a gesture");
                         gestureString += DELIMETER + selectedNotes.indexOf(currentGesture.get(p))+DELIMETER +"&";
                     }
-                    gestureString += DELIMETER + "*";
+                    gestureString += DELIMETER + "@";
                 }
                 }
             }
         
         noteString +=  "--"  + gestureString;
         return noteString;
+    }
+    
+    protected void notesFromString(String noteString){
+       String[] notesAndGestures = noteString.split("--");
+       String[] individualNoteArray = (notesAndGestures[0]).split("&");
+       ArrayList<NoteRectangle> pastedNotes = new ArrayList<>();
+       
+       for (int j = 0; j < individualNoteArray.length; j++){
+           String[] noteAttributes = individualNoteArray[j].split(";");
+           double xLocation = Double.parseDouble(noteAttributes[1]);
+           double yLocation = Double.parseDouble(noteAttributes[2]);
+           double width = Double.parseDouble(noteAttributes[3]);
+           String instrumentString = noteAttributes[3];
+           Instrument instrument = Instrument.valueOf(instrumentString);
+           pastedNotes.add(new NoteRectangle(xLocation,yLocation,instrument, width));
+       }
+       
+       ArrayList<ArrayList<NoteRectangle>> pastedGestures = new ArrayList<>();
+       String[] individualGestureArray = (notesAndGestures[1]).split("@");
+       for (int g = 0; g < individualGestureArray.length; g++){
+           ArrayList<NoteRectangle> notesInGesture = new ArrayList<>();
+           String[] gestureIndices = individualGestureArray[g].split("&");
+           for (int q = 0; q < gestureIndices.length; q++){
+               notesInGesture.add(pastedNotes.get(q));
+           }
+           pastedGestures.add(notesInGesture);
+       }
+       
+       //TODO: Initialize pastedNotes and pastedGestures, add to screen
     }
     
      /**
