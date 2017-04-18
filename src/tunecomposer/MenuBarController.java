@@ -54,6 +54,9 @@ public class MenuBarController  {
     @FXML MenuItem stopButton;
     @FXML MenuItem markButton;
     @FXML MenuItem revertButton;
+    @FXML MenuItem copyAction;
+    @FXML MenuItem cutAction;
+    @FXML MenuItem pasteAction;
 
     /**
      * Initializes the main controller. This method was necessary for the 
@@ -263,12 +266,14 @@ public class MenuBarController  {
         content.put(DataFormat.PLAIN_TEXT, mainController.notesToString());
         clipboard.setContent(content);
         System.out.println(content);
+        pasteAction.setDisable(false);
     }
     
     @FXML
     private void handleCutAction(ActionEvent e){
         handleCopyAction(e);
         handleDeleteAction(e);
+        pasteAction.setDisable(false);
     }
     
     @FXML
@@ -390,9 +395,13 @@ public class MenuBarController  {
         if (mainController.selectedNotes.isEmpty()) {
             deleteAction.setDisable(true);
             groupAction.setDisable(true);
+            copyAction.setDisable(true);
+            cutAction.setDisable(true);
         } else {
             deleteAction.setDisable(false);
             groupAction.setDisable(false);
+            copyAction.setDisable(false);
+            cutAction.setDisable(false);
         }
         if (mainController.undoRedoActions.undoableStates.size()> 1 ){
             undoAction.setDisable(false);
@@ -429,6 +438,9 @@ public class MenuBarController  {
         ungroupAllAction.setDisable(true);
         playButton.setDisable(true);
         stopButton.setDisable(true);
+        copyAction.setDisable(true);
+        cutAction.setDisable(true);
+        pasteAction.setDisable(true);
     }
     
     /**

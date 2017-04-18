@@ -62,6 +62,7 @@ public class UndoRedoActions {
         
         //ensure that other stacks and buttons reflect the change
         redoableStates.removeAllElements();
+        
         mainController.menuBarController.checkButtons();
     }
     
