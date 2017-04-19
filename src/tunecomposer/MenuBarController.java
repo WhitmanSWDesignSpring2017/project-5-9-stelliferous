@@ -316,8 +316,10 @@ public class MenuBarController  {
         fileStage.show();
         if (selectedFile != null) {
             Scanner scanner = new Scanner(selectedFile);
-            while (scanner.hasNext())
-            noteString += scanner.next();
+            while (scanner.hasNext()){
+                noteString += scanner.next();
+            }
+            fileStage.close();
         }
         return noteString;
     }
