@@ -54,6 +54,8 @@ public class MenuBarController  {
     @FXML MenuItem cutAction;
     @FXML MenuItem pasteAction;
     @FXML MenuItem copyCompositionAction;
+    @FXML MenuItem notesFromFileAction;
+    @FXML MenuItem selectedNotesToFileAction;
 
     /**
      * Initializes the main controller. This method was necessary for the 
@@ -444,12 +446,14 @@ public class MenuBarController  {
             copyAction.setDisable(true);
             cutAction.setDisable(true);
             copyCompositionAction.setDisable(true);
+            selectedNotesToFileAction.setDisable(true);
         } else {
             deleteAction.setDisable(false);
             groupAction.setDisable(false);
             copyAction.setDisable(false);
             cutAction.setDisable(false);
             copyCompositionAction.setDisable(false);
+            selectedNotesToFileAction.setDisable(false);
         }
         if (mainController.undoRedoActions.undoableStates.size()> 1 ){
             undoAction.setDisable(false);
@@ -490,6 +494,7 @@ public class MenuBarController  {
         copyCompositionAction.setDisable(true);
         cutAction.setDisable(true);
         pasteAction.setDisable(true);
+        selectedNotesToFileAction.setDisable(true);
     }
     
     /**
