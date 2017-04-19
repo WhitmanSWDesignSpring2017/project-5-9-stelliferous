@@ -58,6 +58,7 @@ public class NoteRectangle {
     }
     
     protected final void setAllMouseEvents() {
+        System.out.println("setmouseevent");
         notes.setOnMouseClicked(rectangleOnMoseClickedEventHandler);
         notes.setOnMousePressed(rectangleOnMousePressedEventHandler);
         notes.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);   
@@ -124,12 +125,14 @@ public class NoteRectangle {
             }
             selectRed();
             if (m.isStillSincePress()) {
+                System.out.println("undo");
                 mainController.undoRedoActions.undoableAction();
             }
         }
     };
     
     protected boolean containInSelect() {
+        System.out.println(selectedNotes.contains(this));
         return selectedNotes.contains(this);
     }
     
@@ -209,7 +212,7 @@ public class NoteRectangle {
         
     private double yCoordinate;
     
-    private boolean drag, stretch;
+    private boolean drag = false, stretch = false;
     /**
      * Crete a new EventHandler for the mouseEvent that happens when pressed 
      * on the rectangle.
@@ -367,7 +370,7 @@ public class NoteRectangle {
         */             
         @Override
         public void handle(MouseEvent t) {
-            
+            System.out.println("Release");
             //clear all three arraylists, resets coordinates
             originalX.clear();
             originalY.clear();

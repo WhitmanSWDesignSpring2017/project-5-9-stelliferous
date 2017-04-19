@@ -54,11 +54,12 @@ public class UndoRedoActions {
      * composition and storing that state in UndoableStates.
      */
     protected void undoableAction(){
-        final CompositionState currentState = new CompositionState(mainController.rectList, 
+        final CompositionState newState = new CompositionState(mainController.rectList, 
                                             mainController.selectedNotes, 
                                             mainController.gestureModelController.gestureNoteGroups);
-        undoableStates.push(currentState);
-        deepClone(currentState);
+        undoableStates.push(newState);
+        System.out.println("undoable");
+        deepClone(newState);
         
         //ensure that other stacks and buttons reflect the change
         redoableStates.removeAllElements();
