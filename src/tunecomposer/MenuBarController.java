@@ -12,6 +12,8 @@ import static java.lang.Math.sin;
 import static java.lang.Math.tan;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -300,11 +302,22 @@ public class MenuBarController  {
     
     @FXML
     private void copySelectedNotesToFileAction(ActionEvent e) throws IOException{
-        FileWriter fstream = new FileWriter("Sertatonian.txt");
+        /**FileWriter fstream = new FileWriter("Ash.txt");
         try (BufferedWriter out = new BufferedWriter(fstream)) {
             out.write(mainController.notesToString(mainController.selectedNotes));
             out.flush();
             out.close();
+        }*/
+        
+        Stage fileStage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT", "*.txt"));
+        fileChooser.setTitle("Open Resource File");
+        File selectedFile = fileChooser.showOpenDialog(fileStage);
+        fileStage.show();
+        if (selectedFile != null) {
+            saveFile(mainController.notesToString(mainController.selectedNotes),selectedFile);
+            fileStage.close();
         }
     }
     
@@ -324,6 +337,19 @@ public class MenuBarController  {
             fileStage.close();
         }
         return noteString;
+    }
+    
+    private void saveFile(String noteString, File file){
+        try {
+            FileWriter fileWriter = null;
+             
+            fileWriter = new FileWriter(file);
+            fileWriter.write(noteString);
+            fileWriter.close();
+        } catch (IOException ex) {
+            Logger.getLogger(MenuBarController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
     }
     
     /**
