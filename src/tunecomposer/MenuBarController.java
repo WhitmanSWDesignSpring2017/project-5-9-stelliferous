@@ -1,7 +1,10 @@
 package tunecomposer;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import static tunecomposer.Instrument.MARIMBA;
 import static tunecomposer.Instrument.BOTTLE;
 import static tunecomposer.Instrument.WOOD_BLOCK;
@@ -291,6 +294,16 @@ public class MenuBarController  {
     private void handleNotesFromFileAction(ActionEvent e) throws FileNotFoundException{
         mainController.notesFromString(readFile());
         mainController.undoRedoActions.undoableAction();
+    }
+    
+    @FXML
+    private void copySelectedNotesToFileAction(ActionEvent e) throws IOException{
+        FileWriter fstream = new FileWriter("Sertatonian.txt");
+        try (BufferedWriter out = new BufferedWriter(fstream)) {
+            out.write(mainController.notesToString(mainController.selectedNotes));
+            out.flush();
+            out.close();
+        }
     }
     
     private String readFile() throws FileNotFoundException{

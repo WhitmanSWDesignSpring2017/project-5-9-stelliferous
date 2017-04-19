@@ -24,6 +24,7 @@
                 <MenuItem fx:id="cutAction" accelerator="Shortcut+X" onAction="#handleCutAction" text="Cut" />
                 <MenuItem fx:id="pasteAction" accelerator="Shortcut+V" onAction="#handlePasteAction" text="Paste" />
                 <MenuItem fx:id="notesFromFileAction" accelerator="Shortcut+W" onAction="#handleNotesFromFileAction" text="Read Notes From File" />
+                <MenuItem fx:id="selectedNotesToFileAction" accelerator="Shortcut+T" onAction="#copySelectedNotesToFileAction" text="Copy Selected Notes To File" />
                 <SeparatorMenuItem />
                 <MenuItem fx:id="markButton" accelerator="Shortcut+M" onAction="#handleMarkAction" text="Mark State" />
                 <MenuItem fx:id="revertButton" accelerator="Shortcut+R" onAction="#handleRevertAction" text="Revert to Mark State" />
