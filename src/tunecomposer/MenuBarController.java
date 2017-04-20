@@ -1,6 +1,5 @@
 package tunecomposer;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -16,14 +15,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 /**
@@ -58,6 +55,8 @@ public class MenuBarController  {
     @FXML MenuItem copyCompositionAction;
     @FXML MenuItem notesFromFileAction;
     @FXML MenuItem selectedNotesToFileAction;
+    @FXML MenuItem savedBeatAction;
+    @FXML MenuItem saveAsBeatAction;
 
     /**
      * Initializes the main controller. This method was necessary for the 
@@ -309,8 +308,8 @@ public class MenuBarController  {
         fileStage.show();
         if (selectedFile != null) {
             saveFile(mainController.notesToString(mainController.selectedNotes),selectedFile);
-            fileStage.close();
         }
+        fileStage.close();
     }
     
     private String readFile() throws FileNotFoundException{
@@ -326,8 +325,8 @@ public class MenuBarController  {
             while (scanner.hasNext()){
                 noteString += scanner.next();
             }
-            fileStage.close();
         }
+        fileStage.close();
         return noteString;
     }
     
@@ -413,6 +412,7 @@ public class MenuBarController  {
             savedBeat.add(new NoteRectangle(
                     note.getX(), note.getY(),  note.getInstrument(), note.getWidth()));
         });
+        savedBeatAction.setDisable(false);
     }
     
     /**
@@ -465,6 +465,7 @@ public class MenuBarController  {
             cutAction.setDisable(true);
             copyCompositionAction.setDisable(true);
             selectedNotesToFileAction.setDisable(true);
+            saveAsBeatAction.setDisable(true);
         } else {
             deleteAction.setDisable(false);
             groupAction.setDisable(false);
@@ -472,6 +473,7 @@ public class MenuBarController  {
             cutAction.setDisable(false);
             copyCompositionAction.setDisable(false);
             selectedNotesToFileAction.setDisable(false);
+            saveAsBeatAction.setDisable(false);
         }
         if (mainController.undoRedoActions.undoableStates.size()> 1 ){
             undoAction.setDisable(false);
@@ -513,6 +515,8 @@ public class MenuBarController  {
         cutAction.setDisable(true);
         pasteAction.setDisable(true);
         selectedNotesToFileAction.setDisable(true);
+        savedBeatAction.setDisable(true);
+        saveAsBeatAction.setDisable(true);
     }
     
     /**

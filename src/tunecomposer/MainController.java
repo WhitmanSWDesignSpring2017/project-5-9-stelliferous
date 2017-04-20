@@ -3,7 +3,6 @@ package tunecomposer;
 import javafx.fxml.FXML;
 import java.util.ArrayList;
 import java.util.Arrays;
-import javafx.event.ActionEvent;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
