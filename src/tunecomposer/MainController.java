@@ -3,8 +3,11 @@ package tunecomposer;
 import javafx.fxml.FXML;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javafx.event.ActionEvent;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javax.sound.midi.ShortMessage;
 
@@ -27,6 +30,9 @@ public class MainController {
     //makes available the area where the instrument radio buttons lie
     @FXML VBox instrumentsVBox;
     
+    //makes available note duration slider
+    @FXML Slider durationSlider;
+    
     //makes available the controller for gestures
     @FXML GestureModelController gestureModelController = new GestureModelController();
     
@@ -47,6 +53,9 @@ public class MainController {
     
     //refers to the end of the current notes
     protected double endcomp;
+    
+    //default note length
+    protected double noteLength = 100;
 
     
     protected UndoRedoActions undoRedoActions = new UndoRedoActions(this);
@@ -211,6 +220,13 @@ public class MainController {
             MidiComposition.addNote(pitch, Constants.VOLUME, startTick, 
                     duration, curInstru.getChannel(), Constants.TRACK_INDEX);  
         }
+    }
+    
+    @FXML
+    private void handleDurationSliderAction(MouseEvent e){
+        System.out.println("asparagus");
+        System.out.println(durationSlider.getValue());
+        noteLength = durationSlider.getValue();
     }
 }
 

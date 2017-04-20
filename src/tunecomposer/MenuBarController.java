@@ -302,17 +302,9 @@ public class MenuBarController  {
     
     @FXML
     private void copySelectedNotesToFileAction(ActionEvent e) throws IOException{
-        /**FileWriter fstream = new FileWriter("Ash.txt");
-        try (BufferedWriter out = new BufferedWriter(fstream)) {
-            out.write(mainController.notesToString(mainController.selectedNotes));
-            out.flush();
-            out.close();
-        }*/
-        
         Stage fileStage = new Stage();
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT", "*.txt"));
-        fileChooser.setTitle("Open Resource File");
+        fileChooser.setTitle("Choose txt file to Save To");
         File selectedFile = fileChooser.showOpenDialog(fileStage);
         fileStage.show();
         if (selectedFile != null) {

@@ -275,7 +275,7 @@ public class CompositionController {
         
         //creates a new NoteRectangle object
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*Constants.HEIGHTRECTANGLE, 
-                                               selectedInstrument, 100);
+                                               selectedInstrument, mainController.noteLength);
 
         //create a new rectangle while make sure selectedNotes contains only itself
         if (!t.isControlDown()) {
