@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.ActionEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -64,13 +63,10 @@ public class CopyCompositionActions {
             //find which gestures contain this note, keep track of the index
             //of all notes in those gestures
             for (int g = 0; g < mainController.gestureModelController.gestureNoteGroups.size(); g++){
-                System.out.println("looking at a gesture");
                 ArrayList<NoteRectangle> currentGesture = mainController.gestureModelController.gestureNoteGroups.get(g);
                 if (currentGesture.contains(currentRect) && !copiedGestureList.contains(currentGesture)){
-                    System.out.println("found a gesture");
                     copiedGestureList.add(currentGesture);
                     for(int p=0; p < currentGesture.size();p++){
-                        System.out.println("looking THROUGH a gesture");
                         gestureString += copiedNotes.indexOf(currentGesture.get(p)) +"&";
                     }
                     gestureString += "@";
@@ -102,14 +98,18 @@ public class CopyCompositionActions {
        }
     }
     
+    /**
+     * "Translates" pasted Note Rectangles from string syntax into syntax 
+     * that they may be added to the Composition.
+     * @param individualNoteArray
+     * @return 
+     */
     private ArrayList<NoteRectangle> translatePastedNoteRectangles(String[] individualNoteArray){
        ArrayList<NoteRectangle> pastedNotes = new ArrayList<>();
        
        //translates list of NoteRectangles
        for (int j = 0; j < individualNoteArray.length; j++){
            String[] noteAttributes = individualNoteArray[j].split(";");
-           System.out.println("Notes: "+Arrays.toString(individualNoteArray));
-           System.out.println("Note Attributes: "+Arrays.toString(noteAttributes));
            double xLocation = Double.parseDouble(noteAttributes[0]);
            double yLocation = Double.parseDouble(noteAttributes[1]);
            double width = Double.parseDouble(noteAttributes[2]);
