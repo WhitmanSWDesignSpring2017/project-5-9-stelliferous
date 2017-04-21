@@ -116,16 +116,16 @@ public class GestureModelController {
     }
     
     /**
-     * Resets the rectangle surrounding a gesture.
-     * @param selectedGesture the gesture whose rectangle is to be reset
+     * Upon gesture selection, selects notes within that gesture.
+     * @param selectedGesture the gesture whose notes are to be selected
      */
-    void resetGestureRectangle(ArrayList<NoteRectangle> selectedGesture){
+    void gestureNoteSelection(ArrayList<NoteRectangle> selectedGesture){
         //clears all gesture rectangles
         gestureRectPane.getChildren().clear();
         
-        //TODO: What is this??? This neeeds more internal documentation or helper methods.
         //checks which notes were selected before creation of selection rectangle 
-        //so they remain selected if control is held down regardless of if they're in the selection rectangle
+        //so they remain selected if control is held down regardless of if 
+        //they're in the selection rectangle
         ArrayList<NoteRectangle> copySelected = new ArrayList();
         selectedGesture.forEach((e1)->{
             copySelected.add(e1);
