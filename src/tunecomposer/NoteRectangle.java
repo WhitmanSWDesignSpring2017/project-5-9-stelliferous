@@ -116,10 +116,6 @@ public class NoteRectangle {
         if ((selectedNotes.indexOf(this)!= -1) && (m.isControlDown())){
             mainController.compositionController.deselectWhenControlDown(this);
         } else if ((selectedNotes.indexOf(this) == -1)){
-            //if the rectangle is not selected and control is not down, 
-            //deselect all other rectangles
-            mainController.compositionController.deselectNotes(m);
-            
             //if a selected note is in a gesture, select other notes in that gesture
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
             for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
@@ -139,6 +135,7 @@ public class NoteRectangle {
                 });
             } else {
                 selectedNotes.add(this);
+                System.out.println("selectedNotes.add(this");
             }
         }
         if (m.isStillSincePress()) {
@@ -323,7 +320,6 @@ public class NoteRectangle {
         */             
         @Override
         public void handle(MouseEvent t) {
-            System.out.println("Release");
             if ((selectedNotes.indexOf(this)!= -1) && (!t.isControlDown())) {
                 return;
             }

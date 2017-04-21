@@ -75,6 +75,10 @@ public class CompositionController {
      */
     @FXML 
     private void paneMouseClick(MouseEvent e) throws IOException{
+        System.out.println("pressed");
+        selectedNotes.forEach((e1)-> {
+            originallySelected.add(e1);
+        });
         reset_coordinates(e);
     };
     
@@ -102,16 +106,15 @@ public class CompositionController {
         
         //determine coordinates, size, and style of selection rectangle
         formatSelectionRectangle(w);
-        
-        //if control is not down, deselect all other notes
+
         deselectNotes(w);
         
-        originallySelected.addAll(selectedNotes);
-
         //selects all notes within the selection rectangle
         rectList.forEach((r) -> {
             setSelected(r);
         });   
+        
+        selectRed();
     }
 
     /**
@@ -126,9 +129,6 @@ public class CompositionController {
                 && selectRect.getX()  < r.notes.getX() + (r.notes.getWidth())
                 && selectRect.getY() + (selectRect.getHeight()) > r.notes.getY()
                 && selectRect.getY()  < r.notes.getY() + (r.notes.getHeight())){
-            
-            // select note rectangles within the selection area
-            selectedNotes.add(r);
             
             //create a list of NoteRectangles for use in gestures
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
@@ -152,10 +152,8 @@ public class CompositionController {
             } else {
                 selectedNotes.add(r);
             }
-            
             //style selected notes
-            selectRed();
-        }     
+        }
     }
     
     /**
@@ -165,15 +163,14 @@ public class CompositionController {
     protected void deselectNotes(MouseEvent m){
         //determine whether previously selected notes remain selected
         if(!m.isControlDown()){
-            //if control isn't held down, restyle all non-selected notes
-            rectList.forEach((e1) -> {
-                e1.clearStroke();
-                e1.notes.getStyleClass().add("strokeBlack");
-            });
-            
             //clear the list of selected notes
             selectedNotes.clear();
-        }  
+        } else {
+            selectedNotes.clear();
+            originallySelected.forEach((e1)-> {
+               selectedNotes.add(e1);
+            });
+        }
         
         //reset the gestures depending on the new selectedNotes arrayList
         mainController.gestureModelController.resetGestureRectangle(selectedNotes);
@@ -243,6 +240,8 @@ public class CompositionController {
         
         //creates and places a new NoteRectangle
         prepareNoteRectangle(e);
+        
+        originallySelected.clear();
     };
     
     /**
