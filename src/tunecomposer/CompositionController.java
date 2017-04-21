@@ -150,7 +150,7 @@ public class CompositionController {
             //create a list of NoteRectangles for use in gestures
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
             
-            selectNotes = checkForSelectedNotes(r, selectNotes);
+            selectNotes = mainController.gestureModelController.checkForSelectedNotes(r, selectNotes);
             
             //select the other notes in selected gestures
             if (!selectNotes.isEmpty()) {
@@ -164,22 +164,6 @@ public class CompositionController {
             //style selected notes
             selectRect();
         }     
-    }
-
-    private ArrayList<NoteRectangle> checkForSelectedNotes(NoteRectangle r, ArrayList<NoteRectangle> selectNotes) {
-        //TODO: Shouldn't the GestureController be responsible for this?
-        //      This has a smell of inappropriate intimacy.
-        //check to see if selected notes are in any gestures
-        for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
-            ArrayList currentGesture = mainController.gestureModelController.gestureNoteGroups.get(i);
-            if (currentGesture.contains(r)) {
-                //if selected notes are in gestures, update gestures
-                //and take note of other notes in those gestures
-                selectNotes = currentGesture;
-                break;
-            }
-        }
-        return selectNotes;
     }
     
     /**
