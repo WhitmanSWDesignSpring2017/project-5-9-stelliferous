@@ -58,7 +58,6 @@ public class NoteRectangle {
     }
     
     protected final void setAllMouseEvents() {
-        System.out.println("setmouseevent");
         notes.setOnMouseClicked((MouseEvent o) -> {
             onNoteClick(o);
         });
@@ -115,7 +114,7 @@ public class NoteRectangle {
             return;
         }
         if ((selectedNotes.indexOf(this)!= -1) && (m.isControlDown())){
-            deselectWhenControlDown();
+            mainController.compositionController.deselectWhenControlDown(this);
         } else if ((selectedNotes.indexOf(this) == -1)){
             //if the rectangle is not selected and control is not down, 
             //deselect all other rectangles
@@ -127,7 +126,6 @@ public class NoteRectangle {
                 ArrayList currentGesture = mainController.gestureModelController.gestureNoteGroups.get(i);
                 if (currentGesture.contains(this)) {
                     selectNotes = currentGesture;
-                    selectRed();
                     break;
                 } 
             }
@@ -143,10 +141,10 @@ public class NoteRectangle {
                 selectedNotes.add(this);
             }
         }
-        selectRed();
         if (m.isStillSincePress()) {
             mainController.undoRedoActions.undoableAction();
         }
+        mainController.compositionController.selectRed();
     }
     
     protected boolean containInSelect() {
@@ -154,6 +152,7 @@ public class NoteRectangle {
         return selectedNotes.contains(this);
     }
     
+    /*
     protected void determineCurrentGesture(MouseEvent m) {
         //if a selected note is in a gesture, select other notes in that gesture
         ArrayList<NoteRectangle> containedGesture = new ArrayList<>();
@@ -165,58 +164,18 @@ public class NoteRectangle {
                     } 
                 }
         //select the rectangle that has been clicked on
-                if (!m.isControlDown()) {
-                    selectedNotes.clear();
-                }
-                if (!containedGesture.isEmpty()) {
-                    containedGesture.forEach((e1)-> {
-                        selectedNotes.add(e1);
-                    });
-                } else {
-                    selectedNotes.add(this);
-                }
-            }
-    
-    
-    /**
-     * Deselects a note or gesture when control is held down.
-     * @param rect a NoteRectangle object
-     */
-    private void deselectWhenControlDown(){
-        this.clearStroke();
-        notes.getStyleClass().add("strokeBlack");
-        selectedNotes.remove(this);
-        //if the note is in a gesture, deselect that gesture
-        for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
-            ArrayList currentGesture = mainController.gestureModelController.gestureNoteGroups.get(i);
-            if (currentGesture.contains(this)) {
-               for(int u=0; u < currentGesture.size();u++){
-                   NoteRectangle rectInGesture = (NoteRectangle) currentGesture.get(u);
-                   rectInGesture.clearStroke();
-                   rectInGesture.notes.getStyleClass().add("strokeBlack");
-                   if(selectedNotes.contains(rectInGesture)) selectedNotes.remove(rectInGesture);
-               }
-               break;
-            } 
+        if (!m.isControlDown()) {
+            selectedNotes.clear();
+        }
+        if (!containedGesture.isEmpty()) {
+            containedGesture.forEach((e1)-> {
+            selectedNotes.add(e1);
+        });
+        } else {
+            selectedNotes.add(this);
         }
     }
-    
-    /**
-     * Sets the appearance of any selected rectangles with a red border. and reset
-     * the gestures
-     */
-    protected void selectRed() {
-        mainController.rectList.forEach((e2)-> {
-           e2.clearStroke();
-           e2.notes.getStyleClass().add("strokeBlack");
-        });
-        selectedNotes.forEach((e1) -> {
-           e1.clearStroke();
-           e1.notes.getStyleClass().add("strokeRed");
-        });
-        mainController.gestureModelController.resetGestureRectangle(selectedNotes);
-    }
-    
+    */
     //create a new ArrayList to store original X positions of selected rectangles
     private final ArrayList<Double> originalX = new ArrayList<>();
 
