@@ -1,12 +1,13 @@
 package tunecomposer;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author mauletj
  */
-public class CompositionState {
+public class CompositionState implements Serializable {
     
     //create an ArrayList to store all the noterectangles on the pane of current state
     protected ArrayList<NoteRectangle> rectListState = new ArrayList<>();

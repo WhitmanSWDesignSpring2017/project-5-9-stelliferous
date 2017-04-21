@@ -17,7 +17,7 @@ import javafx.scene.shape.Rectangle;
 public class NoteRectangle {
     
     //the rectangle for the NoteRecangle
-    protected Rectangle notes;
+    protected transient Rectangle notes;
     
     //the channel for the NoteRectangle
     private final int channel;

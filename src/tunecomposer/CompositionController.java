@@ -41,8 +41,11 @@ public class CompositionController {
     private double yCoordinate = 0;
     private double xCoordinate = 0;
     
+    //accesses rectangle that users will control by dragging, renders it invisible
+    @FXML Rectangle selectRect;
+                
     //creates a rectangle that users will control by dragging
-    private final Rectangle selectRect = new Rectangle();
+    //private final Rectangle selectRect = new Rectangle();
     
     //to store a list of selected notes before selection rectangle is dragged
     private ArrayList<NoteRectangle> originallySelected = new ArrayList<>();
@@ -94,7 +97,7 @@ public class CompositionController {
         }
 
         //remove current iteration of selection rectangle
-        rectAnchorPane.getChildren().remove(selectRect);
+        selectRect.setVisible(true);
         
         //determine coordinates, size, and style of selection rectangle
         formatSelectionRectangle(w);
@@ -107,7 +110,7 @@ public class CompositionController {
         //selects all notes within the selection rectangle
         rectList.forEach((r) -> {
             setSelected(r);
-        });    
+        });   
     }
 
     /**
@@ -202,7 +205,6 @@ public class CompositionController {
         selectRect.setWidth(abs(currentX-xCoordinate));
         selectRect.setHeight(abs(currentY-yCoordinate));
         selectRect.getStyleClass().add("selectRect");
-        rectAnchorPane.getChildren().add(selectRect); 
     }
 
     /**
@@ -218,7 +220,7 @@ public class CompositionController {
     @FXML
     private void paneMouseRelease(MouseEvent e){
         //removes 'selection rectangles,' created by dragging, from screen
-        rectAnchorPane.getChildren().remove(selectRect);
+        selectRect.setVisible(false);
         
         /*if the user has dragged on the screen, the method ends; no
         new rectangles are created or selected. If 'shift' key is down, create
@@ -260,7 +262,8 @@ public class CompositionController {
         
         //creates a new NoteRectangle object
         NoteRectangle rect = new NoteRectangle(xCoordinate,y*Constants.HEIGHTRECTANGLE, 
-                                               selectedInstrument, 100, mainController);
+                                               selectedInstrument, mainController.noteLength,mainController);
+
 
         //create a new rectangle while make sure selectedNotes contains only itself
         if (!t.isControlDown()) {
@@ -316,12 +319,13 @@ public class CompositionController {
     /**
      * Initializes the main controller. This method was necessary for the 
      * class to work.
-     * @param aThis the controller that is main
+     * @param aThis the main controller 
      */
     public void init(MainController aThis) {
         mainController = aThis;
         this.rectList = aThis.rectList;
         this.selectedNotes = aThis.selectedNotes;
+        selectRect.setVisible(false);
     }
 
     void createBeat(Instrument instrument, double beatX, double beatY, double beatW, ArrayList<NoteRectangle> beatGesture) {
