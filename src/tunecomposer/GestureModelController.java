@@ -98,11 +98,13 @@ public class GestureModelController {
     
     /**
      * Resets the rectangle surrounding a gesture.
+     * @param selectedGesture the gesture whose rectangle is to be reset
      */
     void resetGestureRectangle(ArrayList<NoteRectangle> selectedGesture){
         //clears all gesture rectangles
         gestureRectPane.getChildren().clear();
         
+        //TODO: What is this??? This neeeds more internal documentation or helper methods.
         //recalculates
         ArrayList<NoteRectangle> copySelected = new ArrayList();
         selectedGesture.forEach((e1)->{
