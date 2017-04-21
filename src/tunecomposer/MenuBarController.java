@@ -166,7 +166,7 @@ public class MenuBarController  {
         mainController.selectedNotes.clear();
         
         //reset gesture rectangles
-        mainController.gestureModelController.resetGestureRectangle(mainController.selectedNotes);
+        mainController.gestureModelController.gestureNoteSelection(mainController.selectedNotes);
         
                         mainController.undoRedoActions.undoableAction();
 
@@ -189,7 +189,7 @@ public class MenuBarController  {
        
         mainController.gestureModelController.gestureNoteGroups.add(0,newGesture);
         mainController.undoRedoActions.undoableAction();
-        mainController.gestureModelController.resetGestureRectangle(mainController.selectedNotes);
+        mainController.gestureModelController.gestureNoteSelection(mainController.selectedNotes);
         
 
     }
@@ -203,7 +203,7 @@ public class MenuBarController  {
         stopTune();
         mainController.gestureModelController.gestureNoteGroups.remove(mainController.selectedNotes);
         mainController.compositionController.selectRect();
-        mainController.gestureModelController.resetGestureRectangle(mainController.selectedNotes);
+        mainController.gestureModelController.gestureNoteSelection(mainController.selectedNotes);
         mainController.undoRedoActions.undoableAction();
     }  
     
@@ -216,7 +216,7 @@ public class MenuBarController  {
     private void handleUngroupAllAction(ActionEvent e){
         stopTune();
         mainController.gestureModelController.gestureNoteGroups.clear();
-        mainController.gestureModelController.resetGestureRectangle(mainController.rectList);
+        mainController.gestureModelController.gestureNoteSelection(mainController.rectList);
         mainController.undoRedoActions.undoableAction();
     }
     

@@ -152,6 +152,26 @@ public class GestureModelController {
             }  
         }
     }
+    
+    /**
+     * Checks to see if selected notes are in any gestures. Returns new list of 
+     * selected notes if a gesture contains the selected note.
+     * @param r the selected notes
+     * @param selectNotes the array of selected notes
+     * @return the new list of selected notes
+     */
+    protected ArrayList<NoteRectangle> checkForSelectedNotes(NoteRectangle r, ArrayList<NoteRectangle> selectNotes) {
+        for (int i=0 ;i < gestureNoteGroups.size();i++) {
+            ArrayList currentGesture = gestureNoteGroups.get(i);
+            if (currentGesture.contains(r)) {
+                //if selected notes are in gestures, update gestures
+                //and take note of other notes in those gestures
+                selectNotes = currentGesture;
+                break;
+            }
+        }
+        return selectNotes;
+    }
 
     /**
      * Initializes the main controller. This method was necessary for the 
