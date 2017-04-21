@@ -41,10 +41,13 @@ public class CompositionController {
     //refers to the end of the current notes
     public double endcomp;
 
+    //TODO: These need more intention-revealing names. 
+    //      How about storing the dragStartMouseEvent instead?
     //stores x and y coordinates, to later calculate distance moved by the mouse
     private double yCoordinate = 0;
     private double xCoordinate = 0;
     
+    // TODO: Create in FXML
     //creates a rectangle that users will control by dragging
     private final Rectangle selectRect = new Rectangle();
     
