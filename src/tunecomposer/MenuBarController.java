@@ -41,6 +41,8 @@ public class MenuBarController  {
     final Clipboard clipboard = Clipboard.getSystemClipboard();
     final ClipboardContent content = new ClipboardContent();
     
+    CopyCompositionActions copyCompositionActions;
+
     //makes available menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
     @FXML MenuItem redoAction;
@@ -69,6 +71,7 @@ public class MenuBarController  {
      */
     public void init(MainController aThis) {
         mainController = aThis; 
+        copyCompositionActions = new CopyCompositionActions(mainController);
     }
     
      /**
@@ -263,7 +266,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleCopyAction(ActionEvent e){
-        content.put(DataFormat.PLAIN_TEXT, mainController.notesToString(mainController.selectedNotes,true));
+        content.put(DataFormat.PLAIN_TEXT, copyCompositionActions.notesToString(mainController.selectedNotes,true));
         clipboard.setContent(content);
         System.out.println(content);
         pasteAction.setDisable(false);
@@ -275,7 +278,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleCopyCompositionAction(ActionEvent e){
-        content.put(DataFormat.PLAIN_TEXT, mainController.notesToString(mainController.rectList,true));
+        content.put(DataFormat.PLAIN_TEXT, copyCompositionActions.notesToString(mainController.rectList,true));
         clipboard.setContent(content);
         System.out.println(content);
         pasteAction.setDisable(false);
@@ -300,7 +303,7 @@ public class MenuBarController  {
     private void handlePasteAction(ActionEvent e){
         String pastedNotes = clipboard.getString();
         System.out.println(pastedNotes);
-        mainController.notesFromString(pastedNotes);
+        copyCompositionActions.notesFromString(pastedNotes);
         mainController.undoRedoActions.undoableAction();
     }
     
@@ -313,7 +316,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleNotesFromFileAction(ActionEvent e) throws FileNotFoundException{
-        mainController.notesFromString(readFile());
+        copyCompositionActions.notesFromString(readFile());
         mainController.undoRedoActions.undoableAction();
     }
     
@@ -331,7 +334,7 @@ public class MenuBarController  {
         File selectedFile = fileChooser.showOpenDialog(fileStage);
         fileStage.show();
         if (selectedFile != null) {
-            saveFile(mainController.notesToString(mainController.selectedNotes,false),selectedFile);
+            saveFile(copyCompositionActions.notesToString(mainController.selectedNotes,false),selectedFile);
         }
         fileStage.close();
     }
