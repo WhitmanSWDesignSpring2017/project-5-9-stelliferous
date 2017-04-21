@@ -25,6 +25,7 @@ import javafx.scene.shape.Rectangle;
 public class CompositionController {
     
     //TODO: Data clump for drag operations.
+    //TODO: rename mouse event parameters so they match "MouseEvent e"
 
     //makes available rectAnchorPane, which stores the rectangles
     @FXML AnchorPane rectAnchorPane;
@@ -138,6 +139,10 @@ public class CompositionController {
      * @param r the note rectangles being tested for selection
      */
     private void setSelected(NoteRectangle r) {
+        
+        //TODO: Extract private helper methods so this is at a consistent level of abstraction.
+        //      Or see if some of these responsibilities can be delegated elsewhere.
+        
         //check if the rectangle is within the selection rectangle
         if (selectRect.getX() + (selectRect.getWidth()) > r.notes.getX()
                 && selectRect.getX()  < r.notes.getX() + (r.notes.getWidth())
@@ -150,6 +155,8 @@ public class CompositionController {
             //create a list of NoteRectangles for use in gestures
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
             
+            //TODO: Shouldn't the GestureController be responsible for this?
+            //      This has a smell of inappropriate intimacy.
             //check to see if selected notes are in any gestures
             for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
                 ArrayList currentGesture = mainController.gestureModelController.gestureNoteGroups.get(i);
