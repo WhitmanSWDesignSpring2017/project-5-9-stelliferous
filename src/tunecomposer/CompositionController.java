@@ -42,8 +42,11 @@ public class CompositionController {
     private double yCoordinate = 0;
     private double xCoordinate = 0;
     
+    //accesses rectangle that users will control by dragging, renders it invisible
+    @FXML Rectangle selectRect;
+                
     //creates a rectangle that users will control by dragging
-    private final Rectangle selectRect = new Rectangle();
+    //private final Rectangle selectRect = new Rectangle();
     
     //create a new ArrayList to store original X positions of selected rectangles
     private final ArrayList<Double> originalX = new ArrayList<>();
@@ -109,7 +112,7 @@ public class CompositionController {
         }
 
         //remove current iteration of selection rectangle
-        rectAnchorPane.getChildren().remove(selectRect);
+        selectRect.setVisible(true);
         
         //determine coordinates, size, and style of selection rectangle
         formatSelectionRectangle(w);
@@ -122,7 +125,7 @@ public class CompositionController {
         //selects all notes within the selection rectangle
         rectList.forEach((r) -> {
             setSelected(r);
-        });    
+        });   
     }
 
     /**
@@ -217,7 +220,6 @@ public class CompositionController {
         selectRect.setWidth(abs(currentX-xCoordinate));
         selectRect.setHeight(abs(currentY-yCoordinate));
         selectRect.getStyleClass().add("selectRect");
-        rectAnchorPane.getChildren().add(selectRect); 
     }
 
     /**
@@ -233,7 +235,7 @@ public class CompositionController {
     @FXML
     private void paneMouseRelease(MouseEvent e){
         //removes 'selection rectangles,' created by dragging, from screen
-        rectAnchorPane.getChildren().remove(selectRect);
+        selectRect.setVisible(false);
         
         /*if the user has dragged on the screen, the method ends; no
         new rectangles are created or selected. If 'shift' key is down, create
@@ -590,6 +592,7 @@ public class CompositionController {
         mainController = aThis;
         this.rectList = aThis.rectList;
         this.selectedNotes = aThis.selectedNotes;
+        selectRect.setVisible(false);
     }
 
     void createBeat(Instrument instrument, double beatX, double beatY, double beatW, ArrayList<NoteRectangle> beatGesture) {
