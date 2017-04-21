@@ -42,6 +42,9 @@ public class GestureModelController {
      * @return  coordinates of the rectangle stored in an array
      */
     private ArrayList<Double> calculateBorder(ArrayList<NoteRectangle> gesture) {
+        //TODO: Briefly explain why you do this in one big method and haven't
+        //      extracted any private helper methods.
+        
         //generates coordinates for comparison
         NoteRectangle currentRect = gesture.get(0);
         double gestureMinX = currentRect.getX();
