@@ -23,6 +23,8 @@ import javafx.scene.shape.Rectangle;
  * @author Kaylin Jarriel
  */
 public class CompositionController {
+    
+    //TODO: Data clump for drag operations.
 
     //makes available rectAnchorPane, which stores the rectangles
     @FXML AnchorPane rectAnchorPane;
