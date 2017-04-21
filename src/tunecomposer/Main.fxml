@@ -26,7 +26,7 @@
                      </children>
                     </Pane>
                   
-                    <fx:include fx:id="redLine" source="redLine.fxml" />    
+                    <fx:include fx:id="redLine" source="RedLine.fxml" />    
                </children>
             </AnchorPane>
           </content>
