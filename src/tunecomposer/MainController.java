@@ -83,18 +83,21 @@ public class MainController {
         menuBarController.everythingDisable();
     }
     
-    protected String notesToString(ArrayList<NoteRectangle> copiedNotes){
+    protected String notesToString(ArrayList<NoteRectangle> copiedNotes, Boolean shift){
         String noteString = "";
         String gestureString = "";
-        final String DELIMETER = "";
+        double shiftNoteByX = 0;
+        if (shift) {
+            shiftNoteByX = 4;
+        }
         ArrayList<ArrayList<NoteRectangle>> copiedGestureList = new ArrayList<>();
         for(int w = 0; w < copiedNotes.size(); w++){
             
             NoteRectangle currentRect = copiedNotes.get(w);
-            noteString += DELIMETER + currentRect.getX() + DELIMETER + ";";
-            noteString += DELIMETER + currentRect.getY() + DELIMETER + ";";
-            noteString += DELIMETER + currentRect.getWidth() + DELIMETER + ";";
-            noteString += DELIMETER + currentRect.getInstrument() + DELIMETER;
+            noteString += (currentRect.getX()+shiftNoteByX) + ";";
+            noteString += currentRect.getY() + ";";
+            noteString += currentRect.getWidth() + ";";
+            noteString += currentRect.getInstrument();
                         noteString += "&";
 
             //adding notes in their gestures...
@@ -106,9 +109,9 @@ public class MainController {
                     copiedGestureList.add(currentGesture);
                     for(int p=0; p < currentGesture.size();p++){
                         System.out.println("looking THROUGH a gesture");
-                        gestureString += DELIMETER + copiedNotes.indexOf(currentGesture.get(p))+DELIMETER +"&";
+                        gestureString += copiedNotes.indexOf(currentGesture.get(p)) +"&";
                     }
-                    gestureString += DELIMETER + "@";
+                    gestureString += "@";
                 }
                 }
             }

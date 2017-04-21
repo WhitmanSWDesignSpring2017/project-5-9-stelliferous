@@ -264,7 +264,7 @@ public class MenuBarController  {
     
     @FXML
     private void handleCopyAction(ActionEvent e){
-        content.put(DataFormat.PLAIN_TEXT, mainController.notesToString(mainController.selectedNotes));
+        content.put(DataFormat.PLAIN_TEXT, mainController.notesToString(mainController.selectedNotes,true));
         clipboard.setContent(content);
         System.out.println(content);
         pasteAction.setDisable(false);
@@ -272,7 +272,7 @@ public class MenuBarController  {
     
     @FXML
     private void handleCopyCompositionAction(ActionEvent e){
-        content.put(DataFormat.PLAIN_TEXT, mainController.notesToString(mainController.rectList));
+        content.put(DataFormat.PLAIN_TEXT, mainController.notesToString(mainController.rectList,true));
         clipboard.setContent(content);
         System.out.println(content);
         pasteAction.setDisable(false);
@@ -307,7 +307,7 @@ public class MenuBarController  {
         File selectedFile = fileChooser.showOpenDialog(fileStage);
         fileStage.show();
         if (selectedFile != null) {
-            saveFile(mainController.notesToString(mainController.selectedNotes),selectedFile);
+            saveFile(mainController.notesToString(mainController.selectedNotes,false),selectedFile);
         }
         fileStage.close();
     }
