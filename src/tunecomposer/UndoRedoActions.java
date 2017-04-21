@@ -63,6 +63,7 @@ public class UndoRedoActions {
         //ensure that other stacks and buttons reflect the change
         redoableStates.removeAllElements();
         mainController.menuBarController.checkButtons();
+        mainController.compositionController.selectRed();
     }
     
     /**
@@ -109,7 +110,8 @@ public class UndoRedoActions {
 
         //deep clone all notes in the rectangle list
         currentState.rectListState.forEach((e1)-> {
-            NoteRectangle cloneRect = new NoteRectangle(e1.getX(),e1.getY(),e1.getInstrument(),e1.getWidth());
+            NoteRectangle cloneRect = new NoteRectangle(e1.getX(),e1.getY(),
+                                        e1.getInstrument(),e1.getWidth(),mainController);
             mainController.rectList.add(cloneRect);
             mainController.compositionController.rectAnchorPane.getChildren().add(cloneRect.notes);
         });
@@ -127,13 +129,6 @@ public class UndoRedoActions {
             });
             mainController.gestureModelController.gestureNoteGroups.add(cloneArray);
         });
-        
-        //initialize all rectangles in the RectList
-        mainController.rectList.forEach((e1)-> {
-           mainController.compositionController.initializeNoteRectangle(e1); 
-        });
-
-        //postCloneButtonCheck(); 
     }
     
     /**
