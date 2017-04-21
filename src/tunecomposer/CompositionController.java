@@ -210,6 +210,9 @@ public class CompositionController {
      * @param w mouse event of the user dragging on the CompositionPane
      */
     private void formatSelectionRectangle(MouseEvent w){
+        
+        //TODO: this method does two things
+        
         //get and store current coordinates
         int currentX = (int)w.getX();
         int currentY = (int)w.getY();
@@ -381,6 +384,7 @@ public class CompositionController {
             rect.notes.getStyleClass().add("unselectedRect");
             selectedNotes.remove(rect);
             //if the note is in a gesture, deselect that gesture
+            //TODO: Could the GestureController be responsible for this?
             for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
                 ArrayList currentGesture = mainController.gestureModelController.gestureNoteGroups.get(i);
                 if (currentGesture.contains(rect)) {
