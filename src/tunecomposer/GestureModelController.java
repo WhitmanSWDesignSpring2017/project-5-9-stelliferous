@@ -172,6 +172,28 @@ public class GestureModelController {
         }
         return selectNotes;
     }
+    
+    /**
+     * If a deselected note in in a gesture, deselects that entire gesture.
+     * @param rect the note being deselected
+     * @param selectNotes the list of selected notes
+     * @return the updated list of selected notes
+     */
+    protected ArrayList<NoteRectangle> checkForDeselectedNotes(NoteRectangle rect, ArrayList<NoteRectangle> selectNotes) {
+        for (int i=0 ;i < gestureNoteGroups.size();i++) {
+            ArrayList currentGesture = gestureNoteGroups.get(i);
+            if (currentGesture.contains(rect)) {
+                for(int u=0; u < currentGesture.size();u++){
+                    NoteRectangle rectInGesture = (NoteRectangle) currentGesture.get(u);
+                    rectInGesture.clearStroke();
+                    rectInGesture.notes.getStyleClass().add("unselectedRect"); 
+                    if(selectNotes.contains(rectInGesture)) selectNotes.remove(rectInGesture);
+                }
+                break;
+            }
+        }
+        return selectNotes;
+    }
 
     /**
      * Initializes the main controller. This method was necessary for the 

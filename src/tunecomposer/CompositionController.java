@@ -43,7 +43,6 @@ public class CompositionController {
     private double mouseInitialY = 0;
     private double mouseInitialX = 0;
     
-    // TODO: Create in FXML
     //creates a rectangle that users will control by dragging
     private final Rectangle selectRect = new Rectangle();
     
@@ -134,9 +133,6 @@ public class CompositionController {
      * @param r the note rectangles being tested for selection
      */
     private void setSelected(NoteRectangle r) {
-        
-        //TODO: Extract private helper methods so this is at a consistent level of abstraction.
-        //      Or see if some of these responsibilities can be delegated elsewhere.
         
         //check if the rectangle is within the selection rectangle
         if (selectRect.getX() + (selectRect.getWidth()) > r.notes.getX()
@@ -363,22 +359,9 @@ public class CompositionController {
      */
     private void deselectWhenControlDown(NoteRectangle rect){
         rect.clearStroke();
-            rect.notes.getStyleClass().add("unselectedRect");
-            selectedNotes.remove(rect);
-            //if the note is in a gesture, deselect that gesture
-            //TODO: Could the GestureController be responsible for this?
-            for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
-                ArrayList currentGesture = mainController.gestureModelController.gestureNoteGroups.get(i);
-                if (currentGesture.contains(rect)) {
-                   for(int u=0; u < currentGesture.size();u++){
-                       NoteRectangle rectInGesture = (NoteRectangle) currentGesture.get(u);
-                       rectInGesture.clearStroke();
-                       rectInGesture.notes.getStyleClass().add("unselectedRect");
-                       if(selectedNotes.contains(rectInGesture)) selectedNotes.remove(rectInGesture);
-                   }
-                   break;
-                } 
-            }
+        rect.notes.getStyleClass().add("unselectedRect");
+        selectedNotes.remove(rect);
+        selectedNotes = mainController.gestureModelController.checkForDeselectedNotes(rect, selectedNotes);
     }
     
     /**
