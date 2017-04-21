@@ -23,8 +23,6 @@ import javafx.scene.shape.Rectangle;
  * @author Kaylin Jarriel
  */
 public class CompositionController {
-    
-    //TODO: Data clump for drag operations.
 
     //makes available rectAnchorPane, which stores the rectangles
     @FXML AnchorPane rectAnchorPane;
@@ -152,18 +150,7 @@ public class CompositionController {
             //create a list of NoteRectangles for use in gestures
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
             
-            //TODO: Shouldn't the GestureController be responsible for this?
-            //      This has a smell of inappropriate intimacy.
-            //check to see if selected notes are in any gestures
-            for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
-                ArrayList currentGesture = mainController.gestureModelController.gestureNoteGroups.get(i);
-                if (currentGesture.contains(r)) {
-                    //if selected notes are in gestures, update gestures
-                    //and take note of other notes in those gestures
-                    selectNotes = currentGesture;
-                    break;
-                } 
-            }
+            selectNotes = checkForSelectedNotes(r, selectNotes);
             
             //select the other notes in selected gestures
             if (!selectNotes.isEmpty()) {
@@ -177,6 +164,22 @@ public class CompositionController {
             //style selected notes
             selectRect();
         }     
+    }
+
+    private ArrayList<NoteRectangle> checkForSelectedNotes(NoteRectangle r, ArrayList<NoteRectangle> selectNotes) {
+        //TODO: Shouldn't the GestureController be responsible for this?
+        //      This has a smell of inappropriate intimacy.
+        //check to see if selected notes are in any gestures
+        for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
+            ArrayList currentGesture = mainController.gestureModelController.gestureNoteGroups.get(i);
+            if (currentGesture.contains(r)) {
+                //if selected notes are in gestures, update gestures
+                //and take note of other notes in those gestures
+                selectNotes = currentGesture;
+                break;
+            }
+        }
+        return selectNotes;
     }
     
     /**
@@ -197,7 +200,7 @@ public class CompositionController {
         }  
         
         //reset the gestures depending on the new selectedNotes arrayList
-        mainController.gestureModelController.resetGestureRectangle(selectedNotes);
+        mainController.gestureModelController.gestureNoteSelection(selectedNotes);
     }
     
     /**
@@ -298,7 +301,7 @@ public class CompositionController {
                 
         rectList.add(rect);
         selectedNotes.add(rect);
-        mainController.gestureModelController.resetGestureRectangle(selectedNotes);
+        mainController.gestureModelController.gestureNoteSelection(selectedNotes);
         mainController.undoRedoActions.undoableAction();
     }
     
@@ -407,7 +410,7 @@ public class CompositionController {
            e1.clearStroke();
            e1.notes.getStyleClass().add("selectedRect");
         });
-        mainController.gestureModelController.resetGestureRectangle(selectedNotes);
+        mainController.gestureModelController.gestureNoteSelection(selectedNotes);
     }
     
     /**
@@ -513,7 +516,7 @@ public class CompositionController {
                 }
             
                 //reset gestureRectangles
-                mainController.gestureModelController.resetGestureRectangle(selectedNotes);
+                mainController.gestureModelController.gestureNoteSelection(selectedNotes);
             }
         }
     };
@@ -582,7 +585,7 @@ public class CompositionController {
                         *Constants.HEIGHTRECTANGLE;
                 selectedNotes.get(i).setY(finalY);   
             }
-            mainController.gestureModelController.resetGestureRectangle(selectedNotes);
+            mainController.gestureModelController.gestureNoteSelection(selectedNotes);
             if (drag || stretch ) {
                 mainController.undoRedoActions.undoableAction();
             }
