@@ -167,7 +167,7 @@ public class MainController {
            double width = Double.parseDouble(noteAttributes[2]);
            String instrumentString = noteAttributes[3];
            Instrument instrument = Instrument.valueOf(instrumentString);
-           pastedNotes.add(new NoteRectangle(xLocation,yLocation,instrument, width));
+           pastedNotes.add(new NoteRectangle(xLocation,yLocation,instrument, width, this));
        }
         return pastedNotes;
     }
@@ -179,7 +179,6 @@ public class MainController {
     private void initializePastedNotes(ArrayList<NoteRectangle> pastedNotes){
        for (int o = 0; o < pastedNotes.size(); o++){
            NoteRectangle note = pastedNotes.get(o);
-           compositionController.initializeNoteRectangle(note);
            rectList.add(note);
            compositionController.rectAnchorPane.getChildren().add(note.notes);
        }
