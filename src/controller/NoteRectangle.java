@@ -45,7 +45,7 @@ public class NoteRectangle {
         //assigns user-given attribute values of instrument, channel, color
         this.instrument = instrument;
         this.channel = instrument.getChannel();        
-        this.width = 100;
+        this.width = Constants.ORIGINALRECTWIDTH;
         this.mainController = mainController;
         this.selectedNotes = mainController.selectedNotes;
         
@@ -59,7 +59,9 @@ public class NoteRectangle {
     
     protected final void setAllMouseEvents() {
         System.out.println("setmouseevent");
-        notes.setOnMouseClicked(rectangleOnMoseClickedEventHandler);
+        notes.setOnMouseClicked((MouseEvent o) -> {
+            onNoteClick(o);
+        });
         notes.setOnMousePressed(rectangleOnMousePressedEventHandler);
         notes.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);   
         notes.setOnMouseReleased(rectangleOnMouseReleasedEventHandler);
@@ -96,7 +98,7 @@ public class NoteRectangle {
         notes.getStyleClass().clear();
     }
     
-        /**
+    /**
      * When a user clicks on a Rectangle, the event handler calls this method.
      * If a rectangle is already selected and control is down, that 
      * rectangle is deselected and removed from the relevant list. If it is
@@ -106,30 +108,46 @@ public class NoteRectangle {
      * @param m an on-click mouse event
      * @param rect a NoteRectangle object
      */
-    private final EventHandler<MouseEvent> rectangleOnMoseClickedEventHandler = 
-        new EventHandler<MouseEvent>() {
-
-        @Override
-        public void handle(MouseEvent m) {
-            //if the rectangle was selected and 'control' is down, deselect it
-            System.out.println("clicked");
-            System.out.println(selectedNotes);
-            if (containInSelect() && (m.isControlDown())){
-                
-                deselectWhenControlDown();
-            } else {
-                //if the rectangle is not selected and control is not down, 
-                //deselect all other rectangles
-                mainController.compositionController.deselectNotes(m);
-                determineCurrentGesture(m);
+    private void onNoteClick(MouseEvent m){
+        //if the rectangle was selected and 'control' is down, deselect it
+        System.out.println("clicke");
+        if ((selectedNotes.indexOf(this)!= -1) && (!m.isControlDown())) {
+            return;
+        }
+        if ((selectedNotes.indexOf(this)!= -1) && (m.isControlDown())){
+            deselectWhenControlDown();
+        } else if ((selectedNotes.indexOf(this) == -1)){
+            //if the rectangle is not selected and control is not down, 
+            //deselect all other rectangles
+            mainController.compositionController.deselectNotes(m);
+            
+            //if a selected note is in a gesture, select other notes in that gesture
+            ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
+            for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
+                ArrayList currentGesture = mainController.gestureModelController.gestureNoteGroups.get(i);
+                if (currentGesture.contains(this)) {
+                    selectNotes = currentGesture;
+                    selectRed();
+                    break;
+                } 
             }
-            selectRed();
-            if (m.isStillSincePress()) {
-                System.out.println("undo");
-                mainController.undoRedoActions.undoableAction();
+            //select the rectangle that has been clicked on
+            if (!m.isControlDown()) {
+                selectedNotes.clear();
+            }
+            if (!selectNotes.isEmpty()) {
+                selectNotes.forEach((e1)-> {
+                    selectedNotes.add(e1);
+                });
+            } else {
+                selectedNotes.add(this);
             }
         }
-    };
+        selectRed();
+        if (m.isStillSincePress()) {
+            mainController.undoRedoActions.undoableAction();
+        }
+    }
     
     protected boolean containInSelect() {
         System.out.println(selectedNotes.contains(this));
@@ -212,7 +230,7 @@ public class NoteRectangle {
         
     private double yCoordinate;
     
-    private boolean drag = false, stretch = false;
+    private boolean drag = false;
     /**
      * Crete a new EventHandler for the mouseEvent that happens when pressed 
      * on the rectangle.
@@ -235,9 +253,6 @@ public class NoteRectangle {
                 //add all widths of the selected rectangles to the arraylist
                 originalWidth.add(selectedNotes.get(i).getWidth());
             }
-            //determine whether should be performing stretch or drag
-            determineStretch();
-            determineDrag();
         }
     };
     
@@ -251,7 +266,7 @@ public class NoteRectangle {
             if ( xCoordinate >= originalX.get(i)
                  &&
                  xCoordinate <= (originalX.get(i)
-                                 +selectedNotes.get(i).getWidth())
+                                 +selectedNotes.get(i).getWidth()-Constants.STRETCHZONE)
                  && 
                  yCoordinate >= originalY.get(i)
                  && yCoordinate <= (originalY.get(i)+Constants.HEIGHTRECTANGLE) ) 
@@ -262,30 +277,6 @@ public class NoteRectangle {
         }    
     }
         
-    /**
-     * Change the boolean value stretch based on the current position of mouse
-     * True if within the stretching rather than dragging zone
-     */    
-    private void determineStretch() {
-        //define the dragzone to be 5 pixels
-        for (int i=0; i<selectedNotes.size();i++) {
-            //check whether the mouseposition is within the stretching zone
-            if ( xCoordinate >= (originalX.get(i)
-                                +selectedNotes.get(i).getWidth()- Constants.STRETCHZONE)
-                    &&
-                  xCoordinate <= (originalX.get(i)
-                               +selectedNotes.get(i).getWidth())
-                    && 
-                  yCoordinate >= originalY.get(i)
-                    && 
-                  yCoordinate <= (originalY.get(i)+ Constants.HEIGHTRECTANGLE) )
-            {
-                //if true, change the boolean value stretch to true
-                stretch = true;
-            }
-        }        
-    }
-
     /**
      * Create a new EventHandler for the mouseEvent that happens when dragging 
      * the rectangle.
@@ -304,19 +295,18 @@ public class NoteRectangle {
             double offsetX = t.getX() - xCoordinate;
             double offsetY = t.getY() - yCoordinate;
             
-            //perform either stretching or dragging operation on all selected rectangles.
-            for (int i=0; i<selectedNotes.size();i++) {
-                if (stretch) {
-                    doStretchAction(i, offsetX);                        
-                } else if (drag){
-                    doDragAction(i, offsetX, offsetY);
-                } else {
-                    return;
-                }
+            //determine whether should be performing stretch or drag
+            //determineStretch();
+            determineDrag();
             
-                //reset gestureRectangles
-                mainController.gestureModelController.resetGestureRectangle(selectedNotes);
+            //perform either stretching or dragging operation on all selected rectangles.
+            if (drag) {
+                doDragAction(offsetX,offsetY);
+            } else {
+                doStretchAction(offsetX);
             }
+            //reset gestureRectangles
+            mainController.gestureModelController.resetGestureRectangle(selectedNotes);
         }
     };
 
@@ -325,18 +315,20 @@ public class NoteRectangle {
          * @param i the rectangle being acted on
          * @param offsetX the distance the mouse moves horizontally
          */
-        private void doStretchAction(int i, double offsetX) {
-            //get the width of rectangles.
-            double origwidth = originalWidth.get(i);
-            selectedNotes.get(i).setWidth(origwidth+offsetX);
-            //if a 'note' rectangle is not 5px or more, change nothing
-            
-            if (originalWidth.get(i)+offsetX >= Constants.STRETCHZONE ){
-                //set rectangle width
+        private void doStretchAction(double offsetX) {
+            for (int i=0; i<selectedNotes.size();i++) {
+                //get the width of rectangles.
+                double origwidth = originalWidth.get(i);
                 selectedNotes.get(i).setWidth(origwidth+offsetX);
-            } else {
-                //if under 5px, change to 5px
-                selectedNotes.get(i).setWidth(Constants.STRETCHZONE);
+                //if a 'note' rectangle is not 5px or more, change nothing
+            
+                if (originalWidth.get(i)+offsetX >= Constants.STRETCHZONE ){
+                    //set rectangle width
+                    selectedNotes.get(i).setWidth(origwidth+offsetX);
+                } else {
+                    //if under 5px, change to 5px
+                    selectedNotes.get(i).setWidth(Constants.STRETCHZONE);
+                }
             }
         }
         
@@ -346,13 +338,15 @@ public class NoteRectangle {
          * @param offsetX the distance the mouse moves horizontally
          * @param offsetY the distance the mouse moves vertically
          */
-        private void doDragAction(int i, double offsetX, double offsetY) {
+        private void doDragAction(double offsetX, double offsetY) {
+            for (int i=0;i<selectedNotes.size();i++) {
             //if it's dragging operation, set the position of rectangles
             //based on the distance mouse moved
-            double newTranslateX = originalX.get(i) + offsetX;
-            double newTranslateY = originalY.get(i) + offsetY;
-            selectedNotes.get(i).setX(newTranslateX);
-            selectedNotes.get(i).setY(newTranslateY);
+                double newTranslateX = originalX.get(i) + offsetX;
+                double newTranslateY = originalY.get(i) + offsetY;
+                selectedNotes.get(i).setX(newTranslateX);
+                selectedNotes.get(i).setY(newTranslateY);
+            }
         }
     
     
@@ -371,6 +365,9 @@ public class NoteRectangle {
         @Override
         public void handle(MouseEvent t) {
             System.out.println("Release");
+            if ((selectedNotes.indexOf(this)!= -1) && (!t.isControlDown())) {
+                return;
+            }
             //clear all three arraylists, resets coordinates
             originalX.clear();
             originalY.clear();
@@ -384,11 +381,11 @@ public class NoteRectangle {
                 selectedNotes.get(i).setY(finalY);   
             }
             mainController.gestureModelController.resetGestureRectangle(selectedNotes);
-            if (drag || stretch ) {
-                mainController.undoRedoActions.undoableAction();
+            if (!t.isStillSincePress()) {
+                mainController.undoRedoActions.undoableAction();  
             }
+            
             //reset the stretching operation to false
-            stretch = false;
             drag = false;
             
         }

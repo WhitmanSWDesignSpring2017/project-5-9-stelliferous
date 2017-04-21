@@ -25,4 +25,7 @@ public class Constants {
     
     //defines the padding area around gesture outlines
     public static final double GESTURERECTPADDING = 5.0;
+    
+    //defines the initial width of any noterectangle
+    public static final int ORIGINALRECTWIDTH = 100;
 }
