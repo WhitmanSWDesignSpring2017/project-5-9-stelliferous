@@ -45,21 +45,21 @@ public class CompositionController {
     //TODO: These need more intention-revealing names. 
     //      How about storing the dragStartMouseEvent instead?
     //stores x and y coordinates, to later calculate distance moved by the mouse
-    private double yCoordinate = 0;
-    private double xCoordinate = 0;
+    private double mouseInitialY = 0;
+    private double mouseInitialX = 0;
     
     // TODO: Create in FXML
     //creates a rectangle that users will control by dragging
     private final Rectangle selectRect = new Rectangle();
     
     //create a new ArrayList to store original X positions of selected rectangles
-    private final ArrayList<Double> originalX = new ArrayList<>();
+    private final ArrayList<Double> xPositions = new ArrayList<>();
 
     //create a new ArrayList to store original Y positions of selected rectangles
-    private final ArrayList<Double> originalY = new ArrayList<>();
+    private final ArrayList<Double> yPositions = new ArrayList<>();
     
     //create a new ArrayList to store original widths of selected rectangles
-    private final ArrayList<Double> originalWidth = new ArrayList<>();
+    private final ArrayList<Double> widths = new ArrayList<>();
     
     //to store a list of selected notes before selection rectangle is dragged
     private ArrayList<NoteRectangle> originallySelected = new ArrayList<>();
@@ -78,8 +78,8 @@ public class CompositionController {
      */
     private void reset_coordinates(MouseEvent m){
         //resets mouse coordinates
-        xCoordinate = (int)m.getX();
-        yCoordinate = (int)m.getY();
+        mouseInitialX = (int)m.getX();
+        mouseInitialY = (int)m.getY();
         
         //stops ongoing composition-playing events
         mainController.MidiComposition.stop();
@@ -214,24 +214,24 @@ public class CompositionController {
         //TODO: this method does two things
         
         //get and store current coordinates
-        int currentX = (int)w.getX();
-        int currentY = (int)w.getY();
+        int mouseCurrentX = (int)w.getX();
+        int mouseCurrentY = (int)w.getY();
         
         //determine coordinates of top-left corner of the rectangle
-        if (xCoordinate<currentX){
-            selectRect.setX(xCoordinate);
+        if (mouseInitialX<mouseCurrentX){
+            selectRect.setX(mouseInitialX);
         } else {
-            selectRect.setX(currentX);
+            selectRect.setX(mouseCurrentX);
         }
-        if ((yCoordinate<currentY)){
-            selectRect.setY(yCoordinate);
+        if ((mouseInitialY<mouseCurrentY)){
+            selectRect.setY(mouseInitialY);
         } else {
-            selectRect.setY(currentY);
+            selectRect.setY(mouseCurrentY);
         }
         
         //detail, style, and display selection rectangle
-        selectRect.setWidth(abs(currentX-xCoordinate));
-        selectRect.setHeight(abs(currentY-yCoordinate));
+        selectRect.setWidth(abs(mouseCurrentX-mouseInitialX));
+        selectRect.setHeight(abs(mouseCurrentY-mouseInitialY));
         selectRect.getStyleClass().add("selectRect");
         rectAnchorPane.getChildren().add(selectRect); 
     }
@@ -254,8 +254,8 @@ public class CompositionController {
         /*if the user has dragged on the screen, the method ends; no
         new rectangles are created or selected. If 'shift' key is down, create
         new rectangles anyhow */
-        if (((xCoordinate != (int)e.getX()) 
-            || (yCoordinate != (int)e.getY()))
+        if (((mouseInitialX != (int)e.getX()) 
+            || (mouseInitialY != (int)e.getY()))
             && !e.isShiftDown()){
                 //if the selectedNotes is changed, a new compositionState is created
                 if (((!selectedNotes.equals(originallySelected))||
@@ -283,14 +283,14 @@ public class CompositionController {
     private void prepareNoteRectangle(MouseEvent t){
         //gets new mouse coordinates; calculates effective y coordinate
         reset_coordinates(t);            
-        int y = (int) ((yCoordinate)/Constants.HEIGHTRECTANGLE);
+        int y = (int) ((mouseInitialY)/Constants.HEIGHTRECTANGLE);
         
         //checks which instrument is selected
         RadioButton selectedButton = (RadioButton)mainController.instrumentsRadioButton.getSelectedToggle();
         Instrument selectedInstrument = (Instrument)selectedButton.getUserData();        
         
         //creates a new NoteRectangle object
-        NoteRectangle rect = new NoteRectangle(xCoordinate,y*Constants.HEIGHTRECTANGLE, 
+        NoteRectangle rect = new NoteRectangle(mouseInitialX,y*Constants.HEIGHTRECTANGLE, 
                                                selectedInstrument, 100);
 
         //create a new rectangle while make sure selectedNotes contains only itself
@@ -431,10 +431,10 @@ public class CompositionController {
             reset_coordinates(t);
             for (int i=0; i<selectedNotes.size();i++) {
                 //add all orginal positions of the selected rectangles to arraylists
-                originalX.add(selectedNotes.get(i).getX()); 
-                originalY.add(selectedNotes.get(i).getY());
+                xPositions.add(selectedNotes.get(i).getX()); 
+                yPositions.add(selectedNotes.get(i).getY());
                 //add all widths of the selected rectangles to the arraylist
-                originalWidth.add(selectedNotes.get(i).getWidth());
+                widths.add(selectedNotes.get(i).getWidth());
             }
         }
     };
@@ -447,13 +447,13 @@ public class CompositionController {
     private void determineDrag() {
         for (int i=0; i<selectedNotes.size();i++) {
             //check whether the mouseposition is within the dragging zone
-            if ( xCoordinate >= originalX.get(i)
+            if ( mouseInitialX >= xPositions.get(i)
                  &&
-                 xCoordinate <= (originalX.get(i)
+                 mouseInitialX <= (xPositions.get(i)
                                  +selectedNotes.get(i).getWidth())
                  && 
-                 yCoordinate >= originalY.get(i)
-                 && yCoordinate <= (originalY.get(i)+Constants.HEIGHTRECTANGLE) ) 
+                 mouseInitialY >= yPositions.get(i)
+                 && mouseInitialY <= (yPositions.get(i)+Constants.HEIGHTRECTANGLE) ) 
                 {
                  //if true, change the boolean value drag to true
                 drag = true;
@@ -469,15 +469,15 @@ public class CompositionController {
         //define the dragzone to be 5 pixels
         for (int i=0; i<selectedNotes.size();i++) {
             //check whether the mouseposition is within the stretching zone
-            if ( xCoordinate >= (originalX.get(i)
+            if ( mouseInitialX >= (xPositions.get(i)
                                 +selectedNotes.get(i).getWidth()- Constants.STRETCHZONE)
                     &&
-                  xCoordinate <= (originalX.get(i)
+                  mouseInitialX <= (xPositions.get(i)
                                +selectedNotes.get(i).getWidth())
                     && 
-                  yCoordinate >= originalY.get(i)
+                  mouseInitialY >= yPositions.get(i)
                     && 
-                  yCoordinate <= (originalY.get(i)+ Constants.HEIGHTRECTANGLE) )
+                  mouseInitialY <= (yPositions.get(i)+ Constants.HEIGHTRECTANGLE) )
             {
                 //if true, change the boolean value stretch to true
                 stretch = true;
@@ -500,8 +500,8 @@ public class CompositionController {
         @Override
         public void handle(MouseEvent t) {
             //calculate the distance that mouse moved both in x and y axis
-            double offsetX = t.getX() - xCoordinate;
-            double offsetY = t.getY() - yCoordinate;
+            double offsetX = t.getX() - mouseInitialX;
+            double offsetY = t.getY() - mouseInitialY;
             
             //determine whether should be performing stretch or drag
             determineStretch();
@@ -530,11 +530,11 @@ public class CompositionController {
          */
         private void doStretchAction(int i, double offsetX) {
             //get the width of rectangles.
-            double width = originalWidth.get(i);
+            double width = widths.get(i);
             selectedNotes.get(i).setWidth(width+offsetX);
             //if a 'note' rectangle is not 5px or more, change nothing
             
-            if (originalWidth.get(i)+offsetX >= Constants.STRETCHZONE ){
+            if (widths.get(i)+offsetX >= Constants.STRETCHZONE ){
                 //set rectangle width
                 selectedNotes.get(i).setWidth(width+offsetX);
             } else {
@@ -552,8 +552,8 @@ public class CompositionController {
         private void doDragAction(int i, double offsetX, double offsetY) {
             //if it's dragging operation, set the position of rectangles
             //based on the distance mouse moved
-            double newTranslateX = originalX.get(i) + offsetX;
-            double newTranslateY = originalY.get(i) + offsetY;
+            double newTranslateX = xPositions.get(i) + offsetX;
+            double newTranslateY = yPositions.get(i) + offsetY;
             selectedNotes.get(i).setX(newTranslateX);
             selectedNotes.get(i).setY(newTranslateY);
         }
@@ -575,9 +575,9 @@ public class CompositionController {
         public void handle(MouseEvent t) {
             
             //clear all three arraylists, resets coordinates
-            originalX.clear();
-            originalY.clear();
-            originalWidth.clear();
+            xPositions.clear();
+            yPositions.clear();
+            widths.clear();
             reset_coordinates(t);
             
             for (int i=0; i<selectedNotes.size(); i++) {
