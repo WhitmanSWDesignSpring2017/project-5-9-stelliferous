@@ -138,7 +138,7 @@ public class MainController {
     /**
      * Translates notes from a string into the composition of NoteRectangles 
      * and their gestures
-     * @param noteString 
+     * @param noteString takes a string of composition notes
      */
     protected void notesFromString(String noteString){
        String[] notesAndGestures = noteString.split("--");
@@ -174,7 +174,7 @@ public class MainController {
     
     /**
      * Initializes and adds pasted NoteRectangles
-     * @param pastedNotes 
+     * @param pastedNotes list of notes to initialize
      */
     private void initializePastedNotes(ArrayList<NoteRectangle> pastedNotes){
        for (int o = 0; o < pastedNotes.size(); o++){
@@ -186,7 +186,9 @@ public class MainController {
     }
     
     /**
-     * Initializes and adds pasted gestures
+     * Initializes and adds pasted gestures.
+     * @param notesAndGestures a string of notes and gestures to pasted
+     * @param pastedNotes an ArrayList of NoteRectangles to paste to 
      */
     private void initializePastedGestures(String[] notesAndGestures, ArrayList<NoteRectangle> pastedNotes){
         ArrayList<ArrayList<NoteRectangle>> pastedGestures = new ArrayList<>();
