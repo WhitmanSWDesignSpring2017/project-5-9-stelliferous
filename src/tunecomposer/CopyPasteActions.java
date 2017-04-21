@@ -10,10 +10,12 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -21,13 +23,46 @@ import javafx.stage.Stage;
  *
  * @author mauletj
  */
-public class CopyCompositionActions {
+public class CopyPasteActions {
     
     MainController mainController;
     
-    CopyCompositionActions(MainController givenMainController){
+    //system clipboard to store copied and cut notes
+    final Clipboard clipboard = Clipboard.getSystemClipboard();
+    final ClipboardContent content = new ClipboardContent();
+    
+    
+    
+    protected CopyPasteActions(MainController givenMainController){
         this.mainController = givenMainController;
         System.out.println(mainController);
+    }
+    
+     /**
+     * Copies selected notes to the clipboard.
+     */
+    protected void copySelected(){
+        content.put(DataFormat.PLAIN_TEXT, notesToString(mainController.selectedNotes,true));
+        clipboard.setContent(content);
+        System.out.println(content);
+    }
+     
+    /**
+     * Copies entire composition to the clipboard.
+     */
+    protected void copyComposition(){
+        content.put(DataFormat.PLAIN_TEXT, notesToString(mainController.rectList,true));
+        clipboard.setContent(content);
+        System.out.println(content);
+    }
+    
+     /**
+     * Pastes copied notes to the clipboard and adds them to the composition.
+     */
+    protected void paste(){
+        String pastedNotes = clipboard.getString();
+        System.out.println(pastedNotes);
+        notesFromString(pastedNotes);
     }
     
     /**

@@ -37,11 +37,7 @@ public class MenuBarController  {
     //stores saved beats as a listarray of NoteRectangles
     private final ArrayList<NoteRectangle> savedBeat = new ArrayList<>();
     
-    //system clipboard to store copied and cut notes
-    final Clipboard clipboard = Clipboard.getSystemClipboard();
-    final ClipboardContent content = new ClipboardContent();
-    
-    CopyCompositionActions copyCompositionActions;
+    CopyPasteActions copyCompositionActions;
 
     //makes available menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
@@ -71,7 +67,7 @@ public class MenuBarController  {
      */
     public void init(MainController aThis) {
         mainController = aThis; 
-        copyCompositionActions = new CopyCompositionActions(mainController);
+        copyCompositionActions = new CopyPasteActions(mainController);
     }
     
      /**
@@ -249,7 +245,7 @@ public class MenuBarController  {
     }
     
     /**
-     * Redoes the most recently undone change. Does not redo if the last event 
+     * Redo the most recently undone change. Does not redo if the last event 
      * on the pane was not an undo event.
      * @param e 
      */
@@ -266,9 +262,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleCopyAction(ActionEvent e){
-        content.put(DataFormat.PLAIN_TEXT, copyCompositionActions.notesToString(mainController.selectedNotes,true));
-        clipboard.setContent(content);
-        System.out.println(content);
+        copyCompositionActions.copySelected();
         pasteAction.setDisable(false);
     }
     
@@ -278,9 +272,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleCopyCompositionAction(ActionEvent e){
-        content.put(DataFormat.PLAIN_TEXT, copyCompositionActions.notesToString(mainController.rectList,true));
-        clipboard.setContent(content);
-        System.out.println(content);
+        copyCompositionActions.copyComposition();
         pasteAction.setDisable(false);
     }
     
@@ -303,9 +295,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handlePasteAction(ActionEvent e){
-        String pastedNotes = clipboard.getString();
-        System.out.println(pastedNotes);
-        copyCompositionActions.notesFromString(pastedNotes);
+        copyCompositionActions.paste();
         mainController.undoRedoActions.undoableAction();
     }
     
