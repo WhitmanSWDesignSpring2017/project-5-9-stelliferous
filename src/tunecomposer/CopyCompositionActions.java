@@ -5,8 +5,18 @@
  */
 package tunecomposer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  *
@@ -141,5 +151,66 @@ public class CopyCompositionActions {
                mainController.gestureModelController.resetGestureRectangle(notesInGesture);
                mainController.gestureModelController.updateGestureRectangle(notesInGesture, "red");
            }
+    }
+    
+    
+    /**
+     * Allows the user to select a txt file from which to copy notes into
+     * their composition.
+     * @return a string describing the notes
+     * @throws FileNotFoundException 
+     */
+    protected String readFile() throws FileNotFoundException{
+        String noteString = "";
+        Stage fileStage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT", "*.txt"));
+        fileChooser.setTitle("Open Resource File");
+        File selectedFile = fileChooser.showOpenDialog(fileStage);
+        fileStage.show();
+        if (selectedFile != null) {
+            Scanner scanner = new Scanner(selectedFile);
+            while (scanner.hasNext()){
+                noteString += scanner.next();
+            }
+        }
+        fileStage.close();
+        return noteString;
+    }
+    
+    /**
+     * Chooses a txt file to which to copy the composition's notes.
+     * Note: The txt file must be preexisting.
+     * @throws IOException 
+     */
+    protected void copySelectedNotesToFile() throws IOException{
+        Stage fileStage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose txt file to Save To");
+        File selectedFile = fileChooser.showOpenDialog(fileStage);
+        fileStage.show();
+        if (selectedFile != null) {
+            saveFile(notesToString(mainController.selectedNotes,false),selectedFile);
+        }
+        fileStage.close();
+    }
+    
+    /**
+     * Allows the user to write/copy selected notes to a txt file in the proper
+     * syntax.
+     * @param noteString a string representing the current composition
+     * @param file a file to save the string to 
+     */
+    protected void saveFile(String noteString, File file){
+        try {
+            FileWriter fileWriter = null;
+             
+            fileWriter = new FileWriter(file);
+            fileWriter.write(noteString);
+            fileWriter.close();
+        } catch (IOException ex) {
+            Logger.getLogger(MenuBarController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
     }
 }

@@ -284,6 +284,8 @@ public class MenuBarController  {
         pasteAction.setDisable(false);
     }
     
+  
+    
     /**
      * Copies selected notes to the clipboard and deletes them from the composition.
      * @param e a mouse event
@@ -308,6 +310,17 @@ public class MenuBarController  {
     }
     
     /**
+     * Chooses a txt file to which to copy the composition's notes.
+     * Note: The txt file must be preexisting.
+     * @param e a mouse event
+     * @throws IOException 
+     */
+    @FXML
+    private void copySelectedNotesToFileAction(ActionEvent e) throws IOException{
+        copyCompositionActions.copySelectedNotesToFile();
+    }
+    
+    /**
      * Reads notes from a txt file and copies them into the composition.
      * Note: the txt file must contain correct syntax (as used in MainController's
      * NotesFromString) to work properly.
@@ -316,71 +329,10 @@ public class MenuBarController  {
      */
     @FXML
     private void handleNotesFromFileAction(ActionEvent e) throws FileNotFoundException{
-        copyCompositionActions.notesFromString(readFile());
+        copyCompositionActions.notesFromString(copyCompositionActions.readFile());
         mainController.undoRedoActions.undoableAction();
     }
-    
-    /**
-     * Chooses a txt file to which to copy the composition's notes.
-     * Note: The txt file must be preexisting.
-     * @param e a mouse event
-     * @throws IOException 
-     */
-    @FXML
-    private void copySelectedNotesToFileAction(ActionEvent e) throws IOException{
-        Stage fileStage = new Stage();
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose txt file to Save To");
-        File selectedFile = fileChooser.showOpenDialog(fileStage);
-        fileStage.show();
-        if (selectedFile != null) {
-            saveFile(copyCompositionActions.notesToString(mainController.selectedNotes,false),selectedFile);
-        }
-        fileStage.close();
-    }
-    
-    /**
-     * Allows the user to select a txt file from which to copy notes into
-     * their composition.
-     * @return a string describing the notes
-     * @throws FileNotFoundException 
-     */
-    private String readFile() throws FileNotFoundException{
-        String noteString = "";
-        Stage fileStage = new Stage();
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT", "*.txt"));
-        fileChooser.setTitle("Open Resource File");
-        File selectedFile = fileChooser.showOpenDialog(fileStage);
-        fileStage.show();
-        if (selectedFile != null) {
-            Scanner scanner = new Scanner(selectedFile);
-            while (scanner.hasNext()){
-                noteString += scanner.next();
-            }
-        }
-        fileStage.close();
-        return noteString;
-    }
-    
-    /**
-     * Allows the user to write/copy selected notes to a txt file in the proper
-     * syntax.
-     * @param noteString a string representing the current composition
-     * @param file a file to save the string to 
-     */
-    private void saveFile(String noteString, File file){
-        try {
-            FileWriter fileWriter = null;
-             
-            fileWriter = new FileWriter(file);
-            fileWriter.write(noteString);
-            fileWriter.close();
-        } catch (IOException ex) {
-            Logger.getLogger(MenuBarController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         
-    }
+   
     
     /**
      * Adds a beat (#1) to the composition.
