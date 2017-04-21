@@ -89,9 +89,9 @@ public class GestureModelController {
         ArrayList<Double> borderCords = calculateBorder(gesture);        
         Rectangle gestRect = new Rectangle(borderCords.get(0),borderCords.get(1),borderCords.get(2),borderCords.get(3));
         if (color.equals("red")) {
-            gestRect.getStyleClass().add("dashedRed");
+            gestRect.getStyleClass().add("selectedGesture");
         } else {
-            gestRect.getStyleClass().add("dashedBlack");
+            gestRect.getStyleClass().add("unselectedGesture");
         }
         gestureRectPane.getChildren().add(gestRect);
     }

@@ -180,7 +180,7 @@ public class CompositionController {
             //if control isn't held down, restyle all non-selected notes
             rectList.forEach((e1) -> {
                 e1.clearStroke();
-                e1.notes.getStyleClass().add("strokeBlack");
+                e1.notes.getStyleClass().add("unselectedRect");
             });
             
             //clear the list of selected notes
@@ -366,7 +366,7 @@ public class CompositionController {
      */
     private void deselectWhenControlDown(NoteRectangle rect){
         rect.clearStroke();
-            rect.notes.getStyleClass().add("strokeBlack");
+            rect.notes.getStyleClass().add("unselectedRect");
             selectedNotes.remove(rect);
             //if the note is in a gesture, deselect that gesture
             for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
@@ -375,7 +375,7 @@ public class CompositionController {
                    for(int u=0; u < currentGesture.size();u++){
                        NoteRectangle rectInGesture = (NoteRectangle) currentGesture.get(u);
                        rectInGesture.clearStroke();
-                       rectInGesture.notes.getStyleClass().add("strokeBlack");
+                       rectInGesture.notes.getStyleClass().add("unselectedRect");
                        if(selectedNotes.contains(rectInGesture)) selectedNotes.remove(rectInGesture);
                    }
                    break;
@@ -390,11 +390,11 @@ public class CompositionController {
     protected void selectRed() {
         rectList.forEach((e2)-> {
            e2.clearStroke();
-           e2.notes.getStyleClass().add("strokeBlack");
+           e2.notes.getStyleClass().add("unselectedRect");
         });
         selectedNotes.forEach((e1) -> {
            e1.clearStroke();
-           e1.notes.getStyleClass().add("strokeRed");
+           e1.notes.getStyleClass().add("selectedRect");
         });
         mainController.gestureModelController.resetGestureRectangle(selectedNotes);
     }
