@@ -139,7 +139,7 @@ public class MenuBarController  {
         for (int i =0; i<mainController.rectList.size(); i++){
             mainController.selectedNotes.add(mainController.rectList.get(i));
         }   
-        mainController.compositionController.selectRed();
+        mainController.compositionController.selectRect();
         mainController.undoRedoActions.undoableAction();
     }
     
@@ -202,7 +202,7 @@ public class MenuBarController  {
     private void handleUngroupAction(ActionEvent e){
         stopTune();
         mainController.gestureModelController.gestureNoteGroups.remove(mainController.selectedNotes);
-        mainController.compositionController.selectRed();
+        mainController.compositionController.selectRect();
         mainController.gestureModelController.resetGestureRectangle(mainController.selectedNotes);
         mainController.undoRedoActions.undoableAction();
     }  
@@ -231,7 +231,7 @@ public class MenuBarController  {
         mainController.rectList.forEach((e1)-> {
            mainController.compositionController.initializeNoteRectangle(e1); 
         });
-        mainController.compositionController.selectRed();
+        mainController.compositionController.selectRect();
     }
     
     /**
@@ -246,7 +246,7 @@ public class MenuBarController  {
         mainController.rectList.forEach((e1)-> {
            mainController.compositionController.initializeNoteRectangle(e1); 
         });
-        mainController.compositionController.selectRed();
+        mainController.compositionController.selectRect();
     }
     
     /**

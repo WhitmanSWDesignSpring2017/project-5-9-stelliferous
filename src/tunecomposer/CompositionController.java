@@ -178,7 +178,7 @@ public class CompositionController {
             }
             
             //style selected notes
-            selectRed();
+            selectRect();
         }     
     }
     
@@ -322,7 +322,7 @@ public class CompositionController {
         rect.setOnMouseClicked((MouseEvent o) -> {
             onNoteClick(o, rect);
         });
-        selectRed();
+        selectRect();
     }
 
     /**
@@ -353,7 +353,7 @@ public class CompositionController {
                 ArrayList currentGesture = mainController.gestureModelController.gestureNoteGroups.get(i);
                 if (currentGesture.contains(rect)) {
                     selectNotes = currentGesture;
-                    selectRed();
+                    selectRect();
                     break;
                 } 
             }
@@ -369,7 +369,7 @@ public class CompositionController {
                 selectedNotes.add(rect);
             }
         }
-        selectRed();
+        selectRect();
         if (m.isStillSincePress()) {
             mainController.undoRedoActions.undoableAction();
         }
@@ -403,7 +403,7 @@ public class CompositionController {
      * Sets the appearance of any selected rectangles with a red border. and reset
      * the gestures
      */
-    protected void selectRed() {
+    protected void selectRect() {
         rectList.forEach((e2)-> {
            e2.clearStroke();
            e2.notes.getStyleClass().add("unselectedRect");
