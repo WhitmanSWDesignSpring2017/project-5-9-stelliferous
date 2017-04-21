@@ -21,6 +21,12 @@ public class GestureModelController {
 
     //the main controller of the program
     private MainController mainController; 
+    
+    //store coordinates for gesture rectangles
+    private double gestureMinX;
+    private double gestureMinY;
+    private double gestureMaxX;
+    private double gestureMaxY;
  
     /**
      * Creates space for a group of notes (a gesture).
@@ -42,18 +48,39 @@ public class GestureModelController {
      * @return  coordinates of the rectangle stored in an array
      */
     private ArrayList<Double> calculateBorder(ArrayList<NoteRectangle> gesture) {
-        //TODO: Briefly explain why you do this in one big method and haven't
-        //      extracted any private helper methods.
-        
-        //generates coordinates for comparison
-        NoteRectangle currentRect = gesture.get(0);
-        double gestureMinX = currentRect.getX();
-        double gestureMinY = currentRect.getY();
-        double gestureMaxX = currentRect.getX() + currentRect.getWidth();
-        double gestureMaxY = currentRect.getY() + Constants.HEIGHTRECTANGLE;
        
-        //compares coordinates of all notes in a gesture to determine the
-        //maximum and minimum X and Y values
+        NoteRectangle currentRect = gesture.get(0);
+        generateCoordinates(currentRect);
+       
+        determineGestureCoords(gesture);
+        
+        //calculates and returns the proper coordinates
+        ArrayList<Double> borderCords = new ArrayList<>();
+        borderCords.add(gestureMinX - Constants.GESTURERECTPADDING);
+        borderCords.add(gestureMinY - Constants.GESTURERECTPADDING);
+        borderCords.add(gestureMaxX - gestureMinX + 2*Constants.GESTURERECTPADDING);
+        borderCords.add(gestureMaxY - gestureMinY + 2*Constants.GESTURERECTPADDING);
+        return borderCords;
+    }
+
+    /**
+     * Generates coordinates for comparison based on a rectangle in the gesture.
+     * @param currentRect the rectangle whose coordinates are being generated
+     */
+    private void generateCoordinates(NoteRectangle currentRect) {
+        gestureMinX = currentRect.getX();
+        gestureMinY = currentRect.getY();
+        gestureMaxX = currentRect.getX() + currentRect.getWidth();
+        gestureMaxY = currentRect.getY() + Constants.HEIGHTRECTANGLE;
+    }
+    
+    /**
+     * Compares coordinates of all notes in a gesture to determine the maximum 
+     * and minimum X and Y values for the gesture rectangle.
+     * @param gesture the gestures whose coordinates are being determined
+     */
+    private void determineGestureCoords(ArrayList<NoteRectangle> gesture) {
+        NoteRectangle currentRect;
         for (int i = 1; i < gesture.size(); i++){
             currentRect = gesture.get(i);
             if (gestureMinY > currentRect.getY() ){
@@ -69,14 +96,6 @@ public class GestureModelController {
                 gestureMaxY = currentRect.getY() + Constants.HEIGHTRECTANGLE ;
             }
         }
-        
-        //calculates and returns the proper coordinates
-        ArrayList<Double> borderCords = new ArrayList<>();
-        borderCords.add(gestureMinX - Constants.GESTURERECTPADDING);
-        borderCords.add(gestureMinY - Constants.GESTURERECTPADDING);
-        borderCords.add(gestureMaxX - gestureMinX + 2*Constants.GESTURERECTPADDING);
-        borderCords.add(gestureMaxY - gestureMinY + 2*Constants.GESTURERECTPADDING);
-        return borderCords;
     }
     
     /**
