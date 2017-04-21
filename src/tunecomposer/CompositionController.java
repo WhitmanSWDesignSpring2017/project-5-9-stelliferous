@@ -98,6 +98,7 @@ public class CompositionController {
 
         //remove current iteration of selection rectangle
         selectRect.setVisible(true);
+        selectRect.toFront();
         
         //determine coordinates, size, and style of selection rectangle
         formatSelectionRectangle(w);

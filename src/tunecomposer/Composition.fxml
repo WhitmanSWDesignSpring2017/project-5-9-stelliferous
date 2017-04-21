@@ -3,24 +3,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-
-<AnchorPane fx:id="rectAnchorPane" 
-            fx:controller="tunecomposer.CompositionController"
-            maxHeight="-Infinity" 
-            maxWidth="-Infinity" 
-            prefHeight="1280.0" 
-            prefWidth="2000.0" 
-            xmlns:fx="http://javafx.com/fxml/1" 
-            xmlns="http://javafx.com/javafx/8.0.111" >
+<AnchorPane fx:id="rectAnchorPane" prefHeight="1280.0" prefWidth="2000.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.CompositionController">
     <children>
-        <AnchorPane fx:id="compositionPane" 
-                    onMouseDragged="#paneMouseDrag" 
-                    onMousePressed="#paneMouseClick" 
-                    onMouseReleased="#paneMouseRelease" 
-                    maxHeight="-Infinity" 
-                    maxWidth="-Infinity" 
-                    prefHeight="1280.0" 
-                    prefWidth="2000.0" />
-        <Rectangle fx:id = "selectRect" />
+        <Rectangle fx:id="selectRect" />
+        <AnchorPane fx:id="compositionPane" onMouseDragged="#paneMouseDrag" onMousePressed="#paneMouseClick" onMouseReleased="#paneMouseRelease" prefHeight="1280.0" prefWidth="2000.0" />
     </children>
 </AnchorPane>
