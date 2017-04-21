@@ -201,14 +201,12 @@ public class CompositionController {
     }
     
     /**
-     * Determines size, coordinates, and style of Selection Rectangle. 
-     * Current mouse coordinates are fetched, and a ' selection rectangle ' 
-     * indicates points from initial mouse click to current mouse location.
+     * Formats the selection rectangle. 
+     * Current mouse coordinates are fetched, and a 'selection rectangle' is 
+     * made that indicates points from initial mouse click to current mouse location.
      * @param e mouse event of the user dragging on the CompositionPane
      */
     private void formatSelectionRectangle(MouseEvent e){
-        
-        //TODO: this method does two things
         
         //get and store current coordinates
         int mouseCurrentX = (int)e.getX();
@@ -226,7 +224,7 @@ public class CompositionController {
             selectRect.setY(mouseCurrentY);
         }
         
-        //detail, style, and display selection rectangle
+        //formats selection rectangle
         selectRect.setWidth(abs(mouseCurrentX-mouseInitialX));
         selectRect.setHeight(abs(mouseCurrentY-mouseInitialY));
         selectRect.getStyleClass().add("selectRect");

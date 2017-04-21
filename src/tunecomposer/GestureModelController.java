@@ -124,7 +124,8 @@ public class GestureModelController {
         gestureRectPane.getChildren().clear();
         
         //TODO: What is this??? This neeeds more internal documentation or helper methods.
-        //recalculates
+        //checks which notes were selected before creation of selection rectangle 
+        //so they remain selected if control is held down regardless of if they're in the selection rectangle
         ArrayList<NoteRectangle> copySelected = new ArrayList();
         selectedGesture.forEach((e1)->{
             copySelected.add(e1);
