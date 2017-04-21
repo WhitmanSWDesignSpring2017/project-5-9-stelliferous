@@ -37,6 +37,10 @@ public class MenuBarController  {
     //stores saved beats as a listarray of NoteRectangles
     private final ArrayList<NoteRectangle> savedBeat = new ArrayList<>();
     
+    //system clipboard to store copied and cut notes
+    final Clipboard clipboard = Clipboard.getSystemClipboard();
+    final ClipboardContent content = new ClipboardContent();
+    
     //makes available menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
     @FXML MenuItem redoAction;
@@ -259,9 +263,10 @@ public class MenuBarController  {
         mainController.compositionController.selectRed();
     }
     
-    final Clipboard clipboard = Clipboard.getSystemClipboard();
-    final ClipboardContent content = new ClipboardContent();
-    
+    /**
+     * Copies selected notes to the clipboard.
+     * @param e a mouse event
+     */
     @FXML
     private void handleCopyAction(ActionEvent e){
         content.put(DataFormat.PLAIN_TEXT, mainController.notesToString(mainController.selectedNotes,true));
@@ -270,6 +275,10 @@ public class MenuBarController  {
         pasteAction.setDisable(false);
     }
     
+    /**
+     * Copies entire composition to the clipboard.
+     * @param e a mouse event
+     */
     @FXML
     private void handleCopyCompositionAction(ActionEvent e){
         content.put(DataFormat.PLAIN_TEXT, mainController.notesToString(mainController.rectList,true));
@@ -278,6 +287,10 @@ public class MenuBarController  {
         pasteAction.setDisable(false);
     }
     
+    /**
+     * Copies selected notes to the clipboard and deletes them from the composition.
+     * @param e a mouse event
+     */
     @FXML
     private void handleCutAction(ActionEvent e){
         handleCopyAction(e);
@@ -285,6 +298,10 @@ public class MenuBarController  {
         pasteAction.setDisable(false);
     }
     
+    /**
+     * Pastes copied notes to the clipboard and adds them to the composition.
+     * @param e a mouse event
+     */
     @FXML
     private void handlePasteAction(ActionEvent e){
         String pastedNotes = clipboard.getString();
@@ -293,12 +310,25 @@ public class MenuBarController  {
         mainController.undoRedoActions.undoableAction();
     }
     
+    /**
+     * Reads notes from a txt file and copies them into the composition.
+     * Note: the txt file must contain correct syntax (as used in MainController's
+     * NotesFromString) to work properly.
+     * @param e a mouse event
+     * @throws FileNotFoundException 
+     */
     @FXML
     private void handleNotesFromFileAction(ActionEvent e) throws FileNotFoundException{
         mainController.notesFromString(readFile());
         mainController.undoRedoActions.undoableAction();
     }
     
+    /**
+     * Chooses a txt file to which to copy the composition's notes.
+     * Note: The txt file must be preexisting.
+     * @param e a mouse event
+     * @throws IOException 
+     */
     @FXML
     private void copySelectedNotesToFileAction(ActionEvent e) throws IOException{
         Stage fileStage = new Stage();
@@ -312,6 +342,12 @@ public class MenuBarController  {
         fileStage.close();
     }
     
+    /**
+     * Allows the user to select a txt file from which to copy notes into
+     * their composition.
+     * @return a string describing the notes
+     * @throws FileNotFoundException 
+     */
     private String readFile() throws FileNotFoundException{
         String noteString = "";
         Stage fileStage = new Stage();
@@ -330,6 +366,12 @@ public class MenuBarController  {
         return noteString;
     }
     
+    /**
+     * Allows the user to write/copy selected notes to a txt file in the proper
+     * syntax.
+     * @param noteString a string representing the current composition
+     * @param file a file to save the string to 
+     */
     private void saveFile(String noteString, File file){
         try {
             FileWriter fileWriter = null;
@@ -444,9 +486,6 @@ public class MenuBarController  {
     }
     
  
-    /**
-     * Sets the buttons as enabled or disabled as appropriate.
-     */    
     /**
      * Sets the buttons as enabled or disabled as appropriate.
      */

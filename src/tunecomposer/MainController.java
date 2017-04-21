@@ -83,16 +83,29 @@ public class MainController {
         menuBarController.everythingDisable();
     }
     
+    /**
+     * Copies the specified NoteRectangles and the gestures that contain them
+     * into a string to be placed on the clipboard. 
+     * @param copiedNotes
+     * @param shift
+     * @return 
+     */
     protected String notesToString(ArrayList<NoteRectangle> copiedNotes, Boolean shift){
+        
+        //initalize the strings used to store the composition data
         String noteString = "";
         String gestureString = "";
+        
+        //if told to shift notes to the right, specify the distance
         double shiftNoteByX = 0;
         if (shift) {
             shiftNoteByX = 4;
         }
+        
         ArrayList<ArrayList<NoteRectangle>> copiedGestureList = new ArrayList<>();
         for(int w = 0; w < copiedNotes.size(); w++){
             
+            //adds to string based on the attributes of the NoteRectangle
             NoteRectangle currentRect = copiedNotes.get(w);
             noteString += (currentRect.getX()+shiftNoteByX) + ";";
             noteString += currentRect.getY() + ";";
@@ -100,7 +113,8 @@ public class MainController {
             noteString += currentRect.getInstrument();
                         noteString += "&";
 
-            //adding notes in their gestures...
+            //find which gestures contain this note, keep track of the index
+            //of all notes in those gestures
             for (int g = 0; g < gestureModelController.gestureNoteGroups.size(); g++){
                 System.out.println("looking at a gesture");
                 ArrayList<NoteRectangle> currentGesture = gestureModelController.gestureNoteGroups.get(g);
@@ -116,16 +130,34 @@ public class MainController {
                 }
             }
         
+        //combine and return the strings with NoteRectangle and gesture data
         noteString +=  "--"  + gestureString;
         return noteString;
     }
     
+    /**
+     * Translates notes from a string into the composition of NoteRectangles 
+     * and their gestures
+     * @param noteString 
+     */
     protected void notesFromString(String noteString){
        String[] notesAndGestures = noteString.split("--");
        String[] individualNoteArray = (notesAndGestures[0]).split("&");
+
+       ArrayList<NoteRectangle> pastedNotes = translatePastedNoteRectangles(individualNoteArray);
+       
+       initializePastedNotes(pastedNotes);
+
+       //adds any gestures
+       if(notesAndGestures.length > 1){
+            initializePastedGestures(notesAndGestures, pastedNotes);
+       }
+    }
+    
+    private ArrayList<NoteRectangle> translatePastedNoteRectangles(String[] individualNoteArray){
        ArrayList<NoteRectangle> pastedNotes = new ArrayList<>();
        
-       
+       //translates list of NoteRectangles
        for (int j = 0; j < individualNoteArray.length; j++){
            String[] noteAttributes = individualNoteArray[j].split(";");
            System.out.println("Notes: "+Arrays.toString(individualNoteArray));
@@ -137,16 +169,27 @@ public class MainController {
            Instrument instrument = Instrument.valueOf(instrumentString);
            pastedNotes.add(new NoteRectangle(xLocation,yLocation,instrument, width));
        }
-       
+        return pastedNotes;
+    }
+    
+    /**
+     * Initializes and adds pasted NoteRectangles
+     * @param pastedNotes 
+     */
+    private void initializePastedNotes(ArrayList<NoteRectangle> pastedNotes){
        for (int o = 0; o < pastedNotes.size(); o++){
            NoteRectangle note = pastedNotes.get(o);
            compositionController.initializeNoteRectangle(note);
            rectList.add(note);
            compositionController.rectAnchorPane.getChildren().add(note.notes);
        }
-       
-       if(notesAndGestures.length > 1){
-           ArrayList<ArrayList<NoteRectangle>> pastedGestures = new ArrayList<>();
+    }
+    
+    /**
+     * Initializes and adds pasted gestures
+     */
+    private void initializePastedGestures(String[] notesAndGestures, ArrayList<NoteRectangle> pastedNotes){
+        ArrayList<ArrayList<NoteRectangle>> pastedGestures = new ArrayList<>();
            String[] individualGestureArray = (notesAndGestures[1]).split("@");
            for (int g = 0; g < individualGestureArray.length; g++){
                ArrayList<NoteRectangle> notesInGesture = new ArrayList<>();
@@ -159,13 +202,6 @@ public class MainController {
                gestureModelController.resetGestureRectangle(notesInGesture);
                gestureModelController.updateGestureRectangle(notesInGesture, "red");
            }
-           System.out.println("Gestures: "+pastedGestures);
-           
-       }
-       
-       
-       //TODO: Initialize pastedNotes and pastedGestures, add to screen
-       System.out.println("Notes: " + pastedNotes);
     }
     
      /**
@@ -224,6 +260,10 @@ public class MainController {
         }
     }
     
+    /**
+     * Changes default note duration when the user moves the slider.
+     * @param e 
+     */
     @FXML
     private void handleDurationSliderAction(MouseEvent e){
         System.out.println("asparagus");
