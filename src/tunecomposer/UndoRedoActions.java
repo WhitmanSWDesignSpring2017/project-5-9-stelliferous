@@ -62,6 +62,7 @@ public class UndoRedoActions {
         
         //ensure that other stacks and buttons reflect the change
         redoableStates.removeAllElements();
+        
         mainController.menuBarController.checkButtons();
     }
     
@@ -132,8 +133,6 @@ public class UndoRedoActions {
         mainController.rectList.forEach((e1)-> {
            mainController.compositionController.initializeNoteRectangle(e1); 
         });
-
-        //postCloneButtonCheck(); 
     }
     
     /**
@@ -149,23 +148,4 @@ public class UndoRedoActions {
         mainController.gestureModelController.gestureNoteGroups.clear();
     }
     
-    /**
-     * Ensure that menu items reflect the changes made by deep cloning a 
-     * state of the composition.
-     
-    private void postCloneButtonCheck(){
-        if (redoableStates.isEmpty()){
-            mainController.menuBarController.redoAction.setDisable(true);
-        }
-       
-        mainController.menuBarController.undoAction.setDisable(false);
-        
-        if (mainController.rectList.isEmpty()) {
-            mainController.menuBarController.selectAllAction.setDisable(true);
-        }
-        if (mainController.selectedNotes.isEmpty()) {
-            mainController.menuBarController.deleteAction.setDisable(true);
-        }   
-    }
-    */
 }

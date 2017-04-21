@@ -1,16 +1,26 @@
 package tunecomposer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import static tunecomposer.Instrument.MARIMBA;
 import static tunecomposer.Instrument.BOTTLE;
-import static tunecomposer.Instrument.FRENCH_HORN;
 import static tunecomposer.Instrument.WOOD_BLOCK;
-import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.tan;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
@@ -24,17 +34,12 @@ public class MenuBarController  {
     //the main controller of the program
     private MainController mainController; 
     
-   /** //undo/redo controller addition
-    private UndoRedoActions undoController;
-    
-    //redLine controller addition
-    private RedLineController redLineController;
-    
-    //compositionPane controller addition
-    private CompositionController compositionController; */
-    
     //stores saved beats as a listarray of NoteRectangles
-    private ArrayList<NoteRectangle> savedBeat = new ArrayList<>();
+    private final ArrayList<NoteRectangle> savedBeat = new ArrayList<>();
+    
+    //system clipboard to store copied and cut notes
+    final Clipboard clipboard = Clipboard.getSystemClipboard();
+    final ClipboardContent content = new ClipboardContent();
     
     //makes available menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
@@ -48,6 +53,14 @@ public class MenuBarController  {
     @FXML MenuItem stopButton;
     @FXML MenuItem markButton;
     @FXML MenuItem revertButton;
+    @FXML MenuItem copyAction;
+    @FXML MenuItem cutAction;
+    @FXML MenuItem pasteAction;
+    @FXML MenuItem copyCompositionAction;
+    @FXML MenuItem notesFromFileAction;
+    @FXML MenuItem selectedNotesToFileAction;
+    @FXML MenuItem savedBeatAction;
+    @FXML MenuItem saveAsBeatAction;
 
     /**
      * Initializes the main controller. This method was necessary for the 
@@ -162,6 +175,7 @@ public class MenuBarController  {
                 }
             }
         });
+        
         //clears all selected notes from the list of selected notes
         mainController.selectedNotes.clear();
         
@@ -250,6 +264,128 @@ public class MenuBarController  {
     }
     
     /**
+     * Copies selected notes to the clipboard.
+     * @param e a mouse event
+     */
+    @FXML
+    private void handleCopyAction(ActionEvent e){
+        content.put(DataFormat.PLAIN_TEXT, mainController.notesToString(mainController.selectedNotes,true));
+        clipboard.setContent(content);
+        System.out.println(content);
+        pasteAction.setDisable(false);
+    }
+    
+    /**
+     * Copies entire composition to the clipboard.
+     * @param e a mouse event
+     */
+    @FXML
+    private void handleCopyCompositionAction(ActionEvent e){
+        content.put(DataFormat.PLAIN_TEXT, mainController.notesToString(mainController.rectList,true));
+        clipboard.setContent(content);
+        System.out.println(content);
+        pasteAction.setDisable(false);
+    }
+    
+    /**
+     * Copies selected notes to the clipboard and deletes them from the composition.
+     * @param e a mouse event
+     */
+    @FXML
+    private void handleCutAction(ActionEvent e){
+        handleCopyAction(e);
+        handleDeleteAction(e);
+        pasteAction.setDisable(false);
+    }
+    
+    /**
+     * Pastes copied notes to the clipboard and adds them to the composition.
+     * @param e a mouse event
+     */
+    @FXML
+    private void handlePasteAction(ActionEvent e){
+        String pastedNotes = clipboard.getString();
+        System.out.println(pastedNotes);
+        mainController.notesFromString(pastedNotes);
+        mainController.undoRedoActions.undoableAction();
+    }
+    
+    /**
+     * Reads notes from a txt file and copies them into the composition.
+     * Note: the txt file must contain correct syntax (as used in MainController's
+     * NotesFromString) to work properly.
+     * @param e a mouse event
+     * @throws FileNotFoundException 
+     */
+    @FXML
+    private void handleNotesFromFileAction(ActionEvent e) throws FileNotFoundException{
+        mainController.notesFromString(readFile());
+        mainController.undoRedoActions.undoableAction();
+    }
+    
+    /**
+     * Chooses a txt file to which to copy the composition's notes.
+     * Note: The txt file must be preexisting.
+     * @param e a mouse event
+     * @throws IOException 
+     */
+    @FXML
+    private void copySelectedNotesToFileAction(ActionEvent e) throws IOException{
+        Stage fileStage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose txt file to Save To");
+        File selectedFile = fileChooser.showOpenDialog(fileStage);
+        fileStage.show();
+        if (selectedFile != null) {
+            saveFile(mainController.notesToString(mainController.selectedNotes,false),selectedFile);
+        }
+        fileStage.close();
+    }
+    
+    /**
+     * Allows the user to select a txt file from which to copy notes into
+     * their composition.
+     * @return a string describing the notes
+     * @throws FileNotFoundException 
+     */
+    private String readFile() throws FileNotFoundException{
+        String noteString = "";
+        Stage fileStage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT", "*.txt"));
+        fileChooser.setTitle("Open Resource File");
+        File selectedFile = fileChooser.showOpenDialog(fileStage);
+        fileStage.show();
+        if (selectedFile != null) {
+            Scanner scanner = new Scanner(selectedFile);
+            while (scanner.hasNext()){
+                noteString += scanner.next();
+            }
+        }
+        fileStage.close();
+        return noteString;
+    }
+    
+    /**
+     * Allows the user to write/copy selected notes to a txt file in the proper
+     * syntax.
+     * @param noteString a string representing the current composition
+     * @param file a file to save the string to 
+     */
+    private void saveFile(String noteString, File file){
+        try {
+            FileWriter fileWriter = null;
+             
+            fileWriter = new FileWriter(file);
+            fileWriter.write(noteString);
+            fileWriter.close();
+        } catch (IOException ex) {
+            Logger.getLogger(MenuBarController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+    }
+    
+    /**
      * Adds a beat (#1) to the composition.
      * @param e on beat 1 addition event
      */
@@ -318,6 +454,7 @@ public class MenuBarController  {
             savedBeat.add(new NoteRectangle(
                     note.getX(), note.getY(),  note.getInstrument(), note.getWidth()));
         });
+        savedBeatAction.setDisable(false);
     }
     
     /**
@@ -335,17 +472,20 @@ public class MenuBarController  {
         addBeatGesture(beatGesture);
     }
     
+ 
+    
     /**
      * Adds notes created by a beat menu item to a gesture and to the screen.
      * @param gesture 
      */
-    private void addBeatGesture(ArrayList<NoteRectangle> gesture){
+    private void addBeatGesture(ArrayList<NoteRectangle> gesture) { 
         checkButtons();
         mainController.gestureModelController.gestureNoteGroups.add(gesture);
         mainController.gestureModelController.updateGestureRectangle(gesture, "black");
         mainController.undoRedoActions.undoableAction();
     }
     
+ 
     /**
      * Sets the buttons as enabled or disabled as appropriate.
      */
@@ -360,9 +500,19 @@ public class MenuBarController  {
         if (mainController.selectedNotes.isEmpty()) {
             deleteAction.setDisable(true);
             groupAction.setDisable(true);
+            copyAction.setDisable(true);
+            cutAction.setDisable(true);
+            copyCompositionAction.setDisable(true);
+            selectedNotesToFileAction.setDisable(true);
+            saveAsBeatAction.setDisable(true);
         } else {
             deleteAction.setDisable(false);
             groupAction.setDisable(false);
+            copyAction.setDisable(false);
+            cutAction.setDisable(false);
+            copyCompositionAction.setDisable(false);
+            selectedNotesToFileAction.setDisable(false);
+            saveAsBeatAction.setDisable(false);
         }
         if (mainController.undoRedoActions.undoableStates.size()> 1 ){
             undoAction.setDisable(false);
@@ -399,6 +549,13 @@ public class MenuBarController  {
         ungroupAllAction.setDisable(true);
         playButton.setDisable(true);
         stopButton.setDisable(true);
+        copyAction.setDisable(true);
+        copyCompositionAction.setDisable(true);
+        cutAction.setDisable(true);
+        pasteAction.setDisable(true);
+        selectedNotesToFileAction.setDisable(true);
+        savedBeatAction.setDisable(true);
+        saveAsBeatAction.setDisable(true);
     }
     
     /**
@@ -409,4 +566,6 @@ public class MenuBarController  {
         mainController.redLineController.lineTransition.stop();
         mainController.redLineController.redLine.setVisible(false);
     }
+
+
 }
