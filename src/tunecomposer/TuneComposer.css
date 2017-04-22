@@ -8,13 +8,13 @@
 }
 
 /* Determines the stroke for unselected rectangles. */
-.strokeBlack{
+.unselectedRect{
     -fx-stroke: black;   
     -fx-stroke-width: 2px;
 }
 
 /* Determines the stroke if the rectangle is selected. */
-.strokeRed{
+.selectedRect{
     -fx-stroke: crimson;
     -fx-stroke-width: 2px;
 }

@@ -51,8 +51,9 @@ public class NoteRectangle {
         
         //creates a new rectangle object for visual representation
         notes = new Rectangle(x,y,width,10);
-        notes.getStyleClass().add("strokeRed");
+        notes.getStyleClass().add("selectedRect");
         setAllMouseEvents();
+
         //creates a new rectangle object for visual representation
         notes.setFill(instrument.getDisplayColor());        
     }

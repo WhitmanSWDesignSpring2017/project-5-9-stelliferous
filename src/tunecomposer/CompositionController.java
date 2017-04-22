@@ -38,14 +38,20 @@ public class CompositionController {
     public double endcomp;
 
     //stores x and y coordinates, to later calculate distance moved by the mouse
-    private double yCoordinate = 0;
-    private double xCoordinate = 0;
+    private double mouseInitialY = 0;
+    private double mouseInitialX = 0;
     
     //accesses rectangle that users will control by dragging, renders it invisible
     @FXML Rectangle selectRect;
-                
-    //creates a rectangle that users will control by dragging
-    //private final Rectangle selectRect = new Rectangle();
+    
+    //create a new ArrayList to store original X positions of selected rectangles
+    private final ArrayList<Double> xPositions = new ArrayList<>();
+
+    //create a new ArrayList to store original Y positions of selected rectangles
+    private final ArrayList<Double> yPositions = new ArrayList<>();
+    
+    //create a new ArrayList to store original widths of selected rectangles
+    private final ArrayList<Double> widths = new ArrayList<>();
     
     //to store a list of selected notes before selection rectangle is dragged
     private ArrayList<NoteRectangle> originallySelected = new ArrayList<>();
@@ -55,12 +61,12 @@ public class CompositionController {
     /**
      * resets the mouse coordinates to allow dragging functionality
      * stops ongoing composition-playing events
-     * @param m a mouse event (on-click, on-release, on-drag, etc)
+     * @param e a mouse event (on-click, on-release, on-drag, etc)
      */
-    private void reset_coordinates(MouseEvent m){
+    private void reset_coordinates(MouseEvent e){
         //resets mouse coordinates
-        xCoordinate = (int)m.getX();
-        yCoordinate = (int)m.getY();
+        mouseInitialX = (int)e.getX();
+        mouseInitialY = (int)e.getY();
         
         //stops ongoing composition-playing events
         mainController.MidiComposition.stop();
@@ -89,14 +95,14 @@ public class CompositionController {
      * of the rectangle. All notes within the
      * area of the ' selection rectangle ' are selected. If control is not held 
      * down, all other notes are deselected.
-     * @param w a mouse dragging event
+     * @param e a mouse dragging event
      */
     @FXML
-    private void paneMouseDrag(MouseEvent w){
+    private void paneMouseDrag(MouseEvent e){
                 
         //if the shift-key is down, do not create a selection rectangle
-        if (w.isShiftDown()){
-            paneMouseRelease(w);
+        if (e.isShiftDown()){
+            paneMouseRelease(e);
             return;
         }
 
@@ -105,9 +111,10 @@ public class CompositionController {
         selectRect.toFront();
         
         //determine coordinates, size, and style of selection rectangle
-        formatSelectionRectangle(w);
-
-        deselectNotes(w);
+        formatSelectionRectangle(e);
+        
+        //if control is not down, deselect all other notes
+        deselectNotes(e);
         
         //selects all notes within the selection rectangle
         rectList.forEach((r) -> {
@@ -124,6 +131,7 @@ public class CompositionController {
      * @param r the note rectangles being tested for selection
      */
     private void setSelected(NoteRectangle r) {
+        
         //check if the rectangle is within the selection rectangle
         if (selectRect.getX() + (selectRect.getWidth()) > r.notes.getX()
                 && selectRect.getX()  < r.notes.getX() + (r.notes.getWidth())
@@ -133,16 +141,7 @@ public class CompositionController {
             //create a list of NoteRectangles for use in gestures
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
             
-            //check to see if selected notes are in any gestures
-            for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
-                ArrayList currentGesture = mainController.gestureModelController.gestureNoteGroups.get(i);
-                if (currentGesture.contains(r)) {
-                    //if selected notes are in gestures, update gestures
-                    //and take note of other notes in those gestures
-                    selectNotes = currentGesture;
-                    break;
-                } 
-            }
+            selectNotes = mainController.gestureModelController.checkForSelectedNotes(r, selectNotes);
             
             //select the other notes in selected gestures
             if (!selectNotes.isEmpty()) {
@@ -152,17 +151,16 @@ public class CompositionController {
             } else {
                 selectedNotes.add(r);
             }
-            //style selected notes
         }
     }
     
     /**
      * If the control key is not held down, deselect all notes
-     * @param m a mouse event
+     * @param e a mouse event
      */
-    protected void deselectNotes(MouseEvent m){
+    protected void deselectNotes(MouseEvent e){
         //determine whether previously selected notes remain selected
-        if(!m.isControlDown()){
+        if(!e.isControlDown()){
             //clear the list of selected notes
             selectedNotes.clear();
         } else {
@@ -173,35 +171,36 @@ public class CompositionController {
         }
         
         //reset the gestures depending on the new selectedNotes arrayList
-        mainController.gestureModelController.resetGestureRectangle(selectedNotes);
+        mainController.gestureModelController.gestureNoteSelection(selectedNotes);
     }
     
     /**
-     * Determines size, coordinates, and style of Selection Rectangle. 
-     * Current mouse coordinates are fetched, and a ' selection rectangle ' 
-     * indicates points from initial mouse click to current mouse location.
-     * @param w mouse event of the user dragging on the CompositionPane
+     * Formats the selection rectangle. 
+     * Current mouse coordinates are fetched, and a 'selection rectangle' is 
+     * made that indicates points from initial mouse click to current mouse location.
+     * @param e mouse event of the user dragging on the CompositionPane
      */
-    private void formatSelectionRectangle(MouseEvent w){
+    private void formatSelectionRectangle(MouseEvent e){
+        
         //get and store current coordinates
-        int currentX = (int)w.getX();
-        int currentY = (int)w.getY();
+        int mouseCurrentX = (int)e.getX();
+        int mouseCurrentY = (int)e.getY();
         
         //determine coordinates of top-left corner of the rectangle
-        if (xCoordinate<currentX){
-            selectRect.setX(xCoordinate);
+        if (mouseInitialX<mouseCurrentX){
+            selectRect.setX(mouseInitialX);
         } else {
-            selectRect.setX(currentX);
+            selectRect.setX(mouseCurrentX);
         }
-        if ((yCoordinate<currentY)){
-            selectRect.setY(yCoordinate);
+        if ((mouseInitialY<mouseCurrentY)){
+            selectRect.setY(mouseInitialY);
         } else {
-            selectRect.setY(currentY);
+            selectRect.setY(mouseCurrentY);
         }
         
-        //detail, style, and display selection rectangle
-        selectRect.setWidth(abs(currentX-xCoordinate));
-        selectRect.setHeight(abs(currentY-yCoordinate));
+        //formats selection rectangle
+        selectRect.setWidth(abs(mouseCurrentX-mouseInitialX));
+        selectRect.setHeight(abs(mouseCurrentY-mouseInitialY));
         selectRect.getStyleClass().add("selectRect");
     }
 
@@ -223,8 +222,8 @@ public class CompositionController {
         /*if the user has dragged on the screen, the method ends; no
         new rectangles are created or selected. If 'shift' key is down, create
         new rectangles anyhow */
-        if (((xCoordinate != (int)e.getX()) 
-            || (yCoordinate != (int)e.getY()))
+        if (((mouseInitialX != (int)e.getX()) 
+            || (mouseInitialY != (int)e.getY()))
             && !e.isShiftDown()){
                 //if the selectedNotes is changed, a new compositionState is created
                 if (((!selectedNotes.equals(originallySelected))||
@@ -249,54 +248,303 @@ public class CompositionController {
      * Assigns mouse events to that rectangle. Adds that rectangle to the
      * list of rectangles, list of selected rectangles, and the visual 
      * rectAnchorPane
-     * @param t an on-click mouse event
+     * @param e an on-click mouse event
      */
-    private void prepareNoteRectangle(MouseEvent t){
+    private void prepareNoteRectangle(MouseEvent e){
         //gets new mouse coordinates; calculates effective y coordinate
-        reset_coordinates(t);            
-        int y = (int) ((yCoordinate)/Constants.HEIGHTRECTANGLE);
+        reset_coordinates(e);            
+        int y = (int) ((mouseInitialY)/Constants.HEIGHTRECTANGLE);
         
         //checks which instrument is selected
         RadioButton selectedButton = (RadioButton)mainController.instrumentsRadioButton.getSelectedToggle();
         Instrument selectedInstrument = (Instrument)selectedButton.getUserData();        
         
         //creates a new NoteRectangle object
-        NoteRectangle rect = new NoteRectangle(xCoordinate,y*Constants.HEIGHTRECTANGLE, 
+        NoteRectangle rect = new NoteRectangle(mouseInitialX,y*Constants.HEIGHTRECTANGLE, 
                                                selectedInstrument, mainController.noteLength,mainController);
 
-
         //create a new rectangle while make sure selectedNotes contains only itself
-        if (!t.isControlDown()) {
+        if (!e.isControlDown()) {
             selectedNotes.clear();
         }
                 
         rectList.add(rect);
         selectedNotes.add(rect);
-        mainController.gestureModelController.resetGestureRectangle(selectedNotes);
+        mainController.gestureModelController.gestureNoteSelection(selectedNotes);
         mainController.undoRedoActions.undoableAction();
     }
     
 
+/*
+        //when an existing NoteRectangle is clicked on, begin selection process
+        rect.setOnMouseClicked((MouseEvent e) -> {
+            onNoteClick(e, rect);
+        });
+        selectRect();
+    }
+
     /**
-     * Sets the appearance of any selected rectangles with a red border. and reset
-     * the gestures
+     * When a user clicks on a Rectangle, the event handler calls this method.
+     * If a rectangle is already selected and control is down, that 
+     * rectangle is deselected and removed from the relevant list. If it is
+     * not selected and control is held, it is added to selected rectangles.
+     * If it is not selected and control is not held, it is selected
+     * and all other rectangles are unselected.
+     * @param e an on-click mouse event
+     * @param rect a NoteRectangle object
      */
-    protected void selectRed() {
-        rectList.forEach((e2)-> {
-           e2.clearStroke();
-           e2.notes.getStyleClass().add("strokeBlack");
-        });
-        selectedNotes.forEach((e1) -> {
-           e1.clearStroke();
-           e1.notes.getStyleClass().add("strokeRed");
-        });
-        mainController.gestureModelController.resetGestureRectangle(selectedNotes);
+ /*   private void onNoteClick(MouseEvent e, NoteRectangle rect){
+        //reset current mouse coordinates
+        reset_coordinates(e);
+
+        //if the rectangle was selected and 'control' is down, deselect it
+        if ((selectedNotes.indexOf(rect)!= -1) && (e.isControlDown())){
+            deselectWhenControlDown(rect);
+        } else if ((selectedNotes.indexOf(rect) == -1)){
+            //if the rectangle is not selected and control is not down, 
+            //deselect all other rectangles
+            deselectNotes(e);
+            
+            //if a selected note is in a gesture, select other notes in that gesture
+            ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
+            for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
+                ArrayList currentGesture = mainController.gestureModelController.gestureNoteGroups.get(i);
+                if (currentGesture.contains(rect)) {
+                    selectNotes = currentGesture;
+                    selectRect();
+                    break;
+                } 
+            }
+            //select the rectangle that has been clicked on
+            if (!e.isControlDown()) {
+                selectedNotes.clear();
+            }
+            if (!selectNotes.isEmpty()) {
+                selectNotes.forEach((e1)-> {
+                    selectedNotes.add(e1);
+                });
+            } else {
+                selectedNotes.add(rect);
+            }
+        }
+        selectRect();
+        if (e.isStillSincePress()) {
+            mainController.undoRedoActions.undoableAction();
+        }
     }
     
     /**
      * Deselects a note or gesture when control is held down.
      * @param rect a NoteRectangle object
      */
+/*    private void deselectWhenControlDown(NoteRectangle rect){
+        rect.clearStroke();
+        rect.notes.getStyleClass().add("unselectedRect");
+        selectedNotes.remove(rect);
+        selectedNotes = mainController.gestureModelController.checkForDeselectedNotes(rect, selectedNotes);
+    }
+    */
+
+    /**
+     * Sets the appearance of any selected rectangles with a red border. and reset
+     * the gestures
+     */
+    protected void selectRect() {
+        rectList.forEach((e2)-> {
+           e2.clearStroke();
+           e2.notes.getStyleClass().add("unselectedRect");
+        });
+        selectedNotes.forEach((e1) -> {
+           e1.clearStroke();
+           e1.notes.getStyleClass().add("selectedRect");
+        });
+        mainController.gestureModelController.gestureNoteSelection(selectedNotes);
+    }
+    
+    /**
+     * Deselects a note or gesture when control is held down.
+     * @param rect a NoteRectangle object
+     */
+  /*  private final EventHandler<MouseEvent> rectangleOnMousePressedEventHandler = 
+        new EventHandler<MouseEvent>() {
+        /**
+        * override the handle method in the EventHandler class to create event when
+        * the rectangle got pressed
+        * @param e occurs on mouse press event 
+        */
+  /*      @Override
+        public void handle(MouseEvent e) {
+            reset_coordinates(e);
+            for (int i=0; i<selectedNotes.size();i++) {
+                //add all orginal positions of the selected rectangles to arraylists
+                xPositions.add(selectedNotes.get(i).getX()); 
+                yPositions.add(selectedNotes.get(i).getY());
+                //add all widths of the selected rectangles to the arraylist
+                widths.add(selectedNotes.get(i).getWidth());
+            }
+        }
+    };
+    
+    
+    /**
+     * Change the boolean value drag based on the current position of mouse
+     * True if within the dragging rather than stretching zone
+     */
+  /*  private void determineDrag() {
+        for (int i=0; i<selectedNotes.size();i++) {
+            //check whether the mouseposition is within the dragging zone
+            if ( mouseInitialX >= xPositions.get(i)
+                 &&
+                 mouseInitialX <= (xPositions.get(i)
+                                 +selectedNotes.get(i).getWidth())
+                 && 
+                 mouseInitialY >= yPositions.get(i)
+                 && mouseInitialY <= (yPositions.get(i)+Constants.HEIGHTRECTANGLE) ) 
+                {
+                 //if true, change the boolean value drag to true
+                drag = true;
+                }
+        }    
+    }
+        
+    /**
+     * Change the boolean value stretch based on the current position of mouse
+     * True if within the stretching rather than dragging zone
+     */    
+  /*  private void determineStretch() {
+        //define the dragzone to be 5 pixels
+        for (int i=0; i<selectedNotes.size();i++) {
+            //check whether the mouseposition is within the stretching zone
+            if ( mouseInitialX >= (xPositions.get(i)
+                                +selectedNotes.get(i).getWidth()- Constants.STRETCHZONE)
+                    &&
+                  mouseInitialX <= (xPositions.get(i)
+                               +selectedNotes.get(i).getWidth())
+                    && 
+                  mouseInitialY >= yPositions.get(i)
+                    && 
+                  mouseInitialY <= (yPositions.get(i)+ Constants.HEIGHTRECTANGLE) )
+            {
+                //if true, change the boolean value stretch to true
+                stretch = true;
+            }
+        }        
+    }
+
+    /**
+     * Create a new EventHandler for the mouseEvent that happens when dragging 
+     * the rectangle.
+     */    
+  /*  private final EventHandler<MouseEvent> rectangleOnMouseDraggedEventHandler = 
+        new EventHandler<MouseEvent>() {
+
+        /**
+        * override the handle method in the EventHandler class to create event when
+        * the rectangle got dragged
+        * @param t occurs on mouse drag event 
+        */ 
+   /*     @Override
+        public void handle(MouseEvent e) {
+            //calculate the distance that mouse moved both in x and y axis
+            double offsetX = e.getX() - mouseInitialX;
+            double offsetY = e.getY() - mouseInitialY;
+            
+            //determine whether should be performing stretch or drag
+            determineStretch();
+            determineDrag();
+            
+            //perform either stretching or dragging operation on all selected rectangles.
+            for (int i=0; i<selectedNotes.size();i++) {
+                if (stretch) {
+                    doStretchAction(i, offsetX);                        
+                } else if (drag){
+                    doDragAction(i, offsetX, offsetY);
+                } else {
+                    return;
+                }
+            
+                //reset gestureRectangles
+                mainController.gestureModelController.gestureNoteSelection(selectedNotes);
+            }
+        }
+    };
+
+        /**
+         * Changes the rectangle according to the nature of the stretch action.
+         * @param i the rectangle being acted on
+         * @param offsetX the distance the mouse moves horizontally
+         */
+    /*    private void doStretchAction(int i, double offsetX) {
+            //get the width of rectangles.
+            double width = widths.get(i);
+            selectedNotes.get(i).setWidth(width+offsetX);
+            //if a 'note' rectangle is not 5px or more, change nothing
+            
+            if (widths.get(i)+offsetX >= Constants.STRETCHZONE ){
+                //set rectangle width
+                selectedNotes.get(i).setWidth(width+offsetX);
+            } else {
+                //if under 5px, change to 5px
+                selectedNotes.get(i).setWidth(Constants.STRETCHZONE);
+            }
+        }
+        
+        /**
+         * Changes the rectangle according to the nature of the drag action.
+         * @param i the rectangle being acted on
+         * @param offsetX the distance the mouse moves horizontally
+         * @param offsetY the distance the mouse moves vertically
+         */
+    /*    private void doDragAction(int i, double offsetX, double offsetY) {
+            //if it's dragging operation, set the position of rectangles
+            //based on the distance mouse moved
+            double newTranslateX = xPositions.get(i) + offsetX;
+            double newTranslateY = yPositions.get(i) + offsetY;
+            selectedNotes.get(i).setX(newTranslateX);
+            selectedNotes.get(i).setY(newTranslateY);
+        }
+    
+    
+    /**
+     * Create a new EventHandler for the mouseEvent that happens when releasing 
+     * the rectangle.
+     */        
+    /*    private final EventHandler<MouseEvent> rectangleOnMouseReleasedEventHandler = 
+        new EventHandler<MouseEvent>() {
+ 
+        /**
+        * override the handle method in the EventHandler class to create event when
+        * the rectangle got released
+        * @param e occurs on mouse release event 
+        */             
+     /*   @Override
+        public void handle(MouseEvent e) {
+            
+            //clear all three arraylists, resets coordinates
+            xPositions.clear();
+            yPositions.clear();
+            widths.clear();
+            reset_coordinates(e);
+            
+            for (int i=0; i<selectedNotes.size(); i++) {
+                //reset the position of rectangles to fit it between grey lines
+                double currentY = selectedNotes.get(i).getY();
+                double finalY = ((int)(currentY/Constants.HEIGHTRECTANGLE))
+                        *Constants.HEIGHTRECTANGLE;
+                selectedNotes.get(i).setY(finalY);   
+            }
+            mainController.gestureModelController.gestureNoteSelection(selectedNotes);
+            if (drag || stretch ) {
+                mainController.undoRedoActions.undoableAction();
+            }
+            //reset the stretching operation to false
+            stretch = false;
+            drag = false;
+            
+        }
+    };
+        
+   */
     protected void deselectWhenControlDown(NoteRectangle rect){
         rect.clearStroke();
         rect.notes.getStyleClass().add("strokeBlack");
