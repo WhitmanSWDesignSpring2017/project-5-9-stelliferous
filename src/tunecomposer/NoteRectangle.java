@@ -110,7 +110,6 @@ public class NoteRectangle {
      */
     private void onNoteClick(MouseEvent m){
         //if the rectangle was selected and 'control' is down, deselect it
-        System.out.println("clicke");
         if ((selectedNotes.indexOf(this)!= -1) && (!m.isControlDown())) {
             return;
         }
@@ -136,7 +135,6 @@ public class NoteRectangle {
                 });
             } else {
                 selectedNotes.add(this);
-                System.out.println("selectedNotes.add(this");
             }
         }
         if (m.isStillSincePress()) {
@@ -146,7 +144,6 @@ public class NoteRectangle {
     }
     
     protected boolean containInSelect() {
-        System.out.println(selectedNotes.contains(this));
         return selectedNotes.contains(this);
     }
     

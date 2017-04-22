@@ -35,7 +35,6 @@ public class CopyPasteActions {
     
     protected CopyPasteActions(MainController givenMainController){
         this.mainController = givenMainController;
-        System.out.println(mainController);
     }
     
      /**
@@ -44,7 +43,6 @@ public class CopyPasteActions {
     protected void copySelected(){
         content.put(DataFormat.PLAIN_TEXT, notesToString(mainController.selectedNotes,true));
         clipboard.setContent(content);
-        System.out.println(content);
     }
      
     /**
@@ -53,7 +51,6 @@ public class CopyPasteActions {
     protected void copyComposition(){
         content.put(DataFormat.PLAIN_TEXT, notesToString(mainController.rectList,true));
         clipboard.setContent(content);
-        System.out.println(content);
     }
     
      /**
@@ -61,7 +58,6 @@ public class CopyPasteActions {
      */
     protected void paste(){
         String pastedNotes = clipboard.getString();
-        System.out.println(pastedNotes);
         notesFromString(pastedNotes);
     }
     

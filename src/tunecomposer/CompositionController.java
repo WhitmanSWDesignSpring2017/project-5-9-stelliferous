@@ -81,7 +81,6 @@ public class CompositionController {
      */
     @FXML 
     private void paneMouseClick(MouseEvent e) throws IOException{
-        System.out.println("pressed");
         selectedNotes.forEach((e1)-> {
             originallySelected.add(e1);
         });

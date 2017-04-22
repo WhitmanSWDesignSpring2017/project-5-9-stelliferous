@@ -146,8 +146,6 @@ public class MainController {
      */
     @FXML
     private void handleDurationSliderAction(MouseEvent e){
-        System.out.println("asparagus");
-        System.out.println(durationSlider.getValue());
         noteLength = durationSlider.getValue();
     }
 }
