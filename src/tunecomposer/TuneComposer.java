@@ -1,12 +1,19 @@
 package tunecomposer;
 
 import java.io.IOException;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
+import javafx.scene.input.Clipboard;
+
 
 /**
  * This application allows users to compose a tune by placing and editing notes 
@@ -16,7 +23,12 @@ import javafx.stage.WindowEvent;
  * @author Kaylin Jarriel
  */
 public class TuneComposer extends Application {
+    Clipboard clipboard = CopyPasteActions.clipBoard;
     
+    public void initialize() {
+        mainController = new MainController();
+    }
+    private MainController mainController;
     /**
      * Construct the scene and start the application.
      * Loads GUI/layout from the TuneComposer.fxml into a scene, which
@@ -34,7 +46,20 @@ public class TuneComposer extends Application {
         Scene scene = new Scene(root);
         primaryStage.setTitle("Tune Composer");
         primaryStage.setScene(scene);
+        
+        Timeline repeatTask = new Timeline(new KeyFrame(Duration.millis(200), new EventHandler<ActionEvent>() {
 
+        @Override
+        public void handle(ActionEvent event) {
+            if (clipboard.hasString()) {
+                mainController.menuBarController.pasteAction.setDisable(false);
+            } else {
+                mainController.menuBarController.pasteAction.setDisable(true);
+            }
+        }
+        }));
+        repeatTask.setCycleCount(Timeline.INDEFINITE);
+        repeatTask.play();
         //closes the program when the window is closed
         primaryStage.setOnCloseRequest((WindowEvent we) -> {
             System.exit(0);
@@ -51,6 +76,10 @@ public class TuneComposer extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+    
+    public void init(MainController aThis) {
+        this.mainController = aThis;
     }
     
 }

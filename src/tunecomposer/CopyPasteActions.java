@@ -28,7 +28,7 @@ public class CopyPasteActions {
     MainController mainController;
     
     //system clipboard to store copied and cut notes
-    final Clipboard clipboard = Clipboard.getSystemClipboard();
+    static final Clipboard clipBoard = Clipboard.getSystemClipboard();
     final ClipboardContent content = new ClipboardContent();
     
     
@@ -42,7 +42,7 @@ public class CopyPasteActions {
      */
     protected void copySelected(){
         content.put(DataFormat.PLAIN_TEXT, notesToString(mainController.selectedNotes,true));
-        clipboard.setContent(content);
+        clipBoard.setContent(content);
     }
      
     /**
@@ -50,14 +50,14 @@ public class CopyPasteActions {
      */
     protected void copyComposition(){
         content.put(DataFormat.PLAIN_TEXT, notesToString(mainController.rectList,true));
-        clipboard.setContent(content);
+        clipBoard.setContent(content);
     }
     
      /**
      * Pastes copied notes to the clipboard and adds them to the composition.
      */
     protected void paste(){
-        String pastedNotes = clipboard.getString();
+        String pastedNotes = clipBoard.getString();
         notesFromString(pastedNotes);
     }
     
