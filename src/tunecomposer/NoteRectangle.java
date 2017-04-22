@@ -220,9 +220,9 @@ public class NoteRectangle {
     private void determineDrag() {
         for (int i=0; i<selectedNotes.size();i++) {
             //check whether the mouseposition is within the dragging zone
-            if ( xCoordinate >= originalX.get(i)
+            if ( xCoordinate <= originalX.get(i)
                  &&
-                 xCoordinate <= (originalX.get(i)
+                 xCoordinate >= (originalX.get(i)
                                  +selectedNotes.get(i).getWidth()-Constants.STRETCHZONE)
                  && 
                  yCoordinate >= originalY.get(i)
