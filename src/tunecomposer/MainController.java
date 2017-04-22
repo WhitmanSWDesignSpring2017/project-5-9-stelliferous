@@ -1,15 +1,12 @@
 package tunecomposer;
 
 import javafx.fxml.FXML;
-import javafx.scene.input.MouseEvent;
-import java.io.IOException;
-import static java.lang.Math.abs;
 import java.util.ArrayList;
-import javafx.scene.shape.Rectangle;
-import javafx.event.EventHandler;
+import java.util.Arrays;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javax.sound.midi.ShortMessage;
 
@@ -32,6 +29,9 @@ public class MainController {
     //makes available the area where the instrument radio buttons lie
     @FXML VBox instrumentsVBox;
     
+    //makes available note duration slider
+    @FXML Slider durationSlider;
+    
     //makes available the controller for gestures
     @FXML GestureModelController gestureModelController = new GestureModelController();
     
@@ -52,6 +52,9 @@ public class MainController {
     
     //refers to the end of the current notes
     protected double endcomp;
+    
+    //default note length
+    protected double noteLength = 100;
 
     
     protected UndoRedoActions undoRedoActions = new UndoRedoActions(this);
@@ -79,6 +82,7 @@ public class MainController {
         //disables every menu item that needs to be when program first starts
         menuBarController.everythingDisable();
     }
+    
     
      /**
      * Sets up the radio buttons for instrument selection.
@@ -134,6 +138,17 @@ public class MainController {
             MidiComposition.addNote(pitch, Constants.VOLUME, startTick, 
                     duration, curInstru.getChannel(), Constants.TRACK_INDEX);  
         }
+    }
+    
+    /**
+     * Changes default note duration when the user moves the slider.
+     * @param e 
+     */
+    @FXML
+    private void handleDurationSliderAction(MouseEvent e){
+        System.out.println("asparagus");
+        System.out.println(durationSlider.getValue());
+        noteLength = durationSlider.getValue();
     }
 }
 
