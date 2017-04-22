@@ -28,8 +28,10 @@ public class NoteRectangle {
     //stores the width of the NoteRectangle, that it may be retrieved/set
     private double width;
     
+    //point to the same arraylist of selectedNotes in mainController
     private ArrayList<NoteRectangle> selectedNotes;
     
+    //link the class with mainController
     private MainController mainController;
     
     /**
@@ -147,30 +149,6 @@ public class NoteRectangle {
         return selectedNotes.contains(this);
     }
     
-    /*
-    protected void determineCurrentGesture(MouseEvent m) {
-        //if a selected note is in a gesture, select other notes in that gesture
-        ArrayList<NoteRectangle> containedGesture = new ArrayList<>();
-        for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
-                    ArrayList currentGesture = mainController.gestureModelController.gestureNoteGroups.get(i);
-                    if (currentGesture.contains(this)) {
-                        containedGesture = currentGesture;
-                        break;
-                    } 
-                }
-        //select the rectangle that has been clicked on
-        if (!m.isControlDown()) {
-            selectedNotes.clear();
-        }
-        if (!containedGesture.isEmpty()) {
-            containedGesture.forEach((e1)-> {
-            selectedNotes.add(e1);
-        });
-        } else {
-            selectedNotes.add(this);
-        }
-    }
-    */
     //create a new ArrayList to store original X positions of selected rectangles
     private final ArrayList<Double> originalX = new ArrayList<>();
 
@@ -180,11 +158,15 @@ public class NoteRectangle {
     //create a new ArrayList to store original widths of selected rectangles
     private final ArrayList<Double> originalWidth = new ArrayList<>();
     
+    //create a double variable to store the x position when mouse pressed
     private double xCoordinate;
-        
+       
+    //create a double variable to store the y position when mouse pressed
     private double yCoordinate;
     
+    //create a boolean variable to store whether the mouseEvent is for stretch or drag
     private boolean drag = false;
+
     /**
      * Crete a new EventHandler for the mouseEvent that happens when pressed 
      * on the rectangle.
@@ -199,6 +181,7 @@ public class NoteRectangle {
         @Override
         public void handle(MouseEvent t) {
             for (int i=0; i<selectedNotes.size();i++) {
+                //get x and y position when the mouse is pressed
                 xCoordinate = t.getX();
                 yCoordinate = t.getY();
                 //add all orginal positions of the selected rectangles to arraylists
