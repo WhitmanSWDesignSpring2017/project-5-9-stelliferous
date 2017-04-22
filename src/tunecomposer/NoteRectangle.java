@@ -142,7 +142,7 @@ public class NoteRectangle {
         if (m.isStillSincePress()) {
             mainController.undoRedoActions.undoableAction();
         }
-        mainController.compositionController.selectRed();
+        mainController.compositionController.selectRect();
     }
     
     protected boolean containInSelect() {
@@ -263,7 +263,7 @@ public class NoteRectangle {
                 doStretchAction(offsetX);
             }
             //reset gestureRectangles
-            mainController.gestureModelController.resetGestureRectangle(selectedNotes);
+            mainController.gestureModelController.gestureNoteSelection(selectedNotes);
         }
     };
 
@@ -336,7 +336,7 @@ public class NoteRectangle {
                         *Constants.HEIGHTRECTANGLE;
                 selectedNotes.get(i).setY(finalY);   
             }
-            mainController.gestureModelController.resetGestureRectangle(selectedNotes);
+            mainController.gestureModelController.gestureNoteSelection(selectedNotes);
             if (!t.isStillSincePress()) {
                 mainController.undoRedoActions.undoableAction();  
             }

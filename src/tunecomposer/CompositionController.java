@@ -121,7 +121,7 @@ public class CompositionController {
             setSelected(r);
         });   
         
-        selectRed();
+        selectRect();
     }
 
     /**
@@ -578,7 +578,7 @@ public class CompositionController {
 
     void createBeat(Instrument instrument, double beatX, double beatY, double beatW, ArrayList<NoteRectangle> beatGesture) {
         NoteRectangle beat = new NoteRectangle(beatX, beatY*Constants.HEIGHTRECTANGLE, instrument ,beatW, mainController);
-        selectRed();
+        selectRect();
         rectAnchorPane.getChildren().add(beat.notes);  
         rectList.add(beat);
         beatGesture.add(beat);

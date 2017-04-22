@@ -64,7 +64,7 @@ public class UndoRedoActions {
         redoableStates.removeAllElements();
         
         mainController.menuBarController.checkButtons();
-        mainController.compositionController.selectRed();
+        mainController.compositionController.selectRect();
     }
     
     /**

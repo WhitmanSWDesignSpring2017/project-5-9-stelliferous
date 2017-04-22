@@ -183,7 +183,7 @@ public class CopyPasteActions {
                }
                pastedGestures.add(notesInGesture);
                mainController.gestureModelController.gestureNoteGroups.add(notesInGesture);
-               mainController.gestureModelController.resetGestureRectangle(notesInGesture);
+               mainController.gestureModelController.gestureNoteSelection(notesInGesture);
                mainController.gestureModelController.updateGestureRectangle(notesInGesture, "red");
            }
     }

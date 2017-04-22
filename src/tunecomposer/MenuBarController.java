@@ -241,7 +241,7 @@ public class MenuBarController  {
     private void handleUndoAction(ActionEvent e){
         stopTune();
         mainController.undoRedoActions.undoAction();
-        mainController.compositionController.selectRed();
+        mainController.compositionController.selectRect();
     }
     
     /**
@@ -253,7 +253,7 @@ public class MenuBarController  {
     private void handleRedoAction(ActionEvent e){
         stopTune();
         mainController.undoRedoActions.redoAction();
-        mainController.compositionController.selectRed();
+        mainController.compositionController.selectRect();
     }
     
     /**
