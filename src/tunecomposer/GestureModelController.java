@@ -201,7 +201,7 @@ public class GestureModelController {
      * @param aThis the controller that is main
      */
     public void init(MainController aThis) {
-        mainController = aThis; 
+        this.mainController = aThis; 
     }
     
 }

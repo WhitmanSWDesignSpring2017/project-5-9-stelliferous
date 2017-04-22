@@ -16,7 +16,7 @@ public class UndoRedoActions {
     //Stacks to store a collection of actions that can be undone, and have been
     protected Stack<CompositionState> undoableStates = new Stack<>();
     protected Stack<CompositionState> redoableStates = new Stack<>();
-    protected Stack<CompositionState> markedStates = new Stack<>();
+    protected ArrayList<CompositionState> markedStates = new ArrayList<>();
 
     /**
      * Constructs an UndoRedoActions object and connects it to the main
@@ -29,24 +29,28 @@ public class UndoRedoActions {
     
     /**
      * Mark the current state and create a new stack to store all the compositionState 
+     * @param markedName input from the user for the name of the markedState
      */
-    protected void initializeMarkState() {
-        markedStates.clear();
-        undoableStates.forEach((e1)-> {
-            markedStates.add(e1);
-        });
+    protected void initializeMarkState(String markedName) {
+        CompositionState currentState = undoableStates.peek();
+        currentState.setMarkedName(markedName);
+        markedStates.add(currentState);
     }
     
     /**
      * Revert to the marked state by reverting all the components in the undoableStates
+     * @param revertName the input from the user for searching through the stack 
      */
-    protected void revertMark() {
-        undoableStates.clear();
-        redoableStates.clear();
+    protected void revertMark(String revertName) {
         markedStates.forEach((e1)-> {
-           undoableStates.add(e1); 
+           //
+           if (e1.getMarkedName().equals(revertName)) {
+               deepClone(e1);
+               undoableStates.clear();
+               redoableStates.clear();
+               mainController.compositionController.selectRect();
+           }
         });
-        deepClone(undoableStates.peek());
     }
   
     /**

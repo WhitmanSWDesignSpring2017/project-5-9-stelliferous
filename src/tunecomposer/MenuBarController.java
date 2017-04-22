@@ -10,12 +10,14 @@ import static tunecomposer.Instrument.WOOD_BLOCK;
 import static java.lang.Math.sin;
 import static java.lang.Math.tan;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
@@ -78,6 +80,21 @@ public class MenuBarController  {
     private void handleExitAction(ActionEvent e){
         System.exit(0);
     }
+
+    /**
+     * Marked the current state and allow user to go back to this particular state
+     * @param e on user click
+     */
+    @FXML
+    private void handleMarkAction(ActionEvent e){
+        TextInputDialog dialog = new TextInputDialog("new state");
+        dialog.setTitle("Mark State");
+        dialog.setHeaderText("Give me a name for this marked state ");
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent( (String pitch) -> {
+            mainController.undoRedoActions.initializeMarkState(pitch);
+        });
+    }
     
     /**
      * Revert to the marked states
@@ -85,16 +102,14 @@ public class MenuBarController  {
      */
     @FXML
     private void handleRevertAction(ActionEvent e) {
-        mainController.undoRedoActions.revertMark();
-    }
-    
-    /**
-     * Marked the current state and allow user to go back to this particular state
-     * @param e on user click
-     */
-    @FXML
-    private void handleMarkAction(ActionEvent e){
-        mainController.undoRedoActions.initializeMarkState();
+        TextInputDialog dialog = new TextInputDialog("new state");
+        dialog.setTitle("Revert State");
+        dialog.setHeaderText("Give me the name for the state you want to revert back"+'\n'+mainController.getAllMarkedName());
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent( (String pitch) -> {
+            mainController.undoRedoActions.revertMark(pitch);
+        });
+        
     }
     
     /**

@@ -19,6 +19,8 @@ public class CompositionState implements Serializable {
     //the gesture of current state  
     protected ArrayList<ArrayList<Integer>> gestureState = new ArrayList<>();
     
+    private String markedName;
+    
     /**
      * Initialize all three state ArrayList with given lists of the current pane
      * @param rectList current rectList in the mainController
@@ -45,5 +47,13 @@ public class CompositionState implements Serializable {
             });
             gestureState.add(cloneArray);
         });
+    }
+    
+    protected void setMarkedName(String markedName) {
+        this.markedName = markedName;
+    }
+    
+    protected String getMarkedName() {
+        return markedName;
     }
 }
