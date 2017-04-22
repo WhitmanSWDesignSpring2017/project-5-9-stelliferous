@@ -83,6 +83,15 @@ public class MainController {
         menuBarController.everythingDisable();
     }
     
+    protected String getAllMarkedName() {
+        String names = "";
+        for (int i=0; i<undoRedoActions.markedStates.size();i++) {
+            names = names + " / " + undoRedoActions.markedStates.get(i).getMarkedName();
+            System.out.println(names);
+        }
+        return names;
+    }
+    
     
      /**
      * Sets up the radio buttons for instrument selection.
