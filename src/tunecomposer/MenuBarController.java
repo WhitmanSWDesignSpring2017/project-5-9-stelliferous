@@ -262,6 +262,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleCopyAction(ActionEvent e){
+        stopTune();
         copyCompositionActions.copySelected();
         pasteAction.setDisable(false);
     }
@@ -272,6 +273,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleCopyCompositionAction(ActionEvent e){
+        stopTune();
         copyCompositionActions.copyComposition();
         pasteAction.setDisable(false);
     }
@@ -284,6 +286,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleCutAction(ActionEvent e){
+        stopTune();
         handleCopyAction(e);
         handleDeleteAction(e);
         pasteAction.setDisable(false);
@@ -295,6 +298,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handlePasteAction(ActionEvent e){
+        stopTune();
         copyCompositionActions.paste();
         mainController.undoRedoActions.undoableAction();
     }
@@ -307,6 +311,7 @@ public class MenuBarController  {
      */
     @FXML
     private void copySelectedNotesToFileAction(ActionEvent e) throws IOException{
+        stopTune();
         copyCompositionActions.copySelectedNotesToFile();
     }
     
@@ -319,6 +324,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleNotesFromFileAction(ActionEvent e) throws FileNotFoundException{
+        stopTune();
         copyCompositionActions.notesFromString(copyCompositionActions.readFile());
         mainController.undoRedoActions.undoableAction();
     }
@@ -330,6 +336,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleBeat1Action(ActionEvent e){
+        stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
         for (int b= 0; b < 2000; b += 40){
             mainController.compositionController.createBeat(WOOD_BLOCK,b,60,25, beatGesture);
@@ -345,6 +352,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleBeat2Action(ActionEvent e){
+        stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
         for (int b = 0; b < 2000; b += 50){
             mainController.compositionController.createBeat(MARIMBA, b, 80, 40, beatGesture);
@@ -360,6 +368,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleBeat3Action(ActionEvent e){
+        stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
         for (int b = 0; b < 2000; b += 10){
             int yPattern = (int)(10*tan(b/30)) +40;
@@ -374,6 +383,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleBeat4Action(ActionEvent e){
+        stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
         for (int b = 0; b < 2000; b += 10){
             int yPattern = (int)(10*sin(b/30)) +40;
@@ -388,6 +398,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleSaveAsBeat(ActionEvent e){
+        stopTune();
         savedBeat.clear();
         mainController.compositionController.selectedNotes.forEach((note)->{
             savedBeat.add(new NoteRectangle(
@@ -402,6 +413,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleSavedBeat(ActionEvent e){
+        stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
         savedBeat.forEach((note)->{
             mainController.compositionController.createBeat(
@@ -418,6 +430,7 @@ public class MenuBarController  {
      * @param gesture 
      */
     private void addBeatGesture(ArrayList<NoteRectangle> gesture) { 
+        stopTune();
         checkButtons();
         mainController.gestureModelController.gestureNoteGroups.add(gesture);
         mainController.gestureModelController.updateGestureRectangle(gesture, "black");
