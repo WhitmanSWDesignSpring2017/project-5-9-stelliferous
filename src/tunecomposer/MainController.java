@@ -9,7 +9,12 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javax.sound.midi.ShortMessage;
-
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.input.Clipboard;
 
 /**
  * This controller class initializes the other controllers, the instrument 
@@ -81,6 +86,23 @@ public class MainController {
 
         //disables every menu item that needs to be when program first starts
         menuBarController.everythingDisable();
+        
+        Clipboard clipBoard = CopyPasteActions.clipBoard;
+        
+        Timeline repeatTask = new Timeline(new KeyFrame(Duration.millis(200), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (clipBoard.hasString()) {
+                    menuBarController.pasteAction.setDisable(false);
+                } else {
+                    menuBarController.pasteAction.setDisable(true);
+                }
+            }
+        }));
+        repeatTask.setCycleCount(Timeline.INDEFINITE);
+        repeatTask.play();
+        
+        
     }
     
     protected String getAllMarkedName() {
