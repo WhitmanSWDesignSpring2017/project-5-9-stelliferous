@@ -164,6 +164,7 @@ public class CopyPasteActions {
            NoteRectangle note = pastedNotes.get(o);
            mainController.rectList.add(note);
            mainController.compositionController.rectAnchorPane.getChildren().add(note.notes);
+           mainController.selectedNotes.add(note);
        }
     }
     
