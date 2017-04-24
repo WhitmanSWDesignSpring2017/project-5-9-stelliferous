@@ -54,7 +54,7 @@ public class CompositionController {
     private final ArrayList<Double> widths = new ArrayList<>();
     
     //to store a list of selected notes before selection rectangle is dragged
-    private ArrayList<NoteRectangle> originallySelected;
+    private ArrayList<NoteRectangle> originallySelected = new ArrayList<>();
     
    // protected UndoRedoActions undoRedoActions = new UndoRedoActions(this);
     
