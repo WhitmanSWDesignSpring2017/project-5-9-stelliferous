@@ -107,7 +107,6 @@ public class MainController {
         String names = "";
         for (int i=0; i<undoRedoActions.markedStates.size();i++) {
             names = names + " / " + undoRedoActions.markedStates.get(i).getMarkedName();
-            System.out.println(names);
         }
         return names;
     }

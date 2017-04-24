@@ -106,8 +106,6 @@ public class CopyPasteActions {
             }
         
         
-        System.out.println("Note String: "+noteString);
-        System.out.println("Gesture String: "+gestureString);
         //combine and return the strings with NoteRectangle and gesture data
         noteString +=  "--"  + gestureString;
         return noteString;
@@ -151,7 +149,6 @@ public class CopyPasteActions {
            Instrument instrument = Instrument.valueOf(instrumentString);
            pastedNotes.add(new NoteRectangle(xLocation,yLocation,instrument, width, mainController));
        }
-       System.out.println("Pasted Notes: "+pastedNotes);
        return pastedNotes;
     }
     
@@ -177,34 +174,22 @@ public class CopyPasteActions {
        ArrayList<ArrayList<NoteRectangle>> pastedGestures = new ArrayList<>();
        String[] individualGestureArray = (notesAndGestures[1]).split("@");
        String[] gestureIndices;
-       System.out.println("Gestures Translated: "+notesAndGestures[1]);
-       System.out.println("Complete Gesture Array: "+individualGestureArray.toString());
        for (int g = 0; g < individualGestureArray.length ; g++){
            ArrayList<NoteRectangle> notesInGesture = new ArrayList<>();
-           System.out.println(g+"|||||||||||||||||||||||||||||||||||||||||||||||||");
-           System.out.println("Individual Gesture Array: "+individualGestureArray[g]);
            gestureIndices = individualGestureArray[g].split("&");
-           System.out.println("Gesture Indices: "+gestureIndices.toString());
            for (int q = 0; q < gestureIndices.length;q++){
-               System.out.println("index: "+gestureIndices[q]);
                notesInGesture.add(pastedNotes.get(Integer.valueOf(gestureIndices[q])));
            }
-           System.out.println("Notes in the Gesture: "+notesInGesture);
            //pastedGestures.add(notesInGesture);
            //notesInGesture.clear();
            //mainController.gestureModelController.gestureNoteGroups.add(0, notesInGesture);
            mainController.gestureModelController.gestureNoteGroups.add(notesInGesture);
            mainController.gestureModelController.gestureNoteGroups.forEach((e1)->{
-               System.out.println(e1.toString());
            });
             //mainController.gestureModelController.updateGestureRectangle(notesInGesture, "red");
        }
            mainController.gestureModelController.gestureNoteGroups.forEach((e1)->{
-               System.out.println(e1.toString());
            });
-         /**for(int o = 0; o <pastedGestures.size();o++){
-            mainController.gestureModelController.gestureNoteGroups.add(0,pastedGestures.get(o));
-         }*/
 
     }
     
