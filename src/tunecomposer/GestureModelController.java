@@ -18,9 +18,6 @@ public class GestureModelController {
     
     //creates a list to store all gesture/grouped notes
     protected ArrayList<ArrayList<NoteRectangle>> gestureNoteGroups;        
-
-    //the main controller of the program
-    private MainController mainController; 
     
     //store coordinates for gesture rectangles
     private double gestureMinX;
@@ -38,7 +35,7 @@ public class GestureModelController {
     /**
      * Removes all gesture rectangles from the gesture pane.
      */
-    public void removeEverything() {
+    protected void removeEverything() {
         gestureRectPane.getChildren().clear();
     }
     
@@ -103,7 +100,7 @@ public class GestureModelController {
      * coordinates.
      * @param gesture the gesture whose rectangle is to be updated
      */
-    public void updateGestureRectangle(ArrayList<NoteRectangle> gesture, String color){       
+    protected void updateGestureRectangle(ArrayList<NoteRectangle> gesture, String color){       
         //uses coordinates to create and style gesture rectangle
         ArrayList<Double> borderCords = calculateBorder(gesture);        
         Rectangle gestRect = new Rectangle(borderCords.get(0),borderCords.get(1),borderCords.get(2),borderCords.get(3));
@@ -119,7 +116,7 @@ public class GestureModelController {
      * Upon gesture selection, selects notes within that gesture.
      * @param selectedGesture the gesture whose notes are to be selected
      */
-    void gestureNoteSelection(ArrayList<NoteRectangle> selectedGesture){
+    protected void gestureNoteSelection(ArrayList<NoteRectangle> selectedGesture){
         //clears all gesture rectangles
         gestureRectPane.getChildren().clear();
         
@@ -194,14 +191,4 @@ public class GestureModelController {
         }
         return selectNotes;
     }
-
-    /**
-     * Initializes the main controller. This method was necessary for the 
-     * class to work.
-     * @param aThis the controller that is main
-     */
-    public void init(MainController aThis) {
-        this.mainController = aThis; 
-    }
-    
 }

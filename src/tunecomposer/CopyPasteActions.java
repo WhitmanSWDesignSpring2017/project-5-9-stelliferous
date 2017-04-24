@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tunecomposer;
 
 import java.io.File;
@@ -20,11 +15,14 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
- *
- * @author mauletj
+ * A class object that allows the user to copy, cut and paste using the system clipboard
+ * and copy/paste to/from txt files.
+ * @author Tyler Maule
+ * @author Jingyuan Wang
+ * @author Kaylin Jarriel
  */
 public class CopyPasteActions {
-    
+    //Initialize the mainController
     MainController mainController;
     
     //system clipboard to store copied and cut notes
@@ -66,7 +64,7 @@ public class CopyPasteActions {
      * into a string to be placed on the clipboard. 
      * @param copiedNotes
      * @param shift
-     * @return 
+     * @return the string that has been translated from the copiedNotes
      */
     protected String notesToString(ArrayList<NoteRectangle> copiedNotes, Boolean shift){
         
@@ -190,22 +188,15 @@ public class CopyPasteActions {
                notesInGesture.add(pastedNotes.get(Integer.valueOf(gestureIndices[q])));
            }
            System.out.println("Notes in the Gesture: "+notesInGesture);
-           //pastedGestures.add(notesInGesture);
-           //notesInGesture.clear();
-           //mainController.gestureModelController.gestureNoteGroups.add(0, notesInGesture);
+           
            mainController.gestureModelController.gestureNoteGroups.add(notesInGesture);
            mainController.gestureModelController.gestureNoteGroups.forEach((e1)->{
                System.out.println(e1.toString());
            });
-            //mainController.gestureModelController.updateGestureRectangle(notesInGesture, "red");
        }
            mainController.gestureModelController.gestureNoteGroups.forEach((e1)->{
                System.out.println(e1.toString());
            });
-         /**for(int o = 0; o <pastedGestures.size();o++){
-            mainController.gestureModelController.gestureNoteGroups.add(0,pastedGestures.get(o));
-         }*/
-
     }
     
     

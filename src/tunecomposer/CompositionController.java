@@ -54,7 +54,7 @@ public class CompositionController {
     private final ArrayList<Double> widths = new ArrayList<>();
     
     //to store a list of selected notes before selection rectangle is dragged
-    private ArrayList<NoteRectangle> originallySelected = new ArrayList<>();
+    private ArrayList<NoteRectangle> originallySelected;
     
    // protected UndoRedoActions undoRedoActions = new UndoRedoActions(this);
     
@@ -289,6 +289,10 @@ public class CompositionController {
         mainController.gestureModelController.gestureNoteSelection(selectedNotes);
     }
     
+    /**
+     * Deselects a note or gesture when control is held down.
+     * @param rect a NoteRectangle object
+     */
     protected void deselectWhenControlDown(NoteRectangle rect){
         rect.clearStroke();
         rect.notes.getStyleClass().add("strokeBlack");

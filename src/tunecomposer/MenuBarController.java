@@ -1,8 +1,6 @@
 package tunecomposer;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import static tunecomposer.Instrument.MARIMBA;
 import static tunecomposer.Instrument.BOTTLE;
@@ -11,18 +9,10 @@ import static java.lang.Math.sin;
 import static java.lang.Math.tan;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DataFormat;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
@@ -39,7 +29,8 @@ public class MenuBarController  {
     //stores saved beats as a listarray of NoteRectangles
     private final ArrayList<NoteRectangle> savedBeat = new ArrayList<>();
     
-    CopyPasteActions copyCompositionActions;
+    //create a new copyPasteActions object to perform required actions
+    private CopyPasteActions copyCompositionActions;
 
     //makes available menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
@@ -97,7 +88,7 @@ public class MenuBarController  {
     }
     
     /**
-     * Revert to the marked states
+     * Revert to the saved states
      * @param e on user click 
      */
     @FXML
@@ -195,9 +186,7 @@ public class MenuBarController  {
         
         //reset gesture rectangles
         mainController.gestureModelController.gestureNoteSelection(mainController.selectedNotes);
-        
-                        mainController.undoRedoActions.undoableAction();
-
+        mainController.undoRedoActions.undoableAction();
     }
     
     /**
