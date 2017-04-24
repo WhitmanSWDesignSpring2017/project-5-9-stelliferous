@@ -26,8 +26,8 @@ public class CopyPasteActions {
     MainController mainController;
     
     //system clipboard to store copied and cut notes
-    static final Clipboard clipBoard = Clipboard.getSystemClipboard();
-    final ClipboardContent content = new ClipboardContent();
+    public static final Clipboard clipBoard = Clipboard.getSystemClipboard();
+    private final ClipboardContent content = new ClipboardContent();
     
     
     
