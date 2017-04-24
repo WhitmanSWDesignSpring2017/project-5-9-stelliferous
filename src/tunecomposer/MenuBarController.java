@@ -51,7 +51,7 @@ public class MenuBarController  {
     @FXML MenuItem ungroupAllAction;
     @FXML MenuItem playButton;
     @FXML MenuItem stopButton;
-    @FXML MenuItem saveButton;
+    @FXML MenuItem markButton;
     @FXML MenuItem revertButton;
     @FXML MenuItem copyAction;
     @FXML MenuItem cutAction;
@@ -86,10 +86,10 @@ public class MenuBarController  {
      * @param e on user click
      */
     @FXML
-    private void handleSaveAction(ActionEvent e){
+    private void handleMarkAction(ActionEvent e){
         TextInputDialog dialog = new TextInputDialog("new state");
-        dialog.setTitle("Save State");
-        dialog.setHeaderText("Give me a name for this saved state ");
+        dialog.setTitle("Mark State");
+        dialog.setHeaderText("Give me a name for this marked state ");
         Optional<String> result = dialog.showAndWait();
         result.ifPresent( (String pitch) -> {
             mainController.undoRedoActions.initializeMarkState(pitch);
@@ -104,8 +104,7 @@ public class MenuBarController  {
     private void handleRevertAction(ActionEvent e) {
         TextInputDialog dialog = new TextInputDialog("new state");
         dialog.setTitle("Revert State");
-        dialog.setHeaderText("Give me the name for the state you want to revert back"+
-                              '\n'+mainController.getAllMarkedName());
+        dialog.setHeaderText("Give me the name for the state you want to revert back"+'\n'+mainController.getAllMarkedName());
         Optional<String> result = dialog.showAndWait();
         result.ifPresent( (String pitch) -> {
             mainController.undoRedoActions.revertMark(pitch);
@@ -461,16 +460,13 @@ public class MenuBarController  {
         if (mainController.rectList.isEmpty()) {
             selectAllAction.setDisable(true);
             playButton.setDisable(true);
-            copyAction.setDisable(true);
-            cutAction.setDisable(true);
         } else {
             selectAllAction.setDisable(false);
             playButton.setDisable(false);
-            copyAction.setDisable(false);
-            cutAction.setDisable(false);
         }
         if (mainController.selectedNotes.isEmpty()) {
             deleteAction.setDisable(true);
+            groupAction.setDisable(true);
             copyAction.setDisable(true);
             cutAction.setDisable(true);
             copyCompositionAction.setDisable(true);
@@ -478,6 +474,7 @@ public class MenuBarController  {
             saveAsBeatAction.setDisable(true);
         } else {
             deleteAction.setDisable(false);
+            groupAction.setDisable(false);
             copyAction.setDisable(false);
             cutAction.setDisable(false);
             copyCompositionAction.setDisable(false);
@@ -503,11 +500,6 @@ public class MenuBarController  {
             ungroupAction.setDisable(false);
         } else {
             ungroupAction.setDisable(true);
-        }
-        if (mainController.selectedNotes.size()<2) {
-            groupAction.setDisable(true);
-        } else {
-            groupAction.setDisable(false);
         }
     }
     
