@@ -314,6 +314,7 @@ public class MenuBarController  {
     @FXML
     private void handlePasteAction(ActionEvent e){
         stopTune();
+        mainController.selectedNotes.clear();
         copyCompositionActions.paste();
         mainController.undoRedoActions.undoableAction();
     }
