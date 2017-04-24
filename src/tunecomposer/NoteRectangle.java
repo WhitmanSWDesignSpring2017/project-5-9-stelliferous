@@ -61,9 +61,11 @@ public class NoteRectangle {
     }
     
     protected final void setAllMouseEvents() {
+        /*
         notes.setOnMouseClicked((MouseEvent o) -> {
             onNoteClick(o);
         });
+        */
         notes.setOnMousePressed((MouseEvent o) -> {
             onNotePress(o);
         });
@@ -111,20 +113,17 @@ public class NoteRectangle {
      * and all other rectangles are unselected.
      * @param m an on-click mouse event
      * @param rect a NoteRectangle object
-     */
+     
     private void onNoteClick(MouseEvent m){
         //if the rectangle was selected and 'control' is down, deselect it
         if ((selectedNotes.indexOf(this)!= -1) && (!m.isControlDown())) {
             return;
         }
-        if ((selectedNotes.indexOf(this)!= -1) && (m.isControlDown())){
-            mainController.compositionController.deselectWhenControlDown(this);
-        } 
         if (m.isStillSincePress()) {
             mainController.undoRedoActions.undoableAction();
         }
-        mainController.compositionController.selectRect();
     }
+    */
     
     //create a new ArrayList to store original X positions of selected rectangles
     private final ArrayList<Double> originalX = new ArrayList<>();
@@ -160,7 +159,6 @@ public class NoteRectangle {
                  && yCoordinate <= (originalY.get(i)+Constants.HEIGHTRECTANGLE) ) 
                 {
                  //if true, change the boolean value drag to true
-                System.out.println("yes");
                 drag = true;
                 }
         }    
@@ -189,17 +187,24 @@ public class NoteRectangle {
                 break;
             } 
         }
-        //select the rectangle that has been clicked on
-        if (!o.isControlDown()) {
-            selectedNotes.clear();
-        }
-        if (!selectNotes.isEmpty()) {
-            selectNotes.forEach((e1)-> {
-                selectedNotes.add(e1);
-            });
+        if (!selectedNotes.contains(this)) {
+            //select the rectangle that has been clicked on
+            if (!o.isControlDown()) {
+                selectedNotes.clear();
+            }
+            if (!selectNotes.isEmpty()) {
+                selectNotes.forEach((e1)-> {
+                    selectedNotes.add(e1);
+                });
+            } else {
+                selectedNotes.add(this);
+            }
         } else {
-            selectedNotes.add(this);
+            if (o.isControlDown()){
+                mainController.compositionController.deselectWhenControlDown(this);
+            } 
         }
+        
         //add every selectedRect's widths, x and y positions into the arraylists
         for (int i=0; i<selectedNotes.size();i++) {
             //get x and y position when the mouse is pressed            

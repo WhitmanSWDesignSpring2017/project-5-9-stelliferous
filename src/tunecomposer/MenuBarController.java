@@ -466,7 +466,6 @@ public class MenuBarController  {
         }
         if (mainController.selectedNotes.isEmpty()) {
             deleteAction.setDisable(true);
-            groupAction.setDisable(true);
             copyAction.setDisable(true);
             cutAction.setDisable(true);
             copyCompositionAction.setDisable(true);
@@ -474,7 +473,6 @@ public class MenuBarController  {
             saveAsBeatAction.setDisable(true);
         } else {
             deleteAction.setDisable(false);
-            groupAction.setDisable(false);
             copyAction.setDisable(false);
             cutAction.setDisable(false);
             copyCompositionAction.setDisable(false);
@@ -500,6 +498,11 @@ public class MenuBarController  {
             ungroupAction.setDisable(false);
         } else {
             ungroupAction.setDisable(true);
+        }
+        if (mainController.selectedNotes.size() < 2) {
+            groupAction.setDisable(true);
+        } else {
+            groupAction.setDisable(false);
         }
     }
     

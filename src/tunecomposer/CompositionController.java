@@ -226,7 +226,7 @@ public class CompositionController {
             && !e.isShiftDown()){
                 //if the selectedNotes is changed, a new compositionState is created
                 if (((!selectedNotes.equals(originallySelected))||
-                    !originallySelected.equals(selectedNotes))&& (!selectedNotes.isEmpty())) {
+                    !originallySelected.equals(selectedNotes))&& (!e.isControlDown())) {
                     mainController.undoRedoActions.undoableAction();
                 }
                 return;

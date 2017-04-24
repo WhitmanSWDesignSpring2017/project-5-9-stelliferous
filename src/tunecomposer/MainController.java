@@ -101,8 +101,6 @@ public class MainController {
         }));
         repeatTask.setCycleCount(Timeline.INDEFINITE);
         repeatTask.play();
-        
-        
     }
     
     protected String getAllMarkedName() {
