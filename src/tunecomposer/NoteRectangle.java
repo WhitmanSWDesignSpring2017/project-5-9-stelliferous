@@ -316,9 +316,9 @@ public class NoteRectangle {
                 selectedNotes.get(i).setY(finalY);   
             }
             mainController.gestureModelController.gestureNoteSelection(selectedNotes);
-            if (!t.isStillSincePress()) {
-                mainController.undoRedoActions.undoableAction();  
-            }
+            
+            mainController.undoRedoActions.undoableAction();  
+            
         }
     };
 
