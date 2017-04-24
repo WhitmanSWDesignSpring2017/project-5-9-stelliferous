@@ -57,6 +57,7 @@ public class CopyPasteActions {
     protected void paste(){
         String pastedNotes = clipBoard.getString();
         notesFromString(pastedNotes);
+        copySelected();
     }
     
     /**
