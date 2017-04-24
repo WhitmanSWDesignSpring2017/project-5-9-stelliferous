@@ -61,11 +61,6 @@ public class NoteRectangle {
     }
     
     protected final void setAllMouseEvents() {
-        /*
-        notes.setOnMouseClicked((MouseEvent o) -> {
-            onNoteClick(o);
-        });
-        */
         notes.setOnMousePressed((MouseEvent o) -> {
             onNotePress(o);
         });
@@ -103,27 +98,6 @@ public class NoteRectangle {
     protected void clearStroke() {
         notes.getStyleClass().clear();
     }
-    
-    /**
-     * When a user clicks on a Rectangle, the event handler calls this method.
-     * If a rectangle is already selected and control is down, that 
-     * rectangle is deselected and removed from the relevant list. If it is
-     * not selected and control is held, it is added to selected rectangles.
-     * If it is not selected and control is not held, it is selected
-     * and all other rectangles are unselected.
-     * @param m an on-click mouse event
-     * @param rect a NoteRectangle object
-     
-    private void onNoteClick(MouseEvent m){
-        //if the rectangle was selected and 'control' is down, deselect it
-        if ((selectedNotes.indexOf(this)!= -1) && (!m.isControlDown())) {
-            return;
-        }
-        if (m.isStillSincePress()) {
-            mainController.undoRedoActions.undoableAction();
-        }
-    }
-    */
     
     //create a new ArrayList to store original X positions of selected rectangles
     private final ArrayList<Double> originalX = new ArrayList<>();
@@ -250,44 +224,44 @@ public class NoteRectangle {
         }
     };
 
-        /**
-         * Changes the rectangle according to the nature of the stretch action.
-         * @param i the rectangle being acted on
-         * @param offsetX the distance the mouse moves horizontally
-         */
-        private void doStretchAction(double offsetX) {
-            for (int i=0; i<selectedNotes.size();i++) {
-                //get the width of rectangles.
-                double origwidth = originalWidth.get(i);
-                selectedNotes.get(i).setWidth(origwidth+offsetX);
-                //if a 'note' rectangle is not 5px or more, change nothing
+    /**
+     * Changes the rectangle according to the nature of the stretch action.
+     * @param i the rectangle being acted on
+     * @param offsetX the distance the mouse moves horizontally
+     */
+    private void doStretchAction(double offsetX) {
+        for (int i=0; i<selectedNotes.size();i++) {
+            //get the width of rectangles.
+            double origwidth = originalWidth.get(i);
+            selectedNotes.get(i).setWidth(origwidth+offsetX);
+            //if a 'note' rectangle is not 5px or more, change nothing
             
-                if (originalWidth.get(i)+offsetX >= Constants.STRETCHZONE ){
-                    //set rectangle width
-                    selectedNotes.get(i).setWidth(origwidth+offsetX);
-                } else {
-                    //if under 5px, change to 5px
-                    selectedNotes.get(i).setWidth(Constants.STRETCHZONE);
-                }
+            if (originalWidth.get(i)+offsetX >= Constants.STRETCHZONE ){
+                //set rectangle width
+                selectedNotes.get(i).setWidth(origwidth+offsetX);
+            } else {
+                //if under 5px, change to 5px
+                selectedNotes.get(i).setWidth(Constants.STRETCHZONE);
             }
         }
+    }
         
-        /**
-         * Changes the rectangle according to the nature of the drag action.
-         * @param i the rectangle being acted on
-         * @param offsetX the distance the mouse moves horizontally
-         * @param offsetY the distance the mouse moves vertically
-         */
-        private void doDragAction(double offsetX, double offsetY) {
-            for (int i=0;i<selectedNotes.size();i++) {
-            //if it's dragging operation, set the position of rectangles
-            //based on the distance mouse moved
-                double newTranslateX = originalX.get(i) + offsetX;
-                double newTranslateY = originalY.get(i) + offsetY;
-                selectedNotes.get(i).setX(newTranslateX);
-                selectedNotes.get(i).setY(newTranslateY);
-            }
+    /**
+     * Changes the rectangle according to the nature of the drag action.
+     * @param i the rectangle being acted on
+     * @param offsetX the distance the mouse moves horizontally
+     * @param offsetY the distance the mouse moves vertically
+     */
+    private void doDragAction(double offsetX, double offsetY) {
+        for (int i=0;i<selectedNotes.size();i++) {
+        //if it's dragging operation, set the position of rectangles
+        //based on the distance mouse moved
+            double newTranslateX = originalX.get(i) + offsetX;
+            double newTranslateY = originalY.get(i) + offsetY;
+            selectedNotes.get(i).setX(newTranslateX);
+            selectedNotes.get(i).setY(newTranslateY);
         }
+    }
     
     
     /**

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tunecomposer;
 
 import javafx.animation.Interpolator;
@@ -16,7 +11,9 @@ import javafx.scene.shape.Line;
  * time into the composition.
  * @see RedLine.fxml which allows the visual of the red line to be on-screen
  * @see mainController which connects the red line to the composition playing
- * @author mauletj
+ * @author Tyler Maule
+ * @author Jingyuan Wang
+ * @author Kaylin Jarriel
  */
 public class RedLineController {
 

@@ -6,16 +6,19 @@ import java.util.Stack;
 /**
  * Regulates the creation of undoable actions, as well as responding to undo and
  * redo actions by changing arrays of current and selected notes/gestures.
- * @author mauletj
+ * @author Tyler Maule
+ * @author Jingyuan Wang
+ * @author Kaylin Jarriel
  */
 public class UndoRedoActions {
     
     //allows mainController to connect to this redo/undo connect
     protected MainController mainController;
 
-    //Stacks to store a collection of actions that can be undone, and have been
+    //Stacks to store a collection of actions that can be undone and redone
     protected Stack<CompositionState> undoableStates = new Stack<>();
     protected Stack<CompositionState> redoableStates = new Stack<>();
+    //ArrayList to store a collection of composition states that have been saved by user
     protected ArrayList<CompositionState> markedStates = new ArrayList<>();
 
     /**

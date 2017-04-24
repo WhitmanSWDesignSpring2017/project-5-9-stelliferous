@@ -2,7 +2,6 @@ package tunecomposer;
 
 import javafx.fxml.FXML;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
@@ -61,7 +60,7 @@ public class MainController {
     //default note length
     protected double noteLength = 100;
 
-    
+    //create a undoRedoAction object
     protected UndoRedoActions undoRedoActions = new UndoRedoActions(this);
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
@@ -74,8 +73,6 @@ public class MainController {
 
         //connect MainController to the gesture class
         menuBarController.init(this);
-
-        gestureModelController.init(this);
         redLineController.init(this);
         compositionController.init(this);
         
@@ -89,6 +86,7 @@ public class MainController {
         
         Clipboard clipBoard = CopyPasteActions.clipBoard;
         
+        //create a timeline to check every 0.2 second whether there's anything in the clipboard
         Timeline repeatTask = new Timeline(new KeyFrame(Duration.millis(200), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -103,6 +101,10 @@ public class MainController {
         repeatTask.play();
     }
     
+    /**
+     * gets all the names of existed saved composition states
+     * @return a String that has all the saved names from user
+     */
     protected String getAllMarkedName() {
         String names = "";
         for (int i=0; i<undoRedoActions.markedStates.size();i++) {
@@ -170,7 +172,7 @@ public class MainController {
     
     /**
      * Changes default note duration when the user moves the slider.
-     * @param e 
+     * @param e MouseEvent
      */
     @FXML
     private void handleDurationSliderAction(MouseEvent e){

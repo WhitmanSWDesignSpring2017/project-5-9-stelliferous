@@ -19,6 +19,7 @@ public class CompositionState implements Serializable {
     //the gesture of current state  
     protected ArrayList<ArrayList<Integer>> gestureState = new ArrayList<>();
     
+    //create a String to store the input name from the user when saved this state
     private String markedName;
     
     /**
@@ -49,10 +50,18 @@ public class CompositionState implements Serializable {
         });
     }
     
+    /**
+     * set the markedName based on user's input
+     * @param markedName input from the user
+     */
     protected void setMarkedName(String markedName) {
         this.markedName = markedName;
     }
     
+    /**
+     * get the markedName field
+     * @return the markedName string 
+     */
     protected String getMarkedName() {
         return markedName;
     }
