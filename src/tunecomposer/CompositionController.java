@@ -35,7 +35,7 @@ public class CompositionController {
     protected ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
     
     //refers to the end of the current notes
-    public double endcomp;
+    protected double endcomp;
 
     //stores x and y coordinates, to later calculate distance moved by the mouse
     private double mouseInitialY = 0;

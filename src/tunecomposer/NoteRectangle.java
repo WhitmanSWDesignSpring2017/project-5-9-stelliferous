@@ -72,7 +72,7 @@ public class NoteRectangle {
      * Returns value of the NoteRectangle object's 'instrument' attribute.
      * @return the instrument
      */
-    public Instrument getInstrument() {
+    protected Instrument getInstrument() {
         return instrument;
     }
     
@@ -80,7 +80,7 @@ public class NoteRectangle {
      * Returns value of the NoteRectangle object's 'channel' attribute
      * @return the channel
      */
-    public int getChannel() {
+    protected int getChannel() {
         return channel;
     }
     
@@ -88,7 +88,7 @@ public class NoteRectangle {
      * Allows the user to set the stroke color of a Rectangle Note
      * @param newColor the color given by the user (should be crimson/black)
      */
-    public void setStroke(Color newColor) {
+    protected void setStroke(Color newColor) {
         notes.setStroke(newColor);
     }    
     
@@ -300,7 +300,7 @@ public class NoteRectangle {
      * Returns the x-coordinate of a Rectangle Note
      * @return the x-coordinate
      */
-    public double getX() {
+    protected double getX() {
         return notes.getX();
     }
     
@@ -308,7 +308,7 @@ public class NoteRectangle {
      * Returns the y-coordinate of a Rectangle Note
      * @return the y-coordinate
      */
-    public double getY() {
+    protected double getY() {
         return notes.getY();
     }
     
@@ -316,7 +316,7 @@ public class NoteRectangle {
      * Returns the width of a Rectangle Note
      * @return the width
      */
-    public double getWidth() {
+    protected double getWidth() {
         return notes.getWidth();
     }
     
@@ -324,7 +324,7 @@ public class NoteRectangle {
      * Returns the height of a Rectangle Note
      * @return the height
      */
-    public double getHeight() {
+    protected double getHeight() {
         return notes.getHeight();
     }
     
@@ -332,7 +332,7 @@ public class NoteRectangle {
      * Sets the width of a Rectangle Note
      * @param width the width value given by the user
      */
-    public void setWidth(double width) {
+    protected void setWidth(double width) {
         notes.setWidth(width);
     }        
     
@@ -340,7 +340,7 @@ public class NoteRectangle {
      * Sets the upper-left hand corner x-coordinate of a Rectangle note
      * @param newX the x-coordinate double value given by the user
      */
-    public void setX(double newX) {
+    protected void setX(double newX) {
         notes.setX(newX);
     }
     
@@ -348,7 +348,7 @@ public class NoteRectangle {
      * Sets the upper-left hand corner y-coordinate of a Rectangle note
      * @param newY the y-coordinate double value given by the user
      */
-    public void setY(double newY) {
+    protected void setY(double newY) {
         notes.setY(newY);
     }
 }

@@ -62,7 +62,7 @@ public enum Instrument {
      * Gets the midi program of the instrument.
      * @return the integer number of the program
      */
-    public int getMidiProgram() {
+    protected int getMidiProgram() {
         return midiProgram;
     }
     
@@ -70,7 +70,7 @@ public enum Instrument {
      * Gets the channel of the instrument.
      * @return the integer number of the channel
      */
-    public int getChannel() {
+    protected int getChannel() {
         return channel;
     }
     
@@ -78,7 +78,7 @@ public enum Instrument {
      * Gets the display name of the instrument.
      * @return a string of the instrument name
      */
-    public String getDisplayName() {
+    protected String getDisplayName() {
         return displayName;
     }
     
@@ -86,7 +86,7 @@ public enum Instrument {
      * Gets the display color of the instrument.
      * @return the color of the instrument
      */
-    public Color getDisplayColor() {
+    protected Color getDisplayColor() {
         return displayColor;
     }
     
@@ -94,7 +94,7 @@ public enum Instrument {
      * Adds all the instruments to the midi player.
      * @param player the midi player that the instruments are added to
      */
-    public static void addAll(MidiPlayer player) {
+    protected static void addAll(MidiPlayer player) {
         for (Instrument inst : Instrument.values()) {
             player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + inst.getChannel(), 
                                 inst.getMidiProgram()-1, 
