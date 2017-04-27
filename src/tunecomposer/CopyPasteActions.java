@@ -59,7 +59,7 @@ public class CopyPasteActions {
      /**
      * Pastes copied notes to the clipboard and adds them to the composition.
      */
-    protected void paste(){
+    protected void paste() throws FileNotFoundException{
         String pastedNotes = clipBoard.getString();
         notesFromString(pastedNotes);
         copySelected();
@@ -115,23 +115,30 @@ public class CopyPasteActions {
         return noteString;
     }
     
+    protected void openFile() throws FileNotFoundException{
+        String noteString = readFile();
+        if (!noteString.isEmpty()){
+            notesFromString(noteString);
+        }
+    }
     /**
      * Translates notes from a string into the composition of NoteRectangles 
      * and their gestures
      * @param noteString takes a string of composition notes
+     * @throws java.io.FileNotFoundException
      */
-    protected void notesFromString(String noteString){
+    protected void notesFromString(String noteString) throws FileNotFoundException{
        String[] notesAndGestures = noteString.split("--");
        String[] individualNoteArray = (notesAndGestures[0]).split("&");
 
        ArrayList<NoteRectangle> pastedNotes = translatePastedNoteRectangles(individualNoteArray);
        
-       initializePastedNotes(pastedNotes);
-
        //adds any gestures
        if(notesAndGestures.length > 1){
             initializePastedGestures(notesAndGestures, pastedNotes);
        }
+       
+       initializePastedNotes(pastedNotes);
     }
     
     /**
@@ -140,7 +147,7 @@ public class CopyPasteActions {
      * @param individualNoteArray
      * @return 
      */
-    private ArrayList<NoteRectangle> translatePastedNoteRectangles(String[] individualNoteArray){
+    private ArrayList<NoteRectangle> translatePastedNoteRectangles(String[] individualNoteArray) throws FileNotFoundException{
        ArrayList<NoteRectangle> pastedNotes = new ArrayList<>();
        try {
            //translates list of NoteRectangles
@@ -153,8 +160,14 @@ public class CopyPasteActions {
                Instrument instrument = Instrument.valueOf(instrumentString);
                pastedNotes.add(new NoteRectangle(xLocation,yLocation,instrument, width, mainController));
            }
-       } catch (Exception me){
-           System.out.print("numberFormat");
+       } catch (Exception ex){
+           System.out.print("exception thrown");
+           Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Invalid File");
+            alert.setContentText("Please choose a valid file.");
+            alert.showAndWait();
+            openFile();
        }
        return pastedNotes;
     }
@@ -176,17 +189,28 @@ public class CopyPasteActions {
      * @param notesAndGestures a string of notes and gestures to pasted
      * @param pastedNotes an ArrayList of NoteRectangles to paste to 
      */
-    private void initializePastedGestures(String[] notesAndGestures, ArrayList<NoteRectangle> pastedNotes){
-       ArrayList<ArrayList<NoteRectangle>> pastedGestures = new ArrayList<>();
-       String[] individualGestureArray = (notesAndGestures[1]).split("@");
-       String[] gestureIndices;
-       for (int g = 0; g < individualGestureArray.length ; g++){
-           ArrayList<NoteRectangle> notesInGesture = new ArrayList<>();
-           gestureIndices = individualGestureArray[g].split("&");
-           for (int q = 0; q < gestureIndices.length;q++){
-               notesInGesture.add(pastedNotes.get(Integer.valueOf(gestureIndices[q])));
-           }
-           mainController.gestureModelController.gestureNoteGroups.add(notesInGesture);
+    private void initializePastedGestures(String[] notesAndGestures, ArrayList<NoteRectangle> pastedNotes) throws FileNotFoundException{
+       
+       try {
+            ArrayList<ArrayList<NoteRectangle>> pastedGestures = new ArrayList<>();
+            String[] individualGestureArray = (notesAndGestures[1]).split("@");
+            String[] gestureIndices;
+            for (int g = 0; g < individualGestureArray.length ; g++){
+                ArrayList<NoteRectangle> notesInGesture = new ArrayList<>();
+                gestureIndices = individualGestureArray[g].split("&");
+                for (int q = 0; q < gestureIndices.length;q++){
+                    notesInGesture.add(pastedNotes.get(Integer.valueOf(gestureIndices[q])));
+                }
+                mainController.gestureModelController.gestureNoteGroups.add(notesInGesture);
+            }
+       } catch (Exception ex){
+           System.out.print("exception thrown");
+           Alert alert = new Alert(AlertType.ERROR);
+           alert.setTitle("Error Dialog");
+           alert.setHeaderText("Invalid File");
+           alert.setContentText("Please choose a valid file.");
+           alert.showAndWait();
+           openFile();
        }
     }
     
