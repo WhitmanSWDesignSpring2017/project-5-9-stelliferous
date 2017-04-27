@@ -71,6 +71,54 @@ public class MenuBarController  {
     private void handleExitAction(ActionEvent e){
         System.exit(0);
     }
+    
+    /**
+     * Displays a dialog button with "about" information
+     * @param e on user click
+     */
+    @FXML
+    private void handleAboutAction(ActionEvent e){
+        //code here
+    }
+    
+    /**
+     * 
+     * @param e on user click
+     */
+    @FXML
+    private void handleNewAction(ActionEvent e){
+        //code here
+    }
+    
+    /**
+     * 
+     * @param e on user click
+     */
+    @FXML
+    private void handleOpenAction(ActionEvent e) throws FileNotFoundException{
+        stopTune();
+        copyCompositionActions.notesFromString(copyCompositionActions.readFile());
+        mainController.undoRedoActions.undoableAction();
+    }
+    
+    /**
+     * 
+     * @param e on user click
+     */
+    @FXML
+    private void handleSaveAction(ActionEvent e){
+        //code here
+    }
+    
+    /**
+     * 
+     * @param e on user click
+     */
+    @FXML
+    private void handleSaveAsAction(ActionEvent e) throws IOException{
+        stopTune();
+        copyCompositionActions.copySelectedNotesToFile();
+    }
 
     /**
      * Marked the current state and allow user to go back to this particular state
@@ -305,32 +353,6 @@ public class MenuBarController  {
         stopTune();
         mainController.selectedNotes.clear();
         copyCompositionActions.paste();
-        mainController.undoRedoActions.undoableAction();
-    }
-    
-    /**
-     * Chooses a txt file to which to copy the composition's notes.
-     * Note: The txt file must be preexisting.
-     * @param e a mouse event
-     * @throws IOException 
-     */
-    @FXML
-    private void copySelectedNotesToFileAction(ActionEvent e) throws IOException{
-        stopTune();
-        copyCompositionActions.copySelectedNotesToFile();
-    }
-    
-    /**
-     * Reads notes from a txt file and copies them into the composition.
-     * Note: the txt file must contain correct syntax (as used in MainController's
-     * NotesFromString) to work properly.
-     * @param e a mouse event
-     * @throws FileNotFoundException 
-     */
-    @FXML
-    private void handleNotesFromFileAction(ActionEvent e) throws FileNotFoundException{
-        stopTune();
-        copyCompositionActions.notesFromString(copyCompositionActions.readFile());
         mainController.undoRedoActions.undoableAction();
     }
    

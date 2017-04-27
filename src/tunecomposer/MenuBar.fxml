@@ -12,10 +12,12 @@
                 <Menu text="File">
                     <items>
                         <MenuItem fx:id="AboutButton" accelerator="Shortcut+A+Shift" onAction="#handleAboutAction" text="About" />
+                        <SeparatorMenuItem />
                         <MenuItem fx:id="NewButton" accelerator="Shortcut+N" onAction="#handleNewAction" text="New" />
                         <MenuItem fx:id="OpenButton" accelerator="Shortcut+O" onAction="#handleOpenAction" text="Open" />
                         <MenuItem fx:id="SaveButton" accelerator="Shortcut+S" onAction="#handleSaveAction" text="Save" />
                         <MenuItem fx:id="SaveAsButton" accelerator="Shortcut+S+Shift" onAction="#handleSaveAsAction" text="Save As" />
+                        <SeparatorMenuItem />
                         <MenuItem fx:id="ExitButton" accelerator="Shortcut+Q" onAction="#handleExitAction" text="Exit" />
                     </items>
                 </Menu>
@@ -28,8 +30,6 @@
                 <MenuItem fx:id="copyCompositionAction" accelerator="Shortcut+C+SHIFT" onAction="#handleCopyCompositionAction" text="Copy Composition" />
                 <MenuItem fx:id="cutAction" accelerator="Shortcut+X" onAction="#handleCutAction" text="Cut" />
                 <MenuItem fx:id="pasteAction" accelerator="Shortcut+V" onAction="#handlePasteAction" text="Paste" />
-                <MenuItem fx:id="notesFromFileAction" accelerator="Shortcut+W" onAction="#handleNotesFromFileAction" text="Read Notes From File" />
-                <MenuItem fx:id="selectedNotesToFileAction" accelerator="Shortcut+T" onAction="#copySelectedNotesToFileAction" text="Copy Selected Notes To File" />
                 <SeparatorMenuItem />
                 <MenuItem fx:id="markButton" accelerator="Shortcut+M" onAction="#handleMarkAction" text="Mark State" />
                 <MenuItem fx:id="revertButton" accelerator="Shortcut+R" onAction="#handleRevertAction" text="Revert to Mark State" />
