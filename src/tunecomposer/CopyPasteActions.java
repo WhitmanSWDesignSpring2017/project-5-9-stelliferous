@@ -168,7 +168,6 @@ public class CopyPasteActions {
            NoteRectangle note = pastedNotes.get(o);
            mainController.rectList.add(note);
            mainController.compositionController.rectAnchorPane.getChildren().add(note.notes);
-           mainController.selectedNotes.add(note);
        }
     }
     
@@ -188,11 +187,7 @@ public class CopyPasteActions {
                notesInGesture.add(pastedNotes.get(Integer.valueOf(gestureIndices[q])));
            }
            mainController.gestureModelController.gestureNoteGroups.add(notesInGesture);
-           mainController.gestureModelController.gestureNoteGroups.forEach((e1)->{
-           });
        }
-           mainController.gestureModelController.gestureNoteGroups.forEach((e1)->{
-           });
     }
     
     
