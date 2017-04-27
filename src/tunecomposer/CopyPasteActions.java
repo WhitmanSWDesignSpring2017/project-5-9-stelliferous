@@ -1,13 +1,18 @@
 package tunecomposer;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
@@ -216,12 +221,11 @@ public class CopyPasteActions {
     }
     
     /**
-     * Chooses a txt file to which to copy the composition's notes.
-     * Note: The txt file must be preexisting.
+     * Creates a txt file to which it copies the composition's notes.
      * @throws IOException 
      */
     protected void copySelectedNotesToFile() throws IOException{
-        Stage fileStage = new Stage();
+        /**Stage fileStage = new Stage();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose txt file to Save To");
         File selectedFile = fileChooser.showOpenDialog(fileStage);
@@ -229,7 +233,63 @@ public class CopyPasteActions {
         if (selectedFile != null) {
             saveFile(notesToString(mainController.selectedNotes,false),selectedFile);
         }
-        fileStage.close();
+        fileStage.close();*/
+        
+        
+        
+        String result = chooseFileName();
+        
+        if (!result.isEmpty()){
+            FileWriter fstream = new FileWriter(result + ".txt");
+            BufferedWriter out = new BufferedWriter(fstream);
+            out.write(notesToString(mainController.rectList,false));
+            //Close the output stream
+            out.close();
+            System.out.println("something saved");
+        } else {
+            System.out.println("nothing saved");
+        }
+    }
+    
+    protected String chooseFileName(){
+        String filename = "";
+        
+        TextInputDialog dialog = new TextInputDialog("Choose File Name");
+
+        dialog.setTitle("File >> Save As");
+        dialog.setHeaderText("Save As");
+        dialog.setContentText("Please enter a valid file name:");
+        
+        Optional<String> result = dialog.showAndWait();
+        
+        System.out.println("opened");
+        
+        if (result.isPresent() && isValidFileName(result.get())){
+            System.out.println("valid name");
+                filename = result.get();
+                System.out.println("Your name: " + result.get());
+        }  else if (result.isPresent() && !isValidFileName(result.get())){
+                        System.out.println("not valid");
+
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Invalid File Name");
+            alert.setContentText("Do not include periods, slashes or 'null' in file names.");
+
+            alert.showAndWait();
+            filename = chooseFileName();
+        } 
+        
+        return filename;
+    }
+    
+    /**
+     * Determines whether a given file name is valid
+     * @param filename
+     * @return boolean describing whether or not a file name is valid
+     */
+    private Boolean isValidFileName(String filename){
+        return !(filename.isEmpty() || filename.contains("null") || filename.contains(".") || filename.contains("/"));
     }
     
     /**
