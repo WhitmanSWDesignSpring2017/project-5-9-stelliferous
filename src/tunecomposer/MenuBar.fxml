@@ -11,14 +11,14 @@
             <menus>
                 <Menu text="File">
                     <items>
-                        <MenuItem fx:id="AboutButton" accelerator="Shortcut+A+Shift" onAction="#handleAboutAction" text="About" />
+                        <MenuItem fx:id="aboutButton" accelerator="Shortcut+A+Shift" onAction="#handleAboutAction" text="About" />
                         <SeparatorMenuItem />
-                        <MenuItem fx:id="NewButton" accelerator="Shortcut+N" onAction="#handleNewAction" text="New" />
-                        <MenuItem fx:id="OpenButton" accelerator="Shortcut+O" onAction="#handleOpenAction" text="Open" />
-                        <MenuItem fx:id="SaveButton" accelerator="Shortcut+S" onAction="#handleSaveAction" text="Save" />
-                        <MenuItem fx:id="SaveAsButton" accelerator="Shortcut+S+Shift" onAction="#handleSaveAsAction" text="Save As" />
+                        <MenuItem fx:id="newButton" accelerator="Shortcut+N" onAction="#handleNewAction" text="New" />
+                        <MenuItem fx:id="openButton" accelerator="Shortcut+O" onAction="#handleOpenAction" text="Open" />
+                        <MenuItem fx:id="saveButton" accelerator="Shortcut+S" onAction="#handleSaveAction" text="Save" />
+                        <MenuItem fx:id="saveAsButton" accelerator="Shortcut+S+Shift" onAction="#handleSaveAsAction" text="Save As" />
                         <SeparatorMenuItem />
-                        <MenuItem fx:id="ExitButton" accelerator="Shortcut+Q" onAction="#handleExitAction" text="Exit" />
+                        <MenuItem fx:id="exitButton" accelerator="Shortcut+Q" onAction="#handleExitAction" text="Exit" />
                     </items>
                 </Menu>
             <Menu text="Edit">

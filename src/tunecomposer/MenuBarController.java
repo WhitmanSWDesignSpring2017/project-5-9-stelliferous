@@ -52,6 +52,7 @@ public class MenuBarController  {
     @FXML MenuItem selectedNotesToFileAction;
     @FXML MenuItem savedBeatAction;
     @FXML MenuItem saveAsBeatAction;
+    @FXML MenuItem saveAsButton;
 
     /**
      * Initializes the main controller. This method was necessary for the 
@@ -472,23 +473,21 @@ public class MenuBarController  {
         if (mainController.rectList.isEmpty()) {
             selectAllAction.setDisable(true);
             playButton.setDisable(true);
+            saveAsButton.setDisable(true);
         } else {
             selectAllAction.setDisable(false);
             playButton.setDisable(false);
+            saveAsButton.setDisable(false);
         }
         if (mainController.selectedNotes.isEmpty()) {
             deleteAction.setDisable(true);
             copyAction.setDisable(true);
             cutAction.setDisable(true);
-            copyCompositionAction.setDisable(true);
-            selectedNotesToFileAction.setDisable(true);
             saveAsBeatAction.setDisable(true);
         } else {
             deleteAction.setDisable(false);
             copyAction.setDisable(false);
             cutAction.setDisable(false);
-            copyCompositionAction.setDisable(false);
-            selectedNotesToFileAction.setDisable(false);
             saveAsBeatAction.setDisable(false);
         }
         if (mainController.undoRedoActions.undoableStates.size()> 1 ){
@@ -532,10 +531,9 @@ public class MenuBarController  {
         playButton.setDisable(true);
         stopButton.setDisable(true);
         copyAction.setDisable(true);
-        copyCompositionAction.setDisable(true);
+        saveAsButton.setDisable(true);
         cutAction.setDisable(true);
         pasteAction.setDisable(true);
-        selectedNotesToFileAction.setDisable(true);
         savedBeatAction.setDisable(true);
         saveAsBeatAction.setDisable(true);
     }
