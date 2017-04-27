@@ -31,7 +31,7 @@ public class CopyPasteActions {
     MainController mainController;
     
     //system clipboard to store copied and cut notes
-    protected static final Clipboard clipBoard = Clipboard.getSystemClipboard();
+    protected static final Clipboard CLIPBOARD = Clipboard.getSystemClipboard();
     private final ClipboardContent content = new ClipboardContent();
     
     
@@ -44,23 +44,24 @@ public class CopyPasteActions {
      * Copies selected notes to the clipboard.
      */
     protected void copySelected(){
-        content.put(DataFormat.PLAIN_TEXT, notesToString(mainController.selectedNotes,true));
-        clipBoard.setContent(content);
+        content.put(DataFormat.PLAIN_TEXT, notesToString(mainController.selectedNotes,mainController.gestureModelController.gestureNoteGroups,true));
+        CLIPBOARD.setContent(content);
     }
      
     /**
      * Copies entire composition to the clipboard.
      */
     protected void copyComposition(){
-        content.put(DataFormat.PLAIN_TEXT, notesToString(mainController.rectList,true));
-        clipBoard.setContent(content);
+        content.put(DataFormat.PLAIN_TEXT, notesToString(mainController.rectList,mainController.gestureModelController.gestureNoteGroups,true));
+        CLIPBOARD.setContent(content);
     }
     
      /**
      * Pastes copied notes to the clipboard and adds them to the composition.
+     * @throws java.io.FileNotFoundException
      */
     protected void paste() throws FileNotFoundException{
-        String pastedNotes = clipBoard.getString();
+        String pastedNotes = CLIPBOARD.getString();
         notesFromString(pastedNotes);
         copySelected();
     }
@@ -69,10 +70,11 @@ public class CopyPasteActions {
      * Copies the specified NoteRectangles and the gestures that contain them
      * into a string to be placed on the clipboard. 
      * @param copiedNotes
+     * @param gestureList
      * @param shift
      * @return the string that has been translated from the copiedNotes
      */
-    protected String notesToString(ArrayList<NoteRectangle> copiedNotes, Boolean shift){
+    protected String notesToString(ArrayList<NoteRectangle> copiedNotes, ArrayList<ArrayList<NoteRectangle>> gestureList, Boolean shift){
         
         //initalize the strings used to store the composition data
         String noteString = "";
@@ -97,8 +99,8 @@ public class CopyPasteActions {
 
             //find which gestures contain this note, keep track of the index
             //of all notes in those gestures
-            for (int g = 0; g < mainController.gestureModelController.gestureNoteGroups.size(); g++){
-                ArrayList<NoteRectangle> currentGesture = mainController.gestureModelController.gestureNoteGroups.get(g);
+            for (int g = 0; g < gestureList.size(); g++){
+                ArrayList<NoteRectangle> currentGesture = gestureList.get(g);
                 if (currentGesture.contains(currentRect) && !copiedGestureList.contains(currentGesture)){
                     copiedGestureList.add(currentGesture);
                     for(int p=0; p < currentGesture.size();p++){
@@ -262,10 +264,10 @@ public class CopyPasteActions {
         
         if (!result.isEmpty()){
             FileWriter fstream = new FileWriter(result + ".txt");
-            BufferedWriter out = new BufferedWriter(fstream);
-            out.write(notesToString(mainController.rectList,false));
-            //Close the output stream
-            out.close();
+            try (BufferedWriter out = new BufferedWriter(fstream)) {
+                out.write(notesToString(mainController.rectList,mainController.gestureModelController.gestureNoteGroups,false));
+                //Close the output stream
+            }
             System.out.println("something saved");
         } else {
             System.out.println("nothing saved");
