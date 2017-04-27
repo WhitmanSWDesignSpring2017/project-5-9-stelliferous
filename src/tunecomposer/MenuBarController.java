@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.util.Duration;
@@ -72,6 +74,14 @@ public class MenuBarController  {
         System.exit(0);
     }
 
+    @FXML 
+    private void handleAboutAction(ActionEvent e) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("About");
+        alert.setHeaderText(null);
+        alert.setContentText("I have a great message for you!");
+        alert.showAndWait();
+    }
     /**
      * Marked the current state and allow user to go back to this particular state
      * @param e on user click
