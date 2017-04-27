@@ -137,16 +137,19 @@ public class CopyPasteActions {
      */
     private ArrayList<NoteRectangle> translatePastedNoteRectangles(String[] individualNoteArray){
        ArrayList<NoteRectangle> pastedNotes = new ArrayList<>();
-       
-       //translates list of NoteRectangles
-       for (int j = 0; j < individualNoteArray.length; j++){
-           String[] noteAttributes = individualNoteArray[j].split(";");
-           double xLocation = Double.parseDouble(noteAttributes[0]);
-           double yLocation = Double.parseDouble(noteAttributes[1]);
-           double width = Double.parseDouble(noteAttributes[2]);
-           String instrumentString = noteAttributes[3];
-           Instrument instrument = Instrument.valueOf(instrumentString);
-           pastedNotes.add(new NoteRectangle(xLocation,yLocation,instrument, width, mainController));
+       try {
+           //translates list of NoteRectangles
+           for (int j = 0; j < individualNoteArray.length; j++){
+               String[] noteAttributes = individualNoteArray[j].split(";");
+               double xLocation = Double.parseDouble(noteAttributes[0]);
+               double yLocation = Double.parseDouble(noteAttributes[1]);
+               double width = Double.parseDouble(noteAttributes[2]);
+               String instrumentString = noteAttributes[3];
+               Instrument instrument = Instrument.valueOf(instrumentString);
+               pastedNotes.add(new NoteRectangle(xLocation,yLocation,instrument, width, mainController));
+           }
+       } catch (Exception me){
+           System.out.print("numberFormat");
        }
        return pastedNotes;
     }
