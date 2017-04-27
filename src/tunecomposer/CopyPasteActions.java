@@ -132,13 +132,7 @@ public class CopyPasteActions {
        String[] individualNoteArray = (notesAndGestures[0]).split("&");
 
        ArrayList<NoteRectangle> pastedNotes = translatePastedNoteRectangles(individualNoteArray);
-       
-       //adds any gestures
-       if(notesAndGestures.length > 1){
-            initializePastedGestures(notesAndGestures, pastedNotes);
-       }
-       
-       initializePastedNotes(pastedNotes);
+       initializePasted(notesAndGestures, pastedNotes);  
     }
     
     /**
@@ -189,20 +183,14 @@ public class CopyPasteActions {
      * @param notesAndGestures a string of notes and gestures to pasted
      * @param pastedNotes an ArrayList of NoteRectangles to paste to 
      */
-    private void initializePastedGestures(String[] notesAndGestures, ArrayList<NoteRectangle> pastedNotes) throws FileNotFoundException{
+    private void initializePasted(String[] notesAndGestures, ArrayList<NoteRectangle> pastedNotes) throws FileNotFoundException{
        
        try {
-            ArrayList<ArrayList<NoteRectangle>> pastedGestures = new ArrayList<>();
-            String[] individualGestureArray = (notesAndGestures[1]).split("@");
-            String[] gestureIndices;
-            for (int g = 0; g < individualGestureArray.length ; g++){
-                ArrayList<NoteRectangle> notesInGesture = new ArrayList<>();
-                gestureIndices = individualGestureArray[g].split("&");
-                for (int q = 0; q < gestureIndices.length;q++){
-                    notesInGesture.add(pastedNotes.get(Integer.valueOf(gestureIndices[q])));
-                }
-                mainController.gestureModelController.gestureNoteGroups.add(notesInGesture);
+            //adds any gestures
+            if(notesAndGestures.length > 1){
+                initializePastedGestures(notesAndGestures, pastedNotes);
             }
+            initializePastedNotes(pastedNotes);
        } catch (Exception ex){
            System.out.print("exception thrown");
            Alert alert = new Alert(AlertType.ERROR);
@@ -212,6 +200,20 @@ public class CopyPasteActions {
            alert.showAndWait();
            openFile();
        }
+    }
+    
+    private void initializePastedGestures(String[] notesAndGestures, ArrayList<NoteRectangle> pastedNotes){
+       ArrayList<ArrayList<NoteRectangle>> pastedGestures = new ArrayList<>();
+            String[] individualGestureArray = (notesAndGestures[1]).split("@");
+            String[] gestureIndices;
+            for (int g = 0; g < individualGestureArray.length ; g++){
+                ArrayList<NoteRectangle> notesInGesture = new ArrayList<>();
+                gestureIndices = individualGestureArray[g].split("&");
+                for (int q = 0; q < gestureIndices.length;q++){
+                    notesInGesture.add(pastedNotes.get(Integer.valueOf(gestureIndices[q])));
+                }
+                mainController.gestureModelController.gestureNoteGroups.add(notesInGesture);
+            } 
     }
     
     
