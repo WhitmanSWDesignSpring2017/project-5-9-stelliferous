@@ -11,8 +11,14 @@
             <menus>
                 <Menu text="File">
                     <items>
-                        <MenuItem fx:id="About" onAction="#handleAboutAction" text="About" />
-                        <MenuItem fx:id="ExitButton" accelerator="Shortcut+Q" onAction="#handleExitAction" text="Exit" />
+                        <MenuItem fx:id="aboutButton" accelerator="Shortcut+A+Shift" onAction="#handleAboutAction" text="About" />
+                        <SeparatorMenuItem />
+                        <MenuItem fx:id="newButton" accelerator="Shortcut+N" onAction="#handleNewAction" text="New" />
+                        <MenuItem fx:id="openButton" accelerator="Shortcut+O" onAction="#handleOpenAction" text="Open" />
+                        <MenuItem fx:id="saveButton" accelerator="Shortcut+S" onAction="#handleSaveAction" text="Save" />
+                        <MenuItem fx:id="saveAsButton" accelerator="Shortcut+S+Shift" onAction="#handleSaveAsAction" text="Save As" />
+                        <SeparatorMenuItem />
+                        <MenuItem fx:id="exitButton" accelerator="Shortcut+Q" onAction="#handleExitAction" text="Exit" />
                     </items>
                 </Menu>
             <Menu text="Edit">
@@ -24,8 +30,6 @@
                 <MenuItem fx:id="copyCompositionAction" accelerator="Shortcut+C+SHIFT" onAction="#handleCopyCompositionAction" text="Copy Composition" />
                 <MenuItem fx:id="cutAction" accelerator="Shortcut+X" onAction="#handleCutAction" text="Cut" />
                 <MenuItem fx:id="pasteAction" accelerator="Shortcut+V" onAction="#handlePasteAction" text="Paste" />
-                <MenuItem fx:id="notesFromFileAction" accelerator="Shortcut+W" onAction="#handleNotesFromFileAction" text="Read Notes From File" />
-                <MenuItem fx:id="selectedNotesToFileAction" accelerator="Shortcut+T" onAction="#copySelectedNotesToFileAction" text="Copy Selected Notes To File" />
                 <SeparatorMenuItem />
                 <MenuItem fx:id="markButton" accelerator="Shortcut+M" onAction="#handleMarkAction" text="Mark State" />
                 <MenuItem fx:id="revertButton" accelerator="Shortcut+R" onAction="#handleRevertAction" text="Revert to Mark State" />
@@ -33,13 +37,13 @@
                 <MenuItem fx:id="deleteAction" accelerator="backspace" onAction="#handleDeleteAction" text="Delete" />
                 <MenuItem fx:id="groupAction" accelerator="Shortcut+G" onAction="#handleGroupAction" text="Group" />
                 <MenuItem fx:id="ungroupAction" accelerator="Shortcut+U" onAction="#handleUngroupAction" text="Ungroup" />  
-                <MenuItem fx:id="ungroupAllAction" accelerator="Shortcut+N" onAction="#handleUngroupAllAction" text="Ungroup All" />
+                <MenuItem fx:id="ungroupAllAction" accelerator="Shortcut+U+SHIFT" onAction="#handleUngroupAllAction" text="Ungroup All" />
               </items>
             </Menu>
                 <Menu text="Action">
                     <items>
                         <MenuItem fx:id="playButton" accelerator="Shortcut+P" onAction="#handlePlayAction" text="Play" />
-                        <MenuItem fx:id="stopButton" accelerator="Shortcut+S" onAction="#handleStopAction" text="Stop" />
+                        <MenuItem fx:id="stopButton" accelerator="Shortcut+T" onAction="#handleStopAction" text="Stop" />
                     </items>
                 </Menu>
                 <Menu text="Beats">

@@ -54,6 +54,7 @@ public class MenuBarController  {
     @FXML MenuItem selectedNotesToFileAction;
     @FXML MenuItem savedBeatAction;
     @FXML MenuItem saveAsBeatAction;
+    @FXML MenuItem saveAsButton;
 
     /**
      * Initializes the main controller. This method was necessary for the 
@@ -72,6 +73,54 @@ public class MenuBarController  {
     @FXML
     private void handleExitAction(ActionEvent e){
         System.exit(0);
+    }
+    
+    /**
+     * Displays a dialog button with "about" information
+     * @param e on user click
+     */
+    @FXML
+    private void handleAboutAction(ActionEvent e){
+        //code here
+    }
+    
+    /**
+     * 
+     * @param e on user click
+     */
+    @FXML
+    private void handleNewAction(ActionEvent e){
+        //code here
+    }
+    
+    /**
+     * 
+     * @param e on user click
+     */
+    @FXML
+    private void handleOpenAction(ActionEvent e) throws FileNotFoundException{
+        stopTune();
+        copyCompositionActions.openFile(); //notesFromString(copyCompositionActions.readFile());
+        mainController.undoRedoActions.undoableAction();
+    }
+    
+    /**
+     * 
+     * @param e on user click
+     */
+    @FXML
+    private void handleSaveAction(ActionEvent e){
+        //code here
+    }
+    
+    /**
+     * 
+     * @param e on user click
+     */
+    @FXML
+    private void handleSaveAsAction(ActionEvent e) throws IOException{
+        stopTune();
+        copyCompositionActions.copySelectedNotesToFile();
     }
 
     @FXML 
@@ -311,36 +360,10 @@ public class MenuBarController  {
      * @param e a mouse event
      */
     @FXML
-    private void handlePasteAction(ActionEvent e){
+    private void handlePasteAction(ActionEvent e) throws FileNotFoundException{
         stopTune();
         mainController.selectedNotes.clear();
         copyCompositionActions.paste();
-        mainController.undoRedoActions.undoableAction();
-    }
-    
-    /**
-     * Chooses a txt file to which to copy the composition's notes.
-     * Note: The txt file must be preexisting.
-     * @param e a mouse event
-     * @throws IOException 
-     */
-    @FXML
-    private void copySelectedNotesToFileAction(ActionEvent e) throws IOException{
-        stopTune();
-        copyCompositionActions.copySelectedNotesToFile();
-    }
-    
-    /**
-     * Reads notes from a txt file and copies them into the composition.
-     * Note: the txt file must contain correct syntax (as used in MainController's
-     * NotesFromString) to work properly.
-     * @param e a mouse event
-     * @throws FileNotFoundException 
-     */
-    @FXML
-    private void handleNotesFromFileAction(ActionEvent e) throws FileNotFoundException{
-        stopTune();
-        copyCompositionActions.notesFromString(copyCompositionActions.readFile());
         mainController.undoRedoActions.undoableAction();
     }
    
@@ -460,23 +483,21 @@ public class MenuBarController  {
         if (mainController.rectList.isEmpty()) {
             selectAllAction.setDisable(true);
             playButton.setDisable(true);
+            saveAsButton.setDisable(true);
         } else {
             selectAllAction.setDisable(false);
             playButton.setDisable(false);
+            saveAsButton.setDisable(false);
         }
         if (mainController.selectedNotes.isEmpty()) {
             deleteAction.setDisable(true);
             copyAction.setDisable(true);
             cutAction.setDisable(true);
-            copyCompositionAction.setDisable(true);
-            selectedNotesToFileAction.setDisable(true);
             saveAsBeatAction.setDisable(true);
         } else {
             deleteAction.setDisable(false);
             copyAction.setDisable(false);
             cutAction.setDisable(false);
-            copyCompositionAction.setDisable(false);
-            selectedNotesToFileAction.setDisable(false);
             saveAsBeatAction.setDisable(false);
         }
         if (mainController.undoRedoActions.undoableStates.size()> 1 ){
@@ -520,10 +541,9 @@ public class MenuBarController  {
         playButton.setDisable(true);
         stopButton.setDisable(true);
         copyAction.setDisable(true);
-        copyCompositionAction.setDisable(true);
+        saveAsButton.setDisable(true);
         cutAction.setDisable(true);
         pasteAction.setDisable(true);
-        selectedNotesToFileAction.setDisable(true);
         savedBeatAction.setDisable(true);
         saveAsBeatAction.setDisable(true);
     }

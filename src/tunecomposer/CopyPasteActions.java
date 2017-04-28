@@ -1,13 +1,18 @@
 package tunecomposer;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
@@ -26,7 +31,7 @@ public class CopyPasteActions {
     MainController mainController;
     
     //system clipboard to store copied and cut notes
-    protected static final Clipboard clipBoard = Clipboard.getSystemClipboard();
+    protected static final Clipboard CLIPBOARD = Clipboard.getSystemClipboard();
     private final ClipboardContent content = new ClipboardContent();
     
     
@@ -39,23 +44,24 @@ public class CopyPasteActions {
      * Copies selected notes to the clipboard.
      */
     protected void copySelected(){
-        content.put(DataFormat.PLAIN_TEXT, notesToString(mainController.selectedNotes,true));
-        clipBoard.setContent(content);
+        content.put(DataFormat.PLAIN_TEXT, notesToString(mainController.selectedNotes,mainController.gestureModelController.gestureNoteGroups,true));
+        CLIPBOARD.setContent(content);
     }
      
     /**
      * Copies entire composition to the clipboard.
      */
     protected void copyComposition(){
-        content.put(DataFormat.PLAIN_TEXT, notesToString(mainController.rectList,true));
-        clipBoard.setContent(content);
+        content.put(DataFormat.PLAIN_TEXT, notesToString(mainController.rectList,mainController.gestureModelController.gestureNoteGroups,true));
+        CLIPBOARD.setContent(content);
     }
     
      /**
      * Pastes copied notes to the clipboard and adds them to the composition.
+     * @throws java.io.FileNotFoundException
      */
-    protected void paste(){
-        String pastedNotes = clipBoard.getString();
+    protected void paste() throws FileNotFoundException{
+        String pastedNotes = CLIPBOARD.getString();
         notesFromString(pastedNotes);
         copySelected();
     }
@@ -64,10 +70,11 @@ public class CopyPasteActions {
      * Copies the specified NoteRectangles and the gestures that contain them
      * into a string to be placed on the clipboard. 
      * @param copiedNotes
+     * @param gestureList
      * @param shift
      * @return the string that has been translated from the copiedNotes
      */
-    protected String notesToString(ArrayList<NoteRectangle> copiedNotes, Boolean shift){
+    protected String notesToString(ArrayList<NoteRectangle> copiedNotes, ArrayList<ArrayList<NoteRectangle>> gestureList, Boolean shift){
         
         //initalize the strings used to store the composition data
         String noteString = "";
@@ -92,8 +99,8 @@ public class CopyPasteActions {
 
             //find which gestures contain this note, keep track of the index
             //of all notes in those gestures
-            for (int g = 0; g < mainController.gestureModelController.gestureNoteGroups.size(); g++){
-                ArrayList<NoteRectangle> currentGesture = mainController.gestureModelController.gestureNoteGroups.get(g);
+            for (int g = 0; g < gestureList.size(); g++){
+                ArrayList<NoteRectangle> currentGesture = gestureList.get(g);
                 if (currentGesture.contains(currentRect) && !copiedGestureList.contains(currentGesture)){
                     copiedGestureList.add(currentGesture);
                     for(int p=0; p < currentGesture.size();p++){
@@ -110,23 +117,24 @@ public class CopyPasteActions {
         return noteString;
     }
     
+    protected void openFile() throws FileNotFoundException{
+        String noteString = readFile();
+        if (!noteString.isEmpty()){
+            notesFromString(noteString);
+        }
+    }
     /**
      * Translates notes from a string into the composition of NoteRectangles 
      * and their gestures
      * @param noteString takes a string of composition notes
+     * @throws java.io.FileNotFoundException
      */
-    protected void notesFromString(String noteString){
+    protected void notesFromString(String noteString) throws FileNotFoundException{
        String[] notesAndGestures = noteString.split("--");
        String[] individualNoteArray = (notesAndGestures[0]).split("&");
 
        ArrayList<NoteRectangle> pastedNotes = translatePastedNoteRectangles(individualNoteArray);
-       
-       initializePastedNotes(pastedNotes);
-
-       //adds any gestures
-       if(notesAndGestures.length > 1){
-            initializePastedGestures(notesAndGestures, pastedNotes);
-       }
+       initializePasted(notesAndGestures, pastedNotes);  
     }
     
     /**
@@ -135,18 +143,27 @@ public class CopyPasteActions {
      * @param individualNoteArray
      * @return 
      */
-    private ArrayList<NoteRectangle> translatePastedNoteRectangles(String[] individualNoteArray){
+    private ArrayList<NoteRectangle> translatePastedNoteRectangles(String[] individualNoteArray) throws FileNotFoundException{
        ArrayList<NoteRectangle> pastedNotes = new ArrayList<>();
-       
-       //translates list of NoteRectangles
-       for (int j = 0; j < individualNoteArray.length; j++){
-           String[] noteAttributes = individualNoteArray[j].split(";");
-           double xLocation = Double.parseDouble(noteAttributes[0]);
-           double yLocation = Double.parseDouble(noteAttributes[1]);
-           double width = Double.parseDouble(noteAttributes[2]);
-           String instrumentString = noteAttributes[3];
-           Instrument instrument = Instrument.valueOf(instrumentString);
-           pastedNotes.add(new NoteRectangle(xLocation,yLocation,instrument, width, mainController));
+       try {
+           //translates list of NoteRectangles
+           for (int j = 0; j < individualNoteArray.length; j++){
+               String[] noteAttributes = individualNoteArray[j].split(";");
+               double xLocation = Double.parseDouble(noteAttributes[0]);
+               double yLocation = Double.parseDouble(noteAttributes[1]);
+               double width = Double.parseDouble(noteAttributes[2]);
+               String instrumentString = noteAttributes[3];
+               Instrument instrument = Instrument.valueOf(instrumentString);
+               pastedNotes.add(new NoteRectangle(xLocation,yLocation,instrument, width, mainController));
+           }
+       } catch (Exception ex){
+           System.out.print("exception thrown");
+           Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Invalid File");
+            alert.setContentText("Please choose a valid file.");
+            alert.showAndWait();
+            openFile();
        }
        return pastedNotes;
     }
@@ -160,7 +177,6 @@ public class CopyPasteActions {
            NoteRectangle note = pastedNotes.get(o);
            mainController.rectList.add(note);
            mainController.compositionController.rectAnchorPane.getChildren().add(note.notes);
-           mainController.selectedNotes.add(note);
        }
     }
     
@@ -169,22 +185,37 @@ public class CopyPasteActions {
      * @param notesAndGestures a string of notes and gestures to pasted
      * @param pastedNotes an ArrayList of NoteRectangles to paste to 
      */
+    private void initializePasted(String[] notesAndGestures, ArrayList<NoteRectangle> pastedNotes) throws FileNotFoundException{
+       
+       try {
+            //adds any gestures
+            if(notesAndGestures.length > 1){
+                initializePastedGestures(notesAndGestures, pastedNotes);
+            }
+            initializePastedNotes(pastedNotes);
+       } catch (Exception ex){
+           System.out.print("exception thrown");
+           Alert alert = new Alert(AlertType.ERROR);
+           alert.setTitle("Error Dialog");
+           alert.setHeaderText("Invalid File");
+           alert.setContentText("Please choose a valid file.");
+           alert.showAndWait();
+           openFile();
+       }
+    }
+    
     private void initializePastedGestures(String[] notesAndGestures, ArrayList<NoteRectangle> pastedNotes){
        ArrayList<ArrayList<NoteRectangle>> pastedGestures = new ArrayList<>();
-       String[] individualGestureArray = (notesAndGestures[1]).split("@");
-       String[] gestureIndices;
-       for (int g = 0; g < individualGestureArray.length ; g++){
-           ArrayList<NoteRectangle> notesInGesture = new ArrayList<>();
-           gestureIndices = individualGestureArray[g].split("&");
-           for (int q = 0; q < gestureIndices.length;q++){
-               notesInGesture.add(pastedNotes.get(Integer.valueOf(gestureIndices[q])));
-           }
-           mainController.gestureModelController.gestureNoteGroups.add(notesInGesture);
-           mainController.gestureModelController.gestureNoteGroups.forEach((e1)->{
-           });
-       }
-           mainController.gestureModelController.gestureNoteGroups.forEach((e1)->{
-           });
+            String[] individualGestureArray = (notesAndGestures[1]).split("@");
+            String[] gestureIndices;
+            for (int g = 0; g < individualGestureArray.length ; g++){
+                ArrayList<NoteRectangle> notesInGesture = new ArrayList<>();
+                gestureIndices = individualGestureArray[g].split("&");
+                for (int q = 0; q < gestureIndices.length;q++){
+                    notesInGesture.add(pastedNotes.get(Integer.valueOf(gestureIndices[q])));
+                }
+                mainController.gestureModelController.gestureNoteGroups.add(notesInGesture);
+            } 
     }
     
     
@@ -213,12 +244,11 @@ public class CopyPasteActions {
     }
     
     /**
-     * Chooses a txt file to which to copy the composition's notes.
-     * Note: The txt file must be preexisting.
+     * Creates a txt file to which it copies the composition's notes.
      * @throws IOException 
      */
     protected void copySelectedNotesToFile() throws IOException{
-        Stage fileStage = new Stage();
+        /**Stage fileStage = new Stage();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose txt file to Save To");
         File selectedFile = fileChooser.showOpenDialog(fileStage);
@@ -226,7 +256,63 @@ public class CopyPasteActions {
         if (selectedFile != null) {
             saveFile(notesToString(mainController.selectedNotes,false),selectedFile);
         }
-        fileStage.close();
+        fileStage.close();*/
+        
+        
+        
+        String result = chooseFileName();
+        
+        if (!result.isEmpty()){
+            FileWriter fstream = new FileWriter(result + ".txt");
+            try (BufferedWriter out = new BufferedWriter(fstream)) {
+                out.write(notesToString(mainController.rectList,mainController.gestureModelController.gestureNoteGroups,false));
+                //Close the output stream
+            }
+            System.out.println("something saved");
+        } else {
+            System.out.println("nothing saved");
+        }
+    }
+    
+    protected String chooseFileName(){
+        String filename = "";
+        
+        TextInputDialog dialog = new TextInputDialog("Choose File Name");
+
+        dialog.setTitle("File >> Save As");
+        dialog.setHeaderText("Save As");
+        dialog.setContentText("Please enter a valid file name:");
+        
+        Optional<String> result = dialog.showAndWait();
+        
+        System.out.println("opened");
+        
+        if (result.isPresent() && isValidFileName(result.get())){
+            System.out.println("valid name");
+                filename = result.get();
+                System.out.println("Your name: " + result.get());
+        }  else if (result.isPresent() && !isValidFileName(result.get())){
+                        System.out.println("not valid");
+
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Invalid File Name");
+            alert.setContentText("Do not include periods, slashes or 'null' in file names.");
+
+            alert.showAndWait();
+            filename = chooseFileName();
+        } 
+        
+        return filename;
+    }
+    
+    /**
+     * Determines whether a given file name is valid
+     * @param filename
+     * @return boolean describing whether or not a file name is valid
+     */
+    private Boolean isValidFileName(String filename){
+        return !(filename.isEmpty() || filename.contains("null") || filename.contains(".") || filename.contains("/"));
     }
     
     /**

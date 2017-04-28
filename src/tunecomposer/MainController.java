@@ -86,7 +86,7 @@ public class MainController {
         //disables every menu item that needs to be when program first starts
         menuBarController.everythingDisable();
         
-        Clipboard clipBoard = CopyPasteActions.clipBoard;
+        Clipboard clipBoard = CopyPasteActions.CLIPBOARD;
         
         //create a timeline to check every 0.2 second whether there's anything in the clipboard
         Timeline repeatTask = new Timeline(new KeyFrame(Duration.millis(200), new EventHandler<ActionEvent>() {
