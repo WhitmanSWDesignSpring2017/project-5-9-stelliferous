@@ -98,7 +98,7 @@ public class MenuBarController  {
     @FXML
     private void handleOpenAction(ActionEvent e) throws FileNotFoundException{
         stopTune();
-        copyCompositionActions.notesFromString(copyCompositionActions.readFile());
+        copyCompositionActions.openFile(); //notesFromString(copyCompositionActions.readFile());
         mainController.undoRedoActions.undoableAction();
     }
     
@@ -350,7 +350,7 @@ public class MenuBarController  {
      * @param e a mouse event
      */
     @FXML
-    private void handlePasteAction(ActionEvent e){
+    private void handlePasteAction(ActionEvent e) throws FileNotFoundException{
         stopTune();
         mainController.selectedNotes.clear();
         copyCompositionActions.paste();
