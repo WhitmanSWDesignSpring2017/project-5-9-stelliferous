@@ -82,6 +82,9 @@ public class MainController {
         
         //creates a new composition state for use with undo and redo
         undoRedoActions.undoableAction();
+        
+        //reveal that no unsaved changes have been made
+        setIsSaved(Boolean.TRUE);
 
         //disables every menu item that needs to be when program first starts
         menuBarController.everythingDisable();
@@ -186,7 +189,14 @@ public class MainController {
         undoRedoActions.clearAllActions();
         undoRedoActions.undoableAction();
     }
+    
+    private Boolean isSaved;
+    
+    protected Boolean isSaved(){
+        return isSaved;
+    }
+    
+    protected void setIsSaved(Boolean value){
+        isSaved = value;
+    }
 }
-
-
-

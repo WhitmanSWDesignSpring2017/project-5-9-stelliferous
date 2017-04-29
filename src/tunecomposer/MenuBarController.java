@@ -74,22 +74,27 @@ public class MenuBarController  {
      */
     @FXML
     private void handleExitAction(ActionEvent e){
-        Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you want to quit without saving?");
-        ButtonType buttonTypeYes = new ButtonType("Yes");
-        ButtonType buttonTypeNo = new ButtonType("No");
-        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+        if (!mainController.isSaved()){
+            Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you want to quit without saving?");
+            ButtonType buttonTypeYes = new ButtonType("Yes");
+            ButtonType buttonTypeNo = new ButtonType("No");
+            ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 
-        confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel);
+            confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel);
 
-        Optional<ButtonType> result = confirmationWindow.showAndWait();
-        if (result.get() == buttonTypeYes){
-            System.exit(0);
-        } else if (result.get() == buttonTypeNo) {
-            //save or saveas action here
+            Optional<ButtonType> result = confirmationWindow.showAndWait();
+            if (result.get() == buttonTypeYes){
+                System.exit(0);
+            } else if (result.get() == buttonTypeNo) {
+                handleSaveAction(e);
+            } else {
+                confirmationWindow.hide();
+            }
         } else {
-            confirmationWindow.hide();
+            System.exit(0);
         }
     }
+  
     
     /**
      * 
@@ -97,8 +102,27 @@ public class MenuBarController  {
      */
     @FXML
     private void handleNewAction(ActionEvent e){
-        mainController.restart();
-        checkButtons();
+        if (!mainController.isSaved()){
+            Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you create a new composition without saving?");
+            ButtonType buttonTypeYes = new ButtonType("Yes");
+            ButtonType buttonTypeNo = new ButtonType("No");
+            ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+            confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel);
+
+            Optional<ButtonType> result = confirmationWindow.showAndWait();
+            if (result.get() == buttonTypeYes){
+                mainController.restart();
+                checkButtons();
+            } else if (result.get() == buttonTypeNo) {
+                handleSaveAction(e);
+            } else {
+                confirmationWindow.hide();
+            }
+        } else {
+            mainController.restart();
+            checkButtons();
+        }
     }
     
     /**
@@ -118,6 +142,7 @@ public class MenuBarController  {
      */
     @FXML
     private void handleSaveAction(ActionEvent e){
+        System.out.println("save");
         //code here
     }
     

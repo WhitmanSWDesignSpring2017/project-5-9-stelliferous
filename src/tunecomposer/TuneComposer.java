@@ -38,6 +38,7 @@ public class TuneComposer extends Application {
       
         //closes the program when the window is closed
         primaryStage.setOnCloseRequest((WindowEvent we) -> {
+            
             System.exit(0);
         });        
         
