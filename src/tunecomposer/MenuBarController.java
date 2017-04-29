@@ -145,7 +145,8 @@ public class MenuBarController  {
 
             Optional<ButtonType> result = confirmationWindow.showAndWait();
             if (result.get() == buttonTypeYes){
-                copyCompositionActions.openFile(); 
+                mainController.restart();
+                copyCompositionActions.openFile();
                 checkButtons();
             } else if (result.get() == buttonTypeNo) {
                 handleSaveAction(e);
