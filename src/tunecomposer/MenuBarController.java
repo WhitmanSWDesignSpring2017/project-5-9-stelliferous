@@ -171,11 +171,11 @@ public class MenuBarController  {
         if (!mainController.isSaved()){
             System.out.println("save");
             if (mainController.operatingOnFile.isEmpty()){
+                System.out.println("saveasaction");
                 handleSaveAsAction(e);
             } else {
                 copyCompositionActions.copyCompositionToFile(mainController.operatingOnFile);
             }
-            mainController.setIsSaved(Boolean.TRUE);
         }
     }
     
@@ -187,6 +187,11 @@ public class MenuBarController  {
     private void handleSaveAsAction(ActionEvent e) throws IOException{
         stopTune();
         copyCompositionActions.chooseFileName();
+        if (mainController.operatingOnFile.isEmpty()){
+            mainController.setIsSaved(Boolean.FALSE);
+        } else {
+            mainController.setIsSaved(Boolean.TRUE);
+        }
     }
 
     /**
