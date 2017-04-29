@@ -76,21 +76,13 @@ public class MenuBarController  {
     }
     
     /**
-     * Displays a dialog button with "about" information
-     * @param e on user click
-     */
-    @FXML
-    private void handleAboutAction(ActionEvent e){
-        //code here
-    }
-    
-    /**
      * 
      * @param e on user click
      */
     @FXML
     private void handleNewAction(ActionEvent e){
-        //code here
+        mainController.restart();
+        checkButtons();
     }
     
     /**
@@ -123,6 +115,10 @@ public class MenuBarController  {
         copyCompositionActions.copySelectedNotesToFile();
     }
 
+    /**
+     * Displays a dialog button with "about" information
+     * @param e on user click
+     */
     @FXML 
     private void handleAboutAction(ActionEvent e) {
         Alert alert = new Alert(AlertType.INFORMATION);
@@ -131,6 +127,7 @@ public class MenuBarController  {
         alert.setContentText("I have a great message for you!");
         alert.showAndWait();
     }
+    
     /**
      * Marked the current state and allow user to go back to this particular state
      * @param e on user click

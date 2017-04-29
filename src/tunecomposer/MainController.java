@@ -180,6 +180,12 @@ public class MainController {
     private void handleDurationSliderAction(MouseEvent e){
         noteLength = durationSlider.getValue();
     }
+
+    protected void restart() {
+        undoRedoActions.clearCurrentState();
+        undoRedoActions.clearAllActions();
+        undoRedoActions.undoableAction();
+    }
 }
 
 
