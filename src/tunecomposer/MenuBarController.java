@@ -13,6 +13,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.util.Duration;
@@ -72,7 +74,21 @@ public class MenuBarController  {
      */
     @FXML
     private void handleExitAction(ActionEvent e){
-        System.exit(0);
+        Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you want to quit without saving?");
+        ButtonType buttonTypeYes = new ButtonType("Yes");
+        ButtonType buttonTypeNo = new ButtonType("No");
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+        confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel);
+
+        Optional<ButtonType> result = confirmationWindow.showAndWait();
+        if (result.get() == buttonTypeYes){
+            System.exit(0);
+        } else if (result.get() == buttonTypeNo) {
+            //save or saveas action here
+        } else {
+            confirmationWindow.hide();
+        }
     }
     
     /**
