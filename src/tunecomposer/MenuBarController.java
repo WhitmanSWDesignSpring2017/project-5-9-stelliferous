@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.util.Duration;
@@ -74,21 +76,13 @@ public class MenuBarController  {
     }
     
     /**
-     * Displays a dialog button with "about" information
-     * @param e on user click
-     */
-    @FXML
-    private void handleAboutAction(ActionEvent e){
-        //code here
-    }
-    
-    /**
      * 
      * @param e on user click
      */
     @FXML
     private void handleNewAction(ActionEvent e){
-        //code here
+        mainController.restart();
+        checkButtons();
     }
     
     /**
@@ -121,6 +115,19 @@ public class MenuBarController  {
         copyCompositionActions.copySelectedNotesToFile();
     }
 
+    /**
+     * Displays a dialog button with "about" information
+     * @param e on user click
+     */
+    @FXML 
+    private void handleAboutAction(ActionEvent e) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("About");
+        alert.setHeaderText(null);
+        alert.setContentText("I have a great message for you!");
+        alert.showAndWait();
+    }
+    
     /**
      * Marked the current state and allow user to go back to this particular state
      * @param e on user click

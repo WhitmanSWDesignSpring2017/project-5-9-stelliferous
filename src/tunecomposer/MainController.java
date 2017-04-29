@@ -47,7 +47,7 @@ public class MainController {
     
     //makes available the controller for the composition
     @FXML CompositionController compositionController = new CompositionController();
-        
+  
     //creates a list to store created rectangles, that they may be later erased
     protected ArrayList<NoteRectangle> rectList = new ArrayList<>();
     
@@ -75,8 +75,10 @@ public class MainController {
         menuBarController.init(this);
         redLineController.init(this);
         compositionController.init(this);
-        
+
         redLineController.initializeRedLine();
+        
+        
         
         //creates a new composition state for use with undo and redo
         undoRedoActions.undoableAction();
@@ -177,6 +179,12 @@ public class MainController {
     @FXML
     private void handleDurationSliderAction(MouseEvent e){
         noteLength = durationSlider.getValue();
+    }
+
+    protected void restart() {
+        undoRedoActions.clearCurrentState();
+        undoRedoActions.clearAllActions();
+        undoRedoActions.undoableAction();
     }
 }
 

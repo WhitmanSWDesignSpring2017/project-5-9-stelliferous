@@ -142,7 +142,7 @@ public class UndoRedoActions {
     /**
      * Clear all ArrayLists and visuals gestures/notes in the current state.
      */
-    private void clearCurrentState(){
+    protected void clearCurrentState(){
         mainController.rectList.forEach((e1)->{
                 mainController.compositionController.rectAnchorPane.getChildren().remove(e1.notes);
         });
@@ -152,4 +152,9 @@ public class UndoRedoActions {
         mainController.gestureModelController.gestureNoteGroups.clear();
     }
     
+    protected void clearAllActions() {
+        undoableStates.clear();
+        redoableStates.clear();
+        markedStates.clear();
+    }
 }
