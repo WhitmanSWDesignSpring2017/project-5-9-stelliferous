@@ -57,7 +57,10 @@ public class NoteRectangle {
         setAllMouseEvents();
 
         //creates a new rectangle object for visual representation
-        notes.setFill(instrument.getDisplayColor());        
+        notes.setFill(instrument.getDisplayColor()); 
+        
+        //lets the controller know that an unsaved change has been made
+        mainController.setIsSaved(Boolean.FALSE);
     }
     
     protected final void setAllMouseEvents() {
@@ -244,6 +247,9 @@ public class NoteRectangle {
                 selectedNotes.get(i).setWidth(Constants.STRETCHZONE);
             }
         }
+        
+        //alerts MainController than an unsaved change has been made
+        mainController.setIsSaved(Boolean.FALSE);
     }
         
     /**
@@ -261,6 +267,9 @@ public class NoteRectangle {
             selectedNotes.get(i).setX(newTranslateX);
             selectedNotes.get(i).setY(newTranslateY);
         }
+        
+        //alerts MainController than an unsaved change has been made
+        mainController.setIsSaved(Boolean.FALSE);
     }
     
     
