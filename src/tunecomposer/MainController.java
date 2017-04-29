@@ -191,7 +191,7 @@ public class MainController {
         undoRedoActions.undoableAction();
     }
     
-    private Boolean isSaved;
+    private Boolean isSaved = true;
     
     protected Boolean isSaved(){
         return isSaved;
@@ -199,6 +199,7 @@ public class MainController {
     
     protected void setIsSaved(Boolean value){
         isSaved = value;
+        menuBarController.checkButtons();
     }
     
     protected String operatingOnFile = "";

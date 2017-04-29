@@ -57,6 +57,7 @@ public class MenuBarController  {
     @FXML MenuItem savedBeatAction;
     @FXML MenuItem saveAsBeatAction;
     @FXML MenuItem saveAsButton;
+    @FXML MenuItem saveButton;
 
     /**
      * Initializes the main controller. This method was necessary for the 
@@ -594,6 +595,11 @@ public class MenuBarController  {
         } else {
             groupAction.setDisable(false);
         }
+        if (mainController.isSaved()){
+            saveButton.setDisable(true);
+        } else {
+            saveButton.setDisable(false);
+        }
     }
     
     /**
@@ -615,6 +621,7 @@ public class MenuBarController  {
         pasteAction.setDisable(true);
         savedBeatAction.setDisable(true);
         saveAsBeatAction.setDisable(true);
+        saveButton.setDisable(true);
     }
     
     /**

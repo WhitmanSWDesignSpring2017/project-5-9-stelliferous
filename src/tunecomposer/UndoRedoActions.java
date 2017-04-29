@@ -74,6 +74,7 @@ public class UndoRedoActions {
         mainController.compositionController.selectRect();
         
         //alerts the composition that a change has been made -- it is no longer saved
+        System.out.println("not saveD!");
         mainController.setIsSaved(Boolean.FALSE);
     }
     

@@ -274,6 +274,8 @@ public class CopyPasteActions {
             try (BufferedWriter out = new BufferedWriter(fstream)) {
                 out.write(notesToString(mainController.rectList,mainController.gestureModelController.gestureNoteGroups,false));
                 fileOperatedOn = (filename + ".txt");
+                mainController.setOperatingOnFile(filename);
+                mainController.setIsSaved(Boolean.TRUE);
             }
             System.out.println("something saved");
         } else {
