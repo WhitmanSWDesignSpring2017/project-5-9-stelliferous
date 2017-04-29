@@ -34,7 +34,7 @@ public class CopyPasteActions {
     protected static final Clipboard CLIPBOARD = Clipboard.getSystemClipboard();
     private final ClipboardContent content = new ClipboardContent();
     
-    
+    private String fileOperatedOn;
     
     protected CopyPasteActions(MainController givenMainController){
         this.mainController = givenMainController;
@@ -193,6 +193,7 @@ public class CopyPasteActions {
                 initializePastedGestures(notesAndGestures, pastedNotes);
             }
             initializePastedNotes(pastedNotes);
+            mainController.setOperatingOnFile(fileOperatedOn);
        } catch (Exception ex){
            System.out.print("exception thrown");
            Alert alert = new Alert(AlertType.ERROR);
@@ -238,16 +239,21 @@ public class CopyPasteActions {
             while (scanner.hasNext()){
                 noteString += scanner.next();
             }
+            fileOperatedOn = selectedFile.toString();
         }
         fileStage.close();
+        
+        //alert composition that this file is being worked off of
+        
         return noteString;
     }
     
     /**
      * Creates a txt file to which it copies the composition's notes.
+     * @param filename name of file to be written to
      * @throws IOException 
      */
-    protected void copySelectedNotesToFile() throws IOException{
+    protected void copyCompositionToFile(String filename) throws IOException{
         /**Stage fileStage = new Stage();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose txt file to Save To");
@@ -260,13 +266,13 @@ public class CopyPasteActions {
         
         
         
-        String result = chooseFileName();
+        //String result = chooseFileName();
         
-        if (!result.isEmpty()){
-            FileWriter fstream = new FileWriter(result + ".txt");
+        if (!filename.isEmpty()){
+            FileWriter fstream = new FileWriter(filename);
             try (BufferedWriter out = new BufferedWriter(fstream)) {
                 out.write(notesToString(mainController.rectList,mainController.gestureModelController.gestureNoteGroups,false));
-                //Close the output stream
+                fileOperatedOn = (filename + ".txt");
             }
             System.out.println("something saved");
         } else {
@@ -274,9 +280,7 @@ public class CopyPasteActions {
         }
     }
     
-    protected String chooseFileName(){
-        String filename = "";
-        
+    protected void chooseFileName() throws IOException{        
         TextInputDialog dialog = new TextInputDialog("Choose File Name");
 
         dialog.setTitle("File >> Save As");
@@ -289,8 +293,9 @@ public class CopyPasteActions {
         
         if (result.isPresent() && isValidFileName(result.get())){
             System.out.println("valid name");
-                filename = result.get();
-                System.out.println("Your name: " + result.get());
+            System.out.println("Your name: " + result.get());
+            copyCompositionToFile(result.get()+".txt");
+
         }  else if (result.isPresent() && !isValidFileName(result.get())){
                         System.out.println("not valid");
 
@@ -300,10 +305,9 @@ public class CopyPasteActions {
             alert.setContentText("Do not include periods, slashes or 'null' in file names.");
 
             alert.showAndWait();
-            filename = chooseFileName();
+            chooseFileName();
         } 
         
-        return filename;
     }
     
     /**

@@ -1,5 +1,6 @@
 package tunecomposer;
 
+import java.io.File;
 import javafx.fxml.FXML;
 import java.util.ArrayList;
 import javafx.scene.control.RadioButton;
@@ -198,5 +199,11 @@ public class MainController {
     
     protected void setIsSaved(Boolean value){
         isSaved = value;
+    }
+    
+    protected String operatingOnFile = "";
+    
+    protected void setOperatingOnFile(String filename){
+        operatingOnFile = filename;
     }
 }

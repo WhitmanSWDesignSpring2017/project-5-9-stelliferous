@@ -73,7 +73,7 @@ public class MenuBarController  {
      * @param e on user click
      */
     @FXML
-    private void handleExitAction(ActionEvent e){
+    private void handleExitAction(ActionEvent e) throws IOException{
         if (!mainController.isSaved()){
             Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you want to quit without saving?");
             ButtonType buttonTypeYes = new ButtonType("Yes");
@@ -101,7 +101,7 @@ public class MenuBarController  {
      * @param e on user click
      */
     @FXML
-    private void handleNewAction(ActionEvent e){
+    private void handleNewAction(ActionEvent e) throws IOException{
         if (!mainController.isSaved()){
             Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you create a new composition without saving?");
             ButtonType buttonTypeYes = new ButtonType("Yes");
@@ -141,9 +141,16 @@ public class MenuBarController  {
      * @param e on user click
      */
     @FXML
-    private void handleSaveAction(ActionEvent e){
-        System.out.println("save");
-        //code here
+    private void handleSaveAction(ActionEvent e) throws IOException{
+        if (!mainController.isSaved()){
+            System.out.println("save");
+            if (mainController.operatingOnFile.isEmpty()){
+                handleSaveAsAction(e);
+            } else {
+                copyCompositionActions.copyCompositionToFile(mainController.operatingOnFile);
+            }
+            mainController.setIsSaved(Boolean.TRUE);
+        }
     }
     
     /**
@@ -153,7 +160,7 @@ public class MenuBarController  {
     @FXML
     private void handleSaveAsAction(ActionEvent e) throws IOException{
         stopTune();
-        copyCompositionActions.copySelectedNotesToFile();
+        copyCompositionActions.chooseFileName();
     }
 
     /**
