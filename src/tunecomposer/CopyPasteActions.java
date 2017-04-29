@@ -179,6 +179,7 @@ public class CopyPasteActions {
            mainController.rectList.add(note);
            mainController.compositionController.rectAnchorPane.getChildren().add(note.notes);
        }
+       mainController.setIsSaved(Boolean.FALSE);
     }
     
     /**

@@ -622,6 +622,7 @@ public class MenuBarController  {
         savedBeatAction.setDisable(true);
         saveAsBeatAction.setDisable(true);
         saveButton.setDisable(true);
+        saveAsButton.setDisable(true);
     }
     
     /**
