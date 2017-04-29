@@ -63,7 +63,7 @@ public class CopyPasteActions {
     protected void paste() throws FileNotFoundException{
         String pastedNotes = CLIPBOARD.getString();
         notesFromString(pastedNotes);
-        copySelected();
+        //copySelected();
     }
     
     /**
@@ -173,7 +173,7 @@ public class CopyPasteActions {
      * @param pastedNotes list of notes to initialize
      */
     private void initializePastedNotes(ArrayList<NoteRectangle> pastedNotes){
-       mainController.restart();
+       //mainController.restart();
        for (int o = 0; o < pastedNotes.size(); o++){
            NoteRectangle note = pastedNotes.get(o);
            mainController.rectList.add(note);
