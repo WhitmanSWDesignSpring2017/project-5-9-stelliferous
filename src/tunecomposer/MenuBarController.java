@@ -197,7 +197,12 @@ public class MenuBarController  {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText(null);
-        alert.setContentText("I have a great message for you!");
+        alert.setContentText("Make songs with Tune Composer! Create and edit "
+                            + "notes to produce and save music of your own. "
+                            + "Created in 2017 for a software design class at "
+                            + "Whitman College. Much thanks from the Team "
+                            + "Stelliferous authors: Jing Wang, Kaylin Jarriel, "
+                            + "Tyler Maule, and Zach Turner.");
         alert.showAndWait();
     }
     
