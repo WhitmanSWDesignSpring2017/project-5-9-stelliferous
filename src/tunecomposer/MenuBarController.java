@@ -76,8 +76,8 @@ public class MenuBarController  {
     private void handleExitAction(ActionEvent e) throws IOException{
         if (!mainController.isSaved()){
             Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you want to quit without saving?");
-            ButtonType buttonTypeYes = new ButtonType("Yes");
-            ButtonType buttonTypeNo = new ButtonType("No");
+            ButtonType buttonTypeYes = new ButtonType("Exit Without Saving");
+            ButtonType buttonTypeNo = new ButtonType("Save Compositon and Exit");
             ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 
             confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel);
@@ -87,6 +87,7 @@ public class MenuBarController  {
                 System.exit(0);
             } else if (result.get() == buttonTypeNo) {
                 handleSaveAction(e);
+                System.exit(0);
             } else {
                 confirmationWindow.hide();
             }
@@ -104,8 +105,8 @@ public class MenuBarController  {
     private void handleNewAction(ActionEvent e) throws IOException{
         if (!mainController.isSaved()){
             Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you create a new composition without saving?");
-            ButtonType buttonTypeYes = new ButtonType("Yes");
-            ButtonType buttonTypeNo = new ButtonType("No");
+            ButtonType buttonTypeYes = new ButtonType("New Without Saving");
+            ButtonType buttonTypeNo = new ButtonType("Save Composition");
             ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 
             confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel);
@@ -116,12 +117,14 @@ public class MenuBarController  {
                 checkButtons();
             } else if (result.get() == buttonTypeNo) {
                 handleSaveAction(e);
+                mainController.restart();
             } else {
                 confirmationWindow.hide();
             }
         } else {
             mainController.restart();
-            checkButtons();
+            mainController.setOperatingOnFile("");
+            checkButtons(); 
         }
     }
     
@@ -130,10 +133,31 @@ public class MenuBarController  {
      * @param e on user click
      */
     @FXML
-    private void handleOpenAction(ActionEvent e) throws FileNotFoundException{
-        stopTune();
-        copyCompositionActions.openFile(); //notesFromString(copyCompositionActions.readFile());
-        mainController.undoRedoActions.undoableAction();
+    private void handleOpenAction(ActionEvent e) throws FileNotFoundException, IOException{
+        if (!mainController.isSaved()){
+            Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you open a composition without saving?");
+            ButtonType buttonTypeYes = new ButtonType("Yes");
+            ButtonType buttonTypeNo = new ButtonType("Save");
+            ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+            confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel);
+
+            Optional<ButtonType> result = confirmationWindow.showAndWait();
+            if (result.get() == buttonTypeYes){
+                copyCompositionActions.openFile(); 
+                checkButtons();
+            } else if (result.get() == buttonTypeNo) {
+                handleSaveAction(e);
+                mainController.restart();
+                copyCompositionActions.openFile(); 
+            } else {
+                confirmationWindow.hide();
+            }
+        } else {
+            copyCompositionActions.openFile(); 
+            checkButtons(); 
+        }
+        
     }
     
     /**

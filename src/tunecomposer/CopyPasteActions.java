@@ -173,6 +173,7 @@ public class CopyPasteActions {
      * @param pastedNotes list of notes to initialize
      */
     private void initializePastedNotes(ArrayList<NoteRectangle> pastedNotes){
+       mainController.restart();
        for (int o = 0; o < pastedNotes.size(); o++){
            NoteRectangle note = pastedNotes.get(o);
            mainController.rectList.add(note);
