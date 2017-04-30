@@ -324,7 +324,7 @@ public class CopyPasteActions {
      * @return boolean describing whether or not a file name is valid
      */
     private Boolean isValidFileName(String filename){
-        return !(filename.isEmpty() || filename.contains("\0") || filename.contains(".") || filename.contains("/"));
+        return !(filename.isEmpty() || filename.contains(".") || filename.contains("/"));
     }
     
     /**
