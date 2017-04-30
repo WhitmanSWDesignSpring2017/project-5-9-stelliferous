@@ -1,6 +1,5 @@
 package tunecomposer;
 
-import java.io.File;
 import javafx.fxml.FXML;
 import java.util.ArrayList;
 import javafx.scene.control.RadioButton;

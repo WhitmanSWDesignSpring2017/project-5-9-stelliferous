@@ -96,7 +96,6 @@ public class SaveActions {
             System.out.println("valid name");
             System.out.println("Your name: " + result.get());
             copyCompositionToFile(result.get()+".txt");
-
         }  else if (result.isPresent() && !isValidFileName(result.get())){
             System.out.println("not valid");
 
@@ -107,8 +106,7 @@ public class SaveActions {
 
             alert.showAndWait();
             chooseFileName();
-        }
-        
+        }      
     }
     
     /**

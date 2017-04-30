@@ -10,13 +10,18 @@ import java.util.ArrayList;
 import javafx.scene.control.Alert;
 
 /**
- *
+ * A helper class that allows the decoding and encoding of 
+ * txt files that describe a NoteRectangle composition
  * @author tmaule
  */
 public class CompositionFileInteractions {
+    //allows access to the program's main controller
     private MainController mainController;
-    private String fileOperatedOn;
     
+    /**
+     * A constructor for the helper class
+     * @param givenMainController 
+     */
     protected CompositionFileInteractions(MainController givenMainController){
         mainController = givenMainController;
     }
@@ -28,31 +33,62 @@ public class CompositionFileInteractions {
      * @param shift
      * @return the string that has been translated from the copiedNotes
      */
-    protected String notesToString(ArrayList<NoteRectangle> copiedNotes, ArrayList<ArrayList<NoteRectangle>> gestureList, Boolean shift){
+    protected String notesToString(ArrayList<NoteRectangle> copiedNotes, 
+            ArrayList<ArrayList<NoteRectangle>> gestureList, Boolean shift){
         
         //initalize the strings used to store the composition data
         String noteString = "";
         String gestureString = "";
         
         //if told to shift notes to the right, specify the distance
-        double shiftNoteByX = 0;
+        int shiftNoteByX = 0;
         if (shift) {
             shiftNoteByX = 4;
         }
         
         ArrayList<ArrayList<NoteRectangle>> copiedGestureList = new ArrayList<>();
-        for(int w = 0; w < copiedNotes.size(); w++){
-            
-            //adds to string based on the attributes of the NoteRectangle
+        
+        for(int w = 0; w < copiedNotes.size(); w++){           
             NoteRectangle currentRect = copiedNotes.get(w);
+            noteString += translateCurrentRect(currentRect, noteString, shiftNoteByX);
+            gestureString += translateGestureList(gestureString, gestureList,
+                    copiedGestureList, currentRect, copiedNotes);
+        }    
+        
+        //combine and return the strings with NoteRectangle and gesture data
+        noteString +=  "--"  + gestureString;
+        return noteString;
+    }
+    
+    /**
+     *  Adds to string based on the attributes of the NoteRectangle
+     * @param currentRect the rectangle currently being operated on 
+     * @param noteString the string holding note information
+     * @param shiftNoteByX the amount by which to shift the note's X-position
+     * @return the updated string holding note information
+     */
+    private String translateCurrentRect(NoteRectangle currentRect, 
+            String noteString, int shiftNoteByX){
             noteString += (currentRect.getX()+shiftNoteByX) + ";";
             noteString += currentRect.getY() + ";";
             noteString += currentRect.getWidth() + ";";
             noteString += currentRect.getInstrument();
-                        noteString += "&";
-
-            //find which gestures contain this note, keep track of the index
-            //of all notes in those gestures
+            noteString += "&";
+            return noteString;
+    }
+    
+    /**
+     * Find which gestures contain this note, keep track of the index
+     * of all notes in those gestures
+     * @param gestureString
+     * @param gestureList
+     * @param copiedGestureList
+     * @param currentRect
+     * @param copiedNotes
+     * @return 
+     */
+    private String translateGestureList(String gestureString, ArrayList<ArrayList<NoteRectangle>> gestureList,
+            ArrayList<ArrayList<NoteRectangle>> copiedGestureList, NoteRectangle currentRect, ArrayList<NoteRectangle> copiedNotes){
             for (int g = 0; g < gestureList.size(); g++){
                 ArrayList<NoteRectangle> currentGesture = gestureList.get(g);
                 if (currentGesture.contains(currentRect) && !copiedGestureList.contains(currentGesture)){
@@ -62,15 +98,9 @@ public class CompositionFileInteractions {
                     }
                     gestureString += "@";
                 }
-                }
-            }
-        
-        
-        //combine and return the strings with NoteRectangle and gesture data
-        noteString +=  "--"  + gestureString;
-        return noteString;
+            } 
+            return gestureString;
     }
-    
     
     /**
      * Translates notes from a string into the composition of NoteRectangles 
@@ -175,6 +205,4 @@ public class CompositionFileInteractions {
        }
        return pastedNotes;
     }
-    
-
 }

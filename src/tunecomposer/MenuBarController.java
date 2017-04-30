@@ -672,6 +672,4 @@ public class MenuBarController  {
         mainController.redLineController.lineTransition.stop();
         mainController.redLineController.redLine.setVisible(false);
     }
-
-
 }

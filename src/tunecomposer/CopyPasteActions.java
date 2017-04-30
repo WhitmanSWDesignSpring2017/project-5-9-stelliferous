@@ -1,7 +1,6 @@
 package tunecomposer;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
@@ -16,12 +15,18 @@ import javafx.scene.input.DataFormat;
 public class CopyPasteActions {
     //Initialize the mainController
     MainController mainController;
+    
+    //accesses the helper class for encoding and decoding notes
     CompositionFileInteractions compositionFileInteractions;
     
     //system clipboard to store copied and cut notes
     protected static final Clipboard CLIPBOARD = Clipboard.getSystemClipboard();
     private final ClipboardContent content = new ClipboardContent();
-        
+    
+    /**
+     * Constructor for this object which allows the user to cut/copy/paste
+     * @param givenMainController the program's main controller
+     */
     protected CopyPasteActions(MainController givenMainController){
         this.mainController = givenMainController;
         this.compositionFileInteractions = new CompositionFileInteractions(mainController);
@@ -51,6 +56,4 @@ public class CopyPasteActions {
         String pastedNotes = CLIPBOARD.getString();
         compositionFileInteractions.notesFromString(pastedNotes);
     }
-    
-
 }
