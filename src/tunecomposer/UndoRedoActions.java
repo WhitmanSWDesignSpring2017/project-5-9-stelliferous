@@ -66,6 +66,7 @@ public class UndoRedoActions {
                                             mainController.selectedNotes, 
                                             mainController.gestureModelController.gestureNoteGroups);
         if (undoableStates.size() > 1) {
+            //check whether the new state is a selection action or not
             currentState.checkIfOnlySelection(undoableStates.peek());
         }
         undoableStates.push(currentState);
@@ -146,13 +147,6 @@ public class UndoRedoActions {
             });
             mainController.gestureModelController.gestureNoteGroups.add(cloneArray);
         });
-    }
-    
-    private Boolean checkSelectOnly(CompositionState currentState) {
-        if (mainController.rectList.equals(currentState.rectListState)) {
-            return true;
-        }
-        return false;
     }
     
     /**

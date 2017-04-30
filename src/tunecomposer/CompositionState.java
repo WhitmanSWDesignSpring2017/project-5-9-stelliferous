@@ -22,6 +22,8 @@ public class CompositionState {
     //create a String to store the input name from the user when saved this state
     private String markedName;
     
+    //create a boolean value to show whether this composition state is created only
+    //because the selection has been changed
     protected Boolean isSelectAction = false;
     
     /**
@@ -69,6 +71,10 @@ public class CompositionState {
         return markedName;
     }
     
+    /**
+     * check if this compostition state is only for select action.
+     * @param compare the previous undoable composition state
+     */
     protected void checkIfOnlySelection(CompositionState compare) {
         if (compare.rectListState.size() == this.rectListState.size()) {
             for (int i=0; i< rectListState.size();i++) {
