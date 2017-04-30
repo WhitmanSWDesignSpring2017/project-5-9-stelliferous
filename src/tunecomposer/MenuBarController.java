@@ -17,6 +17,7 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.Region;
 import javafx.util.Duration;
 
 /**
@@ -209,6 +210,8 @@ public class MenuBarController  {
                             + "Whitman College. Much thanks from the Team "
                             + "Stelliferous authors: Jing Wang, Kaylin Jarriel, "
                             + "Tyler Maule, and Zach Turner.");
+        alert.setResizable(true);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait();
     }
     
