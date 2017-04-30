@@ -305,16 +305,16 @@ public class CopyPasteActions {
             copyCompositionToFile(result.get()+".txt");
 
         }  else if (result.isPresent() && !isValidFileName(result.get())){
-                        System.out.println("not valid");
+            System.out.println("not valid");
 
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error Dialog");
             alert.setHeaderText("Invalid File Name");
-            alert.setContentText("Do not include periods, slashes or 'null' in file names.");
+            alert.setContentText("Do not include periods, slashes or the null character in file names.");
 
             alert.showAndWait();
             chooseFileName();
-        } 
+        }
         
     }
     
