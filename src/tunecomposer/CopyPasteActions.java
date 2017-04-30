@@ -311,7 +311,7 @@ public class CopyPasteActions {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error Dialog");
             alert.setHeaderText("Invalid File Name");
-            alert.setContentText("Do not include periods, slashes or 'null' in file names.");
+            alert.setContentText("Do not include periods, slashes or the null character in file names.");
 
             alert.showAndWait();
             chooseFileName();
@@ -325,7 +325,7 @@ public class CopyPasteActions {
      * @return boolean describing whether or not a file name is valid
      */
     private Boolean isValidFileName(String filename){
-        return !(filename.isEmpty() || filename.contains("null") || filename.contains(".") || filename.contains("/"));
+        return !(filename.isEmpty() || filename.contains("\0") || filename.contains(".") || filename.contains("/"));
     }
     
     /**
