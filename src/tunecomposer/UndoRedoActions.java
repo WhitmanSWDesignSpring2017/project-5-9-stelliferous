@@ -1,5 +1,6 @@
 package tunecomposer;
 
+import static java.lang.Integer.min;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -64,6 +65,9 @@ public class UndoRedoActions {
         final CompositionState currentState = new CompositionState(mainController.rectList, 
                                             mainController.selectedNotes, 
                                             mainController.gestureModelController.gestureNoteGroups);
+        if (undoableStates.size() > 1) {
+            currentState.checkIfOnlySelection(undoableStates.peek());
+        }
         undoableStates.push(currentState);
         deepClone(currentState);
         
@@ -83,9 +87,15 @@ public class UndoRedoActions {
         if (undoableStates.size() > 1){
             CompositionState oldState = undoableStates.pop();
             redoableStates.push(oldState);
-        
+            
             CompositionState currentState = undoableStates.peek();
+            
             deepClone(currentState);
+            if (currentState.isSelectAction) {
+                mainController.setIsSaved(Boolean.TRUE);
+            } else {
+                mainController.setIsSaved(Boolean.FALSE);
+            }
             mainController.menuBarController.checkButtons();
         }
     }
@@ -113,7 +123,6 @@ public class UndoRedoActions {
      * @param currentState 
      */
     private void deepClone(CompositionState currentState) {
-        
         clearCurrentState();
 
         //deep clone all notes in the rectangle list
@@ -137,6 +146,13 @@ public class UndoRedoActions {
             });
             mainController.gestureModelController.gestureNoteGroups.add(cloneArray);
         });
+    }
+    
+    private Boolean checkSelectOnly(CompositionState currentState) {
+        if (mainController.rectList.equals(currentState.rectListState)) {
+            return true;
+        }
+        return false;
     }
     
     /**

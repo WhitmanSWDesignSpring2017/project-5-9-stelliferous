@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @author mauletj
  */
-public class CompositionState implements Serializable {
+public class CompositionState {
     
     //create an ArrayList to store all the noterectangles on the pane of current state
     protected ArrayList<NoteRectangle> rectListState = new ArrayList<>();
@@ -21,6 +21,8 @@ public class CompositionState implements Serializable {
     
     //create a String to store the input name from the user when saved this state
     private String markedName;
+    
+    protected Boolean isSelectAction = false;
     
     /**
      * Initialize all three state ArrayList with given lists of the current pane
@@ -50,6 +52,7 @@ public class CompositionState implements Serializable {
         });
     }
     
+   
     /**
      * set the markedName based on user's input
      * @param markedName input from the user
@@ -64,5 +67,17 @@ public class CompositionState implements Serializable {
      */
     protected String getMarkedName() {
         return markedName;
+    }
+    
+    protected void checkIfOnlySelection(CompositionState compare) {
+        if (compare.rectListState.size() == this.rectListState.size()) {
+            for (int i=0; i< rectListState.size();i++) {
+                
+               if (!rectListState.get(i).equals(compare.rectListState.get(i))) {
+                   break;
+               }
+            }
+            isSelectAction = true;
+        }
     }
 }

@@ -209,6 +209,7 @@ public class MenuBarController  {
                             + "Whitman College. Much thanks from the Team "
                             + "Stelliferous authors: Jing Wang, Kaylin Jarriel, "
                             + "Tyler Maule, and Zach Turner.");
+        alert.setResizable(true);
         alert.showAndWait();
     }
     
@@ -626,8 +627,10 @@ public class MenuBarController  {
         }
         if (mainController.isSaved()){
             saveButton.setDisable(true);
+            System.out.println("disabled");
         } else {
             saveButton.setDisable(false);
+            System.out.println("abled");
         }
     }
     

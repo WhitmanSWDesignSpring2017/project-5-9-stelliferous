@@ -234,6 +234,8 @@ public class CompositionController {
         //creates and places a new NoteRectangle
         prepareNoteRectangle(e);
         
+        //lets the controller know that an unsaved change has been made
+        mainController.setIsSaved(Boolean.FALSE);
         originallySelected.clear();
     };
     

@@ -58,9 +58,8 @@ public class NoteRectangle {
 
         //creates a new rectangle object for visual representation
         notes.setFill(instrument.getDisplayColor()); 
-        
-        //lets the controller know that an unsaved change has been made
-        mainController.setIsSaved(Boolean.FALSE);
+      
+        System.out.println("newrect");
     }
     
     protected final void setAllMouseEvents() {
@@ -250,6 +249,7 @@ public class NoteRectangle {
         
         //alerts MainController than an unsaved change has been made
         mainController.setIsSaved(Boolean.FALSE);
+        System.out.println("do stretch");
     }
         
     /**
@@ -270,6 +270,7 @@ public class NoteRectangle {
         
         //alerts MainController than an unsaved change has been made
         mainController.setIsSaved(Boolean.FALSE);
+        System.out.println("do drag");
     }
     
     
@@ -359,5 +360,11 @@ public class NoteRectangle {
      */
     protected void setY(double newY) {
         notes.setY(newY);
+    }
+    
+    protected Boolean equal(NoteRectangle compareRect) {
+        return compareRect.getWidth() == width 
+                && compareRect.getX() == notes.getX()
+                && compareRect.getY() == notes.getY();
     }
 }

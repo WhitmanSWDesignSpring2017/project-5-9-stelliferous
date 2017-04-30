@@ -199,6 +199,7 @@ public class MainController {
     
     protected void setIsSaved(Boolean value){
         isSaved = value;
+        System.out.println(isSaved);
         menuBarController.checkButtons();
     }
     
