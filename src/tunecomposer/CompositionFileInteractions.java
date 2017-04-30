@@ -25,6 +25,7 @@ public class CompositionFileInteractions {
     protected CompositionFileInteractions(MainController givenMainController){
         mainController = givenMainController;
     }
+    
     /**
      * Copies the specified NoteRectangles and the gestures that contain them
      * into a string to be placed on the clipboard. 
@@ -116,6 +117,12 @@ public class CompositionFileInteractions {
        initializePasted(notesAndGestures, pastedNotes);  
     }
     
+    /**
+     * "Translates" the string of gestures into lists of gestures by comparing
+     * the indices given in the string to the list of notes.
+     * @param notesAndGestures
+     * @param pastedNotes 
+     */
     private void initializePastedGestures(String[] notesAndGestures, ArrayList<NoteRectangle> pastedNotes){
        ArrayList<ArrayList<NoteRectangle>> pastedGestures = new ArrayList<>();
             String[] individualGestureArray = (notesAndGestures[1]).split("@");
@@ -130,31 +137,37 @@ public class CompositionFileInteractions {
             } 
     }
     
-        /**
+    /**
      * Initializes and adds pasted gestures.
      * @param notesAndGestures a string of notes and gestures to pasted
      * @param pastedNotes an ArrayList of NoteRectangles to paste to 
      */
-    private void initializePasted(String[] notesAndGestures, ArrayList<NoteRectangle> pastedNotes) throws FileNotFoundException{
-       
+    private void initializePasted(String[] notesAndGestures, ArrayList<NoteRectangle> pastedNotes) throws FileNotFoundException{     
        try {
             //adds any gestures
             if(notesAndGestures.length > 1){
                 initializePastedGestures(notesAndGestures, pastedNotes);
             }
             initializePastedNotes(pastedNotes);
-            
             mainController.setOperatingOnFile(mainController.menuBarController.saveActions.fileOperatedOn);
-            //copySelected();
        } catch (Exception ex){
-           System.out.print("exception thrown");
-           Alert alert = new Alert(Alert.AlertType.ERROR);
-           alert.setTitle("Error Dialog");
-           alert.setHeaderText("Invalid File");
-           alert.setContentText("Please choose a valid file.");
-           alert.showAndWait();
-           mainController.menuBarController.saveActions.openFile();
+           invokeInvalidFilenameError();
        }
+    }
+    
+    /**
+     * Alert the user that their filename is invalid, and give them another
+     * opportunity to open a file by invoking the "Open" MenuTtem.
+     * @throws FileNotFoundException 
+     */
+    private void invokeInvalidFilenameError() throws FileNotFoundException{
+       System.out.print("exception thrown");
+       Alert alert = new Alert(Alert.AlertType.ERROR);
+       alert.setTitle("Error Dialog");
+       alert.setHeaderText("Invalid File");
+       alert.setContentText("Please choose a valid file.");
+       alert.showAndWait();
+       mainController.menuBarController.saveActions.openFile();
     }
     
                 /**
