@@ -58,9 +58,6 @@ public class NoteRectangle {
 
         //creates a new rectangle object for visual representation
         notes.setFill(instrument.getDisplayColor()); 
-        
-        //lets the controller know that an unsaved change has been made
-        mainController.setIsSaved(Boolean.FALSE);
     }
     
     protected final void setAllMouseEvents() {
@@ -249,6 +246,7 @@ public class NoteRectangle {
         }
         
         //alerts MainController than an unsaved change has been made
+        System.out.println("stretch");
         mainController.setIsSaved(Boolean.FALSE);
     }
         
@@ -269,6 +267,8 @@ public class NoteRectangle {
         }
         
         //alerts MainController than an unsaved change has been made
+                System.out.println("drag");
+
         mainController.setIsSaved(Boolean.FALSE);
     }
     
@@ -299,9 +299,7 @@ public class NoteRectangle {
                 selectedNotes.get(i).setY(finalY);   
             }
             mainController.gestureModelController.gestureNoteSelection(selectedNotes);
-            
-            mainController.undoRedoActions.undoableAction();  
-            
+            System.out.println("canberra");            
         }
     };
 
