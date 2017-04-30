@@ -22,6 +22,9 @@ public class CompositionState implements Serializable {
     //create a String to store the input name from the user when saved this state
     private String markedName;
     
+    //Boolean value to determine whether more than note/gesture selection has changed
+    private Boolean isSelectionChange;
+    
     /**
      * Initialize all three state ArrayList with given lists of the current pane
      * @param rectList current rectList in the mainController
@@ -29,7 +32,7 @@ public class CompositionState implements Serializable {
      * @param gestures current gestures list in the mainController
      */
     public CompositionState(ArrayList<NoteRectangle> rectList, ArrayList<NoteRectangle> selected,
-                            ArrayList<ArrayList<NoteRectangle>> gestures){
+                            ArrayList<ArrayList<NoteRectangle>> gestures, boolean isSelectionChanged){
         //add all the noteRectangles to the rectListState and the index of the selected
         //notes to the selectedNotesState list
         rectList.forEach((e1)-> {
@@ -48,6 +51,16 @@ public class CompositionState implements Serializable {
             });
             gestureState.add(cloneArray);
         });
+        
+        isSelectionChange = isSelectionChanged;
+    }
+    
+    /** Reveals whether the change in state was only a change in selected notes/gestures
+     * 
+     * @return 
+     */
+    protected Boolean isSelectionChangeOnly(){
+        return isSelectionChange;
     }
     
     /**

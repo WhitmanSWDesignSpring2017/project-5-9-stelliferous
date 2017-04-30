@@ -222,7 +222,7 @@ public class CompositionController {
                 //if the selectedNotes is changed, a new compositionState is created
                 if (((!selectedNotes.equals(originallySelected))||
                     !originallySelected.equals(selectedNotes))&& (!e.isControlDown())) {
-                    mainController.undoRedoActions.undoableAction();
+                    mainController.undoRedoActions.undoableAction(true);
                 }
                 return;
         } 
@@ -261,11 +261,15 @@ public class CompositionController {
         if (!e.isControlDown()) {
             selectedNotes.clear();
         }
+        
+                //lets the controller know that an unsaved change has been made
+        System.out.println("new rect");
+        mainController.setIsSaved(Boolean.FALSE);
                 
         rectList.add(rect);
         selectedNotes.add(rect);
         mainController.gestureModelController.gestureNoteSelection(selectedNotes);
-        mainController.undoRedoActions.undoableAction();
+        mainController.undoRedoActions.undoableAction(false);
     }
 
     /**
