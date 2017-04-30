@@ -82,7 +82,7 @@ public class MainController {
         
         
         //creates a new composition state for use with undo and redo
-        undoRedoActions.undoableAction();
+        undoRedoActions.undoableAction(true);
         
         //reveal that no unsaved changes have been made
         setIsSaved(Boolean.TRUE);
@@ -188,7 +188,7 @@ public class MainController {
     protected void restart() {
         undoRedoActions.clearCurrentState();
         undoRedoActions.clearAllActions();
-        undoRedoActions.undoableAction();
+        undoRedoActions.undoableAction(true);
     }
     
     private Boolean isSaved = true;

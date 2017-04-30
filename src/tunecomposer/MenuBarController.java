@@ -115,16 +115,19 @@ public class MenuBarController  {
             Optional<ButtonType> result = confirmationWindow.showAndWait();
             if (result.get() == buttonTypeYes){
                 mainController.restart();
+                mainController.setIsSaved(Boolean.FALSE);
                 checkButtons();
             } else if (result.get() == buttonTypeNo) {
                 handleSaveAction(e);
                 mainController.restart();
+                mainController.setIsSaved(Boolean.FALSE);
             } else {
                 confirmationWindow.hide();
             }
         } else {
             mainController.restart();
             mainController.setOperatingOnFile("");
+            mainController.setIsSaved(Boolean.FALSE);
             checkButtons(); 
         }
     }
@@ -298,7 +301,7 @@ public class MenuBarController  {
             mainController.selectedNotes.add(mainController.rectList.get(i));
         }   
         mainController.compositionController.selectRect();
-        mainController.undoRedoActions.undoableAction();
+        mainController.undoRedoActions.undoableAction(true);
     }
     
     /**
@@ -332,7 +335,7 @@ public class MenuBarController  {
         
         //reset gesture rectangles
         mainController.gestureModelController.gestureNoteSelection(mainController.selectedNotes);
-        mainController.undoRedoActions.undoableAction();
+        mainController.undoRedoActions.undoableAction(false);
     }
     
     /**
@@ -351,7 +354,7 @@ public class MenuBarController  {
         });
        
         mainController.gestureModelController.gestureNoteGroups.add(0,newGesture);
-        mainController.undoRedoActions.undoableAction();
+        mainController.undoRedoActions.undoableAction(false);
         mainController.gestureModelController.gestureNoteSelection(mainController.selectedNotes);
         
         //alerts MainController than an unsaved change has been made
@@ -368,7 +371,7 @@ public class MenuBarController  {
         mainController.gestureModelController.gestureNoteGroups.remove(mainController.selectedNotes);
         mainController.compositionController.selectRect();
         mainController.gestureModelController.gestureNoteSelection(mainController.selectedNotes);
-        mainController.undoRedoActions.undoableAction();
+        mainController.undoRedoActions.undoableAction(false);
         
         //alerts MainController than an unsaved change has been made
         mainController.setIsSaved(Boolean.FALSE);
@@ -384,7 +387,7 @@ public class MenuBarController  {
         stopTune();
         mainController.gestureModelController.gestureNoteGroups.clear();
         mainController.gestureModelController.gestureNoteSelection(mainController.rectList);
-        mainController.undoRedoActions.undoableAction();
+        mainController.undoRedoActions.undoableAction(false);
         
         //alerts MainController than an unsaved change has been made
         mainController.setIsSaved(Boolean.FALSE);
@@ -460,7 +463,7 @@ public class MenuBarController  {
         stopTune();
         mainController.selectedNotes.clear();
         copyCompositionActions.paste();
-        mainController.undoRedoActions.undoableAction();
+        mainController.undoRedoActions.undoableAction(false);
         
         //alerts MainController than an unsaved change has been made
         mainController.setIsSaved(Boolean.FALSE);
@@ -571,7 +574,7 @@ public class MenuBarController  {
         checkButtons();
         mainController.gestureModelController.gestureNoteGroups.add(gesture);
         mainController.gestureModelController.updateGestureRectangle(gesture, "black");
-        mainController.undoRedoActions.undoableAction();
+        mainController.undoRedoActions.undoableAction(false);
     }
     
  

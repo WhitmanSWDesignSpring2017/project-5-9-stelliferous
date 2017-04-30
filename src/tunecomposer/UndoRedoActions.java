@@ -18,6 +18,7 @@ public class UndoRedoActions {
     //Stacks to store a collection of actions that can be undone and redone
     protected Stack<CompositionState> undoableStates = new Stack<>();
     protected Stack<CompositionState> redoableStates = new Stack<>();
+    
     //ArrayList to store a collection of composition states that have been saved by user
     protected ArrayList<CompositionState> markedStates = new ArrayList<>();
 
@@ -46,7 +47,6 @@ public class UndoRedoActions {
      */
     protected void revertMark(String revertName) {
         markedStates.forEach((e1)-> {
-           //
            if (e1.getMarkedName().equals(revertName)) {
                deepClone(e1);
                undoableStates.clear();
@@ -59,11 +59,12 @@ public class UndoRedoActions {
     /**
      * Registers an undoableAction, by creating a state describing the current
      * composition and storing that state in UndoableStates.
+     * @param selectionChange
      */
-    protected void undoableAction(){
+    protected void undoableAction(Boolean selectionChange){
         final CompositionState currentState = new CompositionState(mainController.rectList, 
                                             mainController.selectedNotes, 
-                                            mainController.gestureModelController.gestureNoteGroups);
+                                            mainController.gestureModelController.gestureNoteGroups, selectionChange);
         undoableStates.push(currentState);
         deepClone(currentState);
         
@@ -82,11 +83,17 @@ public class UndoRedoActions {
         //ensures that there are actions to undo
         if (undoableStates.size() > 1){
             CompositionState oldState = undoableStates.pop();
+            if(!oldState.isSelectionChangeOnly()){
+                mainController.setIsSaved(Boolean.FALSE);
+            }
             redoableStates.push(oldState);
+            
+            
         
             CompositionState currentState = undoableStates.peek();
             deepClone(currentState);
             mainController.menuBarController.checkButtons();
+            
         }
     }
     
@@ -101,6 +108,10 @@ public class UndoRedoActions {
             CompositionState currentState = redoableStates.pop();
             undoableStates.push(currentState);
             deepClone(currentState);
+            
+            if(!currentState.isSelectionChangeOnly()){
+                mainController.setIsSaved(Boolean.FALSE);
+            }
 
             //ensure that other menu items reflect the action
             mainController.menuBarController.checkButtons();
