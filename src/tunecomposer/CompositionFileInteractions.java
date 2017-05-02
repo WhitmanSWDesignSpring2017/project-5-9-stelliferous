@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tunecomposer;
 
 import java.io.FileNotFoundException;
@@ -18,6 +13,11 @@ public class CompositionFileInteractions {
     //allows access to the program's main controller
     private MainController mainController;
     
+    /**
+     * Constructor connecting a CompositionFileInteractions object to the
+     * MainController upon creation.
+     * @param aThis the mainController
+     */
     public CompositionFileInteractions(MainController aThis) {
         this.mainController = aThis;
     }
@@ -25,9 +25,9 @@ public class CompositionFileInteractions {
     /**
      * Copies the specified NoteRectangles and the gestures that contain them
      * into a string to be placed on the clipboard. 
-     * @param copiedNotes
-     * @param gestureList
-     * @param shift
+     * @param copiedNotes a list of notes that are to be copied
+     * @param gestureList a list of gestures that are to be copied
+     * @param shift whether the notes should be shifted right upon pasting
      * @return the string that has been translated from the copiedNotes
      */
     protected String notesToString(ArrayList<NoteRectangle> copiedNotes, 
@@ -43,8 +43,10 @@ public class CompositionFileInteractions {
             shiftNoteByX = 4;
         }
         
+        //an arraylist to hold list of gestures that have already been copied
         ArrayList<ArrayList<NoteRectangle>> copiedGestureList = new ArrayList<>();
         
+        //add each note and associated gestures to the respective strings
         for(int w = 0; w < copiedNotes.size(); w++){           
             NoteRectangle currentRect = copiedNotes.get(w);
             noteString += translateCurrentRect(currentRect,shiftNoteByX);
@@ -77,12 +79,12 @@ public class CompositionFileInteractions {
     /**
      * Find which gestures contain this note, keep track of the index
      * of all notes in those gestures
-     * @param gestureString
-     * @param gestureList
-     * @param copiedGestureList
-     * @param currentRect
-     * @param copiedNotes
-     * @return 
+     * @param gestureString the string representing gestures
+     * @param gestureList the current list of gestures
+     * @param copiedGestureList the list of all gestures copied
+     * @param currentRect the NoteRectangle being operated on 
+     * @param copiedNotes a list of all NoteRectangles
+     * @return a string describing all gestures
      */
     private String translateGestureList(ArrayList<ArrayList<NoteRectangle>> gestureList,
             ArrayList<ArrayList<NoteRectangle>> copiedGestureList, NoteRectangle currentRect, ArrayList<NoteRectangle> copiedNotes){
@@ -109,7 +111,8 @@ public class CompositionFileInteractions {
     protected void notesFromString(String noteString) throws FileNotFoundException{
        String[] notesAndGestures = noteString.split("--");
        String[] individualNoteArray = (notesAndGestures[0]).split("&");
-
+       
+       //begin process of adding data to the created strings
        ArrayList<NoteRectangle> pastedNotes = translatePastedNoteRectangles(individualNoteArray);
        initializePasted(notesAndGestures, pastedNotes);  
     }
@@ -122,16 +125,18 @@ public class CompositionFileInteractions {
      */
     private void initializePastedGestures(String[] notesAndGestures, ArrayList<NoteRectangle> pastedNotes){
        ArrayList<ArrayList<NoteRectangle>> pastedGestures = new ArrayList<>();
-            String[] individualGestureArray = (notesAndGestures[1]).split("@");
-            String[] gestureIndices;
-            for (int g = 0; g < individualGestureArray.length ; g++){
-                ArrayList<NoteRectangle> notesInGesture = new ArrayList<>();
-                gestureIndices = individualGestureArray[g].split("&");
-                for (int q = 0; q < gestureIndices.length;q++){
-                    notesInGesture.add(pastedNotes.get(Integer.valueOf(gestureIndices[q])));
-                }
-                mainController.gestureModelController.gestureNoteGroups.add(notesInGesture);
-            } 
+        String[] individualGestureArray = (notesAndGestures[1]).split("@");
+        String[] gestureIndices;
+        
+        //assemble list of notes in each new gesture, add lists to gestureNoteGroups
+        for (int g = 0; g < individualGestureArray.length ; g++){
+            ArrayList<NoteRectangle> notesInGesture = new ArrayList<>();
+            gestureIndices = individualGestureArray[g].split("&");
+            for (int q = 0; q < gestureIndices.length;q++){
+                notesInGesture.add(pastedNotes.get(Integer.valueOf(gestureIndices[q])));
+            }
+            mainController.gestureModelController.gestureNoteGroups.add(notesInGesture);
+        } 
     }
     
     /**
@@ -148,6 +153,7 @@ public class CompositionFileInteractions {
             initializePastedNotes(pastedNotes);
             mainController.setOperatingOnFile(mainController.saveActions.fileOperatedOn);
        } catch (Exception ex){
+           //if the txt file cannot be 'translated' into a composition, alert the user
            invokeInvalidFilenameError();
        }
     }
@@ -167,12 +173,11 @@ public class CompositionFileInteractions {
        mainController.saveActions.openFile();
     }
     
-                /**
+     /**
      * Initializes and adds pasted NoteRectangles
      * @param pastedNotes list of notes to initialize
      */
     private void initializePastedNotes(ArrayList<NoteRectangle> pastedNotes){
-       //mainController.restart();
        mainController.selectedNotes.clear();
        for (int o = 0; o < pastedNotes.size(); o++){
            NoteRectangle note = pastedNotes.get(o);
@@ -184,11 +189,11 @@ public class CompositionFileInteractions {
        System.out.println("initializePastedNotes");
     }
     
-        /**
+     /**
      * "Translates" pasted Note Rectangles from string syntax into syntax 
      * that they may be added to the Composition.
      * @param individualNoteArray
-     * @return 
+     * @return an arrayList of 'translated' NoteRectangles
      */
     private ArrayList<NoteRectangle> translatePastedNoteRectangles(String[] individualNoteArray) throws FileNotFoundException{
        ArrayList<NoteRectangle> pastedNotes = new ArrayList<>();
@@ -204,8 +209,8 @@ public class CompositionFileInteractions {
                pastedNotes.add(new NoteRectangle(xLocation,yLocation,instrument, width, mainController));
            }
        } catch (Exception ex){
-           System.out.print("exception thrown");
-           Alert alert = new Alert(Alert.AlertType.ERROR);
+            System.out.print("exception thrown");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
             alert.setHeaderText("Invalid File");
             alert.setContentText("Please choose a valid file.");
@@ -215,6 +220,10 @@ public class CompositionFileInteractions {
        return pastedNotes;
     }
 
+    /**
+     * Further connects object to the mainController upon initialization
+     * @param aThis the mainController
+     */
     void init(MainController aThis) {
         this.mainController = aThis;
     }
