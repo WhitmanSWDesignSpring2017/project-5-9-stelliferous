@@ -13,8 +13,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.Region;
@@ -73,22 +71,7 @@ public class MenuBarController  {
     @FXML
     private void handleExitAction(ActionEvent e) throws IOException{
         if (!mainController.isSaved()){
-            Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you want to quit without saving?");
-            ButtonType buttonTypeYes = new ButtonType("Exit Without Saving");
-            ButtonType buttonTypeNo = new ButtonType("Save Compositon and Exit");
-            ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-
-            confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel);
-
-            Optional<ButtonType> result = confirmationWindow.showAndWait();
-            if (result.get() == buttonTypeYes){
-                System.exit(0);
-            } else if (result.get() == buttonTypeNo) {
-                handleSaveAction(e);
-                System.exit(0);
-            } else {
-                confirmationWindow.hide();
-            }
+            mainController.saveActions.invokeExitWithoutSaving(e);
         } else {
             System.exit(0);
         }
@@ -96,33 +79,16 @@ public class MenuBarController  {
   
     
     /**
-     * 
+     * After checking on whether the current composition is saved, 
+     * begins to create a new Composition
      * @param e on user click
      */
     @FXML
     private void handleNewAction(ActionEvent e) throws IOException{
         if (!mainController.isSaved()){
-            Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you create a new composition without saving?");
-            ButtonType buttonTypeYes = new ButtonType("New Without Saving");
-            ButtonType buttonTypeNo = new ButtonType("Save Composition");
-            ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-
-            confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel);
-
-            Optional<ButtonType> result = confirmationWindow.showAndWait();
-            if (result.get() == buttonTypeYes){
-                mainController.restart();
-                checkButtons();
-            } else if (result.get() == buttonTypeNo) {
-                handleSaveAction(e);
-                mainController.restart();
-            } else {
-                confirmationWindow.hide();
-            }
+            mainController.saveActions.invokeNewWithoutSaving(e);
         } else {
-            mainController.restart();
-            mainController.setOperatingOnFile("");
-            checkButtons(); 
+            mainController.saveActions.newComposition(e);
         }
     }
     
@@ -133,49 +99,29 @@ public class MenuBarController  {
     @FXML
     private void handleOpenAction(ActionEvent e) throws FileNotFoundException, IOException{
         if (!mainController.isSaved()){
-            Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you open a composition without saving?");
-            ButtonType buttonTypeYes = new ButtonType("Yes");
-            ButtonType buttonTypeNo = new ButtonType("Save");
-            ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-
-            confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel);
-
-            Optional<ButtonType> result = confirmationWindow.showAndWait();
-            if (result.get() == buttonTypeYes){
-                mainController.restart();
-                mainController.saveActions.openFile();
-                checkButtons();
-            } else if (result.get() == buttonTypeNo) {
-                handleSaveAction(e);
-                mainController.restart();
-                mainController.saveActions.openFile(); 
-            } else {
-                confirmationWindow.hide();
-            }
+            mainController.saveActions.invokeOpenWithoutSaving(e);
         } else {
             mainController.saveActions.openFile(); 
-            checkButtons(); 
-        }
-        
+            checkButtons();    
+        }   
     }
     
     /**
      * 
      * @param e on user click
+     * @throws java.io.IOException
      */
     @FXML
-    private void handleSaveAction(ActionEvent e) throws IOException{
-        if (!mainController.isSaved()){
-            System.out.println("save");
-            System.out.println(mainController.operatingOnFile);
-            if (mainController.operatingOnFile.isEmpty()){
-                System.out.println("saveasaction");
-                handleSaveAsAction(e);
-            } else {
-                System.out.println("Just save");
-                mainController.saveActions.copyCompositionToFile(mainController.operatingOnFile);
-            }
-        }
+    protected void handleSaveAction(ActionEvent e) throws IOException{
+        System.out.println("save");
+        System.out.println(mainController.operatingOnFile);
+        if (mainController.operatingOnFile.isEmpty()){
+            System.out.println("saveasaction");
+            handleSaveAsAction(e);
+        } else {
+            System.out.println("Just save");
+            mainController.saveActions.copyCompositionToFile(mainController.operatingOnFile);
+        }    
     }
     
     /**

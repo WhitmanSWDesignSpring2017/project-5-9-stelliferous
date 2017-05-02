@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tunecomposer;
 
 import java.io.BufferedWriter;
@@ -14,19 +9,29 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
- *
+ * A class to execute saving Compositions to, and reading them from, a .txt file
  * @author tmaule
  */
 public class SaveActions {
-    private MainController mainController;
+    
+    private final MainController mainController;
     protected String fileOperatedOn;
     
+    /**
+     * Constructor that connects a SaveActions object to a given mainController
+     * @param givenMainController 
+     */
     protected SaveActions(MainController givenMainController){
         this.mainController = givenMainController;
     }
@@ -84,6 +89,11 @@ public class SaveActions {
         }
     }
     
+    /**
+     * Presents dialogs that allow a user to choose a name when saving
+     * a Composition as a .txt file
+     * @throws IOException 
+     */
     protected void chooseFileName() throws IOException{        
         TextInputDialog dialog = new TextInputDialog("Choose File Name");
 
@@ -129,9 +139,7 @@ public class SaveActions {
      */
     protected void saveFile(String noteString, File file){
         try {
-            FileWriter fileWriter = null;
-             
-            fileWriter = new FileWriter(file);
+            FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(noteString);
             fileWriter.close();
         } catch (IOException ex) {
@@ -140,10 +148,92 @@ public class SaveActions {
          
     }
     
+    /**
+     * Reads a file, and translates the string inside into a Composition.
+     * @throws FileNotFoundException 
+     */
     protected void openFile() throws FileNotFoundException{
         String noteString = readFile();
         if (!noteString.isEmpty()){
             mainController.compositionFileInteractions.notesFromString(noteString);
+            mainController.setIsSaved(Boolean.TRUE);
+        }
+    }
+    
+    /**
+     * Creates a new composition.
+     * @param e an ActionEvent
+     */
+    protected void newComposition(ActionEvent e){
+        mainController.restart();
+        mainController.setOperatingOnFile("");
+        mainController.menuBarController.checkButtons(); 
+    }
+    
+    /**
+     * Presents user with an alert dialog and options to save the composition
+     * if they try to create a new composition without saving
+     * @param e an ActionEvent
+     * @throws IOException 
+     */
+    protected void invokeNewWithoutSaving(ActionEvent e) throws IOException{
+        Alert confirmationWindow = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure you create a new composition without saving?");
+        ButtonType buttonTypeYes = new ButtonType("New Without Saving");
+        ButtonType buttonTypeNo = new ButtonType("Save Composition");
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel);
+
+        Optional<ButtonType> result = confirmationWindow.showAndWait();
+        if (result.get() == buttonTypeYes){
+            mainController.restart();
+            mainController.menuBarController.checkButtons();
+        } else if (result.get() == buttonTypeNo) {
+            mainController.menuBarController.handleSaveAction(e);
+            mainController.restart();
+        } else {
+            confirmationWindow.hide();
+        }
+    }
+    
+    protected void invokeExitWithoutSaving(ActionEvent e) throws IOException{
+        Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you want to quit without saving?");
+        ButtonType buttonTypeYes = new ButtonType("Exit Without Saving");
+        ButtonType buttonTypeNo = new ButtonType("Save Compositon and Exit");
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+        confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel);
+
+        Optional<ButtonType> result = confirmationWindow.showAndWait();
+        if (result.get() == buttonTypeYes){
+            System.exit(0);
+        } else if (result.get() == buttonTypeNo) {
+            mainController.menuBarController.handleSaveAction(e);
+            System.exit(0);
+        } else {
+            confirmationWindow.hide();
+        }
+    }
+    
+    protected void invokeOpenWithoutSaving(ActionEvent e) throws FileNotFoundException, IOException{
+        Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you open a composition without saving?");
+        ButtonType buttonTypeYes = new ButtonType("Yes");
+        ButtonType buttonTypeNo = new ButtonType("Save");
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+        confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel);
+
+        Optional<ButtonType> result = confirmationWindow.showAndWait();
+        if (result.get() == buttonTypeYes){
+            mainController.restart();
+            mainController.saveActions.openFile();
+            mainController.menuBarController.checkButtons();
+        } else if (result.get() == buttonTypeNo) {
+            mainController.menuBarController.handleSaveAction(e);
+            mainController.restart();
+            mainController.saveActions.openFile(); 
+        } else {
+            confirmationWindow.hide();
         }
     }
 }
