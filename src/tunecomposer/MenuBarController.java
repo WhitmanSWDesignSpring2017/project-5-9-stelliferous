@@ -36,9 +36,6 @@ public class MenuBarController  {
     
     //create a new copyPasteActions object to perform required actions
     private CopyPasteActions copyCompositionActions;
-    
-    //create a new saveActions object to perform required actions
-    protected SaveActions saveActions;
 
     //makes available menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
@@ -71,7 +68,6 @@ public class MenuBarController  {
     public void init(MainController aThis) {
         mainController = aThis; 
         copyCompositionActions = new CopyPasteActions(mainController);
-        saveActions = new SaveActions(mainController);
     }
     
      /**
@@ -151,17 +147,17 @@ public class MenuBarController  {
             Optional<ButtonType> result = confirmationWindow.showAndWait();
             if (result.get() == buttonTypeYes){
                 mainController.restart();
-                saveActions.openFile();
+                copyCompositionActions.openFile();
                 checkButtons();
             } else if (result.get() == buttonTypeNo) {
                 handleSaveAction(e);
                 mainController.restart();
-                saveActions.openFile(); 
+                copyCompositionActions.openFile(); 
             } else {
                 confirmationWindow.hide();
             }
         } else {
-            saveActions.openFile(); 
+            copyCompositionActions.openFile(); 
             checkButtons(); 
         }
         
@@ -175,12 +171,11 @@ public class MenuBarController  {
     private void handleSaveAction(ActionEvent e) throws IOException{
         if (!mainController.isSaved()){
             System.out.println("save");
-            System.out.println(mainController.operatingOnFile);
             if (mainController.operatingOnFile.isEmpty()){
                 System.out.println("saveasaction");
                 handleSaveAsAction(e);
             } else {
-                saveActions.copyCompositionToFile(mainController.operatingOnFile);
+                copyCompositionActions.copyCompositionToFile(mainController.operatingOnFile);
             }
         }
     }
@@ -192,7 +187,7 @@ public class MenuBarController  {
     @FXML
     private void handleSaveAsAction(ActionEvent e) throws IOException{
         stopTune();
-        saveActions.chooseFileName();
+        copyCompositionActions.chooseFileName();
         if (mainController.operatingOnFile.isEmpty()){
             mainController.setIsSaved(Boolean.FALSE);
         } else {
@@ -672,4 +667,6 @@ public class MenuBarController  {
         mainController.redLineController.lineTransition.stop();
         mainController.redLineController.redLine.setVisible(false);
     }
+
+
 }

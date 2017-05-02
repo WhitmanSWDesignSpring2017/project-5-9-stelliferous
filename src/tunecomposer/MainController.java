@@ -1,5 +1,6 @@
 package tunecomposer;
 
+import java.io.File;
 import javafx.fxml.FXML;
 import java.util.ArrayList;
 import javafx.scene.control.RadioButton;
@@ -62,7 +63,6 @@ public class MainController {
 
     //create a undoRedoAction object
     protected UndoRedoActions undoRedoActions = new UndoRedoActions(this);
-    
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
      * (with location, duration, and speed). Make the red line invisible 
