@@ -47,8 +47,8 @@ public class CompositionFileInteractions {
         
         for(int w = 0; w < copiedNotes.size(); w++){           
             NoteRectangle currentRect = copiedNotes.get(w);
-            noteString = translateCurrentRect(currentRect,shiftNoteByX);
-            gestureString += translateGestureList(gestureString, gestureList,
+            noteString += translateCurrentRect(currentRect,shiftNoteByX);
+            gestureString += translateGestureList(gestureList,
                     copiedGestureList, currentRect, copiedNotes);
         }    
         
@@ -84,8 +84,9 @@ public class CompositionFileInteractions {
      * @param copiedNotes
      * @return 
      */
-    private String translateGestureList(String gestureString, ArrayList<ArrayList<NoteRectangle>> gestureList,
+    private String translateGestureList(ArrayList<ArrayList<NoteRectangle>> gestureList,
             ArrayList<ArrayList<NoteRectangle>> copiedGestureList, NoteRectangle currentRect, ArrayList<NoteRectangle> copiedNotes){
+            String gestureString = "";
             for (int g = 0; g < gestureList.size(); g++){
                 ArrayList<NoteRectangle> currentGesture = gestureList.get(g);
                 if (currentGesture.contains(currentRect) && !copiedGestureList.contains(currentGesture)){
@@ -181,7 +182,6 @@ public class CompositionFileInteractions {
        }
        mainController.setIsSaved(Boolean.FALSE);
        System.out.println("initializePastedNotes");
-       //copySelected();
     }
     
         /**
