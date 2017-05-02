@@ -16,9 +16,6 @@ public class CopyPasteActions {
     //Initialize the mainController
     MainController mainController;
     
-    //accesses the helper class for encoding and decoding notes
-    CompositionFileInteractions compositionFileInteractions;
-    
     //system clipboard to store copied and cut notes
     protected static final Clipboard CLIPBOARD = Clipboard.getSystemClipboard();
     private final ClipboardContent content = new ClipboardContent();
@@ -27,16 +24,15 @@ public class CopyPasteActions {
      * Constructor for this object which allows the user to cut/copy/paste
      * @param givenMainController the program's main controller
      */
-    protected CopyPasteActions(MainController givenMainController){
-        this.mainController = givenMainController;
-        this.compositionFileInteractions = new CompositionFileInteractions(mainController);
+    protected CopyPasteActions(MainController aThis){
+        this.mainController = aThis;
     }
     
      /**
      * Copies selected notes to the clipboard.
      */
     protected void copySelected(){
-        content.put(DataFormat.PLAIN_TEXT, compositionFileInteractions.notesToString(mainController.selectedNotes,mainController.gestureModelController.gestureNoteGroups,true));
+        content.put(DataFormat.PLAIN_TEXT, mainController.compositionFileInteractions.notesToString(mainController.selectedNotes,mainController.gestureModelController.gestureNoteGroups,true));
         CLIPBOARD.setContent(content);
     }
      
@@ -44,7 +40,7 @@ public class CopyPasteActions {
      * Copies entire composition to the clipboard.
      */
     protected void copyComposition(){
-        content.put(DataFormat.PLAIN_TEXT, compositionFileInteractions.notesToString(mainController.rectList,mainController.gestureModelController.gestureNoteGroups,true));
+        content.put(DataFormat.PLAIN_TEXT, mainController.compositionFileInteractions.notesToString(mainController.rectList,mainController.gestureModelController.gestureNoteGroups,true));
         CLIPBOARD.setContent(content);
     }
     
@@ -54,6 +50,6 @@ public class CopyPasteActions {
      */
     protected void paste() throws FileNotFoundException{
         String pastedNotes = CLIPBOARD.getString();
-        compositionFileInteractions.notesFromString(pastedNotes);
+        mainController.compositionFileInteractions.notesFromString(pastedNotes);
     }
 }

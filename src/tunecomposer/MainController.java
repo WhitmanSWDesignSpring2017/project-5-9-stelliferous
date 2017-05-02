@@ -63,6 +63,11 @@ public class MainController {
     //create a undoRedoAction object
     protected UndoRedoActions undoRedoActions = new UndoRedoActions(this);
     
+    protected SaveActions saveActions = new SaveActions(this);
+    
+    protected CompositionFileInteractions compositionFileInteractions = new CompositionFileInteractions(this);
+    
+    protected CopyPasteActions copyPasteActions = new CopyPasteActions(this);
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
      * (with location, duration, and speed). Make the red line invisible 

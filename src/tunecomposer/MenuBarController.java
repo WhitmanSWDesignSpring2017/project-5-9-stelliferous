@@ -33,12 +33,6 @@ public class MenuBarController  {
     
     //stores saved beats as a listarray of NoteRectangles
     private final ArrayList<NoteRectangle> savedBeat = new ArrayList<>();
-    
-    //create a new copyPasteActions object to perform required actions
-    private CopyPasteActions copyCompositionActions;
-    
-    //create a new saveActions object to perform required actions
-    protected SaveActions saveActions;
 
     //makes available menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
@@ -70,8 +64,6 @@ public class MenuBarController  {
      */
     public void init(MainController aThis) {
         mainController = aThis; 
-        copyCompositionActions = new CopyPasteActions(mainController);
-        saveActions = new SaveActions(mainController);
     }
     
      /**
@@ -151,17 +143,17 @@ public class MenuBarController  {
             Optional<ButtonType> result = confirmationWindow.showAndWait();
             if (result.get() == buttonTypeYes){
                 mainController.restart();
-                saveActions.openFile();
+                mainController.saveActions.openFile();
                 checkButtons();
             } else if (result.get() == buttonTypeNo) {
                 handleSaveAction(e);
                 mainController.restart();
-                saveActions.openFile(); 
+                mainController.saveActions.openFile(); 
             } else {
                 confirmationWindow.hide();
             }
         } else {
-            saveActions.openFile(); 
+            mainController.saveActions.openFile(); 
             checkButtons(); 
         }
         
@@ -180,7 +172,8 @@ public class MenuBarController  {
                 System.out.println("saveasaction");
                 handleSaveAsAction(e);
             } else {
-                saveActions.copyCompositionToFile(mainController.operatingOnFile);
+                System.out.println("Just save");
+                mainController.saveActions.copyCompositionToFile(mainController.operatingOnFile);
             }
         }
     }
@@ -192,7 +185,7 @@ public class MenuBarController  {
     @FXML
     private void handleSaveAsAction(ActionEvent e) throws IOException{
         stopTune();
-        saveActions.chooseFileName();
+        mainController.saveActions.chooseFileName();
         if (mainController.operatingOnFile.isEmpty()){
             mainController.setIsSaved(Boolean.FALSE);
         } else {
@@ -429,7 +422,7 @@ public class MenuBarController  {
     @FXML
     private void handleCopyAction(ActionEvent e){
         stopTune();
-        copyCompositionActions.copySelected();
+        mainController.copyPasteActions.copySelected();
         pasteAction.setDisable(false);
     }
     
@@ -440,7 +433,7 @@ public class MenuBarController  {
     @FXML
     private void handleCopyCompositionAction(ActionEvent e){
         stopTune();
-        copyCompositionActions.copyComposition();
+        mainController.copyPasteActions.copyComposition();
         pasteAction.setDisable(false);
     }
     
@@ -467,7 +460,7 @@ public class MenuBarController  {
         System.out.println("paste option");
         stopTune();
         mainController.selectedNotes.clear();
-        copyCompositionActions.paste();
+        mainController.copyPasteActions.paste();
         mainController.undoRedoActions.undoableAction();
         
         //alerts MainController than an unsaved change has been made

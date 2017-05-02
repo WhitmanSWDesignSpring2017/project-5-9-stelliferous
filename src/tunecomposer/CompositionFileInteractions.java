@@ -18,12 +18,8 @@ public class CompositionFileInteractions {
     //allows access to the program's main controller
     private MainController mainController;
     
-    /**
-     * A constructor for the helper class
-     * @param givenMainController 
-     */
-    protected CompositionFileInteractions(MainController givenMainController){
-        mainController = givenMainController;
+    public CompositionFileInteractions(MainController aThis) {
+        this.mainController = aThis;
     }
     
     /**
@@ -51,7 +47,7 @@ public class CompositionFileInteractions {
         
         for(int w = 0; w < copiedNotes.size(); w++){           
             NoteRectangle currentRect = copiedNotes.get(w);
-            noteString += translateCurrentRect(currentRect, noteString, shiftNoteByX);
+            noteString = translateCurrentRect(currentRect,shiftNoteByX);
             gestureString += translateGestureList(gestureString, gestureList,
                     copiedGestureList, currentRect, copiedNotes);
         }    
@@ -68,8 +64,8 @@ public class CompositionFileInteractions {
      * @param shiftNoteByX the amount by which to shift the note's X-position
      * @return the updated string holding note information
      */
-    private String translateCurrentRect(NoteRectangle currentRect, 
-            String noteString, int shiftNoteByX){
+    private String translateCurrentRect(NoteRectangle currentRect, int shiftNoteByX){
+            String noteString = "";
             noteString += (currentRect.getX()+shiftNoteByX) + ";";
             noteString += currentRect.getY() + ";";
             noteString += currentRect.getWidth() + ";";
@@ -149,7 +145,7 @@ public class CompositionFileInteractions {
                 initializePastedGestures(notesAndGestures, pastedNotes);
             }
             initializePastedNotes(pastedNotes);
-            mainController.setOperatingOnFile(mainController.menuBarController.saveActions.fileOperatedOn);
+            mainController.setOperatingOnFile(mainController.saveActions.fileOperatedOn);
        } catch (Exception ex){
            invokeInvalidFilenameError();
        }
@@ -167,7 +163,7 @@ public class CompositionFileInteractions {
        alert.setHeaderText("Invalid File");
        alert.setContentText("Please choose a valid file.");
        alert.showAndWait();
-       mainController.menuBarController.saveActions.openFile();
+       mainController.saveActions.openFile();
     }
     
                 /**
@@ -214,8 +210,12 @@ public class CompositionFileInteractions {
             alert.setHeaderText("Invalid File");
             alert.setContentText("Please choose a valid file.");
             alert.showAndWait();
-            mainController.menuBarController.saveActions.openFile();
+            mainController.saveActions.openFile();
        }
        return pastedNotes;
+    }
+
+    void init(MainController aThis) {
+        this.mainController = aThis;
     }
 }

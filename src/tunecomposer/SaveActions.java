@@ -25,12 +25,10 @@ import javafx.stage.Stage;
  */
 public class SaveActions {
     private MainController mainController;
-    private CompositionFileInteractions compositionFileInteractions;
     protected String fileOperatedOn;
     
     protected SaveActions(MainController givenMainController){
         this.mainController = givenMainController;
-        this.compositionFileInteractions = new CompositionFileInteractions(mainController);
     }
      
     /**
@@ -70,10 +68,15 @@ public class SaveActions {
          if (!filename.isEmpty()){
             FileWriter fstream = new FileWriter(filename);
             try (BufferedWriter out = new BufferedWriter(fstream)) {
-                out.write(compositionFileInteractions.notesToString(mainController.rectList,mainController.gestureModelController.gestureNoteGroups,false));
+                out.flush();
+                fstream.flush();
+                System.out.println("in");
+                out.write(mainController.compositionFileInteractions.notesToString(mainController.rectList,mainController.gestureModelController.gestureNoteGroups,false));
+                System.out.println("written");
                 fileOperatedOn = (filename + ".txt");
                 mainController.setOperatingOnFile(filename);
                 mainController.setIsSaved(Boolean.TRUE);
+                
             }
             System.out.println("something saved");
         } else {
@@ -140,7 +143,7 @@ public class SaveActions {
     protected void openFile() throws FileNotFoundException{
         String noteString = readFile();
         if (!noteString.isEmpty()){
-            compositionFileInteractions.notesFromString(noteString);
+            mainController.compositionFileInteractions.notesFromString(noteString);
         }
     }
 }
