@@ -49,7 +49,7 @@ public class NoteRectangle {
         this.channel = instrument.getChannel();        
         this.width = Constants.ORIGINALRECTWIDTH;
         this.mainController = mainController;
-        this.selectedNotes = mainController.selectedNotes;
+        this.selectedNotes = mainController.getSelectList();
         
         //creates a new rectangle object for visual representation
         notes = new Rectangle(x,y,width,10);
@@ -301,7 +301,7 @@ public class NoteRectangle {
             }
             mainController.gestureModelController.gestureNoteSelection(selectedNotes);
             
-            mainController.undoRedoActions.undoableAction();  
+            mainController.history.undoableAction();  
             
         }
     };

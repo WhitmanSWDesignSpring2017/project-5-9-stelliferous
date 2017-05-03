@@ -51,7 +51,7 @@ public class CompositionController {
     //to store a list of selected notes before selection rectangle is dragged
     private ArrayList<NoteRectangle> originallySelected = new ArrayList<>();
     
-   // protected UndoRedoActions undoRedoActions = new UndoRedoActions(this);
+   // protected History undoRedoActions = new History(this);
     
     /**
      * resets the mouse coordinates to allow dragging functionality
@@ -222,7 +222,7 @@ public class CompositionController {
                 //if the selectedNotes is changed, a new compositionState is created
                 if (((!selectedNotes.equals(originallySelected))||
                     !originallySelected.equals(selectedNotes))&& (!e.isControlDown())) {
-                    mainController.undoRedoActions.undoableAction();
+                    mainController.history.undoableAction();
                 }
                 return;
         } 
@@ -267,7 +267,7 @@ public class CompositionController {
         rectList.add(rect);
         selectedNotes.add(rect);
         mainController.gestureModelController.gestureNoteSelection(selectedNotes);
-        mainController.undoRedoActions.undoableAction();
+        mainController.history.undoableAction();
     }
 
     /**
@@ -316,8 +316,8 @@ public class CompositionController {
      */
     public void init(MainController aThis) {
         mainController = aThis;
-        this.rectList = aThis.rectList;
-        this.selectedNotes = aThis.selectedNotes;
+        this.rectList = aThis.getRectList();
+        this.selectedNotes = aThis.getSelectList();
         selectRect.setVisible(false);
     }
 

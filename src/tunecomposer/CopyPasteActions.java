@@ -22,7 +22,7 @@ public class CopyPasteActions {
     
     /**
      * Constructor for this object which allows the user to cut/copy/paste
-     * @param givenMainController the program's main controller
+     * @param aThis the program's main controller
      */
     protected CopyPasteActions(MainController aThis){
         this.mainController = aThis;
@@ -32,7 +32,9 @@ public class CopyPasteActions {
      * Copies selected notes to the clipboard.
      */
     protected void copySelected(){
-        content.put(DataFormat.PLAIN_TEXT, mainController.compositionFileInteractions.notesToString(mainController.selectedNotes,mainController.gestureModelController.gestureNoteGroups,true));
+        content.put(DataFormat.PLAIN_TEXT, 
+                    mainController.compositionFileInteractions.notesToString(mainController.getSelectList(),
+                    mainController.gestureModelController.gestureNoteGroups,true));
         CLIPBOARD.setContent(content);
     }
      
@@ -40,7 +42,9 @@ public class CopyPasteActions {
      * Copies entire composition to the clipboard.
      */
     protected void copyComposition(){
-        content.put(DataFormat.PLAIN_TEXT, mainController.compositionFileInteractions.notesToString(mainController.rectList,mainController.gestureModelController.gestureNoteGroups,true));
+        content.put(DataFormat.PLAIN_TEXT, 
+                    mainController.compositionFileInteractions.notesToString(mainController.getRectList(),
+                    mainController.gestureModelController.gestureNoteGroups,true));
         CLIPBOARD.setContent(content);
     }
     

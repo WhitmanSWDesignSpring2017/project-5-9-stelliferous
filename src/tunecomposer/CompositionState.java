@@ -1,6 +1,5 @@
 package tunecomposer;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -72,7 +71,6 @@ public class CompositionState {
     protected void checkIfOnlySelection(CompositionState compare) {
         if (compare.rectListState.size() == this.rectListState.size()) {
             for (int i=0; i< rectListState.size();i++) {
-                
                if (!rectListState.get(i).equals(compare.rectListState.get(i))) {
                    break;
                }

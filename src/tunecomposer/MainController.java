@@ -47,21 +47,16 @@ public class MainController {
     
     //makes available the controller for the composition
     @FXML CompositionController compositionController = new CompositionController();
-  
-    //creates a list to store created rectangles, that they may be later erased
-    protected ArrayList<NoteRectangle> rectList = new ArrayList<>();
-    
-    //creates a list to store selected rectangles
-    protected ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
-    
     //refers to the end of the current notes
     protected double endcomp;
+    
+    protected CurrentState currentState = new CurrentState();
     
     //default note length
     protected double noteLength = 100;
 
     //create a undoRedoAction object
-    protected UndoRedoActions undoRedoActions = new UndoRedoActions(this);
+    protected History history = new History(this);
     
     protected SaveActions saveActions = new SaveActions(this);
     
@@ -87,7 +82,7 @@ public class MainController {
         
         
         //creates a new composition state for use with undo and redo
-        undoRedoActions.undoableAction();
+        history.undoableAction();
         
         //reveal that no unsaved changes have been made
         setIsSaved(Boolean.TRUE);
@@ -118,8 +113,8 @@ public class MainController {
      */
     protected String getAllMarkedName() {
         String names = "";
-        for (int i=0; i<undoRedoActions.markedStates.size();i++) {
-            names = names + " / " + undoRedoActions.markedStates.get(i).getMarkedName();
+        for (int i=0; i<history.markedStates.size();i++) {
+            names = names + " / " + history.markedStates.get(i).getMarkedName();
         }
         return names;
     }
@@ -159,8 +154,8 @@ public class MainController {
         NoteRectangle rect;
         
         //iterates through all rectangles in the composition
-        for(int i = 0; i < rectList.size(); i++){
-            rect = rectList.get(i);
+        for(int i = 0; i < currentState.rectList.size(); i++){
+            rect = currentState.rectList.get(i);
             
             //determines attributes of the MidiPlayer note to be added
             int pitch = Constants.PITCHTOTAL -(int)rect.getY()/Constants.HEIGHTRECTANGLE;
@@ -191,9 +186,9 @@ public class MainController {
     }
 
     protected void restart() {
-        undoRedoActions.clearCurrentState();
-        undoRedoActions.clearAllActions();
-        undoRedoActions.undoableAction();
+        history.clearCurrentState();
+        history.clearAllActions();
+        history.undoableAction();
     }
     
     private Boolean isSaved = true;
@@ -212,5 +207,13 @@ public class MainController {
     
     protected void setOperatingOnFile(String filename){
         operatingOnFile = filename;
+    }
+    
+    protected ArrayList<NoteRectangle> getRectList() {
+        return currentState.rectList;
+    }
+    
+    protected ArrayList<NoteRectangle> getSelectList() {
+        return currentState.selectedNotes;
     }
 }

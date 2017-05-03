@@ -76,7 +76,7 @@ public class SaveActions {
                 out.flush();
                 fstream.flush();
                 System.out.println("in");
-                out.write(mainController.compositionFileInteractions.notesToString(mainController.rectList,mainController.gestureModelController.gestureNoteGroups,false));
+                out.write(mainController.compositionFileInteractions.notesToString(mainController.getRectList(),mainController.gestureModelController.gestureNoteGroups,false));
                 System.out.println("written");
                 fileOperatedOn = (filename + ".txt");
                 mainController.setOperatingOnFile(filename);

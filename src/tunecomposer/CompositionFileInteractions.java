@@ -178,11 +178,11 @@ public class CompositionFileInteractions {
      * @param pastedNotes list of notes to initialize
      */
     private void initializePastedNotes(ArrayList<NoteRectangle> pastedNotes){
-       mainController.selectedNotes.clear();
+       mainController.getSelectList().clear();
        for (int o = 0; o < pastedNotes.size(); o++){
            NoteRectangle note = pastedNotes.get(o);
-           mainController.rectList.add(note);
-           mainController.selectedNotes.add(note);
+           mainController.getRectList().add(note);
+           mainController.getSelectList().add(note);
            mainController.compositionController.rectAnchorPane.getChildren().add(note.notes);
        }
        mainController.setIsSaved(Boolean.FALSE);
