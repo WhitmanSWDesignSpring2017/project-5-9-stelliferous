@@ -14,6 +14,7 @@ import javafx.scene.shape.Line;
  * @author Tyler Maule
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class RedLineController {
 

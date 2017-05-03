@@ -21,7 +21,10 @@ import javafx.stage.Stage;
 
 /**
  * A class to execute saving Compositions to, and reading them from, a .txt file
- * @author tmaule
+ * @author Tyler Maule
+ * @author Jing Wang
+ * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class SaveActions {
     
@@ -185,6 +188,12 @@ public class SaveActions {
         }
     }
     
+    /**
+     * Presents user with an alert dialog and options to save the composition
+     * if they try to exit tune composer without saving
+     * @param e an action event
+     * @throws IOException 
+     */
     protected void invokeExitWithoutSaving(ActionEvent e) throws IOException{
         Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you want to quit without saving?");
         ButtonType buttonTypeYes = new ButtonType("Yes");
@@ -204,6 +213,13 @@ public class SaveActions {
         }
     }
     
+    /**
+     * Presents user with an alert dialog and options to save the composition
+     * if they try to open a new composition without saving
+     * @param e an action event
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     protected void invokeOpenWithoutSaving(ActionEvent e) throws FileNotFoundException, IOException{
         Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you open a composition without saving?");
         ButtonType buttonTypeYes = new ButtonType("Yes");
