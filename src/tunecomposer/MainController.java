@@ -50,7 +50,14 @@ public class MainController {
     //refers to the end of the current notes
     protected double endcomp;
     
+    //create a currentState object to store the ArrayLists
     protected CurrentState currentState = new CurrentState();
+    
+    //Store the fileName as a String
+    protected String operatingOnFile = "";
+    
+    //Create a boolean value to store whether the composition has been saved
+    private Boolean isSaved = true;
     
     //default note length
     protected double noteLength = 100;
@@ -191,9 +198,6 @@ public class MainController {
         history.undoableAction();
     }
     
-    //Create a boolean value to store whether the composition has been saved
-    private Boolean isSaved = true;
-    
     /**
      * Tell whether the compositionState has been saved
      * @return the boolean variable isSaved
@@ -211,9 +215,6 @@ public class MainController {
         System.out.println(isSaved);
         menuBarController.checkButtons();
     }
-    
-    //Store the fileName as a String
-    protected String operatingOnFile = "";
     
     /**
      * change the save filename
