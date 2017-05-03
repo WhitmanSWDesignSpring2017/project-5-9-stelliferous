@@ -170,7 +170,7 @@ public class MenuBarController  {
         dialog.setHeaderText("Give me a name for this marked state ");
         Optional<String> result = dialog.showAndWait();
         result.ifPresent( (String pitch) -> {
-            mainController.undoRedoActions.initializeMarkState(pitch);
+            mainController.history.initializeMarkState(pitch);
         });
     }
     
@@ -185,7 +185,7 @@ public class MenuBarController  {
         dialog.setHeaderText("Give me the name for the state you want to revert back"+'\n'+mainController.getAllMarkedName());
         Optional<String> result = dialog.showAndWait();
         result.ifPresent( (String pitch) -> {
-            mainController.undoRedoActions.revertMark(pitch);
+            mainController.history.revertMark(pitch);
         });
         
     }
@@ -240,12 +240,12 @@ public class MenuBarController  {
         stopTune();
         
         //clears currently selected notes, adds and 'highlights' all notes
-        mainController.selectedNotes.clear();
-        for (int i =0; i<mainController.rectList.size(); i++){
-            mainController.selectedNotes.add(mainController.rectList.get(i));
+        mainController.getSelectList().clear();
+        for (int i =0; i<mainController.getRectList().size(); i++){
+            mainController.getSelectList().add(mainController.getRectList().get(i));
         }   
         mainController.compositionController.selectRect();
-        mainController.undoRedoActions.undoableAction();
+        mainController.history.undoableAction();
     }
     
     /**
@@ -257,11 +257,11 @@ public class MenuBarController  {
         //stops the current MidiComposition and red line animation
         stopTune();
         
-        if(!mainController.selectedNotes.isEmpty()){
+        if(!mainController.getSelectList().isEmpty()){
             //removes selected notes from Pane and from list of Rectangles
-            mainController.selectedNotes.forEach((NoteRectangle e1) -> {
+            mainController.getSelectList().forEach((NoteRectangle e1) -> {
                 mainController.compositionController.rectAnchorPane.getChildren().remove(e1.notes);
-                mainController.rectList.remove(e1);
+                mainController.getRectList().remove(e1);
                 for(int p = 0; p < mainController.gestureModelController.gestureNoteGroups.size();p++){
                     if(mainController.gestureModelController.gestureNoteGroups.get(p).contains(e1)){
                         mainController.gestureModelController.gestureNoteGroups.remove(p);
@@ -275,11 +275,11 @@ public class MenuBarController  {
         }
         
         //clears all selected notes from the list of selected notes
-        mainController.selectedNotes.clear();
+        mainController.getSelectList().clear();
         
         //reset gesture rectangles
-        mainController.gestureModelController.gestureNoteSelection(mainController.selectedNotes);
-        mainController.undoRedoActions.undoableAction();
+        mainController.gestureModelController.gestureNoteSelection(mainController.getSelectList());
+        mainController.history.undoableAction();
     }
     
     /**
@@ -289,17 +289,17 @@ public class MenuBarController  {
     @FXML
     private void handleGroupAction(ActionEvent e){
         stopTune();
-        if (mainController.selectedNotes.isEmpty()) {
+        if (mainController.getSelectList().isEmpty()) {
             return;
         }
         ArrayList<NoteRectangle> newGesture = new ArrayList<>();
-        mainController.selectedNotes.forEach((e1)-> {
+        mainController.getSelectList().forEach((e1)-> {
             newGesture.add(e1);
         });
        
         mainController.gestureModelController.gestureNoteGroups.add(0,newGesture);
-        mainController.undoRedoActions.undoableAction();
-        mainController.gestureModelController.gestureNoteSelection(mainController.selectedNotes);
+        mainController.history.undoableAction();
+        mainController.gestureModelController.gestureNoteSelection(mainController.getSelectList());
         
         //alerts MainController than an unsaved change has been made
         mainController.setIsSaved(Boolean.FALSE);
@@ -312,10 +312,10 @@ public class MenuBarController  {
     @FXML
     private void handleUngroupAction(ActionEvent e){
         stopTune();
-        mainController.gestureModelController.gestureNoteGroups.remove(mainController.selectedNotes);
+        mainController.gestureModelController.gestureNoteGroups.remove(mainController.getSelectList());
         mainController.compositionController.selectRect();
-        mainController.gestureModelController.gestureNoteSelection(mainController.selectedNotes);
-        mainController.undoRedoActions.undoableAction();
+        mainController.gestureModelController.gestureNoteSelection(mainController.getSelectList());
+        mainController.history.undoableAction();
         
         //alerts MainController than an unsaved change has been made
         mainController.setIsSaved(Boolean.FALSE);
@@ -330,8 +330,8 @@ public class MenuBarController  {
     private void handleUngroupAllAction(ActionEvent e){
         stopTune();
         mainController.gestureModelController.gestureNoteGroups.clear();
-        mainController.gestureModelController.gestureNoteSelection(mainController.rectList);
-        mainController.undoRedoActions.undoableAction();
+        mainController.gestureModelController.gestureNoteSelection(mainController.getRectList());
+        mainController.history.undoableAction();
         
         //alerts MainController than an unsaved change has been made
         mainController.setIsSaved(Boolean.FALSE);
@@ -344,7 +344,7 @@ public class MenuBarController  {
     @FXML
     private void handleUndoAction(ActionEvent e){
         stopTune();
-        mainController.undoRedoActions.undoAction();
+        mainController.history.undoAction();
         mainController.compositionController.selectRect();
     }
     
@@ -357,7 +357,7 @@ public class MenuBarController  {
     private void handleRedoAction(ActionEvent e){
         stopTune();
         mainController.
-        undoRedoActions.redoAction();
+        history.redoAction();
         mainController.compositionController.selectRect();
     }
     
@@ -405,9 +405,9 @@ public class MenuBarController  {
     private void handlePasteAction(ActionEvent e) throws FileNotFoundException{
         System.out.println("paste option");
         stopTune();
-        mainController.selectedNotes.clear();
+        mainController.getSelectList().clear();
         mainController.copyPasteActions.paste();
-        mainController.undoRedoActions.undoableAction();
+        mainController.history.undoableAction();
         
         //alerts MainController than an unsaved change has been made
         mainController.setIsSaved(Boolean.FALSE);
@@ -484,7 +484,7 @@ public class MenuBarController  {
     private void handleSaveAsBeat(ActionEvent e){
         stopTune();
         savedBeat.clear();
-        mainController.compositionController.selectedNotes.forEach((note)->{
+        mainController.getSelectList().forEach((note)->{
             savedBeat.add(new NoteRectangle(
                     note.getX(), note.getY(), note.getInstrument(), note.getWidth(),mainController));
         });
@@ -518,7 +518,7 @@ public class MenuBarController  {
         checkButtons();
         mainController.gestureModelController.gestureNoteGroups.add(gesture);
         mainController.gestureModelController.updateGestureRectangle(gesture, "black");
-        mainController.undoRedoActions.undoableAction();
+        mainController.history.undoableAction();
     }
     
  
@@ -526,7 +526,7 @@ public class MenuBarController  {
      * Sets the buttons as enabled or disabled as appropriate.
      */
     protected void checkButtons() {
-        if (mainController.rectList.isEmpty()) {
+        if (mainController.getRectList().isEmpty()) {
             selectAllAction.setDisable(true);
             playButton.setDisable(true);
             saveAsButton.setDisable(true);
@@ -535,7 +535,7 @@ public class MenuBarController  {
             playButton.setDisable(false);
             saveAsButton.setDisable(false);
         }
-        if (mainController.selectedNotes.isEmpty()) {
+        if (mainController.getSelectList().isEmpty()) {
             deleteAction.setDisable(true);
             copyAction.setDisable(true);
             cutAction.setDisable(true);
@@ -546,12 +546,12 @@ public class MenuBarController  {
             cutAction.setDisable(false);
             saveAsBeatAction.setDisable(false);
         }
-        if (mainController.undoRedoActions.undoableStates.size()> 1 ){
+        if (mainController.history.undoableStates.size()> 1 ){
             undoAction.setDisable(false);
         } else {
             undoAction.setDisable(true);
         }
-        if (mainController.undoRedoActions.redoableStates.size()> 0 ){
+        if (mainController.history.redoableStates.size()> 0 ){
             redoAction.setDisable(false);
         } else {
             redoAction.setDisable(true);
@@ -561,12 +561,12 @@ public class MenuBarController  {
         } else {
             ungroupAllAction.setDisable(false);
         }
-        if (mainController.gestureModelController.gestureNoteGroups.contains(mainController.selectedNotes)){
+        if (mainController.gestureModelController.gestureNoteGroups.contains(mainController.getSelectList())){
             ungroupAction.setDisable(false);
         } else {
             ungroupAction.setDisable(true);
         }
-        if (mainController.selectedNotes.size() < 2) {
+        if (mainController.getSelectList().size() < 2) {
             groupAction.setDisable(true);
         } else {
             groupAction.setDisable(false);

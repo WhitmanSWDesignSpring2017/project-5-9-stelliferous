@@ -1,6 +1,5 @@
 package tunecomposer;
 
-import static java.lang.Integer.min;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -11,7 +10,7 @@ import java.util.Stack;
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
  */
-public class UndoRedoActions {
+public class History {
     
     //allows mainController to connect to this redo/undo connect
     protected MainController mainController;
@@ -27,7 +26,7 @@ public class UndoRedoActions {
      * controller.
      * @param tuneComposerNoteSelection 
      */
-    public UndoRedoActions(MainController tuneComposerNoteSelection) {
+    public History(MainController tuneComposerNoteSelection) {
         this.mainController = tuneComposerNoteSelection;
     }
     
@@ -62,8 +61,8 @@ public class UndoRedoActions {
      * composition and storing that state in UndoableStates.
      */
     protected void undoableAction(){
-        final CompositionState currentState = new CompositionState(mainController.rectList, 
-                                            mainController.selectedNotes, 
+        final CompositionState currentState = new CompositionState(mainController.getRectList(), 
+                                            mainController.getSelectList(), 
                                             mainController.gestureModelController.gestureNoteGroups);
         if (undoableStates.size() > 1) {
             currentState.checkIfOnlySelection(undoableStates.peek());
@@ -129,27 +128,27 @@ public class UndoRedoActions {
         currentState.rectListState.forEach((e1)-> {
             NoteRectangle cloneRect = new NoteRectangle(e1.getX(),e1.getY(),
                                         e1.getInstrument(),e1.getWidth(),mainController);
-            mainController.rectList.add(cloneRect);
+            mainController.getRectList().add(cloneRect);
             mainController.compositionController.rectAnchorPane.getChildren().add(cloneRect.notes);
         });
         
         //deep clone all notes in the selected notes list
         currentState.selectedNotesState.forEach((e1)-> {
-            mainController.selectedNotes.add(mainController.rectList.get(e1)); 
+            mainController.getSelectList().add(mainController.getRectList().get(e1)); 
         });
         
         //deep clone all gestures
         currentState.gestureState.forEach((e1)-> {
             ArrayList<NoteRectangle> cloneArray = new ArrayList<>();
             e1.forEach((e2)-> {
-                cloneArray.add(mainController.rectList.get(e2));
+                cloneArray.add(mainController.getRectList().get(e2));
             });
             mainController.gestureModelController.gestureNoteGroups.add(cloneArray);
         });
     }
     
     private Boolean checkSelectOnly(CompositionState currentState) {
-        if (mainController.rectList.equals(currentState.rectListState)) {
+        if (mainController.getRectList().equals(currentState.rectListState)) {
             return true;
         }
         return false;
@@ -159,15 +158,18 @@ public class UndoRedoActions {
      * Clear all ArrayLists and visuals gestures/notes in the current state.
      */
     protected void clearCurrentState(){
-        mainController.rectList.forEach((e1)->{
+        mainController.getRectList().forEach((e1)->{
                 mainController.compositionController.rectAnchorPane.getChildren().remove(e1.notes);
         });
         mainController.gestureModelController.removeEverything();
-        mainController.rectList.clear();
-        mainController.selectedNotes.clear();
+        mainController.getRectList().clear();
+        mainController.getSelectList().clear();
         mainController.gestureModelController.gestureNoteGroups.clear();
     }
     
+    /**
+     * Clear all stacks for the newAction.
+     */
     protected void clearAllActions() {
         undoableStates.clear();
         redoableStates.clear();
