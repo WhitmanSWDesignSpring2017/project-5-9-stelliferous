@@ -31,6 +31,9 @@ public class MenuBarController  {
     
     //stores saved beats as a listarray of NoteRectangles
     private final ArrayList<NoteRectangle> savedBeat = new ArrayList<>();
+    
+    //determines whether the composition is paused
+    private Boolean isPaused = false;
 
     //makes available menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
@@ -54,6 +57,7 @@ public class MenuBarController  {
     @FXML MenuItem saveAsBeatAction;
     @FXML MenuItem saveAsButton;
     @FXML MenuItem saveButton;
+    @FXML MenuItem pauseButton;
 
     /**
      * Initializes the main controller. This method was necessary for the 
@@ -216,6 +220,8 @@ public class MenuBarController  {
         mainController.MidiComposition.play();
         mainController.redLineController.lineTransition.playFromStart();
         stopButton.setDisable(false);
+        
+        isPaused = false;
     }
     
      /**
@@ -226,6 +232,7 @@ public class MenuBarController  {
     private void handleStopAction(ActionEvent e){
         stopTune();
         stopButton.setDisable(true);
+        isPaused = true;
     }
     
     /**
@@ -504,7 +511,21 @@ public class MenuBarController  {
         addBeatGesture(beatGesture);
     }
     
- 
+    @FXML
+    private void handlePauseAction(){
+        System.out.println("paused");
+        if (isPaused){
+            mainController.MidiComposition.play();
+            mainController.redLineController.lineTransition.play();
+            stopButton.setDisable(false);
+        } else {
+            mainController.MidiComposition.stop();
+            mainController.redLineController.lineTransition.pause();
+            stopButton.setDisable(true);
+        }
+        
+        isPaused = !isPaused;
+    }
     
     /**
      * Adds notes created by a beat menu item to a gesture and to the screen.
@@ -527,10 +548,12 @@ public class MenuBarController  {
             selectAllAction.setDisable(true);
             playButton.setDisable(true);
             saveAsButton.setDisable(true);
+            pauseButton.setDisable(true);
         } else {
             selectAllAction.setDisable(false);
             playButton.setDisable(false);
             saveAsButton.setDisable(false);
+            pauseButton.setDisable(false);
         }
         if (mainController.getSelectList().isEmpty()) {
             deleteAction.setDisable(true);
@@ -596,6 +619,7 @@ public class MenuBarController  {
         saveAsBeatAction.setDisable(true);
         saveButton.setDisable(true);
         saveAsButton.setDisable(true);
+        pauseButton.setDisable(true);
     }
     
     /**

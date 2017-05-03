@@ -44,6 +44,7 @@
                     <items>
                         <MenuItem fx:id="playButton" accelerator="Shortcut+P" onAction="#handlePlayAction" text="Play" />
                         <MenuItem fx:id="stopButton" accelerator="Shortcut+T" onAction="#handleStopAction" text="Stop" />
+                        <MenuItem fx:id="pauseButton" accelerator="Shortcut+SPACE" onAction="#handlePauseAction" text="Pause // Unpause" />
                     </items>
                 </Menu>
                 <Menu text="Beats">
