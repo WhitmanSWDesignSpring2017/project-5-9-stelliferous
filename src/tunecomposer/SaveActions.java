@@ -178,8 +178,8 @@ public class SaveActions {
      */
     protected void invokeNewWithoutSaving(ActionEvent e) throws IOException{
         Alert confirmationWindow = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure you create a new composition without saving?");
-        ButtonType buttonTypeYes = new ButtonType("New Without Saving");
-        ButtonType buttonTypeNo = new ButtonType("Save Composition");
+        ButtonType buttonTypeYes = new ButtonType("Yes");
+        ButtonType buttonTypeNo = new ButtonType("No (save)");
         ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
         confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel);
@@ -198,8 +198,8 @@ public class SaveActions {
     
     protected void invokeExitWithoutSaving(ActionEvent e) throws IOException{
         Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you want to quit without saving?");
-        ButtonType buttonTypeYes = new ButtonType("Exit Without Saving");
-        ButtonType buttonTypeNo = new ButtonType("Save Compositon and Exit");
+        ButtonType buttonTypeYes = new ButtonType("Yes");
+        ButtonType buttonTypeNo = new ButtonType("No (save)");
         ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 
         confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel);
