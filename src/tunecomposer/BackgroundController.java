@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
  * @author Tyler Maule
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class BackgroundController implements Initializable{
     

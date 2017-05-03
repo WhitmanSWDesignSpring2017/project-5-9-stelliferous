@@ -11,6 +11,7 @@ import javafx.scene.input.DataFormat;
  * @author Tyler Maule
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class CopyPasteActions {
     //Initialize the mainController

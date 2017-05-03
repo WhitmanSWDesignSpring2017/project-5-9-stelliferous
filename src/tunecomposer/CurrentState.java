@@ -4,8 +4,11 @@ import java.util.ArrayList;
 
 
 /**
- *
- * @author jing
+ * A class which store the current rectList and selectNotes for the compositionPane
+ * @author Tyler Maule
+ * @author Jingyuan Wang
+ * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class CurrentState {
     //creates a list to store created rectangles, that they may be later erased

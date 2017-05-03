@@ -3,8 +3,11 @@ package tunecomposer;
 import java.util.ArrayList;
 
 /**
- *
- * @author mauletj
+ * Store the compositionstate with given RectList, SelectList and GestureList
+ * @author Tyler Maule
+ * @author Jingyuan Wang
+ * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class CompositionState {
     
@@ -21,6 +24,7 @@ public class CompositionState {
     //create a String to store the input name from the user when saved this state
     private String markedName;
     
+    //create a Boolean to tell whether this particular compositionState is only for selection
     protected Boolean isSelectAction = false;
     
     /**

@@ -7,7 +7,10 @@ import javafx.scene.control.Alert;
 /**
  * A helper class that allows the decoding and encoding of 
  * txt files that describe a NoteRectangle composition
- * @author tmaule
+ * @author Tyler Maule
+ * @author Jingyuan Wang
+ * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class CompositionFileInteractions {
     //allows access to the program's main controller

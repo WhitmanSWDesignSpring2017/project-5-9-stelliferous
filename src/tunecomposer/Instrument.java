@@ -1,7 +1,3 @@
-/*
- * Provided for use only in CS 370 at Whitman College.
- * DO NOT DISTRIBUTE.
- */
 package tunecomposer;
 
 import javafx.scene.paint.Color;
@@ -13,6 +9,7 @@ import javax.sound.midi.ShortMessage;
  * @author Tyler Maule
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public enum Instrument {
     

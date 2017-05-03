@@ -21,6 +21,7 @@ import javafx.scene.input.Clipboard;
  * @author Tyler Maule
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class MainController {
     
@@ -62,13 +63,16 @@ public class MainController {
     //default note length
     protected double noteLength = 100;
 
-    //create a undoRedoAction object
+    //create a history object
     protected History history = new History(this);
     
+    //create a saveActions object
     protected SaveActions saveActions = new SaveActions(this);
     
+    //create a compositionFileInteractions object
     protected CompositionFileInteractions compositionFileInteractions = new CompositionFileInteractions(this);
     
+    //create a copyPasteActions object
     protected CopyPasteActions copyPasteActions = new CopyPasteActions(this);
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
@@ -192,6 +196,9 @@ public class MainController {
         noteLength = durationSlider.getValue();
     }
 
+    /**
+     * clear everything on the pane and stacks for the newAction
+     */
     protected void restart() {
         history.clearCurrentState();
         history.clearAllActions();
