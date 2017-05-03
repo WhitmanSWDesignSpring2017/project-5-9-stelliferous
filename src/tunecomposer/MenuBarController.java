@@ -114,13 +114,9 @@ public class MenuBarController  {
      */
     @FXML
     protected void handleSaveAction(ActionEvent e) throws IOException{
-        System.out.println("save");
-        System.out.println(mainController.operatingOnFile);
         if (mainController.operatingOnFile.isEmpty()){
-            System.out.println("saveasaction");
             handleSaveAsAction(e);
         } else {
-            System.out.println("Just save");
             mainController.saveActions.copyCompositionToFile(mainController.operatingOnFile);
         }    
     }
@@ -405,7 +401,6 @@ public class MenuBarController  {
      */
     @FXML
     private void handlePasteAction(ActionEvent e) throws FileNotFoundException{
-        System.out.println("paste option");
         stopTune();
         mainController.getSelectList().clear();
         mainController.copyPasteActions.paste();
@@ -575,10 +570,8 @@ public class MenuBarController  {
         }
         if (mainController.isSaved()){
             saveButton.setDisable(true);
-            System.out.println("disabled");
         } else {
             saveButton.setDisable(false);
-            System.out.println("abled");
         }
     }
     

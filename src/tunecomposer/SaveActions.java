@@ -75,18 +75,13 @@ public class SaveActions {
             try (BufferedWriter out = new BufferedWriter(fstream)) {
                 out.flush();
                 fstream.flush();
-                System.out.println("in");
                 out.write(mainController.compositionFileInteractions.notesToString(mainController.getRectList(),mainController.gestureModelController.gestureNoteGroups,false));
-                System.out.println("written");
                 fileOperatedOn = (filename + ".txt");
                 mainController.setOperatingOnFile(filename);
                 mainController.setIsSaved(Boolean.TRUE);
                 
             }
-            System.out.println("something saved");
-        } else {
-            System.out.println("nothing saved");
-        }
+        } 
     }
     
     /**
@@ -102,16 +97,10 @@ public class SaveActions {
         dialog.setContentText("Please enter a valid file name:");
         
         Optional<String> result = dialog.showAndWait();
-        
-        System.out.println("opened");
-        
+                
         if (result.isPresent() && isValidFileName(result.get())){
-            System.out.println("valid name");
-            System.out.println("Your name: " + result.get());
             copyCompositionToFile(result.get()+".txt");
         }  else if (result.isPresent() && !isValidFileName(result.get())){
-            System.out.println("not valid");
-
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
             alert.setHeaderText("Invalid File Name");

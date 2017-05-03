@@ -187,7 +187,6 @@ public class CompositionFileInteractions {
            mainController.compositionController.rectAnchorPane.getChildren().add(note.notes);
        }
        mainController.setIsSaved(Boolean.FALSE);
-       System.out.println("initializePastedNotes");
     }
     
      /**
