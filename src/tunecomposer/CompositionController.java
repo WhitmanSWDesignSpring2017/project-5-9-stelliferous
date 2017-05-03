@@ -314,14 +314,14 @@ public class CompositionController {
      * class to work.
      * @param aThis the main controller 
      */
-    public void init(MainController aThis) {
+    protected void init(MainController aThis) {
         mainController = aThis;
         this.rectList = aThis.getRectList();
         this.selectedNotes = aThis.getSelectList();
         selectRect.setVisible(false);
     }
 
-    void createBeat(Instrument instrument, double beatX, double beatY, double beatW, ArrayList<NoteRectangle> beatGesture) {
+    protected void createBeat(Instrument instrument, double beatX, double beatY, double beatW, ArrayList<NoteRectangle> beatGesture) {
         NoteRectangle beat = new NoteRectangle(beatX, beatY*Constants.HEIGHTRECTANGLE, instrument ,beatW, mainController);
         selectRect();
         rectAnchorPane.getChildren().add(beat.notes);  
