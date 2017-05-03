@@ -107,7 +107,8 @@ public class MenuBarController  {
     }
     
     /**
-     * 
+     * Called when the user clicks on the 'save' button.
+     * Calls handleSaveAsAction() which saves the composition.
      * @param e on user click
      * @throws java.io.IOException
      */
@@ -125,7 +126,8 @@ public class MenuBarController  {
     }
     
     /**
-     * 
+     * Called when the user clicks the 'save as' button.
+     * Saves the composition.
      * @param e on user click
      */
     @FXML
