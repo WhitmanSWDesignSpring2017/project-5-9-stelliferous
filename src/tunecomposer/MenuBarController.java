@@ -93,7 +93,7 @@ public class MenuBarController  {
     }
     
     /**
-     * 
+     * Open the file and throw an exception if the file is invalid
      * @param e on user click
      */
     @FXML
