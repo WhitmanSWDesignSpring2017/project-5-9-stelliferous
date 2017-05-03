@@ -191,28 +191,50 @@ public class MainController {
         history.undoableAction();
     }
     
+    //Create a boolean value to store whether the composition has been saved
     private Boolean isSaved = true;
     
+    /**
+     * Tell whether the compositionState has been saved
+     * @return the boolean variable isSaved
+     */
     protected Boolean isSaved(){
         return isSaved;
     }
     
+    /**
+     * change the boolean value
+     * @param value what the isSaved should be
+     */
     protected void setIsSaved(Boolean value){
         isSaved = value;
         System.out.println(isSaved);
         menuBarController.checkButtons();
     }
     
+    //Store the fileName as a String
     protected String operatingOnFile = "";
     
+    /**
+     * change the save filename
+     * @param filename the value operatingOnFile should change to
+     */
     protected void setOperatingOnFile(String filename){
         operatingOnFile = filename;
     }
     
+    /**
+     * get the rectList store in the currentState
+     * @return the arrayList contains all the noteRectangle
+     */
     protected ArrayList<NoteRectangle> getRectList() {
         return currentState.rectList;
     }
     
+    /**
+     * get the selectedNotes store in the currentState
+     * @return the arrayList contains all the selected noteRectangles
+     */
     protected ArrayList<NoteRectangle> getSelectList() {
         return currentState.selectedNotes;
     }
