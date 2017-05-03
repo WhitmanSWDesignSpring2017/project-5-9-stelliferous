@@ -100,7 +100,9 @@ public class MenuBarController  {
   
     
     /**
-     * 
+     * Called when the user clicks on the new button.
+     * Creates a confirmation window asking if the user would like to save the 
+     * current composition before creating a new one.
      * @param e on user click
      */
     @FXML
@@ -134,7 +136,9 @@ public class MenuBarController  {
     }
     
     /**
-     * 
+     * Called when the user clicks on the open button.
+     * Creates a confirmationWindow that asks if the user wants to save the 
+     * current composition first.
      * @param e on user click
      */
     @FXML
@@ -167,7 +171,8 @@ public class MenuBarController  {
     }
     
     /**
-     * 
+     * Called when the user clicks the save button.
+     * Calls the saveAsAction which saves the composition.
      * @param e on user click
      */
     @FXML
@@ -184,7 +189,8 @@ public class MenuBarController  {
     }
     
     /**
-     * 
+     * Called when the user clicks the save as button
+     * Prompts the user to enter a filename and then saves the composition.
      * @param e on user click
      */
     @FXML
@@ -199,6 +205,7 @@ public class MenuBarController  {
     }
 
     /**
+     * Called when the user clicks the about button.
      * Displays a dialog button with "about" information
      * @param e on user click
      */
