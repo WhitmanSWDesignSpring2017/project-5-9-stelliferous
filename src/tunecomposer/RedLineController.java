@@ -3,6 +3,7 @@ package tunecomposer;
 import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
 
 /**
@@ -34,7 +35,21 @@ public class RedLineController {
      */
     public void init(MainController aThis) {
         mainController = aThis; 
-      
+    }
+    
+    double initialX;
+    double initialY;
+    
+    @FXML
+    protected void handleClickAction(MouseEvent e){
+        initialX = e.getX();
+        initialY = e.getY();
+        System.out.println("X: "+initialX+"; Y: "+initialY);
+    }
+    
+    @FXML
+    protected void handleDragAction(){
+        
     }
     
      /**
@@ -42,12 +57,11 @@ public class RedLineController {
      */
     protected void initializeRedLine(){
         //insert, intialize, and govern visibility of the red line
-        redLine.setVisible(false);
         lineTransition.setNode(redLine);
         lineTransition.setFromX(0);
         lineTransition.setInterpolator(Interpolator.LINEAR);
         lineTransition.setOnFinished((e)->{
-            redLine.setVisible(false);
+            redLine.setStartX(0);
             mainController.menuBarController.stopButton.setDisable(true);
         });
     }

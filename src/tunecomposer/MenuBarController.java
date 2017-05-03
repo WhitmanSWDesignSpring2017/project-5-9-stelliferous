@@ -603,7 +603,7 @@ public class MenuBarController  {
      */
     private void stopTune() {
         mainController.MidiComposition.stop();
-        mainController.redLineController.lineTransition.stop();
-        mainController.redLineController.redLine.setVisible(false);
+        mainController.redLineController.lineTransition.setToX(0);
+        mainController.redLineController.lineTransition.playFromStart();
     }
 }

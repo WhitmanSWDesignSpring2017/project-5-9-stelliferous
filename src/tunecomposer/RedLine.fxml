@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Line?>
 
-<Line fx:id="redLine" endX="0.0" endY="1280.0" startX="0.0" startY="0.0" styleClass="redLine" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.RedLineController"/>
+
+<Line fx:id="redLine" endX="0.0" endY="1280.0" onMouseClicked="#handleClickAction" onMouseDragged="#handleDragAction" startX="0.0" startY="0.0" strokeWidth="5.0" styleClass="redLine" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.RedLineController" />

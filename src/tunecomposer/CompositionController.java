@@ -65,7 +65,12 @@ public class CompositionController {
         
         //stops ongoing composition-playing events
         mainController.MidiComposition.stop();
-        mainController.redLineController.redLine.setVisible(false);
+        //mainController.redLineController.lineTransition.setToX(0);
+        //mainController.redLineController.lineTransition.playFromStart();
+        mainController.redLineController.lineTransition.stop();
+        //mainController.redLineController.redLine.setStartX(0);
+        //mainController.redLineController.redLine.setEndX(0);
+        //mainController.redLineController.redLine.setVisible(false);
     }
     
     /**
