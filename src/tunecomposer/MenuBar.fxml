@@ -48,10 +48,10 @@
                 </Menu>
                 <Menu text="Beats">
                     <items>
-                        <MenuItem onAction = "#handleBeat1Action" text = "Beat 1 -- Blocks" />
-                        <MenuItem onAction = "#handleBeat2Action" text = "Beat 2 -- Jumping" />
-                        <MenuItem onAction = "#handleBeat3Action" text = "Beat 3 -- Tan" />
-                        <MenuItem onAction = "#handleBeat4Action" text = "Beat 4 -- Sine" />
+                        <MenuItem onAction = "#handleBlocksBeatAction" text = "Beat 1 -- Blocks" />
+                        <MenuItem onAction = "#handleJumpingBeatAction" text = "Beat 2 -- Jumping" />
+                        <MenuItem onAction = "#handleTanBeatAction" text = "Beat 3 -- Tan" />
+                        <MenuItem onAction = "#handleSinBeatAction" text = "Beat 4 -- Sine" />
                         <MenuItem fx:id ="saveAsBeatAction" onAction = "#handleSaveAsBeat" text = "Save As Beat" />
                         <MenuItem fx:id ="savedBeatAction" onAction = "#handleSavedBeat" text = "Insert Saved Beat"/>
                     </items>

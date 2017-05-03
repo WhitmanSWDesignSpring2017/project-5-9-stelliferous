@@ -415,11 +415,11 @@ public class MenuBarController  {
    
     
     /**
-     * Adds a beat (#1) to the composition.
-     * @param e on beat 1 addition event
+     * Adds a beat (blocks) to the composition.
+     * @param e on blocks beat addition event
      */
     @FXML
-    private void handleBeat1Action(ActionEvent e){
+    private void handleBlocksBeatAction(ActionEvent e){
         stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
         for (int b= 0; b < 2000; b += 40){
@@ -431,11 +431,11 @@ public class MenuBarController  {
     }
     
     /**
-     * Adds a beat (#2) to the composition.
-     * @param e on beat 2 addition event
+     * Adds a beat (jumping) to the composition.
+     * @param e on jumping beat addition event
      */
     @FXML
-    private void handleBeat2Action(ActionEvent e){
+    private void handleJumpingBeatAction(ActionEvent e){
         stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
         for (int b = 0; b < 2000; b += 50){
@@ -447,11 +447,11 @@ public class MenuBarController  {
     }
     
     /**
-     * Adds a beat (#3, based on tangent) to the composition.
-     * @param e on beat 3 addition event
+     * Adds a beat (tangent) to the composition.
+     * @param e on tangent beat addition event
      */
     @FXML
-    private void handleBeat3Action(ActionEvent e){
+    private void handleTanBeatAction(ActionEvent e){
         stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
         for (int b = 0; b < 2000; b += 10){
@@ -462,11 +462,11 @@ public class MenuBarController  {
     }
     
     /**
-     * Adds a beat (#4, based on sine) to the composition.
-     * @param e on beat 4 addition event
+     * Adds a beat (sine) to the composition.
+     * @param e on sin beat addition event
      */
     @FXML
-    private void handleBeat4Action(ActionEvent e){
+    private void handleSinBeatAction(ActionEvent e){
         stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
         for (int b = 0; b < 2000; b += 10){
