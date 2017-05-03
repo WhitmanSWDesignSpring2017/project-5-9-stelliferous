@@ -22,7 +22,7 @@ Although we may not have the time to move to a Model-View-Controller system, we 
 
 As always, we are refining our documentation and changing our code to make it more self-explanatory, especially with intention-revealing names. We still strive to use intention-revealing method and variable names, make variables constants when possible, and reduce the amount of intimacy.
 
->Explain what, if anything, in your solution is inelegant and why you didn't make it elegant (for example, maybe you didn't >have time or the knowledge to fix it).
+>Explain what, if anything, in your solution is inelegant and why you didn't make it elegant (for example, maybe you didn't have time or the knowledge to fix it).
 
 Our program still violates the Law of Demeter, since many controllers go through the main controller to get something done. I'd still argue that violating this law actually helped with the simplicity and clarity of our project, and so favored those other principles of elegance over the Law of Demeter (adding many methods and creating a maze of responsibilities would have been less elegant). Although many programs do go through the main controller, we think that this method of a program with more cohesion is simpler, more concise, more readable, and more maintainable. At this point, extensibility isn't as big of a priority, since the scope of this project has become more clear. Still, this increases coupling between classes to an uncomfortable point; although our cohesion within classes has improved, our coupling between them is something to keep working on. 
 
@@ -34,10 +34,11 @@ As always, with more time and knowledge, more refactoring could be done.
 
 We estimated that we would complete 18 story points, and actually ended up completed about 19 (still working at getting better at estimation). We spent about 25.5+ hours on this project, so around 6.375 hours per person, and that means that the rate of points/person-hour was about 0.74509803921. In this project our velocity slowed down, but I think that's because we tried out a variety of different ways of refactoring CopyPasteActions. I think we are getting better at estimating story points and timing, yes... more experience certainly helps.
 
->Include a short summary of your team retrospective. What went well that your team will keep doing during the next project >assignment? What will you improve? How?
+>Include a short summary of your team retrospective. What went well that your team will keep doing during the next project assignment? What will you improve? How?
 
 This did feel like a shorter assignment, which we appreciated (although unbeknownst to us, we'd completed part of it for our Project 8 stretch goals). Unfortunately, we didn't have a chance to meet until later in the week again, but we used our time productively and communicated well throughout. Everyone participated strongly, and contributed good ideas. We'll continue communicating well and being as proactive as possible. Hopefully we can improve our creative skills and bounce more ideas off one another in Project 9.
 
 Sincerely yours,
+
 Kaylin, Zach, Jing, and Tyler
 
