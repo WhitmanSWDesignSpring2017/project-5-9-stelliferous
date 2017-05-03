@@ -68,6 +68,10 @@ public class CompositionState {
         return markedName;
     }
     
+    /**
+     * Compare with the previous state to see whether this is only a select action
+     * @param compare the previous compositionState stored in the stack
+     */
     protected void checkIfOnlySelection(CompositionState compare) {
         if (compare.rectListState.size() == this.rectListState.size()) {
             for (int i=0; i< rectListState.size();i++) {
