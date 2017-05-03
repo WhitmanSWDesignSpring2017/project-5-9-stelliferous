@@ -225,7 +225,7 @@ public class CompositionFileInteractions {
      * Further connects object to the mainController upon initialization
      * @param aThis the mainController
      */
-    void init(MainController aThis) {
+    protected void init(MainController aThis) {
         this.mainController = aThis;
     }
 }
