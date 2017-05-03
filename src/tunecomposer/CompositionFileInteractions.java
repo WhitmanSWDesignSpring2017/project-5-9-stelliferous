@@ -136,6 +136,7 @@ public class CompositionFileInteractions {
                 notesInGesture.add(pastedNotes.get(Integer.valueOf(gestureIndices[q])));
             }
             mainController.gestureModelController.gestureNoteGroups.add(notesInGesture);
+            mainController.gestureModelController.updateGestureRectangle(notesInGesture, "black");
         } 
     }
     
