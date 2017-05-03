@@ -2,6 +2,7 @@ package tunecomposer;
 
 import java.util.ArrayList;
 import javafx.event.EventHandler;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -61,11 +62,24 @@ public class NoteRectangle {
     }
     
     protected final void setAllMouseEvents() {
+        notes.setOnMouseClicked((MouseEvent o)-> {
+            onNoteRightClick(o);
+        });
+        System.out.println("show");
         notes.setOnMousePressed((MouseEvent o) -> {
             onNotePress(o);
         });
         notes.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);   
         notes.setOnMouseReleased(rectangleOnMouseReleasedEventHandler);
+    }
+    
+    private void onNoteRightClick(MouseEvent o) {
+         System.out.println("showe");
+        if (o.getButton() == MouseButton.SECONDARY) { 
+            System.out.println("showright");
+            mainController.popUpMenu.show(notes, o.getX(),o.getY());
+           
+        }
     }
     
     /**
@@ -296,9 +310,9 @@ public class NoteRectangle {
                 selectedNotes.get(i).setY(finalY);   
             }
             mainController.gestureModelController.gestureNoteSelection(selectedNotes);
-            
-            mainController.history.undoableAction();  
-            
+            if (!t.isStillSincePress()) {
+                mainController.history.undoableAction();  
+            }            
         }
     };
 
