@@ -147,13 +147,6 @@ public class History {
         });
     }
     
-    private Boolean checkSelectOnly(CompositionState currentState) {
-        if (mainController.getRectList().equals(currentState.rectListState)) {
-            return true;
-        }
-        return false;
-    }
-    
     /**
      * Clear all ArrayLists and visuals gestures/notes in the current state.
      */
