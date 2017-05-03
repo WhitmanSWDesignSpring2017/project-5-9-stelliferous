@@ -8,7 +8,7 @@ We continued to keep the Single Responsibility principle in mind when we formed 
 
 As usual we began by fulfilling the functionality requirements, then moved towards refactoring. 
 
-To our knowledge, addressed the feedback given in the previous project (although there were no specific TODOs to fulfill). Therefore, we mostly used the principles we've learned in class to improve our project and refactor. 
+To our knowledge, addressed the feedback given in the previous project (although there were no specific TODOs to fulfill). We did work on decomposing "scary" methods, as requested in Project 7 rubric feedback. Therefore, we mostly used the principles we've learned in class to improve our project and refactor. 
 
 Our design has improved in that we moved a lot of methods and fields into classes which better fit their responsibilities (moved responsibilities of savedActions and CopyPasteActions from MenuBarController into their respective, more fitting classes). We also split some of CopyPaste into CompositionToFile.java so that the notes-to-string and string-to-notes code could be reused.
 
