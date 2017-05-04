@@ -1,6 +1,10 @@
 package tunecomposer;
 
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -9,14 +13,26 @@ import javafx.scene.shape.Rectangle;
  */
 public class PopUpMenu {
     ContextMenu contextMenu = new ContextMenu();
-    private MainController mainController;
+    private final MainController mainController;
+    
     public PopUpMenu(MainController aThis) {
         this.mainController = aThis;
         setUpContextMenu();
     }
     
+    private MenuItem setUpMenuItem() {
+        MenuItem copyPopUp = new MenuItem("Copy");
+        copyPopUp.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event t) {
+                mainController.menuBarController.handleCopyAction((ActionEvent) t);
+            }
+        });
+        return copyPopUp;
+    }
+    
     private void setUpContextMenu() {
-        contextMenu.getItems().add(mainController.menuBarController.copyAction);
+        contextMenu.getItems().add(setUpMenuItem());
         
     }
 

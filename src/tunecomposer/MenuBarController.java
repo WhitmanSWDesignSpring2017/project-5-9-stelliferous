@@ -64,6 +64,10 @@ public class MenuBarController  {
         mainController = aThis; 
     }
     
+    protected MenuItem returnCopyAction() {
+        return copyAction;
+    }
+    
      /**
      * Exits the program upon user clicking the X or exit button.
      * @param e on user click
@@ -364,7 +368,7 @@ public class MenuBarController  {
      * @param e a mouse event
      */
     @FXML
-    private void handleCopyAction(ActionEvent e){
+    protected void handleCopyAction(ActionEvent e){
         stopTune();
         mainController.copyPasteActions.copySelected();
         pasteAction.setDisable(false);

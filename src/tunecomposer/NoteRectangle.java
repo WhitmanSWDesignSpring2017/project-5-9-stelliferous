@@ -77,7 +77,7 @@ public class NoteRectangle {
          System.out.println("showe");
         if (o.getButton() == MouseButton.SECONDARY) { 
             System.out.println("showright");
-            mainController.popUpMenu.show(notes, o.getX(),o.getY());
+            mainController.popUpMenu.show(notes, o.getSceneX(),o.getSceneY());
            
         }
     }

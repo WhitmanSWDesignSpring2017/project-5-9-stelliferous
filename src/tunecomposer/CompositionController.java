@@ -4,6 +4,8 @@ import java.io.IOException;
 import static java.lang.Math.abs;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -51,8 +53,6 @@ public class CompositionController {
     
     //to store a list of selected notes before selection rectangle is dragged
     private ArrayList<NoteRectangle> originallySelected = new ArrayList<>();
-    
-   // protected History undoRedoActions = new History(this);
     
     /**
      * resets the mouse coordinates to allow dragging functionality
