@@ -19,7 +19,7 @@ public class MidiPlayer {
     private Sequencer sequencer;
 
     //the number of beats per minute that is used when a sound is played
-    private int beatsPerMinute;
+    protected int beatsPerMinute;
 
     /**
      * Creates a new MidiPlayer with the given parameters.

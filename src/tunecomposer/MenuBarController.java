@@ -224,6 +224,33 @@ public class MenuBarController  {
         isPaused = false;
     }
     
+        @FXML
+    private void handlePauseAction(){
+        System.out.println("paused");
+        if (isPaused){
+            System.out.println(mainController.MidiComposition.beatsPerMinute);
+            mainController.MidiComposition.play();
+            //mainController.redLineController.lineTransition.setToX(mainController.endcomp);
+            System.out.println(Duration.millis(mainController.endcomp).toString());
+            System.out.println("Duration total: "+mainController.redLineController.lineTransition.getDuration());
+                        System.out.println(mainController.redLineController.lineTransition.getCurrentTime().toString());
+            Duration duration = (mainController.redLineController.lineTransition.getDuration().subtract(mainController.redLineController.lineTransition.getCurrentTime()));
+            System.out.println(duration);
+            mainController.redLineController.lineTransition.setDuration(duration);
+            mainController.redLineController.lineTransition.play();
+            stopButton.setDisable(false);
+        } else {
+            System.out.println(mainController.MidiComposition.beatsPerMinute);
+            mainController.MidiComposition.stop();
+            mainController.redLineController.lineTransition.pause();
+            System.out.println("cat: "+mainController.redLineController.redLine.getTranslateX());
+            stopButton.setDisable(true);
+        }
+        
+        isPaused = !isPaused;
+    }
+    
+    
      /**
      * Stops the player from playing, stops and sets the red line to be invisible.
      * @param e  on user click
@@ -511,22 +538,7 @@ public class MenuBarController  {
         addBeatGesture(beatGesture);
     }
     
-    @FXML
-    private void handlePauseAction(){
-        System.out.println("paused");
-        if (isPaused){
-            mainController.MidiComposition.play();
-            mainController.redLineController.lineTransition.play();
-            stopButton.setDisable(false);
-        } else {
-            mainController.MidiComposition.stop();
-            mainController.redLineController.lineTransition.pause();
-            stopButton.setDisable(true);
-        }
-        
-        isPaused = !isPaused;
-    }
-    
+
     /**
      * Adds notes created by a beat menu item to a gesture and to the screen.
      * @param gesture 
