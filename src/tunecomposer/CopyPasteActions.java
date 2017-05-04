@@ -56,5 +56,6 @@ public class CopyPasteActions {
     protected void paste() throws FileNotFoundException{
         String pastedNotes = CLIPBOARD.getString();
         mainController.compositionFileInteractions.notesFromString(pastedNotes);
+        copySelected();
     }
 }
