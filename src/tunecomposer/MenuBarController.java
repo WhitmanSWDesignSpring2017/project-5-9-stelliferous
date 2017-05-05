@@ -289,7 +289,7 @@ public class MenuBarController  {
      * @param e on grouping event
      */
     @FXML
-    private void handleGroupAction(ActionEvent e){
+    protected void handleGroupAction(ActionEvent e){
         stopTune();
         if (mainController.getSelectList().isEmpty()) {
             return;
@@ -312,7 +312,7 @@ public class MenuBarController  {
      * @param e on ungrouping event
      */
     @FXML
-    private void handleUngroupAction(ActionEvent e){
+    protected void handleUngroupAction(ActionEvent e){
         stopTune();
         mainController.gestureModelController.gestureNoteGroups.remove(mainController.getSelectList());
         mainController.compositionController.selectRect();
@@ -392,7 +392,7 @@ public class MenuBarController  {
      * @param e a mouse event
      */
     @FXML
-    private void handleCutAction(ActionEvent e){
+    protected void handleCutAction(ActionEvent e){
         stopTune();
         handleCopyAction(e);
         handleDeleteAction(e);
@@ -404,7 +404,7 @@ public class MenuBarController  {
      * @param e a mouse event
      */
     @FXML
-    private void handlePasteAction(ActionEvent e) throws FileNotFoundException{
+    protected void handlePasteAction(ActionEvent e) throws FileNotFoundException{
         stopTune();
         mainController.getSelectList().clear();
         mainController.copyPasteActions.paste();
