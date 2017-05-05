@@ -177,12 +177,14 @@ public class MainController {
                 
                 System.out.println(rect.getX());
                 
-                if(rect.getX() < start_time){
-                    duration = (int)(rect.getWidth()-start_time); 
-                }
+                
 
                 if (endcomp < startTick+duration) {
                     endcomp = startTick+duration;
+                }
+                
+                if(rect.getX() < start_time){
+                    duration = (int)(rect.getWidth()-start_time); 
                 }
 
                 //changes instrument according to the current channel

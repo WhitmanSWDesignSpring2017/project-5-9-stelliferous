@@ -52,6 +52,7 @@ public class RedLineController {
     
     @FXML
     protected void handleDragAction(MouseEvent e){
+        mainController.MidiComposition.stop();
         redLine.setStartX(e.getX());
         redLine.setEndX(e.getX());
     }
@@ -66,7 +67,12 @@ public class RedLineController {
         mainController.MidiComposition.clear();
             mainController.buildMidiComposition(mainController.redLineController.redLine.getEndX());
             mainController.MidiComposition.play();
-           
+           System.out.println("end end: "+mainController.redLineController.redLine.getEndX());
+           //mainController.redLineController.lineTransition.setFromX(mainController.redLineController.redLine.getEndX());
+           //mainController.redLineController.lineTransition.setToX(mainController.endcomp);
+           //mainController.redLineController.lineTransition.setDuration(Duration.seconds(mainController.endcomp-mainController.redLineController.redLine.getEndX()));
+           //mainController.redLineController.lineTransition.play();
+            //mainController.redLineController.lineTransition.playFrom(Duration.seconds(mainController.redLineController.redLine.getEndX()));
             /**mainController.redLineController.lineTransition.setToX(mainController.endcomp);
             System.out.println(Duration.millis(mainController.endcomp).toString());
             System.out.println("Duration total: "+mainController.redLineController.lineTransition.getDuration());
