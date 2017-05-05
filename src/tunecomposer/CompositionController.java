@@ -4,9 +4,8 @@ import java.io.IOException;
 import static java.lang.Math.abs;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
@@ -69,6 +68,16 @@ public class CompositionController {
         mainController.redLineController.redLine.setVisible(false);
     }
     
+    private void paneMouseLeftClick() {
+        selectedNotes.forEach((e1)-> {
+            originallySelected.add(e1);
+        });
+    }
+    
+    private void paneMouseRightClick() {
+        
+    }
+    
     /**
      * Simply resets coordinates of current mouse position when the pane's
      * clicked.
@@ -77,9 +86,11 @@ public class CompositionController {
      */
     @FXML 
     private void paneMouseClick(MouseEvent e) throws IOException{
-        selectedNotes.forEach((e1)-> {
-            originallySelected.add(e1);
-        });
+        if (e.getButton() == MouseButton.PRIMARY) { 
+            paneMouseLeftClick();
+        } else {
+            
+        }
         reset_coordinates(e);
     };
     

@@ -392,7 +392,7 @@ public class MenuBarController  {
      * @param e a mouse event
      */
     @FXML
-    private void handleCutAction(ActionEvent e){
+    protected void handleCutAction(ActionEvent e){
         stopTune();
         handleCopyAction(e);
         handleDeleteAction(e);
@@ -404,7 +404,7 @@ public class MenuBarController  {
      * @param e a mouse event
      */
     @FXML
-    private void handlePasteAction(ActionEvent e) throws FileNotFoundException{
+    protected void handlePasteAction(ActionEvent e) throws FileNotFoundException{
         stopTune();
         mainController.getSelectList().clear();
         mainController.copyPasteActions.paste();

@@ -167,7 +167,7 @@ public class CompositionFileInteractions {
      * opportunity to open a file by invoking the "Open" MenuTtem.
      * @throws FileNotFoundException 
      */
-    private void invokeInvalidFilenameError() throws FileNotFoundException{
+    protected void invokeInvalidFilenameError() throws FileNotFoundException{
        System.out.print("exception thrown");
        Alert alert = new Alert(Alert.AlertType.ERROR);
        alert.setTitle("Error Dialog");
@@ -212,13 +212,7 @@ public class CompositionFileInteractions {
                pastedNotes.add(new NoteRectangle(xLocation,yLocation,instrument, width, mainController));
            }
        } catch (Exception ex){
-            System.out.print("exception thrown");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Dialog");
-            alert.setHeaderText("Invalid File");
-            alert.setContentText("Please choose a valid file.");
-            alert.showAndWait();
-            mainController.saveActions.openFile();
+            invokeInvalidFilenameError();
        }
        return pastedNotes;
     }
