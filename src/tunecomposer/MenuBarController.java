@@ -206,7 +206,7 @@ public class MenuBarController  {
         mainController.MidiComposition.clear();
         
         //build the MidiComposition based off of TuneRectangles
-        mainController.buildMidiComposition();
+        mainController.buildMidiComposition(0);
      
         //defines end of the composition for the red line to stop at
         mainController.redLineController.lineTransition.setToX(mainController.endcomp);
@@ -228,22 +228,26 @@ public class MenuBarController  {
     private void handlePauseAction(){
         System.out.println("paused");
         if (isPaused){
-            System.out.println(mainController.MidiComposition.beatsPerMinute);
+            System.out.println(mainController.redLineController.redLine.getTranslateX());
+            mainController.MidiComposition.clear();
+            mainController.buildMidiComposition(mainController.redLineController.redLine.getTranslateX());
             mainController.MidiComposition.play();
+           
             //mainController.redLineController.lineTransition.setToX(mainController.endcomp);
             System.out.println(Duration.millis(mainController.endcomp).toString());
             System.out.println("Duration total: "+mainController.redLineController.lineTransition.getDuration());
                         System.out.println(mainController.redLineController.lineTransition.getCurrentTime().toString());
             Duration duration = (mainController.redLineController.lineTransition.getDuration().subtract(mainController.redLineController.lineTransition.getCurrentTime()));
             System.out.println(duration);
+            
             mainController.redLineController.lineTransition.setDuration(duration);
             mainController.redLineController.lineTransition.play();
             stopButton.setDisable(false);
         } else {
-            System.out.println(mainController.MidiComposition.beatsPerMinute);
             mainController.MidiComposition.stop();
             mainController.redLineController.lineTransition.pause();
             System.out.println("cat: "+mainController.redLineController.redLine.getTranslateX());
+            
             stopButton.setDisable(true);
         }
         

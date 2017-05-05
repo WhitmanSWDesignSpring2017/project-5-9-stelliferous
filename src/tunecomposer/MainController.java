@@ -155,31 +155,44 @@ public class MainController {
     /**
      * Adds MidiEvent notes to the composition based on NoteRectangles in 
      * RectList, changing instruments when appropriate.
+     * @param start_time
      */
-    protected void buildMidiComposition(){
+    protected void buildMidiComposition(double start_time){
         //initialize a NoteRectangle object
         NoteRectangle rect;
+        
+        //time into the note at which to start
+        
         
         //iterates through all rectangles in the composition
         for(int i = 0; i < currentState.rectList.size(); i++){
             rect = currentState.rectList.get(i);
-            
-            //determines attributes of the MidiPlayer note to be added
-            int pitch = Constants.PITCHTOTAL -(int)rect.getY()/Constants.HEIGHTRECTANGLE;
-            int startTick = (int)rect.getX();
-            int duration = (int)rect.getWidth();
-            Instrument curInstru = rect.getInstrument();
-            if (endcomp < startTick+duration) {
-                endcomp = startTick+duration;
+            if (start_time == 0 || rect.getX() > start_time - rect.getWidth()){
+                
+                //determines attributes of the MidiPlayer note to be added
+                int pitch = Constants.PITCHTOTAL -(int)rect.getY()/Constants.HEIGHTRECTANGLE;
+                int startTick = (int)rect.getX();
+                int duration = (int)rect.getWidth();
+                Instrument curInstru = rect.getInstrument();
+                
+                System.out.println(rect.getX());
+                
+                if(rect.getX() < start_time){
+                    duration = (int)(rect.getWidth()-start_time); 
+                }
+
+                if (endcomp < startTick+duration) {
+                    endcomp = startTick+duration;
+                }
+
+                //changes instrument according to the current channel
+                MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 
+                        curInstru.getChannel(), curInstru.getMidiProgram(),0,0,Constants.TRACK_INDEX);
+
+                //adds a note to the MidiPlayer composition
+                MidiComposition.addNote(pitch, Constants.VOLUME, startTick-(int)start_time, 
+                        duration, curInstru.getChannel(), Constants.TRACK_INDEX);  
             }
-            
-            //changes instrument according to the current channel
-            MidiComposition.addMidiEvent(ShortMessage.PROGRAM_CHANGE + 
-                    curInstru.getChannel(), curInstru.getMidiProgram(),0,0,Constants.TRACK_INDEX);
-            
-            //adds a note to the MidiPlayer composition
-            MidiComposition.addNote(pitch, Constants.VOLUME, startTick, 
-                    duration, curInstru.getChannel(), Constants.TRACK_INDEX);  
         }
     }
     

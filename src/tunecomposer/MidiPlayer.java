@@ -19,7 +19,7 @@ public class MidiPlayer {
     private Sequencer sequencer;
 
     //the number of beats per minute that is used when a sound is played
-    protected int beatsPerMinute;
+    private int beatsPerMinute;
 
     /**
      * Creates a new MidiPlayer with the given parameters.
@@ -98,6 +98,9 @@ public class MidiPlayer {
      * immediately.
      */
     public void play() {
+        //altered library class below; starts playing at beginning of comp.
+        //sequencer.setTickPosition(0);
+        
         // this next line should be unnecessary, but seems to be needed
         sequencer.setTempoInBPM(beatsPerMinute);
         sequencer.start();
