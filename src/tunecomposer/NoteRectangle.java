@@ -301,8 +301,9 @@ public class NoteRectangle {
             }
             mainController.gestureModelController.gestureNoteSelection(selectedNotes);
             
-            mainController.history.undoableAction();  
-            
+            if (!t.isStillSincePress()) {
+                mainController.history.undoableAction();  
+            } 
         }
     };
 
