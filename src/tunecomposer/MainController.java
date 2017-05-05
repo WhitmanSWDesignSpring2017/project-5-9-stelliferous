@@ -227,6 +227,7 @@ public class MainController {
      * @param filename the value operatingOnFile should change to
      */
     protected void setOperatingOnFile(String filename){
+        System.out.println(filename);
         operatingOnFile = filename;
     }
     

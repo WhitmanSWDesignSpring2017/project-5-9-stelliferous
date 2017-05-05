@@ -29,7 +29,7 @@ import javafx.stage.Stage;
 public class SaveActions {
     
     private final MainController mainController;
-    protected String fileOperatedOn;
+    protected String fileOperatedOn = "";
     
     /**
      * Constructor that connects a SaveActions object to a given mainController

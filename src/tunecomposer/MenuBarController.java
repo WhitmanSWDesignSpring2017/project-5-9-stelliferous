@@ -528,10 +528,12 @@ public class MenuBarController  {
             selectAllAction.setDisable(true);
             playButton.setDisable(true);
             saveAsButton.setDisable(true);
+            copyCompositionAction.setDisable(true);
         } else {
             selectAllAction.setDisable(false);
             playButton.setDisable(false);
             saveAsButton.setDisable(false);
+            copyCompositionAction.setDisable(false);
         }
         if (mainController.getSelectList().isEmpty()) {
             deleteAction.setDisable(true);
