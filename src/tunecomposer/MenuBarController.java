@@ -289,7 +289,7 @@ public class MenuBarController  {
      * @param e on grouping event
      */
     @FXML
-    private void handleGroupAction(ActionEvent e){
+    protected void handleGroupAction(ActionEvent e){
         stopTune();
         if (mainController.getSelectList().isEmpty()) {
             return;
@@ -312,7 +312,7 @@ public class MenuBarController  {
      * @param e on ungrouping event
      */
     @FXML
-    private void handleUngroupAction(ActionEvent e){
+    protected void handleUngroupAction(ActionEvent e){
         stopTune();
         mainController.gestureModelController.gestureNoteGroups.remove(mainController.getSelectList());
         mainController.compositionController.selectRect();
