@@ -363,12 +363,14 @@ public class MenuBarController  {
         mainController.compositionController.selectRect();
     }
     
+    protected NoteRectangle leftCorner;
     /**
      * Copies selected notes to the clipboard.
      * @param e a mouse event
      */
     @FXML
     protected void handleCopyAction(ActionEvent e){
+        leftCorner = mainController.currentState.leftCornerRect();
         stopTune();
         mainController.copyPasteActions.copySelected();
         pasteAction.setDisable(false);

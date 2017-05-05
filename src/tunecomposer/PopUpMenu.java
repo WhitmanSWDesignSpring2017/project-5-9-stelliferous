@@ -43,7 +43,9 @@ public class PopUpMenu {
         copyPopUp.setOnAction(new EventHandler() {
             @Override
             public void handle(Event t) {
+                mainController.isMenuBarCopy = true;
                 mainController.menuBarController.handleCopyAction((ActionEvent) t);
+                mainController.isMenuBarCopy = false;
             }
         });
         

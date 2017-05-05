@@ -17,4 +17,17 @@ public class CurrentState {
     //creates a list to store selected rectangles
     protected ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
     
+    protected NoteRectangle leftCornerRect() {
+        NoteRectangle leftCorner = selectedNotes.get(0);
+        for (int i=1; i<selectedNotes.size();i++) {
+            if (selectedNotes.get(i).getY() < leftCorner.getY()) {
+                leftCorner = selectedNotes.get(i);
+            } else if (selectedNotes.get(i).getY() == leftCorner.getY()) {
+                if (selectedNotes.get(i).getY() < leftCorner.getX()) {
+                   leftCorner = selectedNotes.get(i);
+                }
+            }
+        }
+        return leftCorner;
+    }
 }
