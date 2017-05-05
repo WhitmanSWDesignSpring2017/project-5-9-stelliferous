@@ -65,13 +65,14 @@ public class RedLineController {
             mainController.menuBarController.handlePauseAction();
         }*/
         mainController.MidiComposition.clear();
-            mainController.buildMidiComposition(mainController.redLineController.redLine.getEndX());
+            mainController.buildMidiComposition(e.getSceneX()-250);
             mainController.MidiComposition.play();
            System.out.println("end end: "+mainController.redLineController.redLine.getEndX());
-           //mainController.redLineController.lineTransition.setFromX(mainController.redLineController.redLine.getEndX());
-           //mainController.redLineController.lineTransition.setToX(mainController.endcomp);
-           //mainController.redLineController.lineTransition.setDuration(Duration.seconds(mainController.endcomp-mainController.redLineController.redLine.getEndX()));
-           //mainController.redLineController.lineTransition.play();
+           lineTransition.setFromX(e.getSceneX()-250);
+           lineTransition.setToX(mainController.endcomp);
+           lineTransition.setDuration(Duration.seconds((mainController.endcomp-e.getSceneX())/100));
+            lineTransition.setInterpolator(Interpolator.LINEAR);
+          lineTransition.playFromStart();
             //mainController.redLineController.lineTransition.playFrom(Duration.seconds(mainController.redLineController.redLine.getEndX()));
             /**mainController.redLineController.lineTransition.setToX(mainController.endcomp);
             System.out.println(Duration.millis(mainController.endcomp).toString());
