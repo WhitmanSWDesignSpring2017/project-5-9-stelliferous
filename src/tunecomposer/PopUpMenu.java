@@ -1,11 +1,14 @@
 package tunecomposer;
 
 import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -53,7 +56,7 @@ public class PopUpMenu {
                 try {
                     mainController.menuBarController.handlePasteAction((ActionEvent) t);
                 } catch (FileNotFoundException ex) {
-                    System.out.println("can't paste");
+                    Logger.getLogger(PopUpMenu.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -71,5 +74,9 @@ public class PopUpMenu {
 
     protected void showContextRect(Rectangle anchor, double x, double y) {
         contextMenuRect.show(anchor, x, y);
+    }
+    
+    protected void showContextPane(AnchorPane anchor, double x, double y) {
+        contextMenuPane.show(anchor,x,y);
     }
 }

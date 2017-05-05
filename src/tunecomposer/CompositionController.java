@@ -35,8 +35,8 @@ public class CompositionController {
     protected double endcomp;
 
     //stores x and y coordinates, to later calculate distance moved by the mouse
-    private double mouseInitialY = 0;
-    private double mouseInitialX = 0;
+    protected double mouseInitialY = 0;
+    protected double mouseInitialX = 0;
     
     //accesses rectangle that users will control by dragging, renders it invisible
     @FXML Rectangle selectRect;
@@ -68,14 +68,21 @@ public class CompositionController {
         mainController.redLineController.redLine.setVisible(false);
     }
     
-    private void paneMouseLeftClick() {
-        selectedNotes.forEach((e1)-> {
-            originallySelected.add(e1);
-        });
+    private void paneMouseLeftClick(MouseEvent e) {
+        //determine whether previously selected notes remain selected when
+        //a new note is created; if control is not down, deselect all old notes
+        deselectNotes(e);
+        
+        //creates and places a new NoteRectangle
+        prepareNoteRectangle(e);
+        
+        //lets the controller know that an unsaved change has been made
+        mainController.setIsSaved(Boolean.FALSE);
+        originallySelected.clear();
     }
     
-    private void paneMouseRightClick() {
-        
+    private void paneMouseRightClick(MouseEvent e) {
+        mainController.popUpMenu.showContextPane(rectAnchorPane, e.getSceneX(), e.getSceneY());
     }
     
     /**
@@ -86,11 +93,9 @@ public class CompositionController {
      */
     @FXML 
     private void paneMouseClick(MouseEvent e) throws IOException{
-        if (e.getButton() == MouseButton.PRIMARY) { 
-            paneMouseLeftClick();
-        } else {
-            
-        }
+        selectedNotes.forEach((e1)-> {
+            originallySelected.add(e1);
+        });
         reset_coordinates(e);
     };
     
@@ -228,8 +233,7 @@ public class CompositionController {
         /*if the user has dragged on the screen, the method ends; no
         new rectangles are created or selected. If 'shift' key is down, create
         new rectangles anyhow */
-        if (((mouseInitialX != (int)e.getX()) 
-            || (mouseInitialY != (int)e.getY()))
+        if (!e.isStillSincePress()
             && !e.isShiftDown()){
                 //if the selectedNotes is changed, a new compositionState is created
                 if (((!selectedNotes.equals(originallySelected))||
@@ -239,16 +243,11 @@ public class CompositionController {
                 return;
         } 
         
-        //determine whether previously selected notes remain selected when
-        //a new note is created; if control is not down, deselect all old notes
-        deselectNotes(e);
-        
-        //creates and places a new NoteRectangle
-        prepareNoteRectangle(e);
-        
-        //lets the controller know that an unsaved change has been made
-        mainController.setIsSaved(Boolean.FALSE);
-        originallySelected.clear();
+        if (e.getButton() == MouseButton.PRIMARY) {
+            paneMouseLeftClick(e);
+        } else {
+            paneMouseRightClick(e);
+        }
     };
     
     /**

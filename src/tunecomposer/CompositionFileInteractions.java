@@ -111,12 +111,12 @@ public class CompositionFileInteractions {
      * @param noteString takes a string of composition notes
      * @throws java.io.FileNotFoundException
      */
-    protected void notesFromString(String noteString) throws FileNotFoundException{
+    protected void notesFromString(String noteString, double x, double y) throws FileNotFoundException{
        String[] notesAndGestures = noteString.split("--");
        String[] individualNoteArray = (notesAndGestures[0]).split("&");
        
        //begin process of adding data to the created strings
-       ArrayList<NoteRectangle> pastedNotes = translatePastedNoteRectangles(individualNoteArray);
+       ArrayList<NoteRectangle> pastedNotes = translatePastedNoteRectangles(individualNoteArray, x, y);
        initializePasted(notesAndGestures, pastedNotes);  
     }
     
@@ -198,7 +198,7 @@ public class CompositionFileInteractions {
      * @param individualNoteArray
      * @return an arrayList of 'translated' NoteRectangles
      */
-    private ArrayList<NoteRectangle> translatePastedNoteRectangles(String[] individualNoteArray) throws FileNotFoundException{
+    private ArrayList<NoteRectangle> translatePastedNoteRectangles(String[] individualNoteArray, double x, double y) throws FileNotFoundException{
        ArrayList<NoteRectangle> pastedNotes = new ArrayList<>();
        try {
            //translates list of NoteRectangles
@@ -209,7 +209,13 @@ public class CompositionFileInteractions {
                double width = Double.parseDouble(noteAttributes[2]);
                String instrumentString = noteAttributes[3];
                Instrument instrument = Instrument.valueOf(instrumentString);
-               pastedNotes.add(new NoteRectangle(xLocation,yLocation,instrument, width, mainController));
+                if (x!=0 && y!=0) {
+                    yLocation = ((int)(y/Constants.HEIGHTRECTANGLE))
+                        *Constants.HEIGHTRECTANGLE;
+                    pastedNotes.add(new NoteRectangle(x,yLocation,instrument, width, mainController));
+                } else {
+                    pastedNotes.add(new NoteRectangle(xLocation,yLocation,instrument, width, mainController));
+                }
            }
        } catch (Exception ex){
             invokeInvalidFilenameError();
