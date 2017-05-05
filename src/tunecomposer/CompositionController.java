@@ -31,6 +31,11 @@ public class CompositionController {
     //creates a list to store selected rectangles
     protected ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
     
+    private ArrayList<Double> xOriginal = new ArrayList<>();
+    
+    
+    private ArrayList<Double> yOriginal = new ArrayList<>();
+    
     //refers to the end of the current notes
     protected double endcomp;
 
@@ -38,17 +43,20 @@ public class CompositionController {
     protected double mouseInitialY = 0;
     protected double mouseInitialX = 0;
     
+    protected double mouseTranslateX = 0;
+    protected double mouseTranslateY = 0;
+    
     //accesses rectangle that users will control by dragging, renders it invisible
     @FXML Rectangle selectRect;
     
     //create a new ArrayList to store original X positions of selected rectangles
-    private final ArrayList<Double> xPositions = new ArrayList<>();
+    //protected ArrayList<Double> xPositions = new ArrayList<>();
 
     //create a new ArrayList to store original Y positions of selected rectangles
-    private final ArrayList<Double> yPositions = new ArrayList<>();
+   // protected ArrayList<Double> yPositions = new ArrayList<>();
     
     //create a new ArrayList to store original widths of selected rectangles
-    private final ArrayList<Double> widths = new ArrayList<>();
+    protected ArrayList<Double> widths = new ArrayList<>();
     
     //to store a list of selected notes before selection rectangle is dragged
     private ArrayList<NoteRectangle> originallySelected = new ArrayList<>();
@@ -82,6 +90,8 @@ public class CompositionController {
     }
     
     private void paneMouseRightClick(MouseEvent e) {
+        mouseTranslateX = mouseInitialX-NoteRectangle.xCoordinate;
+        mouseTranslateY = mouseInitialY-NoteRectangle.yCoordinate;
         mainController.popUpMenu.showContextPane(rectAnchorPane, e.getSceneX(), e.getSceneY());
     }
     
@@ -214,7 +224,7 @@ public class CompositionController {
         selectRect.setHeight(abs(mouseCurrentY-mouseInitialY));
         selectRect.getStyleClass().add("selectRect");
     }
-
+    
     /**
      * When the user releases the mouse, if they have created a ' selection
      * rectangle ' by dragging, that selection rectangle is removed from the 
@@ -248,6 +258,7 @@ public class CompositionController {
         } else {
             paneMouseRightClick(e);
         }
+        reset_coordinates(e);
     };
     
     /**

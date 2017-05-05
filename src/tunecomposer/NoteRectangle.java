@@ -110,19 +110,19 @@ public class NoteRectangle {
     }
     
     //create a new ArrayList to store original X positions of selected rectangles
-    private final ArrayList<Double> originalX = new ArrayList<>();
+    private static ArrayList<Double> originalX = new ArrayList<>();
 
     //create a new ArrayList to store original Y positions of selected rectangles
-    private final ArrayList<Double> originalY = new ArrayList<>();
+    private static ArrayList<Double> originalY = new ArrayList<>();
     
     //create a new ArrayList to store original widths of selected rectangles
     private final ArrayList<Double> originalWidth = new ArrayList<>();
     
     //create a double variable to store the x position when mouse pressed
-    private double xCoordinate;
+    protected static double xCoordinate;
        
     //create a double variable to store the y position when mouse pressed
-    private double yCoordinate;
+    protected static double yCoordinate;
     
     //create a boolean variable to store whether the mouseEvent is for stretch or drag
     private boolean drag = false;

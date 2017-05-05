@@ -77,6 +77,10 @@ public class MainController {
     protected CopyPasteActions copyPasteActions = new CopyPasteActions(this);
     
     protected PopUpMenu popUpMenu;
+    
+    double xCoordinate;
+    double yCoordinate;
+    boolean isMenuBarPaste = true;
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
      * (with location, duration, and speed). Make the red line invisible 

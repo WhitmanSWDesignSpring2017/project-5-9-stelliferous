@@ -29,7 +29,7 @@ public class PopUpMenu {
     }
     
     private ArrayList<MenuItem> setUpMenuItem() {
-        MenuItem cutPopUp = new MenuItem("Cut")
+        MenuItem cutPopUp = new MenuItem("Cut");
         MenuItem copyPopUp = new MenuItem("Copy");
         MenuItem pastePopUp = new MenuItem("Paste");
         MenuItem groupPopUp = new MenuItem("Group");
@@ -51,7 +51,9 @@ public class PopUpMenu {
             @Override
             public void handle(Event t) {
                 try {
+                    mainController.isMenuBarPaste = false;
                     mainController.menuBarController.handlePasteAction((ActionEvent) t);
+                    mainController.isMenuBarPaste = true;
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(PopUpMenu.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -76,9 +78,11 @@ public class PopUpMenu {
     
     private void setUpContextMenuRect() {
         ArrayList<MenuItem> menuItemList = setUpMenuItem();
-        for(MenuItem menuItem: menuItemList){
+        for (MenuItem menuItem: menuItemList){
             contextMenuRect.getItems().add(menuItem);
         }
+    }
+        
     private MenuItem setUpPasteMenuItem() throws FileNotFoundException {
         MenuItem pastePopUp = new MenuItem("Paste");
         pastePopUp.setOnAction(new EventHandler() {
@@ -98,7 +102,8 @@ public class PopUpMenu {
         contextMenuPane.getItems().add(setUpPasteMenuItem());
     }
     
-
+   
+    
     protected void showContextRect(Rectangle anchor, double x, double y) {
         contextMenuRect.show(anchor, x, y);
     }

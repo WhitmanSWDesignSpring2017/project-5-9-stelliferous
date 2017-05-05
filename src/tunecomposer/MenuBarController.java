@@ -385,7 +385,7 @@ public class MenuBarController  {
         pasteAction.setDisable(false);
     }
     
-  
+    
     
     /**
      * Copies selected notes to the clipboard and deletes them from the composition.
@@ -407,7 +407,7 @@ public class MenuBarController  {
     protected void handlePasteAction(ActionEvent e) throws FileNotFoundException{
         stopTune();
         mainController.getSelectList().clear();
-        mainController.copyPasteActions.paste(mainController.compositionController.mouseInitialX,mainController.compositionController.mouseInitialY);
+        mainController.copyPasteActions.paste();
         mainController.history.undoableAction();
         
         //alerts MainController than an unsaved change has been made
