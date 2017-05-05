@@ -10,6 +10,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -17,17 +18,18 @@ import javafx.scene.shape.Rectangle;
  * @author wangj2
  */
 public class PopUpMenu {
-    ContextMenu contextMenu = new ContextMenu();
-    
+    private ContextMenu contextMenuRect = new ContextMenu();
+    private ContextMenu contextMenuPane = new ContextMenu();
     private final MainController mainController;
     
-    public PopUpMenu(MainController aThis) {
+    public PopUpMenu(MainController aThis) throws FileNotFoundException {
         this.mainController = aThis;
-        setUpContextMenu();
+        setUpContextMenuRect();
+        setUpContextMenuPane();
     }
     
     private ArrayList<MenuItem> setUpMenuItem() {
-        MenuItem cutPopUp = new MenuItem("Cut");
+        MenuItem cutPopUp = new MenuItem("Cut")
         MenuItem copyPopUp = new MenuItem("Copy");
         MenuItem pastePopUp = new MenuItem("Paste");
         MenuItem groupPopUp = new MenuItem("Group");
@@ -72,15 +74,36 @@ public class PopUpMenu {
         return popUpList;
     }
     
-    private void setUpContextMenu() {
+    private void setUpContextMenuRect() {
         ArrayList<MenuItem> menuItemList = setUpMenuItem();
         for(MenuItem menuItem: menuItemList){
-            contextMenu.getItems().add(menuItem);
+            contextMenuRect.getItems().add(menuItem);
         }
-        
+    private MenuItem setUpPasteMenuItem() throws FileNotFoundException {
+        MenuItem pastePopUp = new MenuItem("Paste");
+        pastePopUp.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event t) {
+                try {
+                    mainController.menuBarController.handlePasteAction((ActionEvent) t);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(PopUpMenu.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        return pastePopUp;
     }
+    
+    private void setUpContextMenuPane() throws FileNotFoundException {
+        contextMenuPane.getItems().add(setUpPasteMenuItem());
+    }
+    
 
-    void show(Rectangle anchor, double x, double y) {
-        contextMenu.show(anchor, x, y);
+    protected void showContextRect(Rectangle anchor, double x, double y) {
+        contextMenuRect.show(anchor, x, y);
+    }
+    
+    protected void showContextPane(AnchorPane anchor, double x, double y) {
+        contextMenuPane.show(anchor,x,y);
     }
 }

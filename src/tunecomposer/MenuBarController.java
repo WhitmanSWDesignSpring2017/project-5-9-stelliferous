@@ -407,7 +407,7 @@ public class MenuBarController  {
     protected void handlePasteAction(ActionEvent e) throws FileNotFoundException{
         stopTune();
         mainController.getSelectList().clear();
-        mainController.copyPasteActions.paste();
+        mainController.copyPasteActions.paste(mainController.compositionController.mouseInitialX,mainController.compositionController.mouseInitialY);
         mainController.history.undoableAction();
         
         //alerts MainController than an unsaved change has been made
