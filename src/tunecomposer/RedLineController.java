@@ -65,24 +65,24 @@ public class RedLineController {
             mainController.menuBarController.handlePauseAction();
         }*/
         mainController.MidiComposition.clear();
-            mainController.buildMidiComposition(e.getSceneX()-250);
-            mainController.MidiComposition.play();
-           System.out.println("end end: "+mainController.redLineController.redLine.getEndX());
-           lineTransition.setFromX(e.getSceneX()-250);
-           lineTransition.setToX(mainController.endcomp);
-           lineTransition.setDuration(Duration.seconds((mainController.endcomp-e.getSceneX())/100));
-            lineTransition.setInterpolator(Interpolator.LINEAR);
-          lineTransition.playFromStart();
-            //mainController.redLineController.lineTransition.playFrom(Duration.seconds(mainController.redLineController.redLine.getEndX()));
-            /**mainController.redLineController.lineTransition.setToX(mainController.endcomp);
-            System.out.println(Duration.millis(mainController.endcomp).toString());
-            System.out.println("Duration total: "+mainController.redLineController.lineTransition.getDuration());
-                        System.out.println(mainController.redLineController.lineTransition.getCurrentTime().toString());
-            Duration duration = (mainController.redLineController.lineTransition.getDuration().subtract(mainController.redLineController.lineTransition.getCurrentTime()));
-            System.out.println(duration);
-            
-            mainController.redLineController.lineTransition.setDuration(duration);
-            mainController.redLineController.lineTransition.play();*/
+        mainController.buildMidiComposition(e.getSceneX()-250);
+        mainController.MidiComposition.play();
+        System.out.println("end end: "+mainController.redLineController.redLine.getEndX());
+        lineTransition.setFromX(e.getSceneX()-500);
+        lineTransition.setToX(mainController.endcomp-250);
+        lineTransition.setDuration(Duration.seconds((mainController.endcomp-e.getSceneX()+250)/100));
+        lineTransition.setInterpolator(Interpolator.LINEAR);
+        lineTransition.playFromStart();
+        //mainController.redLineController.lineTransition.playFrom(Duration.seconds(mainController.redLineController.redLine.getEndX()));
+        /**mainController.redLineController.lineTransition.setToX(mainController.endcomp);
+        System.out.println(Duration.millis(mainController.endcomp).toString());
+        System.out.println("Duration total: "+mainController.redLineController.lineTransition.getDuration());
+                    System.out.println(mainController.redLineController.lineTransition.getCurrentTime().toString());
+        Duration duration = (mainController.redLineController.lineTransition.getDuration().subtract(mainController.redLineController.lineTransition.getCurrentTime()));
+        System.out.println(duration);
+
+        mainController.redLineController.lineTransition.setDuration(duration);
+        mainController.redLineController.lineTransition.play();*/
         
        // mainController.redLineController.lineTransition.setFromX(redLine.getStartX());
         
