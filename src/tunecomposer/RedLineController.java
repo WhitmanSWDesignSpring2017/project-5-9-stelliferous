@@ -49,19 +49,25 @@ public class RedLineController {
         System.out.println("X: "+initialX+"; Y: "+initialY);
     }
     
+    
     @FXML
-    protected void handleReleaseAction(MouseEvent e){
+    protected void handleDragAction(MouseEvent e){
         redLine.setStartX(e.getX());
         redLine.setEndX(e.getX());
+    }
+    
+    @FXML
+    protected void handleReleaseAction(MouseEvent e){
+        
         /**if (!mainController.menuBarController.isPaused){
             mainController.menuBarController.handlePauseAction();
             mainController.menuBarController.handlePauseAction();
         }*/
         mainController.MidiComposition.clear();
-            mainController.buildMidiComposition(mainController.redLineController.redLine.getTranslateX());
+            mainController.buildMidiComposition(mainController.redLineController.redLine.getEndX());
             mainController.MidiComposition.play();
            
-            //mainController.redLineController.lineTransition.setToX(mainController.endcomp);
+            /**mainController.redLineController.lineTransition.setToX(mainController.endcomp);
             System.out.println(Duration.millis(mainController.endcomp).toString());
             System.out.println("Duration total: "+mainController.redLineController.lineTransition.getDuration());
                         System.out.println(mainController.redLineController.lineTransition.getCurrentTime().toString());
@@ -69,7 +75,7 @@ public class RedLineController {
             System.out.println(duration);
             
             mainController.redLineController.lineTransition.setDuration(duration);
-            mainController.redLineController.lineTransition.play();
+            mainController.redLineController.lineTransition.play();*/
         
        // mainController.redLineController.lineTransition.setFromX(redLine.getStartX());
         
