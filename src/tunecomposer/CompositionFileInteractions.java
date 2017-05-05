@@ -210,6 +210,7 @@ public class CompositionFileInteractions {
                String instrumentString = noteAttributes[3];
                Instrument instrument = Instrument.valueOf(instrumentString);
                 if (x!=0 && y!=0) {
+                    xFinalLocation = 
                     yLocation = ((int)(y/Constants.HEIGHTRECTANGLE))
                         *Constants.HEIGHTRECTANGLE;
                     pastedNotes.add(new NoteRectangle(x,yLocation,instrument, width, mainController));

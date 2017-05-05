@@ -53,9 +53,9 @@ public class CopyPasteActions {
      * Pastes copied notes to the clipboard and adds them to the composition.
      * @throws java.io.FileNotFoundException
      */
-    protected void paste(double x, double y) throws FileNotFoundException{
+    protected void paste() throws FileNotFoundException{
         String pastedNotes = CLIPBOARD.getString();
-        mainController.compositionFileInteractions.notesFromString(pastedNotes,x,y);
+        mainController.compositionFileInteractions.notesFromString(pastedNotes);
         copySelected();
     }
 }
