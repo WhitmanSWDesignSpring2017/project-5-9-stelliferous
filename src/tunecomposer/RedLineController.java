@@ -2,9 +2,11 @@ package tunecomposer;
 
 import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -42,14 +44,39 @@ public class RedLineController {
     
     @FXML
     protected void handleClickAction(MouseEvent e){
-        initialX = e.getX();
+        initialX = e.getSceneX();
         initialY = e.getY();
         System.out.println("X: "+initialX+"; Y: "+initialY);
     }
     
     @FXML
-    protected void handleDragAction(){
+    protected void handleReleaseAction(MouseEvent e){
+        redLine.setStartX(e.getX());
+        redLine.setEndX(e.getX());
+        /**if (!mainController.menuBarController.isPaused){
+            mainController.menuBarController.handlePauseAction();
+            mainController.menuBarController.handlePauseAction();
+        }*/
+        mainController.MidiComposition.clear();
+            mainController.buildMidiComposition(mainController.redLineController.redLine.getTranslateX());
+            mainController.MidiComposition.play();
+           
+            //mainController.redLineController.lineTransition.setToX(mainController.endcomp);
+            System.out.println(Duration.millis(mainController.endcomp).toString());
+            System.out.println("Duration total: "+mainController.redLineController.lineTransition.getDuration());
+                        System.out.println(mainController.redLineController.lineTransition.getCurrentTime().toString());
+            Duration duration = (mainController.redLineController.lineTransition.getDuration().subtract(mainController.redLineController.lineTransition.getCurrentTime()));
+            System.out.println(duration);
+            
+            mainController.redLineController.lineTransition.setDuration(duration);
+            mainController.redLineController.lineTransition.play();
         
+       // mainController.redLineController.lineTransition.setFromX(redLine.getStartX());
+        
+        //mainController.menuBarController.isPaused = true;
+        //mainController.MidiComposition.stop();
+        //mainController.redLineController.lineTransition.pause();
+        //mainController.menuBarController.stopButton.setDisable(true);
     }
     
      /**
@@ -62,6 +89,7 @@ public class RedLineController {
         lineTransition.setInterpolator(Interpolator.LINEAR);
         lineTransition.setOnFinished((e)->{
             redLine.setStartX(0);
+            redLine.setEndX(0);
             mainController.menuBarController.stopButton.setDisable(true);
         });
     }

@@ -33,7 +33,7 @@ public class MenuBarController  {
     private final ArrayList<NoteRectangle> savedBeat = new ArrayList<>();
     
     //determines whether the composition is paused
-    private Boolean isPaused = false;
+    protected Boolean isPaused = false;
 
     //makes available menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
@@ -209,6 +209,8 @@ public class MenuBarController  {
         mainController.buildMidiComposition(0);
      
         //defines end of the composition for the red line to stop at
+                mainController.redLineController.lineTransition.setFromX(0);
+
         mainController.redLineController.lineTransition.setToX(mainController.endcomp);
         
         //convert endcomp from miliseconds to seconds and set it to be duration
@@ -225,7 +227,7 @@ public class MenuBarController  {
     }
     
         @FXML
-    private void handlePauseAction(){
+    protected void handlePauseAction(){
         System.out.println("paused");
         if (isPaused){
             System.out.println(mainController.redLineController.redLine.getTranslateX());
