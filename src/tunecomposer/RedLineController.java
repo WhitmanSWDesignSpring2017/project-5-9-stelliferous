@@ -43,7 +43,7 @@ public class RedLineController {
     
     @FXML
     protected void handlePressAction(MouseEvent e){
-        initialX = e.getSceneX()-250;
+        initialX = e.getX();
         System.out.println("X: "+initialX);
     }
     
@@ -54,7 +54,7 @@ public class RedLineController {
         mainController.MidiComposition.stop();
         double currentChange = initialX + e.getX();
         mainController.resetEndcomp();
-        if (currentChange < mainController.endcomp && currentChange > 0){
+        if (e.getX() < mainController.endcomp && e.getX() > 0){
             System.out.println("Scoop: "+currentChange);
 
             finalChange = currentChange;
@@ -68,44 +68,18 @@ public class RedLineController {
     
     @FXML
     protected void handleReleaseAction(MouseEvent e){
-        
-        /**if (!mainController.menuBarController.isPaused){
-            mainController.menuBarController.handlePauseAction();
-            mainController.menuBarController.handlePauseAction();
-        }*/
         mainController.MidiComposition.clear();
         mainController.buildMidiComposition(finalChange);
         mainController.MidiComposition.play();
         
-        //System.out.println("end end: "+mainController.redLineController.redLine.getEndX());
-        lineTransition.setFromX(finalChange);
+        lineTransition.setFromX(initialX);
         lineTransition.setToX(mainController.endcomp);
-        //lineTransition.setDuration(Duration.seconds(20));
-        //lineTransition.setInterpolator(Interpolator.LINEAR);
+        System.out.println(mainController.redLineController.lineTransition.getDuration());
+        System.out.println(mainController.redLineController.redLine.getStartX());
+        double duration = 10*(mainController.endcomp-initialX);
+        mainController.redLineController.lineTransition.setDuration(Duration.millis(duration));
         lineTransition.play();
-        //System.out.println("Play From: "+(e.getSceneX()-250));
-        //System.out.println("Play From Exact: "+Duration.seconds((e.getSceneX()-250)/100));
-        //lineTransition.playFrom(Duration.seconds((e.getSceneX()-250)/100));
-        //lineTransition.playFrom(Duration.seconds(0));
-        //lineTransition.play();
-        //mainController.redLineController.lineTransition.playFrom(Duration.seconds(mainController.redLineController.redLine.getEndX()));
-        /**mainController.redLineController.lineTransition.setToX(mainController.endcomp);
-        System.out.println(Duration.millis(mainController.endcomp).toString());
-        System.out.println("Duration total: "+mainController.redLineController.lineTransition.getDuration());
-                    System.out.println(mainController.redLineController.lineTransition.getCurrentTime().toString());
-        Duration duration = (mainController.redLineController.lineTransition.getDuration().subtract(mainController.redLineController.lineTransition.getCurrentTime()));
-        System.out.println(duration);
-
-        mainController.redLineController.lineTransition.setDuration(duration);
-        mainController.redLineController.lineTransition.play();*/
-        
-       // mainController.redLineController.lineTransition.setFromX(redLine.getStartX());
-        
-        //mainController.menuBarController.isPaused = true;
-        //mainController.MidiComposition.stop();
-        //mainController.redLineController.lineTransition.pause();
-        //mainController.menuBarController.stopButton.setDisable(true);
-    }
+  }
     
      /**
      * Initializes red line's location, movement, constant speed, visibility.
