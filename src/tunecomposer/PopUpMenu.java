@@ -31,7 +31,6 @@ public class PopUpMenu {
     private ArrayList<MenuItem> setUpMenuItem() {
         MenuItem cutPopUp = new MenuItem("Cut");
         MenuItem copyPopUp = new MenuItem("Copy");
-        MenuItem pastePopUp = new MenuItem("Paste");
         MenuItem groupPopUp = new MenuItem("Group");
         MenuItem ungroupPopUp = new MenuItem("Ungroup");
         
@@ -47,18 +46,7 @@ public class PopUpMenu {
                 mainController.menuBarController.handleCopyAction((ActionEvent) t);
             }
         });
-        pastePopUp.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event t) {
-                try {
-                    mainController.isMenuBarPaste = false;
-                    mainController.menuBarController.handlePasteAction((ActionEvent) t);
-                    mainController.isMenuBarPaste = true;
-                } catch (FileNotFoundException ex) {
-                    Logger.getLogger(PopUpMenu.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
+        
         groupPopUp.setOnAction(new EventHandler() {
             @Override
             public void handle(Event t) {
@@ -71,7 +59,7 @@ public class PopUpMenu {
                 mainController.menuBarController.handleUngroupAction((ActionEvent) t);
             }
         });
-        ArrayList<MenuItem> popUpList = new ArrayList<>(Arrays.asList(cutPopUp, copyPopUp, pastePopUp, groupPopUp, ungroupPopUp));
+        ArrayList<MenuItem> popUpList = new ArrayList<>(Arrays.asList(cutPopUp, copyPopUp, groupPopUp, ungroupPopUp));
         
         return popUpList;
     }
@@ -89,7 +77,11 @@ public class PopUpMenu {
             @Override
             public void handle(Event t) {
                 try {
+                    mainController.isMenuBarPaste = false;
+                    System.out.println("false");
                     mainController.menuBarController.handlePasteAction((ActionEvent) t);
+                    mainController.isMenuBarPaste = true;
+                    System.out.println("true");
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(PopUpMenu.class.getName()).log(Level.SEVERE, null, ex);
                 }

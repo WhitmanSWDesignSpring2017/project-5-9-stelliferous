@@ -308,7 +308,9 @@ public class NoteRectangle {
             mainController.gestureModelController.gestureNoteSelection(selectedNotes);
             if (!t.isStillSincePress()) {
                 mainController.history.undoableAction();  
-            }            
+            }
+            xCoordinate = getX();
+            yCoordinate = getY();
         }
     };
 

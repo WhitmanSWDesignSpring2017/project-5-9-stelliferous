@@ -406,7 +406,6 @@ public class MenuBarController  {
     @FXML
     protected void handlePasteAction(ActionEvent e) throws FileNotFoundException{
         stopTune();
-        mainController.getSelectList().clear();
         mainController.copyPasteActions.paste();
         mainController.history.undoableAction();
         
