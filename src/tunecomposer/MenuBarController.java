@@ -230,18 +230,23 @@ public class MenuBarController  {
     protected void handlePauseAction(){
         System.out.println("paused");
         if (isPaused){
+            mainController.MidiComposition.stop();
+            mainController.redLineController.lineTransition.pause();
+            
             System.out.println(mainController.redLineController.redLine.getTranslateX());
+            
             mainController.MidiComposition.clear();
             mainController.buildMidiComposition(mainController.redLineController.redLine.getTranslateX());
             mainController.MidiComposition.play();
-           
+           /**
             //mainController.redLineController.lineTransition.setToX(mainController.endcomp);
             System.out.println(Duration.millis(mainController.endcomp).toString());
-            System.out.println("Duration total: "+mainController.redLineController.lineTransition.getDuration());
+            System.out.println("Duration total: "+mainController.redLineController.lineTransition.getDuration().subtract(mainController.redLineController.lineTransition.getCurrentTime()));
             System.out.println(mainController.redLineController.lineTransition.getCurrentTime().toString());
             
             Duration duration = (mainController.redLineController.lineTransition.getDuration().subtract(mainController.redLineController.lineTransition.getCurrentTime()));            
             mainController.redLineController.lineTransition.setDuration(duration);
+            */
             mainController.redLineController.lineTransition.play();
             stopButton.setDisable(false);
         } else {
