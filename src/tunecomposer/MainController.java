@@ -173,10 +173,7 @@ public class MainController {
                 int pitch = Constants.PITCHTOTAL -(int)rect.getY()/Constants.HEIGHTRECTANGLE;
                 int startTick = (int)rect.getX();
                 int duration = (int)rect.getWidth();
-                Instrument curInstru = rect.getInstrument();
-                
-                System.out.println(rect.getX());
-                
+                Instrument curInstru = rect.getInstrument();                
                 
 
                 if (endcomp < startTick+duration) {
@@ -194,6 +191,16 @@ public class MainController {
                 //adds a note to the MidiPlayer composition
                 MidiComposition.addNote(pitch, Constants.VOLUME, startTick-(int)start_time, 
                         duration, curInstru.getChannel(), Constants.TRACK_INDEX);  
+            }
+        }
+    }
+    
+    protected void resetEndcomp(){
+        for(int i = 0; i < currentState.rectList.size(); i++){
+            NoteRectangle rect = currentState.rectList.get(i);
+
+            if (endcomp < (int)rect.getX()+(int)rect.getWidth()) {
+                endcomp = (int)rect.getX()+(int)rect.getWidth();
             }
         }
     }

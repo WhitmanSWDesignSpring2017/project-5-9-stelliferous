@@ -239,9 +239,7 @@ public class MenuBarController  {
             System.out.println(Duration.millis(mainController.endcomp).toString());
             System.out.println("Duration total: "+mainController.redLineController.lineTransition.getDuration());
                         System.out.println(mainController.redLineController.lineTransition.getCurrentTime().toString());
-            Duration duration = (mainController.redLineController.lineTransition.getDuration().subtract(mainController.redLineController.lineTransition.getCurrentTime()));
-            System.out.println(duration);
-            
+            Duration duration = (mainController.redLineController.lineTransition.getDuration().subtract(mainController.redLineController.lineTransition.getCurrentTime()));            
             mainController.redLineController.lineTransition.setDuration(duration);
             mainController.redLineController.lineTransition.play();
             stopButton.setDisable(false);

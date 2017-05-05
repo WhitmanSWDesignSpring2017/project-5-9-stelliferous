@@ -2,7 +2,6 @@ package tunecomposer;
 
 import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
@@ -40,21 +39,31 @@ public class RedLineController {
     }
     
     double initialX;
-    double initialY;
+    double finalChange;
     
     @FXML
-    protected void handleClickAction(MouseEvent e){
-        initialX = e.getSceneX();
-        initialY = e.getY();
-        System.out.println("X: "+initialX+"; Y: "+initialY);
+    protected void handlePressAction(MouseEvent e){
+        initialX = e.getSceneX()-250;
+        System.out.println("X: "+initialX);
     }
     
     
     @FXML
     protected void handleDragAction(MouseEvent e){
+        
         mainController.MidiComposition.stop();
-        redLine.setStartX(e.getX());
-        redLine.setEndX(e.getX());
+        double currentChange = initialX + e.getX();
+        mainController.resetEndcomp();
+        if (currentChange < mainController.endcomp && currentChange > 0){
+            System.out.println("Scoop: "+currentChange);
+
+            finalChange = currentChange;
+            redLine.setStartX(e.getX());
+            redLine.setEndX(e.getX());
+        } else {
+            System.out.println("boop me goop !!");
+        }
+            
     }
     
     @FXML
@@ -65,14 +74,20 @@ public class RedLineController {
             mainController.menuBarController.handlePauseAction();
         }*/
         mainController.MidiComposition.clear();
-        mainController.buildMidiComposition(e.getSceneX()-250);
+        mainController.buildMidiComposition(finalChange);
         mainController.MidiComposition.play();
-        System.out.println("end end: "+mainController.redLineController.redLine.getEndX());
-        lineTransition.setFromX(e.getSceneX()-500);
-        lineTransition.setToX(mainController.endcomp-250);
-        lineTransition.setDuration(Duration.seconds((mainController.endcomp-e.getSceneX()+250)/100));
-        lineTransition.setInterpolator(Interpolator.LINEAR);
-        lineTransition.playFromStart();
+        
+        //System.out.println("end end: "+mainController.redLineController.redLine.getEndX());
+        lineTransition.setFromX(finalChange);
+        lineTransition.setToX(mainController.endcomp);
+        //lineTransition.setDuration(Duration.seconds(20));
+        //lineTransition.setInterpolator(Interpolator.LINEAR);
+        lineTransition.play();
+        //System.out.println("Play From: "+(e.getSceneX()-250));
+        //System.out.println("Play From Exact: "+Duration.seconds((e.getSceneX()-250)/100));
+        //lineTransition.playFrom(Duration.seconds((e.getSceneX()-250)/100));
+        //lineTransition.playFrom(Duration.seconds(0));
+        //lineTransition.play();
         //mainController.redLineController.lineTransition.playFrom(Duration.seconds(mainController.redLineController.redLine.getEndX()));
         /**mainController.redLineController.lineTransition.setToX(mainController.endcomp);
         System.out.println(Duration.millis(mainController.endcomp).toString());
