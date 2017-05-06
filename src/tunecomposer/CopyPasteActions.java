@@ -33,10 +33,10 @@ public class CopyPasteActions {
      * Copies selected notes to the clipboard.
      */
     protected void copySelected(){
+        mainController.menuBarController.leftCorner = mainController.currentState.leftCornerRect();
         content.put(DataFormat.PLAIN_TEXT, 
                     mainController.compositionFileInteractions.notesToString(mainController.getSelectList(),
                     mainController.gestureModelController.gestureNoteGroups,true));
-        System.out.println(content);
         CLIPBOARD.setContent(content);
     }
      
@@ -55,13 +55,10 @@ public class CopyPasteActions {
      * @throws java.io.FileNotFoundException
      */
     protected void paste() throws FileNotFoundException{
-        if (mainController.isMenuBarPaste) {
-            System.out.println("copyselected");
+        if (mainController.isMenuBarPaste && CLIPBOARD.getString() != null) {
             copySelected();
         }
         String pastedNotes = CLIPBOARD.getString();
-        System.out.println(pastedNotes);
-        
         mainController.compositionFileInteractions.notesFromString(pastedNotes);
     }
 }

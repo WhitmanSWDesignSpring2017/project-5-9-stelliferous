@@ -118,6 +118,7 @@ public class CompositionFileInteractions {
        //begin process of adding data to the created strings
        ArrayList<NoteRectangle> pastedNotes = translatePastedNoteRectangles(individualNoteArray);
        initializePasted(notesAndGestures, pastedNotes);  
+       mainController.copyPasteActions.copySelected();
     }
     
     /**
@@ -168,7 +169,6 @@ public class CompositionFileInteractions {
      * @throws FileNotFoundException 
      */
     protected void invokeInvalidFilenameError() throws FileNotFoundException{
-       System.out.print("exception thrown");
        Alert alert = new Alert(Alert.AlertType.ERROR);
        alert.setTitle("Error Dialog");
        alert.setHeaderText("Invalid File");
@@ -204,6 +204,11 @@ public class CompositionFileInteractions {
            //translates list of NoteRectangles
            for (int j = 0; j < individualNoteArray.length; j++){
                double shiftBy = 0;
+               if (mainController.isMenuBarPaste) {
+                   mainController.compositionController.mouseTranslateX = 0;
+                   mainController.compositionController.mouseTranslateY = 0;
+                   shiftBy = 4;
+               }
                String[] noteAttributes = individualNoteArray[j].split(";");
                double xLocation = Double.parseDouble(noteAttributes[0]) + mainController.compositionController.mouseTranslateX;
                double yLocation = Double.parseDouble(noteAttributes[1]) + mainController.compositionController.mouseTranslateY;
@@ -211,12 +216,10 @@ public class CompositionFileInteractions {
                double width = Double.parseDouble(noteAttributes[2]);
                String instrumentString = noteAttributes[3];
                Instrument instrument = Instrument.valueOf(instrumentString);
-               if (mainController.isMenuBarPaste) {
-                   shiftBy = 4;
-                   System.out.println("shift");
-               }
+               
                pastedNotes.add(new NoteRectangle(xLocation+shiftBy,yLocation,instrument, width, mainController));
-                }
+            }
+           
            
        } catch (Exception ex){
             invokeInvalidFilenameError();

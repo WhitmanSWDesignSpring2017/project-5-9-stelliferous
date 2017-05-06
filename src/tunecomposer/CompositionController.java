@@ -85,13 +85,16 @@ public class CompositionController {
     }
 
     private void paneMouseRightClick(MouseEvent e) {
+        if (mainController.menuBarController.leftCorner != null) {
+            
+        
         if (mainController.isMenuBarCopy) {
             mouseTranslateX = mouseInitialX-mainController.menuBarController.leftCorner.getX();
             mouseTranslateY = mouseInitialY-mainController.menuBarController.leftCorner.getY();
         } else {
             mouseTranslateX = mouseInitialX-NoteRectangle.xCoordinate;
             mouseTranslateY = mouseInitialY-NoteRectangle.yCoordinate;
-            
+        }
         }
         mainController.popUpMenu.showContextPane(rectAnchorPane, e.getSceneX(), e.getSceneY());
     }
@@ -257,7 +260,6 @@ public class CompositionController {
         if (e.getButton() == MouseButton.PRIMARY) {
             paneMouseLeftClick(e);
         } else {
-            System.out.println("Right");
             paneMouseRightClick(e);
         }
         reset_coordinates(e);

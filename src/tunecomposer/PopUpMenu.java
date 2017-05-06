@@ -43,9 +43,8 @@ public class PopUpMenu {
         copyPopUp.setOnAction(new EventHandler() {
             @Override
             public void handle(Event t) {
-                mainController.isMenuBarCopy = true;
                 mainController.menuBarController.handleCopyAction((ActionEvent) t);
-                mainController.isMenuBarCopy = false;
+                mainController.isMenuBarCopy = true;
             }
         });
         
@@ -80,10 +79,8 @@ public class PopUpMenu {
             public void handle(Event t) {
                 try {
                     mainController.isMenuBarPaste = false;
-                    System.out.println("false");
                     mainController.menuBarController.handlePasteAction((ActionEvent) t);
                     mainController.isMenuBarPaste = true;
-                    System.out.println("true");
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(PopUpMenu.class.getName()).log(Level.SEVERE, null, ex);
                 }

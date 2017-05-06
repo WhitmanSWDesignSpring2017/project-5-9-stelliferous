@@ -370,7 +370,6 @@ public class MenuBarController  {
      */
     @FXML
     protected void handleCopyAction(ActionEvent e){
-        leftCorner = mainController.currentState.leftCornerRect();
         stopTune();
         mainController.copyPasteActions.copySelected();
         pasteAction.setDisable(false);
