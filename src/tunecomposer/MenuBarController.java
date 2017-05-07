@@ -373,6 +373,7 @@ public class MenuBarController  {
         stopTune();
         mainController.copyPasteActions.copySelected();
         pasteAction.setDisable(false);
+        mainController.popUpMenu.enablePaste();
     }
     
     /**
@@ -384,6 +385,7 @@ public class MenuBarController  {
         stopTune();
         mainController.copyPasteActions.copyComposition();
         pasteAction.setDisable(false);
+        mainController.popUpMenu.enablePaste();
     }
     
     
@@ -399,6 +401,7 @@ public class MenuBarController  {
         handleCopyAction(e);
         handleDeleteAction(e);
         pasteAction.setDisable(false);
+        mainController.popUpMenu.enablePaste();
     }
     
     /**
@@ -565,13 +568,18 @@ public class MenuBarController  {
         }
         if (mainController.gestureModelController.gestureNoteGroups.contains(mainController.getSelectList())){
             ungroupAction.setDisable(false);
+            mainController.popUpMenu.disOrEnableUngroup(Boolean.FALSE);
         } else {
             ungroupAction.setDisable(true);
+            mainController.popUpMenu.disOrEnableUngroup(Boolean.TRUE);
         }
         if (mainController.getSelectList().size() < 2) {
             groupAction.setDisable(true);
+            mainController.popUpMenu.disOrEnableGroup(Boolean.TRUE);
+            
         } else {
             groupAction.setDisable(false);
+            mainController.popUpMenu.disOrEnableGroup(Boolean.FALSE);
         }
         if (mainController.isSaved()){
             saveButton.setDisable(true);

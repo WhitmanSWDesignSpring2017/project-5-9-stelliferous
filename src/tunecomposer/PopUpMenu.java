@@ -28,8 +28,21 @@ public class PopUpMenu {
     private MenuItem ungroupPopUp = new MenuItem("Ungroup");
     private MenuItem pastePopUp = new MenuItem("Paste");
     
+    protected void enablePaste() {
+        pastePopUp.setDisable(false);
+    }
+    
+    protected void disOrEnableGroup(Boolean value) {
+        groupPopUp.setDisable(value);
+    }
+    
+    protected void disOrEnableUngroup(Boolean value) {
+        ungroupPopUp.setDisable(value);
+    }
+    
     public PopUpMenu(MainController aThis) throws FileNotFoundException {
         this.mainController = aThis;
+        setUpPasteMenuItem();
         setUpContextMenuRect();
         setUpContextMenuPane();
     }
@@ -76,7 +89,7 @@ public class PopUpMenu {
         }
     }
         
-    private MenuItem setUpPasteMenuItem() throws FileNotFoundException {
+    private void setUpPasteMenuItem() throws FileNotFoundException {
         pastePopUp.setOnAction(new EventHandler() {
             @Override
             public void handle(Event t) {
@@ -89,11 +102,11 @@ public class PopUpMenu {
                 }
             }
         });
-        return pastePopUp;
+        pastePopUp.setDisable(true);
     }
     
     private void setUpContextMenuPane() throws FileNotFoundException {
-        contextMenuPane.getItems().add(setUpPasteMenuItem());
+        contextMenuPane.getItems().add(pastePopUp);
     }
     
    
