@@ -2,6 +2,7 @@ package tunecomposer;
 
 import java.util.ArrayList;
 import javafx.event.EventHandler;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -65,11 +66,20 @@ public class NoteRectangle {
      * Sets the mouse events for the note rectangles.
      */
     protected final void setAllMouseEvents() {
+        notes.setOnMouseClicked((MouseEvent o)-> {
+            onNoteRightClick(o);
+        });
         notes.setOnMousePressed((MouseEvent o) -> {
             onNotePress(o);
         });
         notes.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);   
         notes.setOnMouseReleased(rectangleOnMouseReleasedEventHandler);
+    }
+    
+    private void onNoteRightClick(MouseEvent o) {
+        if (o.getButton() == MouseButton.SECONDARY) { 
+            mainController.popUpMenu.showContextRect(notes, o.getSceneX(),o.getSceneY());
+        }
     }
     
     /**
@@ -104,19 +114,19 @@ public class NoteRectangle {
     }
     
     //create a new ArrayList to store original X positions of selected rectangles
-    private final ArrayList<Double> originalX = new ArrayList<>();
+    private static ArrayList<Double> originalX = new ArrayList<>();
 
     //create a new ArrayList to store original Y positions of selected rectangles
-    private final ArrayList<Double> originalY = new ArrayList<>();
+    private static ArrayList<Double> originalY = new ArrayList<>();
     
     //create a new ArrayList to store original widths of selected rectangles
     private final ArrayList<Double> originalWidth = new ArrayList<>();
     
     //create a double variable to store the x position when mouse pressed
-    private double xCoordinate;
+    protected static double xCoordinate;
        
     //create a double variable to store the y position when mouse pressed
-    private double yCoordinate;
+    protected static double yCoordinate;
     
     //create a boolean variable to store whether the mouseEvent is for stretch or drag
     private boolean drag = false;
@@ -300,10 +310,11 @@ public class NoteRectangle {
                 selectedNotes.get(i).setY(finalY);   
             }
             mainController.gestureModelController.gestureNoteSelection(selectedNotes);
-            
             if (!t.isStillSincePress()) {
                 mainController.history.undoableAction();  
-            } 
+            }
+            xCoordinate = getX();
+            yCoordinate = getY();
         }
     };
 

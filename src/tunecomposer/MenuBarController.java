@@ -65,6 +65,10 @@ public class MenuBarController  {
         mainController = aThis; 
     }
     
+    protected MenuItem returnCopyAction() {
+        return copyAction;
+    }
+    
      /**
      * Exits the program upon user clicking the X or exit button.
      * @param e on user click
@@ -286,7 +290,7 @@ public class MenuBarController  {
      * @param e on grouping event
      */
     @FXML
-    private void handleGroupAction(ActionEvent e){
+    protected void handleGroupAction(ActionEvent e){
         stopTune();
         if (mainController.getSelectList().isEmpty()) {
             return;
@@ -309,7 +313,7 @@ public class MenuBarController  {
      * @param e on ungrouping event
      */
     @FXML
-    private void handleUngroupAction(ActionEvent e){
+    protected void handleUngroupAction(ActionEvent e){
         stopTune();
         mainController.gestureModelController.gestureNoteGroups.remove(mainController.getSelectList());
         mainController.compositionController.selectRect();
@@ -360,15 +364,17 @@ public class MenuBarController  {
         mainController.compositionController.selectRect();
     }
     
+    protected NoteRectangle leftCorner;
     /**
      * Copies selected notes to the clipboard.
      * @param e a mouse event
      */
     @FXML
-    private void handleCopyAction(ActionEvent e){
+    protected void handleCopyAction(ActionEvent e){
         stopTune();
         mainController.copyPasteActions.copySelected();
         pasteAction.setDisable(false);
+        mainController.popUpMenu.enablePaste();
     }
     
     /**
@@ -380,20 +386,23 @@ public class MenuBarController  {
         stopTune();
         mainController.copyPasteActions.copyComposition();
         pasteAction.setDisable(false);
+        mainController.popUpMenu.enablePaste();
     }
     
-  
+    
     
     /**
      * Copies selected notes to the clipboard and deletes them from the composition.
      * @param e a mouse event
      */
     @FXML
-    private void handleCutAction(ActionEvent e){
+    protected void handleCutAction(ActionEvent e){
+        mainController.isCutAction = true;
         stopTune();
         handleCopyAction(e);
         handleDeleteAction(e);
         pasteAction.setDisable(false);
+        mainController.popUpMenu.enablePaste();
     }
     
     /**
@@ -401,9 +410,8 @@ public class MenuBarController  {
      * @param e a mouse event
      */
     @FXML
-    private void handlePasteAction(ActionEvent e) throws FileNotFoundException{
+    protected void handlePasteAction(ActionEvent e) throws FileNotFoundException{
         stopTune();
-        mainController.getSelectList().clear();
         mainController.copyPasteActions.paste();
         mainController.history.undoableAction();
         
@@ -563,13 +571,18 @@ public class MenuBarController  {
         }
         if (mainController.gestureModelController.gestureNoteGroups.contains(mainController.getSelectList())){
             ungroupAction.setDisable(false);
+            mainController.popUpMenu.disOrEnableUngroup(Boolean.FALSE);
         } else {
             ungroupAction.setDisable(true);
+            mainController.popUpMenu.disOrEnableUngroup(Boolean.TRUE);
         }
         if (mainController.getSelectList().size() < 2) {
             groupAction.setDisable(true);
+            mainController.popUpMenu.disOrEnableGroup(Boolean.TRUE);
+            
         } else {
             groupAction.setDisable(false);
+            mainController.popUpMenu.disOrEnableGroup(Boolean.FALSE);
         }
         if (mainController.isSaved()){
             saveButton.setDisable(true);

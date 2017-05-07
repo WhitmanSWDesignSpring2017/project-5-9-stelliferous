@@ -1,5 +1,6 @@
 package tunecomposer;
 
+import java.io.FileNotFoundException;
 import javafx.fxml.FXML;
 import java.util.ArrayList;
 import javafx.scene.control.RadioButton;
@@ -74,12 +75,20 @@ public class MainController {
     
     //create a copyPasteActions object
     protected CopyPasteActions copyPasteActions = new CopyPasteActions(this);
+    
+    protected PopUpMenu popUpMenu;
+    
+    double xCoordinate;
+    double yCoordinate;
+    boolean isMenuBarPaste = true;
+    boolean isMenuBarCopy = true;
+    boolean isCutAction = false;
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
      * (with location, duration, and speed). Make the red line invisible 
      * at the start and when the composition has finished playing
      */
-    @FXML public void initialize() {
+    @FXML public void initialize() throws FileNotFoundException {
         //set up the pane of instrument choices for the user
         setupInstruments();
 
@@ -89,7 +98,7 @@ public class MainController {
         compositionController.init(this);
 
         redLineController.initializeRedLine();
-        
+        popUpMenu = new PopUpMenu(this);
         
         
         //creates a new composition state for use with undo and redo
