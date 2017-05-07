@@ -420,7 +420,7 @@ public class MenuBarController  {
     private void handleBlocksBeatAction(ActionEvent e){
         stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
-        for (int b= 0; b < 2000; b += 40){
+        for (int b= 0; b < 8000; b += 40){
             mainController.compositionController.createBeat(WOOD_BLOCK,b,60,25, beatGesture);
             mainController.compositionController.createBeat(WOOD_BLOCK,b+20,65,25, beatGesture);
         }
@@ -436,7 +436,7 @@ public class MenuBarController  {
     private void handleJumpingBeatAction(ActionEvent e){
         stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
-        for (int b = 0; b < 2000; b += 50){
+        for (int b = 0; b < 8000; b += 50){
             mainController.compositionController.createBeat(MARIMBA, b, 80, 40, beatGesture);
             mainController.compositionController.createBeat(BOTTLE, b+38, 65, 15, beatGesture);
         }
@@ -452,7 +452,7 @@ public class MenuBarController  {
     private void handleTanBeatAction(ActionEvent e){
         stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
-        for (int b = 0; b < 2000; b += 10){
+        for (int b = 0; b < 8000; b += 10){
             int yPattern = (int)(10*tan(b/30)) +40;
             mainController.compositionController.createBeat(WOOD_BLOCK, b, yPattern, 20, beatGesture);
         }
@@ -467,7 +467,7 @@ public class MenuBarController  {
     private void handleSinBeatAction(ActionEvent e){
         stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
-        for (int b = 0; b < 2000; b += 10){
+        for (int b = 0; b < 8000; b += 10){
             int yPattern = (int)(10*sin(b/30)) +40;
             mainController.compositionController.createBeat(WOOD_BLOCK, b, yPattern, 20, beatGesture);
         }
