@@ -6,6 +6,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 /**
  * A NoteRectangle object, which is used to record and display notes on user
@@ -289,6 +290,16 @@ public class NoteRectangle {
         mainController.setIsSaved(Boolean.FALSE);
     }
     
+    private void setText() {
+        Text text = new Text();
+        String value = "Properties"+'\n'+"xPosition: "+getX()+'\n'+
+                        "yPosition: "+getY()+'\n'+"Width:"+getWidth()+'\n'+
+                        "Instrument: "+getInstrument()+'\n'+
+                        "number of gestures: "+getNumberOfGestures();
+                        
+        text.setText(value);
+        mainController.addText(text);
+    }
     
     /**
      * Create a new EventHandler for the mouseEvent that happens when releasing 
@@ -304,6 +315,7 @@ public class NoteRectangle {
         */             
         @Override
         public void handle(MouseEvent t) {
+            setText();
             if ((selectedNotes.indexOf(this)!= -1) && (!t.isControlDown())) {
                 return;
             }
@@ -346,6 +358,18 @@ public class NoteRectangle {
      */
     protected double getWidth() {
         return notes.getWidth();
+    }
+    
+    protected int getNumberOfGestures() {
+        int count = 0;
+        ArrayList<NoteRectangle> currentGest = new ArrayList<>();
+        for (int i=0; i<mainController.gestureModelController.gestureNoteGroups.size();i++) {
+            currentGest = mainController.gestureModelController.gestureNoteGroups.get(i);
+            if (currentGest.contains(this)) {
+                count++;
+            }
+        }
+        return count;
     }
     
     /**
