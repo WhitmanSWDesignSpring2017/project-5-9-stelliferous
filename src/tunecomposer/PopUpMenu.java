@@ -10,6 +10,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 
@@ -27,6 +28,7 @@ public class PopUpMenu {
     private MenuItem groupPopUp = new MenuItem("Group");
     private MenuItem ungroupPopUp = new MenuItem("Ungroup");
     private MenuItem pastePopUp = new MenuItem("Paste");
+    private MenuItem changePopUp = new MenuItem("Change Instrument");
     
     protected void enablePaste() {
         pastePopUp.setDisable(false);
@@ -77,7 +79,18 @@ public class PopUpMenu {
                 mainController.menuBarController.handleUngroupAction((ActionEvent) t);
             }
         });
-        ArrayList<MenuItem> popUpList = new ArrayList<>(Arrays.asList(cutPopUp, copyPopUp, groupPopUp, ungroupPopUp));
+        
+        changePopUp.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                RadioButton selectedButton = (RadioButton)mainController.instrumentsRadioButton.getSelectedToggle();
+                Instrument selectedInstrument = (Instrument)selectedButton.getUserData();
+                mainController.currentState.selectedNotes.forEach((e1)-> {
+                   e1.changeInstrument(selectedInstrument);
+                });
+            }
+        });
+        ArrayList<MenuItem> popUpList = new ArrayList<>(Arrays.asList(cutPopUp, copyPopUp, groupPopUp, ungroupPopUp,changePopUp));
         
         return popUpList;
     }
