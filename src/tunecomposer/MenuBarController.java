@@ -253,8 +253,6 @@ public class MenuBarController  {
         if(mainController.redLineController.redLine.getEndX()>= mainController.endcomp){
             return;
         }
-        System.out.println("forward: "+mainController.endcomp);
-        System.out.println("lein: "+(mainController.redLineController.redLine.getEndX()));
         mainController.redLineController.redLine.setEndX(mainController.redLineController.redLine.getEndX()+10);
         mainController.redLineController.redLine.setStartX(mainController.redLineController.redLine.getStartX()+10);
         startingDifference += 10;
@@ -271,40 +269,38 @@ public class MenuBarController  {
         mainController.redLineController.redLine.setEndX(mainController.redLineController.redLine.getEndX()-10);
         startingDifference -= 10;
         if(mainController.MidiComposition.isPlaying()){
+            mainController.MidiComposition.stop();
             playFromPoint(startingDifference,true);
         }
     }
     
     protected void playFromPoint(double point, Boolean forward){
-            double startCompFrom = mainController.redLineController.redLine.getTranslateX() + point;
-            mainController.MidiComposition.stop();
-            mainController.redLineController.lineTransition.pause();
-            
-            System.out.println(startCompFrom);
-            
-            mainController.MidiComposition.clear();
-            mainController.buildMidiComposition(startCompFrom);
-            mainController.MidiComposition.play();
-           /**
-            //mainController.redLineController.lineTransition.setToX(mainController.endcomp);
-            System.out.println(Duration.millis(mainController.endcomp).toString());
-            System.out.println("Duration total: "+mainController.redLineController.lineTransition.getDuration().subtract(mainController.redLineController.lineTransition.getCurrentTime()));
-            System.out.println(mainController.redLineController.lineTransition.getCurrentTime().toString());
-            
-            Duration duration = (mainController.redLineController.lineTransition.getDuration().subtract(mainController.redLineController.lineTransition.getCurrentTime()));            
-            mainController.redLineController.lineTransition.setDuration(duration);
-            */
-           Duration timeToPlay;
-           if(point !=0 ){
-             timeToPlay = mainController.redLineController.lineTransition.getCurrentTime().add(Duration.millis(abs(point)));
-           } else {
-             timeToPlay = Duration.seconds(mainController.endcomp/100);
-           }
-            mainController.redLineController.lineTransition.setFromX(startCompFrom);
-            mainController.redLineController.lineTransition.setToX(mainController.endcomp);
-            mainController.redLineController.lineTransition.setDuration(timeToPlay);
-            mainController.redLineController.lineTransition.play();
-            stopButton.setDisable(false);
+        System.out.println("Transition is currently starting from: "+mainController.redLineController.redLine.getTranslateX());
+        double startCompFrom = mainController.redLineController.redLine.getTranslateX() + point;
+        mainController.MidiComposition.stop();
+        mainController.redLineController.lineTransition.pause();
+
+        mainController.MidiComposition.clear();
+        mainController.buildMidiComposition(startCompFrom);
+        mainController.MidiComposition.play();
+
+        if(point < 0){
+            point *= -2;
+        }
+
+        Duration timeToPlay;
+        if(point != 0){
+         timeToPlay = mainController.redLineController.lineTransition.getCurrentTime().add(Duration.seconds((point)));
+         System.out.println(timeToPlay);
+        } else {
+         timeToPlay = Duration.seconds(mainController.endcomp/100);
+        }
+
+        mainController.redLineController.lineTransition.setFromX(startCompFrom);
+        mainController.redLineController.lineTransition.setToX(mainController.endcomp);
+        mainController.redLineController.lineTransition.setDuration(timeToPlay);
+        mainController.redLineController.lineTransition.play();
+        stopButton.setDisable(false);
     }
     
     
