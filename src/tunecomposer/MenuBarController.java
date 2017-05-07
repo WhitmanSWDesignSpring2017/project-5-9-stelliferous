@@ -394,6 +394,7 @@ public class MenuBarController  {
      */
     @FXML
     protected void handleCutAction(ActionEvent e){
+        mainController.isCutAction = true;
         stopTune();
         handleCopyAction(e);
         handleDeleteAction(e);

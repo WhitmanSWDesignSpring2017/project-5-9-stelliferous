@@ -22,6 +22,12 @@ public class PopUpMenu {
     private ContextMenu contextMenuPane = new ContextMenu();
     private final MainController mainController;
     
+    private MenuItem cutPopUp = new MenuItem("Cut");
+    private MenuItem copyPopUp = new MenuItem("Copy");
+    private MenuItem groupPopUp = new MenuItem("Group");
+    private MenuItem ungroupPopUp = new MenuItem("Ungroup");
+    private MenuItem pastePopUp = new MenuItem("Paste");
+    
     public PopUpMenu(MainController aThis) throws FileNotFoundException {
         this.mainController = aThis;
         setUpContextMenuRect();
@@ -29,17 +35,13 @@ public class PopUpMenu {
     }
     
     private ArrayList<MenuItem> setUpMenuItem() {
-        MenuItem cutPopUp = new MenuItem("Cut");
-        MenuItem copyPopUp = new MenuItem("Copy");
-        MenuItem groupPopUp = new MenuItem("Group");
-        MenuItem ungroupPopUp = new MenuItem("Ungroup");
-        
         cutPopUp.setOnAction(new EventHandler() {
             @Override
             public void handle(Event t) {
                 mainController.menuBarController.handleCutAction((ActionEvent) t);
             }
         });
+        
         copyPopUp.setOnAction(new EventHandler() {
             @Override
             public void handle(Event t) {
@@ -52,8 +54,10 @@ public class PopUpMenu {
             @Override
             public void handle(Event t) {
                 mainController.menuBarController.handleGroupAction((ActionEvent) t);
+                
             }
         });
+        
         ungroupPopUp.setOnAction(new EventHandler() {
             @Override
             public void handle(Event t) {
@@ -73,7 +77,6 @@ public class PopUpMenu {
     }
         
     private MenuItem setUpPasteMenuItem() throws FileNotFoundException {
-        MenuItem pastePopUp = new MenuItem("Paste");
         pastePopUp.setOnAction(new EventHandler() {
             @Override
             public void handle(Event t) {

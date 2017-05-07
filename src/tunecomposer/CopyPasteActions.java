@@ -55,10 +55,12 @@ public class CopyPasteActions {
      * @throws java.io.FileNotFoundException
      */
     protected void paste() throws FileNotFoundException{
-        if (mainController.isMenuBarPaste && CLIPBOARD.getString() != null) {
+        if (mainController.isMenuBarPaste && CLIPBOARD.getString() != null && !mainController.isCutAction) {
             copySelected();
         }
         String pastedNotes = CLIPBOARD.getString();
+        System.out.println(pastedNotes);
+        
         mainController.compositionFileInteractions.notesFromString(pastedNotes);
     }
 }

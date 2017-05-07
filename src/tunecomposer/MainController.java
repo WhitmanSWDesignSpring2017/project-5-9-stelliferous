@@ -82,6 +82,7 @@ public class MainController {
     double yCoordinate;
     boolean isMenuBarPaste = true;
     boolean isMenuBarCopy = true;
+    boolean isCutAction = false;
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
      * (with location, duration, and speed). Make the red line invisible 
