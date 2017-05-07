@@ -49,6 +49,14 @@ public class MidiPlayer {
     public int getResolution() {
         return sequencer.getSequence().getResolution();
     }
+    
+    /**
+     * Gets whether the composition is playing
+     * @return whether the sequencer is running
+     */
+    public Boolean isPlaying(){
+        return sequencer.isRunning();
+    }
 
     /**
      * Adds a new MidiEvent to the current composition.

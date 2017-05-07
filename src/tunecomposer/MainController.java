@@ -48,7 +48,7 @@ public class MainController {
     //makes available the controller for the composition
     @FXML CompositionController compositionController = new CompositionController();
     //refers to the end of the current notes
-    protected double endcomp;
+    protected double endcomp = 0;
     
     //create a currentState object to store the ArrayLists
     protected CurrentState currentState = new CurrentState();

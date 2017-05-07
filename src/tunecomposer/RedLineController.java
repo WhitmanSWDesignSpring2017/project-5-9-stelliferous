@@ -37,8 +37,12 @@ public class RedLineController {
         mainController = aThis; 
     }
     
+    
+    /**
     double initialX;
     double finalChange;
+    
+    
     
     @FXML
     protected void handlePressAction(MouseEvent e){
@@ -80,10 +84,9 @@ public class RedLineController {
         System.out.println(mainController.redLineController.redLine.getStartX());
         double duration = 10*(mainController.endcomp-initialX);
         mainController.redLineController.lineTransition.setDuration(Duration.millis(duration));
-        */
+        
        // lineTransition.play();
   }
-    
      /**
      * Initializes red line's location, movement, constant speed, visibility.
      */
@@ -91,6 +94,7 @@ public class RedLineController {
         //insert, intialize, and govern visibility of the red line
         lineTransition.setNode(redLine);
         lineTransition.setFromX(0);
+        lineTransition.setToX(mainController.endcomp);
         lineTransition.setInterpolator(Interpolator.LINEAR);
         lineTransition.setOnFinished((e)->{
             redLine.setStartX(0);

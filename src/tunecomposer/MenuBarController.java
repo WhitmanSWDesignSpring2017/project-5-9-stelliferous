@@ -2,6 +2,7 @@ package tunecomposer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import static java.lang.Math.abs;
 import static tunecomposer.Instrument.MARIMBA;
 import static tunecomposer.Instrument.BOTTLE;
 import static tunecomposer.Instrument.WOOD_BLOCK;
@@ -33,7 +34,7 @@ public class MenuBarController  {
     private final ArrayList<NoteRectangle> savedBeat = new ArrayList<>();
     
     //determines whether the composition is paused
-    protected Boolean isPaused = false;
+    protected Boolean isPaused = true;
 
     //makes available menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
@@ -207,7 +208,8 @@ public class MenuBarController  {
         
         //build the MidiComposition based off of TuneRectangles
         mainController.buildMidiComposition(0);
-     
+         mainController.redLineController.redLine.setEndX(0);
+        mainController.redLineController.redLine.setStartX(0);
         //defines end of the composition for the red line to stop at
                 mainController.redLineController.lineTransition.setFromX(0);
 
@@ -247,18 +249,30 @@ public class MenuBarController  {
     
     @FXML 
     protected void handleForwardAction(){
-        System.out.println("forward");
+        mainController.resetEndcomp();
+        if(mainController.redLineController.redLine.getEndX()>= mainController.endcomp){
+            return;
+        }
+        System.out.println("forward: "+mainController.endcomp);
+        System.out.println("lein: "+(mainController.redLineController.redLine.getEndX()));
         mainController.redLineController.redLine.setEndX(mainController.redLineController.redLine.getEndX()+10);
         mainController.redLineController.redLine.setStartX(mainController.redLineController.redLine.getStartX()+10);
         startingDifference += 10;
+        if(mainController.MidiComposition.isPlaying()){
+            mainController.MidiComposition.stop();
+            playFromPoint(startingDifference,true);
+        }
     }
     
     @FXML 
     protected void handleBackAction(){
         System.out.println("back");
+        mainController.redLineController.redLine.setStartX(mainController.redLineController.redLine.getEndX()-10);
         mainController.redLineController.redLine.setEndX(mainController.redLineController.redLine.getEndX()-10);
-        mainController.redLineController.redLine.setStartX(mainController.redLineController.redLine.getStartX()-10);
         startingDifference -= 10;
+        if(mainController.MidiComposition.isPlaying()){
+            playFromPoint(startingDifference,true);
+        }
     }
     
     protected void playFromPoint(double point, Boolean forward){
@@ -280,8 +294,15 @@ public class MenuBarController  {
             Duration duration = (mainController.redLineController.lineTransition.getDuration().subtract(mainController.redLineController.lineTransition.getCurrentTime()));            
             mainController.redLineController.lineTransition.setDuration(duration);
             */
-            Duration timeToPlay = mainController.redLineController.lineTransition.getCurrentTime().add(Duration.millis(point));
+           Duration timeToPlay;
+           if(point !=0 ){
+             timeToPlay = mainController.redLineController.lineTransition.getCurrentTime().add(Duration.millis(abs(point)));
+           } else {
+             timeToPlay = Duration.seconds(mainController.endcomp/100);
+           }
             mainController.redLineController.lineTransition.setFromX(startCompFrom);
+            mainController.redLineController.lineTransition.setToX(mainController.endcomp);
+            mainController.redLineController.lineTransition.setDuration(timeToPlay);
             mainController.redLineController.lineTransition.play();
             stopButton.setDisable(false);
     }
