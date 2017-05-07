@@ -14,6 +14,7 @@ import javafx.scene.shape.Rectangle;
  * @author Tyler Maule
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class NoteRectangle {
     
@@ -61,6 +62,9 @@ public class NoteRectangle {
         notes.setFill(instrument.getDisplayColor()); 
     }
     
+    /**
+     * Sets the mouse events for the note rectangles.
+     */
     protected final void setAllMouseEvents() {
         notes.setOnMouseClicked((MouseEvent o)-> {
             onNoteRightClick(o);
@@ -370,6 +374,11 @@ public class NoteRectangle {
         notes.setY(newY);
     }
     
+    /**
+     * Overrides the equals method to check if note rectangles have the same width and position.
+     * @param compareRect the rectangle being compared to the current rectangle
+     * @return true if the rectangles are equal, false if not
+     */
     protected Boolean equal(NoteRectangle compareRect) {
         return compareRect.getWidth() == width 
                 && compareRect.getX() == notes.getX()

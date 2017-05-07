@@ -62,5 +62,6 @@ public class CopyPasteActions {
         System.out.println(pastedNotes);
         
         mainController.compositionFileInteractions.notesFromString(pastedNotes);
+        copySelected();
     }
 }

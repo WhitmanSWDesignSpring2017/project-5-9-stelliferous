@@ -16,6 +16,7 @@ import javafx.stage.WindowEvent;
  * @author Jingyuan Wang
  * @author Tyler Maule
  * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class TuneComposer extends Application {
     /**
