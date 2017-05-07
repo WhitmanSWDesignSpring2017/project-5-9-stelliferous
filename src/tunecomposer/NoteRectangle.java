@@ -22,10 +22,10 @@ public class NoteRectangle {
     protected transient Rectangle notes;
     
     //the channel for the NoteRectangle
-    private final int channel;
+    private int channel;
     
     //the instrument of the NoteRectangle
-    private final Instrument instrument;
+    private Instrument instrument;
     
     //stores the width of the NoteRectangle, that it may be retrieved/set
     private double width;
@@ -59,6 +59,12 @@ public class NoteRectangle {
         setAllMouseEvents();
 
         //creates a new rectangle object for visual representation
+        notes.setFill(instrument.getDisplayColor()); 
+    }
+    
+    protected void changeInstrument(Instrument instrument) {
+        this.instrument = instrument;
+        this.channel = instrument.getChannel(); 
         notes.setFill(instrument.getDisplayColor()); 
     }
     
