@@ -15,6 +15,8 @@ import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.Clipboard;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 /**
  * This controller class initializes the other controllers, the instrument 
@@ -28,6 +30,8 @@ public class MainController {
     
     //creates a MidiPlayer object with 100 ticks per beat, 1 beat per second
     protected final MidiPlayer MidiComposition = new MidiPlayer(100,60);
+    
+    @FXML TextFlow propertyPane;
     
     //makes available a toggle group of radio buttons where instruments can be selected
     @FXML ToggleGroup instrumentsRadioButton;
@@ -96,11 +100,12 @@ public class MainController {
         menuBarController.init(this);
         redLineController.init(this);
         compositionController.init(this);
-
+        
         redLineController.initializeRedLine();
         popUpMenu = new PopUpMenu(this);
         
-        
+        Text header = new Text("Properties");
+        propertyPane.getChildren().add(header);
         //creates a new composition state for use with undo and redo
         history.undoableAction();
         
@@ -139,6 +144,10 @@ public class MainController {
         return names;
     }
     
+    protected void addText(Text text) {
+        propertyPane.getChildren().clear();
+        propertyPane.getChildren().add(text);
+    }
     
      /**
      * Sets up the radio buttons for instrument selection.
