@@ -2,6 +2,7 @@ package tunecomposer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import static java.lang.Math.abs;
 import static tunecomposer.Instrument.MARIMBA;
 import static tunecomposer.Instrument.BOTTLE;
 import static tunecomposer.Instrument.WOOD_BLOCK;
@@ -32,6 +33,9 @@ public class MenuBarController  {
     
     //stores saved beats as a listarray of NoteRectangles
     private final ArrayList<NoteRectangle> savedBeat = new ArrayList<>();
+    
+    //determines whether the composition is paused
+    protected Boolean isPaused = true;
 
     //makes available menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
@@ -55,6 +59,7 @@ public class MenuBarController  {
     @FXML MenuItem saveAsBeatAction;
     @FXML MenuItem saveAsButton;
     @FXML MenuItem saveButton;
+    @FXML MenuItem pauseButton;
 
     /**
      * Initializes the main controller. This method was necessary for the 
@@ -207,9 +212,12 @@ public class MenuBarController  {
         mainController.MidiComposition.clear();
         
         //build the MidiComposition based off of TuneRectangles
-        mainController.buildMidiComposition();
-     
+        mainController.buildMidiComposition(0);
+        mainController.redLineController.redLine.setEndX(0);
+        mainController.redLineController.redLine.setStartX(0);
         //defines end of the composition for the red line to stop at
+                mainController.redLineController.lineTransition.setFromX(0);
+
         mainController.redLineController.lineTransition.setToX(mainController.endcomp);
         
         //convert endcomp from miliseconds to seconds and set it to be duration
@@ -221,7 +229,87 @@ public class MenuBarController  {
         mainController.MidiComposition.play();
         mainController.redLineController.lineTransition.playFromStart();
         stopButton.setDisable(false);
+        
+        isPaused = false;
     }
+    
+    double startingDifference = 0;
+    
+    @FXML
+    protected void handlePauseAction(){
+        System.out.println("paused");
+        if (isPaused){
+            playFromPoint(startingDifference,true);
+            
+        } else {
+            mainController.MidiComposition.stop();
+            mainController.redLineController.lineTransition.pause();
+            System.out.println("cat: "+mainController.redLineController.redLine.getTranslateX());
+            
+            stopButton.setDisable(true);
+        }
+        
+        isPaused = !isPaused;
+    }
+    
+    @FXML 
+    protected void handleForwardAction(){
+        mainController.resetEndcomp();
+        if(mainController.redLineController.redLine.getEndX()>= mainController.endcomp){
+            return;
+        }
+        mainController.redLineController.redLine.setEndX(mainController.redLineController.redLine.getEndX()+20);
+        mainController.redLineController.redLine.setStartX(mainController.redLineController.redLine.getStartX()+20);
+        startingDifference += 20;
+        if(mainController.MidiComposition.isPlaying()){
+            mainController.MidiComposition.stop();
+            playFromPoint(startingDifference,true);
+        }
+    }
+    
+    @FXML 
+    protected void handleBackAction(){
+        System.out.println("back");
+        mainController.redLineController.redLine.setStartX(mainController.redLineController.redLine.getEndX()-20);
+        mainController.redLineController.redLine.setEndX(mainController.redLineController.redLine.getEndX()-20);
+        startingDifference -= 20;
+        if(mainController.MidiComposition.isPlaying()){
+            mainController.MidiComposition.stop();
+            playFromPoint(startingDifference,true);
+        }
+    }
+    
+    protected void playFromPoint(double point, Boolean forward){
+        System.out.println("Transition is currently starting from: "+mainController.redLineController.redLine.getTranslateX());
+        double startCompFrom = abs(mainController.redLineController.redLine.getTranslateX()) + point;
+        mainController.MidiComposition.stop();
+        mainController.redLineController.lineTransition.pause();
+
+        mainController.MidiComposition.clear();
+        mainController.buildMidiComposition(startCompFrom);
+        mainController.MidiComposition.play();
+
+        /**if(point < 0){
+            point *= -2;
+        }
+
+        Duration timeToPlay;
+        if(point != 0){
+         timeToPlay = mainController.redLineController.lineTransition.getCurrentTime().add(Duration.seconds((point)));
+         System.out.println(timeToPlay);
+        } else {
+         timeToPlay = Duration.seconds(mainController.endcomp/100);
+        }*/
+        System.out.println("Duration Play From: "+Duration.seconds(mainController.endcomp-startCompFrom).toSeconds());
+        mainController.redLineController.lineTransition.setDuration(Duration.seconds(mainController.endcomp-startCompFrom).divide(100));
+        //mainController.redLineController.lineTransition.setDuration(Duration.seconds(5));
+        mainController.redLineController.lineTransition.setFromX(startCompFrom);
+        mainController.redLineController.lineTransition.setToX(mainController.endcomp);
+        //mainController.redLineController.lineTransition.setDuration(timeToPlay);
+        mainController.redLineController.lineTransition.play();
+        stopButton.setDisable(false);
+    }
+    
     
      /**
      * Stops the player from playing, stops and sets the red line to be invisible.
@@ -231,6 +319,7 @@ public class MenuBarController  {
     private void handleStopAction(ActionEvent e){
         stopTune();
         stopButton.setDisable(true);
+        isPaused = true;
     }
     
     /**
@@ -513,8 +602,7 @@ public class MenuBarController  {
         addBeatGesture(beatGesture);
     }
     
- 
-    
+
     /**
      * Adds notes created by a beat menu item to a gesture and to the screen.
      * @param gesture 
@@ -536,11 +624,13 @@ public class MenuBarController  {
             selectAllAction.setDisable(true);
             playButton.setDisable(true);
             saveAsButton.setDisable(true);
+            pauseButton.setDisable(true);
             copyCompositionAction.setDisable(true);
         } else {
             selectAllAction.setDisable(false);
             playButton.setDisable(false);
             saveAsButton.setDisable(false);
+            pauseButton.setDisable(false);
             copyCompositionAction.setDisable(false);
         }
         if (mainController.getSelectList().isEmpty()) {
@@ -612,6 +702,7 @@ public class MenuBarController  {
         saveAsBeatAction.setDisable(true);
         saveButton.setDisable(true);
         saveAsButton.setDisable(true);
+        pauseButton.setDisable(true);
     }
     
     /**
@@ -619,7 +710,7 @@ public class MenuBarController  {
      */
     private void stopTune() {
         mainController.MidiComposition.stop();
-        mainController.redLineController.lineTransition.stop();
-        mainController.redLineController.redLine.setVisible(false);
+        mainController.redLineController.lineTransition.setToX(0);
+        mainController.redLineController.lineTransition.playFromStart();
     }
 }

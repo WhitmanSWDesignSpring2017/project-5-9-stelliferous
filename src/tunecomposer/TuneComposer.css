@@ -44,5 +44,5 @@
 /* Determines color of moving line that signifies time */
 .redLine{
     -fx-stroke: crimson;
-    -fx-stroke-width: 2px;
+    -fx-stroke-width: 20px;
 }
