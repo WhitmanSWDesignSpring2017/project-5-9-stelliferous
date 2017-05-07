@@ -284,7 +284,7 @@ public class MenuBarController  {
         mainController.buildMidiComposition(startCompFrom);
         mainController.MidiComposition.play();
 
-        if(point < 0){
+        /**if(point < 0){
             point *= -2;
         }
 
@@ -294,9 +294,9 @@ public class MenuBarController  {
          System.out.println(timeToPlay);
         } else {
          timeToPlay = Duration.seconds(mainController.endcomp/100);
-        }
+        }*/
         System.out.println("Duration Play From: "+Duration.seconds(mainController.endcomp-startCompFrom).toSeconds());
-       mainController.redLineController.lineTransition.setDuration(Duration.seconds(mainController.endcomp-startCompFrom).divide(100));
+        mainController.redLineController.lineTransition.setDuration(Duration.seconds(mainController.endcomp-startCompFrom).divide(100));
         //mainController.redLineController.lineTransition.setDuration(Duration.seconds(5));
         mainController.redLineController.lineTransition.setFromX(startCompFrom);
         mainController.redLineController.lineTransition.setToX(mainController.endcomp);
