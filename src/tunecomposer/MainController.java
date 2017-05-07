@@ -1,5 +1,6 @@
 package tunecomposer;
 
+import java.io.FileNotFoundException;
 import javafx.fxml.FXML;
 import java.util.ArrayList;
 import javafx.scene.control.RadioButton;
@@ -14,6 +15,8 @@ import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.Clipboard;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 /**
  * This controller class initializes the other controllers, the instrument 
@@ -21,11 +24,14 @@ import javafx.scene.input.Clipboard;
  * @author Tyler Maule
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class MainController {
     
     //creates a MidiPlayer object with 100 ticks per beat, 1 beat per second
     protected final MidiPlayer MidiComposition = new MidiPlayer(100,60);
+    
+    @FXML TextFlow propertyPane;
     
     //makes available a toggle group of radio buttons where instruments can be selected
     @FXML ToggleGroup instrumentsRadioButton;
@@ -62,20 +68,31 @@ public class MainController {
     //default note length
     protected double noteLength = 100;
 
-    //create a undoRedoAction object
+    //create a history object
     protected History history = new History(this);
     
+    //create a saveActions object
     protected SaveActions saveActions = new SaveActions(this);
     
+    //create a compositionFileInteractions object
     protected CompositionFileInteractions compositionFileInteractions = new CompositionFileInteractions(this);
     
+    //create a copyPasteActions object
     protected CopyPasteActions copyPasteActions = new CopyPasteActions(this);
+    
+    protected PopUpMenu popUpMenu;
+    
+    double xCoordinate;
+    double yCoordinate;
+    boolean isMenuBarPaste = true;
+    boolean isMenuBarCopy = true;
+    boolean isCutAction = false;
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
      * (with location, duration, and speed). Make the red line invisible 
      * at the start and when the composition has finished playing
      */
-    @FXML public void initialize() {
+    @FXML public void initialize() throws FileNotFoundException {
         //set up the pane of instrument choices for the user
         setupInstruments();
 
@@ -83,11 +100,12 @@ public class MainController {
         menuBarController.init(this);
         redLineController.init(this);
         compositionController.init(this);
-
+        
         redLineController.initializeRedLine();
+        popUpMenu = new PopUpMenu(this);
         
-        
-        
+        Text header = new Text("Properties");
+        propertyPane.getChildren().add(header);
         //creates a new composition state for use with undo and redo
         history.undoableAction();
         
@@ -126,6 +144,10 @@ public class MainController {
         return names;
     }
     
+    protected void addText(Text text) {
+        propertyPane.getChildren().clear();
+        propertyPane.getChildren().add(text);
+    }
     
      /**
      * Sets up the radio buttons for instrument selection.
@@ -214,6 +236,9 @@ public class MainController {
         noteLength = durationSlider.getValue();
     }
 
+    /**
+     * clear everything on the pane and stacks for the newAction
+     */
     protected void restart() {
         history.clearCurrentState();
         history.clearAllActions();

@@ -24,6 +24,7 @@ import javafx.util.Duration;
  * @author Tyler Maule
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class MenuBarController  {
     
@@ -67,6 +68,10 @@ public class MenuBarController  {
      */
     public void init(MainController aThis) {
         mainController = aThis; 
+    }
+    
+    protected MenuItem returnCopyAction() {
+        return copyAction;
     }
     
      /**
@@ -374,7 +379,7 @@ public class MenuBarController  {
      * @param e on grouping event
      */
     @FXML
-    private void handleGroupAction(ActionEvent e){
+    protected void handleGroupAction(ActionEvent e){
         stopTune();
         if (mainController.getSelectList().isEmpty()) {
             return;
@@ -397,7 +402,7 @@ public class MenuBarController  {
      * @param e on ungrouping event
      */
     @FXML
-    private void handleUngroupAction(ActionEvent e){
+    protected void handleUngroupAction(ActionEvent e){
         stopTune();
         mainController.gestureModelController.gestureNoteGroups.remove(mainController.getSelectList());
         mainController.compositionController.selectRect();
@@ -448,15 +453,17 @@ public class MenuBarController  {
         mainController.compositionController.selectRect();
     }
     
+    protected NoteRectangle leftCorner;
     /**
      * Copies selected notes to the clipboard.
      * @param e a mouse event
      */
     @FXML
-    private void handleCopyAction(ActionEvent e){
+    protected void handleCopyAction(ActionEvent e){
         stopTune();
         mainController.copyPasteActions.copySelected();
         pasteAction.setDisable(false);
+        mainController.popUpMenu.enablePaste();
     }
     
     /**
@@ -468,20 +475,23 @@ public class MenuBarController  {
         stopTune();
         mainController.copyPasteActions.copyComposition();
         pasteAction.setDisable(false);
+        mainController.popUpMenu.enablePaste();
     }
     
-  
+    
     
     /**
      * Copies selected notes to the clipboard and deletes them from the composition.
      * @param e a mouse event
      */
     @FXML
-    private void handleCutAction(ActionEvent e){
+    protected void handleCutAction(ActionEvent e){
+        mainController.isCutAction = true;
         stopTune();
         handleCopyAction(e);
         handleDeleteAction(e);
         pasteAction.setDisable(false);
+        mainController.popUpMenu.enablePaste();
     }
     
     /**
@@ -489,9 +499,8 @@ public class MenuBarController  {
      * @param e a mouse event
      */
     @FXML
-    private void handlePasteAction(ActionEvent e) throws FileNotFoundException{
+    protected void handlePasteAction(ActionEvent e) throws FileNotFoundException{
         stopTune();
-        mainController.getSelectList().clear();
         mainController.copyPasteActions.paste();
         mainController.history.undoableAction();
         
@@ -508,7 +517,7 @@ public class MenuBarController  {
     private void handleBlocksBeatAction(ActionEvent e){
         stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
-        for (int b= 0; b < 2000; b += 40){
+        for (int b= 0; b < 8000; b += 40){
             mainController.compositionController.createBeat(WOOD_BLOCK,b,60,25, beatGesture);
             mainController.compositionController.createBeat(WOOD_BLOCK,b+20,65,25, beatGesture);
         }
@@ -524,7 +533,7 @@ public class MenuBarController  {
     private void handleJumpingBeatAction(ActionEvent e){
         stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
-        for (int b = 0; b < 2000; b += 50){
+        for (int b = 0; b < 8000; b += 50){
             mainController.compositionController.createBeat(MARIMBA, b, 80, 40, beatGesture);
             mainController.compositionController.createBeat(BOTTLE, b+38, 65, 15, beatGesture);
         }
@@ -540,7 +549,7 @@ public class MenuBarController  {
     private void handleTanBeatAction(ActionEvent e){
         stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
-        for (int b = 0; b < 2000; b += 10){
+        for (int b = 0; b < 8000; b += 10){
             int yPattern = (int)(10*tan(b/30)) +40;
             mainController.compositionController.createBeat(WOOD_BLOCK, b, yPattern, 20, beatGesture);
         }
@@ -555,7 +564,7 @@ public class MenuBarController  {
     private void handleSinBeatAction(ActionEvent e){
         stopTune();
         ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
-        for (int b = 0; b < 2000; b += 10){
+        for (int b = 0; b < 8000; b += 10){
             int yPattern = (int)(10*sin(b/30)) +40;
             mainController.compositionController.createBeat(WOOD_BLOCK, b, yPattern, 20, beatGesture);
         }
@@ -616,11 +625,13 @@ public class MenuBarController  {
             playButton.setDisable(true);
             saveAsButton.setDisable(true);
             pauseButton.setDisable(true);
+            copyCompositionAction.setDisable(true);
         } else {
             selectAllAction.setDisable(false);
             playButton.setDisable(false);
             saveAsButton.setDisable(false);
             pauseButton.setDisable(false);
+            copyCompositionAction.setDisable(false);
         }
         if (mainController.getSelectList().isEmpty()) {
             deleteAction.setDisable(true);
@@ -650,13 +661,18 @@ public class MenuBarController  {
         }
         if (mainController.gestureModelController.gestureNoteGroups.contains(mainController.getSelectList())){
             ungroupAction.setDisable(false);
+            mainController.popUpMenu.disOrEnableUngroup(Boolean.FALSE);
         } else {
             ungroupAction.setDisable(true);
+            mainController.popUpMenu.disOrEnableUngroup(Boolean.TRUE);
         }
         if (mainController.getSelectList().size() < 2) {
             groupAction.setDisable(true);
+            mainController.popUpMenu.disOrEnableGroup(Boolean.TRUE);
+            
         } else {
             groupAction.setDisable(false);
+            mainController.popUpMenu.disOrEnableGroup(Boolean.FALSE);
         }
         if (mainController.isSaved()){
             saveButton.setDisable(true);

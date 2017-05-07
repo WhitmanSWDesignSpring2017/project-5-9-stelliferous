@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
  * @author Tyler Maule
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class BackgroundController implements Initializable{
     
@@ -40,7 +41,7 @@ public class BackgroundController implements Initializable{
             double y1 ;
             y1 = y + 0.5;
             gc.moveTo(0, y1);
-            gc.lineTo(2000, y1);
+            gc.lineTo(8000, y1);
             gc.stroke();
         }
     }    

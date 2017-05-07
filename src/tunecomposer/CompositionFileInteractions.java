@@ -7,7 +7,10 @@ import javafx.scene.control.Alert;
 /**
  * A helper class that allows the decoding and encoding of 
  * txt files that describe a NoteRectangle composition
- * @author tmaule
+ * @author Tyler Maule
+ * @author Jingyuan Wang
+ * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class CompositionFileInteractions {
     //allows access to the program's main controller
@@ -115,6 +118,7 @@ public class CompositionFileInteractions {
        //begin process of adding data to the created strings
        ArrayList<NoteRectangle> pastedNotes = translatePastedNoteRectangles(individualNoteArray);
        initializePasted(notesAndGestures, pastedNotes);  
+       mainController.copyPasteActions.copySelected();
     }
     
     /**
@@ -164,8 +168,7 @@ public class CompositionFileInteractions {
      * opportunity to open a file by invoking the "Open" MenuTtem.
      * @throws FileNotFoundException 
      */
-    private void invokeInvalidFilenameError() throws FileNotFoundException{
-       System.out.print("exception thrown");
+    protected void invokeInvalidFilenameError() throws FileNotFoundException{
        Alert alert = new Alert(Alert.AlertType.ERROR);
        alert.setTitle("Error Dialog");
        alert.setHeaderText("Invalid File");
@@ -200,22 +203,26 @@ public class CompositionFileInteractions {
        try {
            //translates list of NoteRectangles
            for (int j = 0; j < individualNoteArray.length; j++){
+               double shiftBy = 0;
+               if (mainController.isMenuBarPaste) {
+                   mainController.compositionController.mouseTranslateX = 0;
+                   mainController.compositionController.mouseTranslateY = 0;
+                   shiftBy = 4;
+               }
                String[] noteAttributes = individualNoteArray[j].split(";");
-               double xLocation = Double.parseDouble(noteAttributes[0]);
-               double yLocation = Double.parseDouble(noteAttributes[1]);
+               double xLocation = Double.parseDouble(noteAttributes[0]) + mainController.compositionController.mouseTranslateX;
+               double yLocation = Double.parseDouble(noteAttributes[1]) + mainController.compositionController.mouseTranslateY;
+               yLocation = ((int)(yLocation/Constants.HEIGHTRECTANGLE)) *Constants.HEIGHTRECTANGLE;
                double width = Double.parseDouble(noteAttributes[2]);
                String instrumentString = noteAttributes[3];
                Instrument instrument = Instrument.valueOf(instrumentString);
-               pastedNotes.add(new NoteRectangle(xLocation,yLocation,instrument, width, mainController));
-           }
+               
+               pastedNotes.add(new NoteRectangle(xLocation+shiftBy,yLocation,instrument, width, mainController));
+            }
+           
+           
        } catch (Exception ex){
-            System.out.print("exception thrown");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Dialog");
-            alert.setHeaderText("Invalid File");
-            alert.setContentText("Please choose a valid file.");
-            alert.showAndWait();
-            mainController.saveActions.openFile();
+            invokeInvalidFilenameError();
        }
        return pastedNotes;
     }

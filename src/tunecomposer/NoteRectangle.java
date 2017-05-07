@@ -2,9 +2,11 @@ package tunecomposer;
 
 import java.util.ArrayList;
 import javafx.event.EventHandler;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 /**
  * A NoteRectangle object, which is used to record and display notes on user
@@ -13,6 +15,7 @@ import javafx.scene.shape.Rectangle;
  * @author Tyler Maule
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class NoteRectangle {
     
@@ -20,10 +23,10 @@ public class NoteRectangle {
     protected transient Rectangle notes;
     
     //the channel for the NoteRectangle
-    private final int channel;
+    private int channel;
     
     //the instrument of the NoteRectangle
-    private final Instrument instrument;
+    private Instrument instrument;
     
     //stores the width of the NoteRectangle, that it may be retrieved/set
     private double width;
@@ -60,12 +63,30 @@ public class NoteRectangle {
         notes.setFill(instrument.getDisplayColor()); 
     }
     
+    protected void changeInstrument(Instrument instrument) {
+        this.instrument = instrument;
+        this.channel = instrument.getChannel(); 
+        notes.setFill(instrument.getDisplayColor()); 
+    }
+    
+    /**
+     * Sets the mouse events for the note rectangles.
+     */
     protected final void setAllMouseEvents() {
+        notes.setOnMouseClicked((MouseEvent o)-> {
+            onNoteRightClick(o);
+        });
         notes.setOnMousePressed((MouseEvent o) -> {
             onNotePress(o);
         });
         notes.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);   
         notes.setOnMouseReleased(rectangleOnMouseReleasedEventHandler);
+    }
+    
+    private void onNoteRightClick(MouseEvent o) {
+        if (o.getButton() == MouseButton.SECONDARY) { 
+            mainController.popUpMenu.showContextRect(notes, o.getSceneX(),o.getSceneY());
+        }
     }
     
     /**
@@ -100,19 +121,19 @@ public class NoteRectangle {
     }
     
     //create a new ArrayList to store original X positions of selected rectangles
-    private final ArrayList<Double> originalX = new ArrayList<>();
+    private static ArrayList<Double> originalX = new ArrayList<>();
 
     //create a new ArrayList to store original Y positions of selected rectangles
-    private final ArrayList<Double> originalY = new ArrayList<>();
+    private static ArrayList<Double> originalY = new ArrayList<>();
     
     //create a new ArrayList to store original widths of selected rectangles
     private final ArrayList<Double> originalWidth = new ArrayList<>();
     
     //create a double variable to store the x position when mouse pressed
-    private double xCoordinate;
+    protected static double xCoordinate;
        
     //create a double variable to store the y position when mouse pressed
-    private double yCoordinate;
+    protected static double yCoordinate;
     
     //create a boolean variable to store whether the mouseEvent is for stretch or drag
     private boolean drag = false;
@@ -269,6 +290,16 @@ public class NoteRectangle {
         mainController.setIsSaved(Boolean.FALSE);
     }
     
+    private void setText() {
+        Text text = new Text();
+        String value = "Properties"+'\n'+"xPosition: "+getX()+'\n'+
+                        "yPosition: "+getY()+'\n'+"Width:"+getWidth()+'\n'+
+                        "Instrument: "+getInstrument()+'\n'+
+                        "number of gestures: "+getNumberOfGestures();
+                        
+        text.setText(value);
+        mainController.addText(text);
+    }
     
     /**
      * Create a new EventHandler for the mouseEvent that happens when releasing 
@@ -284,6 +315,7 @@ public class NoteRectangle {
         */             
         @Override
         public void handle(MouseEvent t) {
+            setText();
             if ((selectedNotes.indexOf(this)!= -1) && (!t.isControlDown())) {
                 return;
             }
@@ -296,9 +328,11 @@ public class NoteRectangle {
                 selectedNotes.get(i).setY(finalY);   
             }
             mainController.gestureModelController.gestureNoteSelection(selectedNotes);
-            
-            mainController.history.undoableAction();  
-            
+            if (!t.isStillSincePress()) {
+                mainController.history.undoableAction();  
+            }
+            xCoordinate = getX();
+            yCoordinate = getY();
         }
     };
 
@@ -324,6 +358,18 @@ public class NoteRectangle {
      */
     protected double getWidth() {
         return notes.getWidth();
+    }
+    
+    protected int getNumberOfGestures() {
+        int count = 0;
+        ArrayList<NoteRectangle> currentGest = new ArrayList<>();
+        for (int i=0; i<mainController.gestureModelController.gestureNoteGroups.size();i++) {
+            currentGest = mainController.gestureModelController.gestureNoteGroups.get(i);
+            if (currentGest.contains(this)) {
+                count++;
+            }
+        }
+        return count;
     }
     
     /**
@@ -358,6 +404,11 @@ public class NoteRectangle {
         notes.setY(newY);
     }
     
+    /**
+     * Overrides the equals method to check if note rectangles have the same width and position.
+     * @param compareRect the rectangle being compared to the current rectangle
+     * @return true if the rectangles are equal, false if not
+     */
     protected Boolean equal(NoteRectangle compareRect) {
         return compareRect.getWidth() == width 
                 && compareRect.getX() == notes.getX()

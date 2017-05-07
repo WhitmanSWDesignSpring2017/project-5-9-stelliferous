@@ -5,6 +5,7 @@ package tunecomposer;
  * @author Tyler Maule
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class Constants {
     

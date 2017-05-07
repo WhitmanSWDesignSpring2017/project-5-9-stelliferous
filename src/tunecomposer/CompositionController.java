@@ -5,6 +5,7 @@ import static java.lang.Math.abs;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
@@ -14,45 +15,47 @@ import javafx.scene.shape.Rectangle;
  * @author Tyler Maule
  * @author Jingyuan Wang
  * @author Kaylin Jarriel
+ * @author Zach Turner
  */
 public class CompositionController {
 
     //makes available rectAnchorPane, which stores the rectangles
     @FXML AnchorPane rectAnchorPane;
-    
+
     //the main controller of the program
     private MainController mainController;
 
     //creates a list to store created rectangles, that they may be later erased
     protected ArrayList<NoteRectangle> rectList = new ArrayList<>();
-    
+
     //creates a list to store selected rectangles
     protected ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
-    
+
     //refers to the end of the current notes
     protected double endcomp;
 
     //stores x and y coordinates, to later calculate distance moved by the mouse
-    private double mouseInitialY = 0;
-    private double mouseInitialX = 0;
-    
+    protected double mouseInitialY = 0;
+    protected double mouseInitialX = 0;
+
+    protected double mouseTranslateX = 0;
+    protected double mouseTranslateY = 0;
+
     //accesses rectangle that users will control by dragging, renders it invisible
     @FXML Rectangle selectRect;
-    
+
     //create a new ArrayList to store original X positions of selected rectangles
-    private final ArrayList<Double> xPositions = new ArrayList<>();
+    //protected ArrayList<Double> xPositions = new ArrayList<>();
 
     //create a new ArrayList to store original Y positions of selected rectangles
-    private final ArrayList<Double> yPositions = new ArrayList<>();
-    
+   // protected ArrayList<Double> yPositions = new ArrayList<>();
+
     //create a new ArrayList to store original widths of selected rectangles
-    private final ArrayList<Double> widths = new ArrayList<>();
-    
+    protected ArrayList<Double> widths = new ArrayList<>();
+
     //to store a list of selected notes before selection rectangle is dragged
     private ArrayList<NoteRectangle> originallySelected = new ArrayList<>();
-    
-   // protected History undoRedoActions = new History(this);
-    
+
     /**
      * resets the mouse coordinates to allow dragging functionality
      * stops ongoing composition-playing events
@@ -62,7 +65,7 @@ public class CompositionController {
         //resets mouse coordinates
         mouseInitialX = (int)e.getX();
         mouseInitialY = (int)e.getY();
-        
+
         //stops ongoing composition-playing events
         mainController.MidiComposition.stop();
         //mainController.redLineController.lineTransition.setToX(0);
@@ -72,33 +75,61 @@ public class CompositionController {
         //mainController.redLineController.redLine.setEndX(0);
         //mainController.redLineController.redLine.setVisible(false);
     }
-    
+
+    private void paneMouseLeftClick(MouseEvent e) {
+        //determine whether previously selected notes remain selected when
+        //a new note is created; if control is not down, deselect all old notes
+        deselectNotes(e);
+
+        //creates and places a new NoteRectangle
+        prepareNoteRectangle(e);
+
+        //lets the controller know that an unsaved change has been made
+        mainController.setIsSaved(Boolean.FALSE);
+        originallySelected.clear();
+    }
+
+    private void paneMouseRightClick(MouseEvent e) {
+        if (mainController.menuBarController.leftCorner != null) {
+            
+        
+        if (mainController.isMenuBarCopy) {
+            mouseTranslateX = mouseInitialX-mainController.menuBarController.leftCorner.getX();
+            mouseTranslateY = mouseInitialY-mainController.menuBarController.leftCorner.getY();
+        } else {
+            mouseTranslateX = mouseInitialX-NoteRectangle.xCoordinate;
+            mouseTranslateY = mouseInitialY-NoteRectangle.yCoordinate;
+        }
+        }
+        mainController.popUpMenu.showContextPane(rectAnchorPane, e.getSceneX(), e.getSceneY());
+    }
+
     /**
      * Simply resets coordinates of current mouse position when the pane's
      * clicked.
      * @param e occurs on mouse click event
      * @throws IOException
      */
-    @FXML 
+    @FXML
     private void paneMouseClick(MouseEvent e) throws IOException{
         selectedNotes.forEach((e1)-> {
             originallySelected.add(e1);
         });
         reset_coordinates(e);
     };
-    
+
     /**
      * When the user drags the mouse on the composition pane, current
-     * ' selection rectangles ' are cleared from the screen. Calls 
+     * ' selection rectangles ' are cleared from the screen. Calls
      * formatSelectionRectangle() to determine coordinates, size, style
      * of the rectangle. All notes within the
-     * area of the ' selection rectangle ' are selected. If control is not held 
+     * area of the ' selection rectangle ' are selected. If control is not held
      * down, all other notes are deselected.
      * @param e a mouse dragging event
      */
     @FXML
     private void paneMouseDrag(MouseEvent e){
-                
+
         //if the shift-key is down, do not create a selection rectangle
         if (e.isShiftDown()){
             paneMouseRelease(e);
@@ -108,40 +139,40 @@ public class CompositionController {
         //remove current iteration of selection rectangle
         selectRect.setVisible(true);
         selectRect.toFront();
-        
+
         //determine coordinates, size, and style of selection rectangle
         formatSelectionRectangle(e);
-        
+
         //if control is not down, deselect all other notes
         deselectNotes(e);
-        
+
         //selects all notes within the selection rectangle
         rectList.forEach((r) -> {
             setSelected(r);
-        });   
-        
+        });
+
         selectRect();
     }
 
     /**
-     * Determines whether any "note rectangles" are within the selection 
-     * rectangle or selected gesture. Then sets the selected rectangles to have 
+     * Determines whether any "note rectangles" are within the selection
+     * rectangle or selected gesture. Then sets the selected rectangles to have
      * a red border for visual clarity.
      * @param r the note rectangles being tested for selection
      */
     private void setSelected(NoteRectangle r) {
-        
+
         //check if the rectangle is within the selection rectangle
         if (selectRect.getX() + (selectRect.getWidth()) > r.notes.getX()
                 && selectRect.getX()  < r.notes.getX() + (r.notes.getWidth())
                 && selectRect.getY() + (selectRect.getHeight()) > r.notes.getY()
                 && selectRect.getY()  < r.notes.getY() + (r.notes.getHeight())){
-            
+
             //create a list of NoteRectangles for use in gestures
             ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
-            
+
             selectNotes = mainController.gestureModelController.checkForSelectedNotes(r, selectNotes);
-            
+
             //select the other notes in selected gestures
             if (!selectNotes.isEmpty()) {
                 selectNotes.forEach((e1)-> {
@@ -152,7 +183,7 @@ public class CompositionController {
             }
         }
     }
-    
+
     /**
      * If the control key is not held down, deselect all notes
      * @param e a mouse event
@@ -168,23 +199,23 @@ public class CompositionController {
                selectedNotes.add(e1);
             });
         }
-        
+
         //reset the gestures depending on the new selectedNotes arrayList
         mainController.gestureModelController.gestureNoteSelection(selectedNotes);
     }
-    
+
     /**
-     * Formats the selection rectangle. 
-     * Current mouse coordinates are fetched, and a 'selection rectangle' is 
+     * Formats the selection rectangle.
+     * Current mouse coordinates are fetched, and a 'selection rectangle' is
      * made that indicates points from initial mouse click to current mouse location.
      * @param e mouse event of the user dragging on the CompositionPane
      */
     private void formatSelectionRectangle(MouseEvent e){
-        
+
         //get and store current coordinates
         int mouseCurrentX = (int)e.getX();
         int mouseCurrentY = (int)e.getY();
-        
+
         //determine coordinates of top-left corner of the rectangle
         if (mouseInitialX<mouseCurrentX){
             selectRect.setX(mouseInitialX);
@@ -196,7 +227,7 @@ public class CompositionController {
         } else {
             selectRect.setY(mouseCurrentY);
         }
-        
+
         //formats selection rectangle
         selectRect.setWidth(abs(mouseCurrentX-mouseInitialX));
         selectRect.setHeight(abs(mouseCurrentY-mouseInitialY));
@@ -205,11 +236,11 @@ public class CompositionController {
 
     /**
      * When the user releases the mouse, if they have created a ' selection
-     * rectangle ' by dragging, that selection rectangle is removed from the 
-     * screen. Otherwise, newNote() creates and places new rectangle. If the 
-     * user has held down control while clicking, all other selected notes 
-     * remain selected; otherwise all other notes are unselected. Clicking or 
-     * control-clicking on an already-created note is delegated to the 
+     * rectangle ' by dragging, that selection rectangle is removed from the
+     * screen. Otherwise, newNote() creates and places new rectangle. If the
+     * user has held down control while clicking, all other selected notes
+     * remain selected; otherwise all other notes are unselected. Clicking or
+     * control-clicking on an already-created note is delegated to the
      * onNoteClick() function
      * @param e a mouse click event on the composition Pane
      */
@@ -217,12 +248,11 @@ public class CompositionController {
     private void paneMouseRelease(MouseEvent e){
         //removes 'selection rectangles,' created by dragging, from screen
         selectRect.setVisible(false);
-        
+
         /*if the user has dragged on the screen, the method ends; no
         new rectangles are created or selected. If 'shift' key is down, create
         new rectangles anyhow */
-        if (((mouseInitialX != (int)e.getX()) 
-            || (mouseInitialY != (int)e.getY()))
+        if (!e.isStillSincePress()
             && !e.isShiftDown()){
                 //if the selectedNotes is changed, a new compositionState is created
                 if (((!selectedNotes.equals(originallySelected))||
@@ -230,45 +260,41 @@ public class CompositionController {
                     mainController.history.undoableAction();
                 }
                 return;
-        } 
-        
-        //determine whether previously selected notes remain selected when
-        //a new note is created; if control is not down, deselect all old notes
-        deselectNotes(e);
-        
-        //creates and places a new NoteRectangle
-        prepareNoteRectangle(e);
-        
-        //lets the controller know that an unsaved change has been made
-        mainController.setIsSaved(Boolean.FALSE);
-        originallySelected.clear();
+        }
+
+        if (e.getButton() == MouseButton.PRIMARY) {
+            paneMouseLeftClick(e);
+        } else {
+            paneMouseRightClick(e);
+        }
+        reset_coordinates(e);
     };
-    
+
     /**
      * Find the current coordinates to place a 100px x 20px Note Rectangle.
      * Assigns mouse events to that rectangle. Adds that rectangle to the
-     * list of rectangles, list of selected rectangles, and the visual 
+     * list of rectangles, list of selected rectangles, and the visual
      * rectAnchorPane
      * @param e an on-click mouse event
      */
     private void prepareNoteRectangle(MouseEvent e){
         //gets new mouse coordinates; calculates effective y coordinate
-        reset_coordinates(e);            
+        reset_coordinates(e);
         int y = (int) ((mouseInitialY)/Constants.HEIGHTRECTANGLE);
-        
+
         //checks which instrument is selected
         RadioButton selectedButton = (RadioButton)mainController.instrumentsRadioButton.getSelectedToggle();
-        Instrument selectedInstrument = (Instrument)selectedButton.getUserData();        
-        
+        Instrument selectedInstrument = (Instrument)selectedButton.getUserData();
+
         //creates a new NoteRectangle object
-        NoteRectangle rect = new NoteRectangle(mouseInitialX,y*Constants.HEIGHTRECTANGLE, 
+        NoteRectangle rect = new NoteRectangle(mouseInitialX,y*Constants.HEIGHTRECTANGLE,
                                                selectedInstrument, mainController.noteLength,mainController);
 
         //create a new rectangle while make sure selectedNotes contains only itself
         if (!e.isControlDown()) {
             selectedNotes.clear();
         }
-                
+
         rectList.add(rect);
         selectedNotes.add(rect);
         mainController.gestureModelController.gestureNoteSelection(selectedNotes);
@@ -290,7 +316,7 @@ public class CompositionController {
         });
         mainController.gestureModelController.gestureNoteSelection(selectedNotes);
     }
-    
+
     /**
      * Deselects a note or gesture when control is held down.
      * @param rect a NoteRectangle object
@@ -310,14 +336,14 @@ public class CompositionController {
                    if(selectedNotes.contains(rectInGesture)) selectedNotes.remove(rectInGesture);
                }
                break;
-            } 
+            }
         }
     }
-        
+
     /**
-     * Initializes the main controller. This method was necessary for the 
+     * Initializes the main controller. This method was necessary for the
      * class to work.
-     * @param aThis the main controller 
+     * @param aThis the main controller
      */
     protected void init(MainController aThis) {
         mainController = aThis;
@@ -329,7 +355,7 @@ public class CompositionController {
     protected void createBeat(Instrument instrument, double beatX, double beatY, double beatW, ArrayList<NoteRectangle> beatGesture) {
         NoteRectangle beat = new NoteRectangle(beatX, beatY*Constants.HEIGHTRECTANGLE, instrument ,beatW, mainController);
         selectRect();
-        rectAnchorPane.getChildren().add(beat.notes);  
+        rectAnchorPane.getChildren().add(beat.notes);
         rectList.add(beat);
         beatGesture.add(beat);
     }
