@@ -20,9 +20,9 @@ public class CurrentState {
     protected NoteRectangle leftCornerRect() {
         NoteRectangle leftCorner = selectedNotes.get(0);
         for (int i=1; i<selectedNotes.size();i++) {
-            if (selectedNotes.get(i).getY() < leftCorner.getY()) {
+            if (selectedNotes.get(i).getX() < leftCorner.getX()) {
                 leftCorner = selectedNotes.get(i);
-            } else if (selectedNotes.get(i).getY() == leftCorner.getY()) {
+            } else if (selectedNotes.get(i).getX() == leftCorner.getX()) {
                 if (selectedNotes.get(i).getY() < leftCorner.getX()) {
                    leftCorner = selectedNotes.get(i);
                 }
