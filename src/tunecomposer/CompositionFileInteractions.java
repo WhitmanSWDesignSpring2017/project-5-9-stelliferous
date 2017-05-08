@@ -128,7 +128,6 @@ public class CompositionFileInteractions {
      * @param pastedNotes 
      */
     private void initializePastedGestures(String[] notesAndGestures, ArrayList<NoteRectangle> pastedNotes){
-       ArrayList<ArrayList<NoteRectangle>> pastedGestures = new ArrayList<>();
         String[] individualGestureArray = (notesAndGestures[1]).split("@");
         String[] gestureIndices;
         
@@ -219,9 +218,7 @@ public class CompositionFileInteractions {
                
                pastedNotes.add(new NoteRectangle(xLocation+shiftBy,yLocation,instrument, width, mainController));
             }
-           
-           
-       } catch (Exception ex){
+        } catch (Exception ex){
             invokeInvalidFilenameError();
        }
        return pastedNotes;
