@@ -313,9 +313,9 @@ public class NoteRectangle {
      * Create a new EventHandler for the mouseEvent that happens when releasing 
      * the rectangle.
      */        
-        private final EventHandler<MouseEvent> rectangleOnMouseReleasedEventHandler = 
-        new EventHandler<MouseEvent>() {
- 
+    private final EventHandler<MouseEvent> rectangleOnMouseReleasedEventHandler = 
+    new EventHandler<MouseEvent>() {
+
         /**
         * override the handle method in the EventHandler class to create event when
         * the rectangle got released
@@ -327,7 +327,7 @@ public class NoteRectangle {
             if ((selectedNotes.indexOf(this)!= -1) && (!t.isControlDown())) {
                 return;
             }
-            
+
             for (int i=0; i<selectedNotes.size(); i++) {
                 //reset the position of rectangles to fit it between grey lines
                 double currentY = selectedNotes.get(i).getY();
