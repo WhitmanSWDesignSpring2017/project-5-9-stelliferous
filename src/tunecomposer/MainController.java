@@ -203,7 +203,7 @@ public class MainController {
                 }
                 
                 if(rect.getX() < start_time){
-                    duration = (int)(rect.getWidth()-start_time-rect.getX()); 
+                    duration = (int)(rect.getWidth()-start_time+rect.getX()); 
                 }
 
                 //changes instrument according to the current channel
