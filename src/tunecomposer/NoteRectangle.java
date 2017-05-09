@@ -84,6 +84,10 @@ public class NoteRectangle {
         notes.setOnMouseReleased(rectangleOnMouseReleasedEventHandler);
     }
     
+    /**
+     * Sets the mouse event when right button is clicked
+     * @param o MouseEvent
+     */
     private void onNoteRightClick(MouseEvent o) {
         if (o.getButton() == MouseButton.SECONDARY) { 
             mainController.popUpMenu.showContextRect(notes, o.getSceneX(),o.getSceneY());
@@ -291,6 +295,9 @@ public class NoteRectangle {
         mainController.setIsSaved(Boolean.FALSE);
     }
     
+    /**
+     * Set the text of the property pane with this particular noteRectangle information
+     */
     private void setText() {
         Text text = new Text();
         String value = "Properties"+'\n'+"xPosition: "+getX()+'\n'+
@@ -361,6 +368,10 @@ public class NoteRectangle {
         return notes.getWidth();
     }
     
+    /**
+     * Calculate and return  the number of gestures this noteRectanlge is in
+     * @return the number of gestures
+     */
     protected int getNumberOfGestures() {
         int count = 0;
         ArrayList<NoteRectangle> currentGest = new ArrayList<>();
