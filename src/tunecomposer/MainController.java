@@ -53,6 +53,7 @@ public class MainController {
     
     //makes available the controller for the composition
     @FXML CompositionController compositionController = new CompositionController();
+    
     //refers to the end of the current notes
     protected double endcomp = 0;
     
@@ -80,12 +81,16 @@ public class MainController {
     //create a copyPasteActions object
     protected CopyPasteActions copyPasteActions = new CopyPasteActions(this);
     
+    //create a popUpMenu object
     protected PopUpMenu popUpMenu;
     
-    double xCoordinate;
-    double yCoordinate;
+    //Store a boolean value to see whether the paste action is invoked from the menubar
     boolean isMenuBarPaste = true;
+    
+    //Store a boolean value to see whether the copy action is invoked from the menubar
     boolean isMenuBarCopy = true;
+    
+    //Store a boolean value to see whether the copy action is invoked for a cutAction
     boolean isCutAction = false;
     /**
      * Initializes FXML and assigns animation to the redline FXML shape. 
@@ -221,6 +226,9 @@ public class MainController {
         }
     }
     
+    /**
+     * reset the endComp value based on the current CompositionPane State
+     */
     protected void resetEndcomp(){
         for(int i = 0; i < currentState.rectList.size(); i++){
             NoteRectangle rect = currentState.rectList.get(i);

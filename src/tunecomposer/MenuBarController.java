@@ -35,6 +35,9 @@ public class MenuBarController  {
     
     //determines whether the composition is paused
     protected Boolean isPaused = true;
+    
+    //Store the left corner rectangle for pasting a group of rectangles.
+    protected NoteRectangle leftCorner;
 
     //makes available menu items, that they may be enabled/disabled
     @FXML MenuItem undoAction;
@@ -91,7 +94,6 @@ public class MenuBarController  {
         }
     }
   
-    
     /**
      * After checking on whether the current composition is saved, 
      * begins to create a new Composition
@@ -236,6 +238,9 @@ public class MenuBarController  {
         isPaused = false;
     }
     
+    /**
+     * Handles the user choosing to pause the midiPlayer and start from the paused position.
+     */
     @FXML
     protected void handlePauseAction(){
         if (isPaused){
@@ -442,8 +447,7 @@ public class MenuBarController  {
         history.redoAction();
         mainController.compositionController.selectRect();
     }
-    
-    protected NoteRectangle leftCorner;
+
     /**
      * Copies selected notes to the clipboard.
      * @param e a mouse event
@@ -467,8 +471,6 @@ public class MenuBarController  {
         pasteAction.setDisable(false);
         mainController.popUpMenu.enablePaste();
     }
-    
-    
     
     /**
      * Copies selected notes to the clipboard and deletes them from the composition.
@@ -498,7 +500,6 @@ public class MenuBarController  {
         mainController.setIsSaved(Boolean.FALSE);
     }
    
-    
     /**
      * Adds a beat (blocks) to the composition.
      * @param e on blocks beat addition event
@@ -592,7 +593,6 @@ public class MenuBarController  {
         addBeatGesture(beatGesture);
     }
     
-
     /**
      * Adds notes created by a beat menu item to a gesture and to the screen.
      * @param gesture 
@@ -605,7 +605,6 @@ public class MenuBarController  {
         mainController.history.undoableAction();
     }
     
- 
     /**
      * Sets the buttons as enabled or disabled as appropriate.
      */
@@ -650,7 +649,6 @@ public class MenuBarController  {
             ungroupAllAction.setDisable(false);
         }
         if (mainController.gestureModelController.gestureNoteGroups.contains(mainController.getSelectList())){
-            System.out.println("true");
             ungroupAction.setDisable(false);
             mainController.popUpMenu.disOrEnableUngroup(Boolean.FALSE);
         } else {
