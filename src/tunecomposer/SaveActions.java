@@ -224,9 +224,10 @@ public class SaveActions {
         Alert confirmationWindow = new Alert(AlertType.CONFIRMATION,"Are you sure you open a composition without saving?");
         ButtonType buttonTypeYes = new ButtonType("Yes");
         ButtonType buttonTypeNo = new ButtonType("Save");
+        ButtonType buttonTypeAdd = new ButtonType("Add");
         ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-
-        confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel);
+        confirmationWindow.getDialogPane().setPrefSize(400,200);
+        confirmationWindow.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo,buttonTypeCancel,buttonTypeAdd);
 
         Optional<ButtonType> result = confirmationWindow.showAndWait();
         if (result.get() == buttonTypeYes){
@@ -237,6 +238,8 @@ public class SaveActions {
             mainController.menuBarController.handleSaveAction(e);
             mainController.restart();
             mainController.saveActions.openFile(); 
+        } else if (result.get()==buttonTypeAdd){
+            mainController.saveActions.openFile();
         } else {
             confirmationWindow.hide();
         }
