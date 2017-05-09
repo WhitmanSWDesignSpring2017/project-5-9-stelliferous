@@ -27,7 +27,7 @@ import javafx.stage.Stage;
  * @author Zach Turner
  */
 public class SaveActions {
-    
+    //connection to the main Controller
     private final MainController mainController;
     protected String fileOperatedOn = "";
     

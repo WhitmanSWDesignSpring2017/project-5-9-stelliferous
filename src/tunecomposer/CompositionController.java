@@ -44,12 +44,6 @@ public class CompositionController {
     //accesses rectangle that users will control by dragging, renders it invisible
     @FXML Rectangle selectRect;
 
-    //create a new ArrayList to store original X positions of selected rectangles
-    //protected ArrayList<Double> xPositions = new ArrayList<>();
-
-    //create a new ArrayList to store original Y positions of selected rectangles
-   // protected ArrayList<Double> yPositions = new ArrayList<>();
-
     //create a new ArrayList to store original widths of selected rectangles
     protected ArrayList<Double> widths = new ArrayList<>();
 
@@ -68,14 +62,14 @@ public class CompositionController {
 
         //stops ongoing composition-playing events
         mainController.MidiComposition.stop();
-        //mainController.redLineController.lineTransition.setToX(0);
-        //mainController.redLineController.lineTransition.playFromStart();
         mainController.redLineController.lineTransition.stop();
-        //mainController.redLineController.redLine.setStartX(0);
-        //mainController.redLineController.redLine.setEndX(0);
-        //mainController.redLineController.redLine.setVisible(false);
     }
-
+    
+    /**
+     * Handles action when the user left-clicks on the pane. Deselects other notes
+     * and creates a new note.
+     * @param e a MouseEvents
+     */
     private void paneMouseLeftClick(MouseEvent e) {
         //determine whether previously selected notes remain selected when
         //a new note is created; if control is not down, deselect all old notes
@@ -88,18 +82,21 @@ public class CompositionController {
         mainController.setIsSaved(Boolean.FALSE);
         originallySelected.clear();
     }
-
+    
+    /**
+     * Handles action when the user right-clicks on the pane. Determines whether
+     * to show a pop-up window.
+     * @param e 
+     */
     private void paneMouseRightClick(MouseEvent e) {
         if (mainController.menuBarController.leftCorner != null) {
-            
-        
-        if (mainController.isMenuBarCopy) {
-            mouseTranslateX = mouseInitialX-mainController.menuBarController.leftCorner.getX();
-            mouseTranslateY = mouseInitialY-mainController.menuBarController.leftCorner.getY();
-        } else {
-            mouseTranslateX = mouseInitialX-NoteRectangle.xCoordinate;
-            mouseTranslateY = mouseInitialY-NoteRectangle.yCoordinate;
-        }
+            if (mainController.isMenuBarCopy) {
+                mouseTranslateX = mouseInitialX-mainController.menuBarController.leftCorner.getX();
+                mouseTranslateY = mouseInitialY-mainController.menuBarController.leftCorner.getY();
+            } else {
+                mouseTranslateX = mouseInitialX-NoteRectangle.xCoordinate;
+                mouseTranslateY = mouseInitialY-NoteRectangle.yCoordinate;
+            }
         }
         mainController.popUpMenu.showContextPane(rectAnchorPane, e.getSceneX(), e.getSceneY());
     }
@@ -161,7 +158,6 @@ public class CompositionController {
      * @param r the note rectangles being tested for selection
      */
     private void setSelected(NoteRectangle r) {
-
         //check if the rectangle is within the selection rectangle
         if (selectRect.getX() + (selectRect.getWidth()) > r.notes.getX()
                 && selectRect.getX()  < r.notes.getX() + (r.notes.getWidth())
@@ -222,6 +218,7 @@ public class CompositionController {
         } else {
             selectRect.setX(mouseCurrentX);
         }
+        
         if ((mouseInitialY<mouseCurrentY)){
             selectRect.setY(mouseInitialY);
         } else {
@@ -351,7 +348,15 @@ public class CompositionController {
         this.selectedNotes = aThis.getSelectList();
         selectRect.setVisible(false);
     }
-
+    
+    /**
+     * Creates new notes based on the users' selection of a beat.
+     * @param instrument The selected instrument
+     * @param beatX X position of the new note
+     * @param beatY Y position of the new note
+     * @param beatW width of the new note
+     * @param beatGesture the gesture to which the beat is added
+     */
     protected void createBeat(Instrument instrument, double beatX, double beatY, double beatW, ArrayList<NoteRectangle> beatGesture) {
         NoteRectangle beat = new NoteRectangle(beatX, beatY*Constants.HEIGHTRECTANGLE, instrument ,beatW, mainController);
         selectRect();

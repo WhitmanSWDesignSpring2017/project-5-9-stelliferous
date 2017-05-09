@@ -17,6 +17,10 @@ public class CurrentState {
     //creates a list to store selected rectangles
     protected ArrayList<NoteRectangle> selectedNotes = new ArrayList<>();
     
+    /**
+     * Finds the leftmost, top rectangle amongst selectedNotes
+     * @return 
+     */
     protected NoteRectangle leftCornerRect() {
         NoteRectangle leftCorner = selectedNotes.get(0);
         for (int i=1; i<selectedNotes.size();i++) {

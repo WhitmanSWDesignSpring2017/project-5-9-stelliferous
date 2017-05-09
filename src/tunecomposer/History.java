@@ -19,7 +19,8 @@ public class History {
     //Stacks to store a collection of actions that can be undone and redone
     protected Stack<CompositionState> undoableStates = new Stack<>();
     protected Stack<CompositionState> redoableStates = new Stack<>();
-    //ArrayList to store a collection of composition states that have been saved by user
+    
+//ArrayList to store a collection of composition states that have been saved by user
     protected ArrayList<CompositionState> markedStates = new ArrayList<>();
 
     /**
@@ -120,7 +121,7 @@ public class History {
     /**
      * Iterates through the ArrayLists representing a current state to create
      * a deep copy of those states.
-     * @param currentState 
+     * @param currentState the state to be cloned
      */
     private void deepClone(CompositionState currentState) {
         clearCurrentState();

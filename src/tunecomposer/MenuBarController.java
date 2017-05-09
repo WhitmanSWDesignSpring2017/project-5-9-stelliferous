@@ -2,7 +2,6 @@ package tunecomposer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import static java.lang.Math.abs;
 import static tunecomposer.Instrument.MARIMBA;
 import static tunecomposer.Instrument.BOTTLE;
 import static tunecomposer.Instrument.WOOD_BLOCK;
@@ -70,6 +69,11 @@ public class MenuBarController  {
         mainController = aThis; 
     }
     
+    /**
+     * Returns connection to the copyAction object that this MenuBarController
+     * uses
+     * @return the copyActions
+     */
     protected MenuItem returnCopyAction() {
         return copyAction;
     }
@@ -216,8 +220,7 @@ public class MenuBarController  {
         mainController.redLineController.redLine.setEndX(0);
         mainController.redLineController.redLine.setStartX(0);
         //defines end of the composition for the red line to stop at
-                mainController.redLineController.lineTransition.setFromX(0);
-
+        mainController.redLineController.lineTransition.setFromX(0);
         mainController.redLineController.lineTransition.setToX(mainController.endcomp);
         
         //convert endcomp from miliseconds to seconds and set it to be duration
@@ -237,7 +240,7 @@ public class MenuBarController  {
     protected void handlePauseAction(){
         if (isPaused){
             mainController.redLineController.lineTransition.stop();
-            playFromPoint(mainController.redLineController.redLine.getTranslateX(),true);
+            playFromPoint(mainController.redLineController.redLine.getTranslateX());
             
         } else {
             mainController.MidiComposition.stop();
@@ -248,6 +251,10 @@ public class MenuBarController  {
         
     }
     
+    /**
+     * Handles the user choosing to move the composition playing earlier 
+     * "forward". Starts TuneComposer later and skips the red line ahead.
+     */
     @FXML 
     protected void handleForwardAction(){
         mainController.resetEndcomp();
@@ -263,6 +270,10 @@ public class MenuBarController  {
         isPaused = true;
     }
     
+    /**
+     * Handles the user choosing to move the composition playing earlier 
+     * "back". Starts TuneComposer earlier and skips the red line back.
+     */
     @FXML 
     protected void handleBackAction(){
         mainController.resetEndcomp();
@@ -273,7 +284,11 @@ public class MenuBarController  {
         }
     }
     
-    protected void playFromPoint(double point, Boolean forward){
+    /**
+     * Begins playing the composition and moving the red line forward.
+     * @param point the point at which the composition starts
+     */
+    protected void playFromPoint(double point){
         mainController.MidiComposition.clear();
         mainController.buildMidiComposition(point);
         mainController.redLineController.lineTransition.setDuration(Duration.seconds(mainController.endcomp-point).divide(100));

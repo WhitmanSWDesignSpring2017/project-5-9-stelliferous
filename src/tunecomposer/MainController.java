@@ -144,6 +144,10 @@ public class MainController {
         return names;
     }
     
+    /**
+     * Adds text to the property pane.
+     * @param text text to be displayed
+     */
     protected void addText(Text text) {
         propertyPane.getChildren().clear();
         propertyPane.getChildren().add(text);
