@@ -45,8 +45,8 @@
                         <MenuItem fx:id="playButton" accelerator="Shortcut+P" onAction="#handlePlayAction" text="Play" />
                         <MenuItem fx:id="stopButton" accelerator="Shortcut+T" onAction="#handleStopAction" text="Stop" />
                         <MenuItem fx:id="pauseButton" accelerator="K" onAction="#handlePauseAction" text="Pause // Unpause" />
-                        <MenuItem fx:id="forwardButton" accelerator="L" onAction="#handleForwardAction" text="Forward" />
-                        <MenuItem fx:id="backButton" accelerator="J" onAction="#handleBackAction" text="Backwards" />
+                        <!--<MenuItem fx:id="forwardButton" accelerator="L" onAction="#handleForwardAction" text="Forward" />
+                        <MenuItem fx:id="backButton" accelerator="J" onAction="#handleBackAction" text="Backwards" />-->
 
                     </items>
                 </Menu>
