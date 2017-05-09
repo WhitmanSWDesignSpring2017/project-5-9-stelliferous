@@ -198,6 +198,7 @@ public class NoteRectangle {
                 });
             } else {
                 selectedNotes.add(this);
+                mainController.history.undoableAction();
             }
         } else {
             if (o.isControlDown()){
@@ -273,6 +274,7 @@ public class NoteRectangle {
         
         //alerts MainController than an unsaved change has been made
         mainController.setIsSaved(Boolean.FALSE);
+        mainController.history.undoableAction();  
     }
         
     /**
@@ -293,6 +295,7 @@ public class NoteRectangle {
         
         //alerts MainController than an unsaved change has been made
         mainController.setIsSaved(Boolean.FALSE);
+        mainController.history.undoableAction();  
     }
     
     /**
@@ -336,9 +339,7 @@ public class NoteRectangle {
                 selectedNotes.get(i).setY(finalY);   
             }
             mainController.gestureModelController.gestureNoteSelection(selectedNotes);
-            if (!t.isStillSincePress()) {
-                mainController.history.undoableAction();  
-            }
+            
             xCoordinate = getX();
             yCoordinate = getY();
         }

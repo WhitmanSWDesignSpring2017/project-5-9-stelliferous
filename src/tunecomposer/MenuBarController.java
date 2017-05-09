@@ -635,6 +635,7 @@ public class MenuBarController  {
             ungroupAllAction.setDisable(false);
         }
         if (mainController.gestureModelController.gestureNoteGroups.contains(mainController.getSelectList())){
+            System.out.println("true");
             ungroupAction.setDisable(false);
             mainController.popUpMenu.disOrEnableUngroup(Boolean.FALSE);
         } else {
