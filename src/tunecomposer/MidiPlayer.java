@@ -49,6 +49,14 @@ public class MidiPlayer {
     public int getResolution() {
         return sequencer.getSequence().getResolution();
     }
+    
+    /**
+     * Gets whether the composition is playing
+     * @return whether the sequencer is running
+     */
+    public Boolean isPlaying(){
+        return sequencer.isRunning();
+    }
 
     /**
      * Adds a new MidiEvent to the current composition.
@@ -99,7 +107,8 @@ public class MidiPlayer {
      */
     public void play() {
         //altered library class below; starts playing at beginning of comp.
-        sequencer.setTickPosition(0);
+        //sequencer.setTickPosition(0);
+        
         // this next line should be unnecessary, but seems to be needed
         sequencer.setTempoInBPM(beatsPerMinute);
         sequencer.start();
