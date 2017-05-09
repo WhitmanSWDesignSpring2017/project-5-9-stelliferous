@@ -247,7 +247,7 @@ public class MenuBarController  {
         isPaused = !isPaused;
         
     }
-    
+    /**
     @FXML 
     protected void handleForwardAction(){
         mainController.resetEndcomp();
@@ -271,14 +271,14 @@ public class MenuBarController  {
             mainController.MidiComposition.stop();
             mainController.redLineController.lineTransition.pause();
         }
-        isPaused = true;
-    }
+    }*/
     
     protected void playFromPoint(double point, Boolean forward){
         mainController.MidiComposition.clear();
         mainController.buildMidiComposition(point);
         mainController.redLineController.lineTransition.setDuration(Duration.seconds(mainController.endcomp-point).divide(100));
         mainController.redLineController.lineTransition.setFromX(point);
+
         mainController.redLineController.lineTransition.setToX(mainController.endcomp);
         mainController.redLineController.lineTransition.play();
         mainController.MidiComposition.play();
