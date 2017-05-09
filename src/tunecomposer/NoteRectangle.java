@@ -140,14 +140,18 @@ public class NoteRectangle {
     //create a double variable to store the y position when mouse pressed
     protected static double yCoordinate;
     
-    //create a boolean variable to store whether the mouseEvent is for stretch or drag
+    //create a boolean variable to store whether the mouseEvent is for drag
     private boolean drag = false;
+    
+    private boolean stretch = false;
+    
+    private boolean doDrag = false;
     
     /**
      * Change the boolean value drag based on the current position of mouse
      * True if within the dragging rather than stretching zone
      */
-    private void determineDrag() {
+    private boolean determineDrag() {
         for (int i=0; i<selectedNotes.size();i++) {
             //check whether the mouseposition is within the dragging zone
             if ( xCoordinate >= originalX.get(i)
@@ -159,9 +163,10 @@ public class NoteRectangle {
                  && yCoordinate <= (originalY.get(i)+Constants.HEIGHTRECTANGLE) ) 
                 {
                  //if true, change the boolean value drag to true
-                drag = true;
+                return true;
                 }
-        }    
+        }
+        return false;
     }
 
     /**
@@ -177,7 +182,8 @@ public class NoteRectangle {
         originalWidth.clear();
         //reset the stretching operation to false
         drag = false;
-            
+        stretch = false;
+   
         //if a selected note is in a gesture, select other notes in that gesture
         ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
         for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
@@ -198,11 +204,12 @@ public class NoteRectangle {
                 });
             } else {
                 selectedNotes.add(this);
-                mainController.history.undoableAction();
             }
+            mainController.history.undoableAction();
         } else {
             if (o.isControlDown()){
                 mainController.compositionController.deselectWhenControlDown(this);
+                mainController.history.undoableAction();
             } 
         }
         
@@ -215,9 +222,7 @@ public class NoteRectangle {
             //add all widths of the selected rectangles to the arraylist
             originalWidth.add(selectedNotes.get(i).getWidth());
         }
-      
-        //determine whether should be performing stretch or drag
-        determineDrag();
+        doDrag = determineDrag();
         mainController.compositionController.selectRect();
     }
     
@@ -241,10 +246,12 @@ public class NoteRectangle {
             double offsetY = t.getY() - yCoordinate;
 
             //perform either stretching or dragging operation on all selected rectangles.
-            if (drag) {
+            if (doDrag) {
                 doDragAction(offsetX,offsetY);
+                drag = true;
             } else {
                 doStretchAction(offsetX);
+                stretch = true;
             }
             //reset gestureRectangles
             mainController.gestureModelController.gestureNoteSelection(selectedNotes);
@@ -274,7 +281,6 @@ public class NoteRectangle {
         
         //alerts MainController than an unsaved change has been made
         mainController.setIsSaved(Boolean.FALSE);
-        mainController.history.undoableAction();  
     }
         
     /**
@@ -294,8 +300,7 @@ public class NoteRectangle {
         }
         
         //alerts MainController than an unsaved change has been made
-        mainController.setIsSaved(Boolean.FALSE);
-        mainController.history.undoableAction();  
+        mainController.setIsSaved(Boolean.FALSE); 
     }
     
     /**
@@ -327,9 +332,6 @@ public class NoteRectangle {
         @Override
         public void handle(MouseEvent t) {
             setText();
-            if ((selectedNotes.indexOf(this)!= -1) && (!t.isControlDown())) {
-                return;
-            }
 
             for (int i=0; i<selectedNotes.size(); i++) {
                 //reset the position of rectangles to fit it between grey lines
@@ -339,6 +341,13 @@ public class NoteRectangle {
                 selectedNotes.get(i).setY(finalY);   
             }
             mainController.gestureModelController.gestureNoteSelection(selectedNotes);
+            
+            if (drag) {
+                mainController.history.undoableAction();
+            } else if (stretch) {
+                mainController.history.undoableAction();
+            }
+            
             
             xCoordinate = getX();
             yCoordinate = getY();
