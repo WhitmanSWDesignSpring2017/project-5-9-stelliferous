@@ -233,24 +233,19 @@ public class MenuBarController  {
         isPaused = false;
     }
     
-    double startingDifference = 0;
-    
     @FXML
     protected void handlePauseAction(){
-        System.out.println("paused");
         if (isPaused){
-            System.out.println(mainController.redLineController.redLine.getStartX());
-            //playFromPoint(mainController.redLineController.redLine.startXProperty(),true);
+            mainController.redLineController.lineTransition.stop();
+            playFromPoint(mainController.redLineController.redLine.getTranslateX(),true);
             
         } else {
             mainController.MidiComposition.stop();
             mainController.redLineController.lineTransition.pause();
-            System.out.println("cat: "+mainController.redLineController.redLine.getTranslateX());
-            
             stopButton.setDisable(true);
         }
-        
         isPaused = !isPaused;
+        
     }
     
     @FXML 
@@ -259,9 +254,8 @@ public class MenuBarController  {
         if(mainController.redLineController.redLine.getEndX()>= mainController.endcomp){
             return;
         }
-        mainController.redLineController.redLine.setEndX(mainController.redLineController.redLine.getEndX()+20);
-        mainController.redLineController.redLine.setStartX(mainController.redLineController.redLine.getStartX()+20);
-        startingDifference += 20;
+        
+        mainController.redLineController.redLine.setTranslateX(mainController.redLineController.redLine.getTranslateX()+20);
         if(mainController.MidiComposition.isPlaying()){
             mainController.MidiComposition.stop();
             mainController.redLineController.lineTransition.pause();
@@ -271,9 +265,8 @@ public class MenuBarController  {
     
     @FXML 
     protected void handleBackAction(){
-        mainController.redLineController.redLine.setStartX(mainController.redLineController.redLine.getEndX()-20);
-        mainController.redLineController.redLine.setEndX(mainController.redLineController.redLine.getEndX()-20);
-        startingDifference -= 20;
+        mainController.resetEndcomp();
+        mainController.redLineController.redLine.setTranslateX(mainController.redLineController.redLine.getTranslateX()-20);
         if(mainController.MidiComposition.isPlaying()){
             mainController.MidiComposition.stop();
             mainController.redLineController.lineTransition.pause();
@@ -282,31 +275,13 @@ public class MenuBarController  {
     }
     
     protected void playFromPoint(double point, Boolean forward){
-        double startCompFrom = abs(mainController.redLineController.redLine.getTranslateX()) + point;
-        mainController.MidiComposition.stop();
-        mainController.redLineController.lineTransition.pause();
-
         mainController.MidiComposition.clear();
-        mainController.buildMidiComposition(startCompFrom);
-        mainController.MidiComposition.play();
-
-        /**if(point < 0){
-            point *= -2;
-        }
-
-        Duration timeToPlay;
-        if(point != 0){
-         timeToPlay = mainController.redLineController.lineTransition.getCurrentTime().add(Duration.seconds((point)));
-         System.out.println(timeToPlay);
-        } else {
-         timeToPlay = Duration.seconds(mainController.endcomp/100);
-        }*/
-        mainController.redLineController.lineTransition.setDuration(Duration.seconds(mainController.endcomp-startCompFrom).divide(100));
-        //mainController.redLineController.lineTransition.setDuration(Duration.seconds(5));
-        mainController.redLineController.lineTransition.setFromX(startCompFrom);
+        mainController.buildMidiComposition(point);
+        mainController.redLineController.lineTransition.setDuration(Duration.seconds(mainController.endcomp-point).divide(100));
+        mainController.redLineController.lineTransition.setFromX(point);
         mainController.redLineController.lineTransition.setToX(mainController.endcomp);
-        //mainController.redLineController.lineTransition.setDuration(timeToPlay);
         mainController.redLineController.lineTransition.play();
+        mainController.MidiComposition.play();
         stopButton.setDisable(false);
     }
     
