@@ -239,7 +239,8 @@ public class MenuBarController  {
     protected void handlePauseAction(){
         System.out.println("paused");
         if (isPaused){
-            playFromPoint(startingDifference,true);
+            System.out.println(mainController.redLineController.redLine.getStartX());
+            //playFromPoint(mainController.redLineController.redLine.startXProperty(),true);
             
         } else {
             mainController.MidiComposition.stop();
@@ -263,24 +264,23 @@ public class MenuBarController  {
         startingDifference += 20;
         if(mainController.MidiComposition.isPlaying()){
             mainController.MidiComposition.stop();
-            playFromPoint(startingDifference,true);
+            mainController.redLineController.lineTransition.pause();
         }
+        isPaused = true;
     }
     
     @FXML 
     protected void handleBackAction(){
-        System.out.println("back");
         mainController.redLineController.redLine.setStartX(mainController.redLineController.redLine.getEndX()-20);
         mainController.redLineController.redLine.setEndX(mainController.redLineController.redLine.getEndX()-20);
         startingDifference -= 20;
         if(mainController.MidiComposition.isPlaying()){
             mainController.MidiComposition.stop();
-            playFromPoint(startingDifference,true);
+            mainController.redLineController.lineTransition.pause();
         }
     }*/
     
     protected void playFromPoint(double point, Boolean forward){
-        System.out.println("Transition is currently starting from: "+mainController.redLineController.redLine.getTranslateX());
         double startCompFrom = abs(mainController.redLineController.redLine.getTranslateX()) + point;
         mainController.MidiComposition.stop();
         mainController.redLineController.lineTransition.pause();
