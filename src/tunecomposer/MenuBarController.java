@@ -251,7 +251,7 @@ public class MenuBarController  {
         
         isPaused = !isPaused;
     }
-    
+    /**
     @FXML 
     protected void handleForwardAction(){
         mainController.resetEndcomp();
@@ -277,7 +277,7 @@ public class MenuBarController  {
             mainController.MidiComposition.stop();
             playFromPoint(startingDifference,true);
         }
-    }
+    }*/
     
     protected void playFromPoint(double point, Boolean forward){
         System.out.println("Transition is currently starting from: "+mainController.redLineController.redLine.getTranslateX());
@@ -289,23 +289,9 @@ public class MenuBarController  {
         mainController.buildMidiComposition(startCompFrom);
         mainController.MidiComposition.play();
 
-        /**if(point < 0){
-            point *= -2;
-        }
-
-        Duration timeToPlay;
-        if(point != 0){
-         timeToPlay = mainController.redLineController.lineTransition.getCurrentTime().add(Duration.seconds((point)));
-         System.out.println(timeToPlay);
-        } else {
-         timeToPlay = Duration.seconds(mainController.endcomp/100);
-        }*/
-        System.out.println("Duration Play From: "+Duration.seconds(mainController.endcomp-startCompFrom).toSeconds());
         mainController.redLineController.lineTransition.setDuration(Duration.seconds(mainController.endcomp-startCompFrom).divide(100));
-        //mainController.redLineController.lineTransition.setDuration(Duration.seconds(5));
         mainController.redLineController.lineTransition.setFromX(startCompFrom);
         mainController.redLineController.lineTransition.setToX(mainController.endcomp);
-        //mainController.redLineController.lineTransition.setDuration(timeToPlay);
         mainController.redLineController.lineTransition.play();
         stopButton.setDisable(false);
     }
