@@ -61,6 +61,7 @@ public class NoteRectangle {
 
         //creates a new rectangle object for visual representation
         notes.setFill(instrument.getDisplayColor()); 
+        setText();
     }
     
     protected void changeInstrument(Instrument instrument) {
