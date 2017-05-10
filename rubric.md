@@ -30,7 +30,7 @@
 ### Release tag - 2/2 points
 * 2/2 The release is tagged as project8-release.
 
-## Reflection and elegance - 19/20 points
+## Reflection and elegance - 18.5/20 points
 
 * 4/4 UML diagram is accurate and complete.
 * 2/2 Design overview addresses changes from Project 7 in general.
@@ -43,4 +43,8 @@
     * _I also appreciate your reflecitons on design pattern applications - very timely._
 * 2/2 Velocity is presented. _:-)_
 * 1/1 Team retrospective is presented.
-* 3/3 New classes/methods are reasonably self-explanatory.
+* 2.5/3 New classes/methods are reasonably self-explanatory. _I looked at SaveActions and CompositionFileInteractions._
+    * _CompositionFileInteractions is an awkward name. Could it be more intention-revealing?_
+    * _Remember to always include internal documentation for the purpose/role of private fields._
+    * _Methods are looking better. Although some methods are longer, I can't see a way around having a three-way conditional to handle Yes/No/Cancel._
+    * _Appropriate use of catching an exception!_
