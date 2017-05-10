@@ -1,24 +1,27 @@
 # GRADE: 64/64 
 
-## Functional and implementation requirements: 44/44 points 
+## Functional and implementation requirements: 43/44 points 
 
 ### Menu: 6/6 points
 * 2/2 Add to the **File** menu: **About...**, **New**, **Open...**, **Save**, and **Save as...**. Use standard shortcuts: Shortcut-N, Shortcut-O, Shortcut-S, and Shortcut-Shift-S.  **About** need not have a shortcut.
 * 2/2 There should be a separator between the **About...** menu item and the rest of the **File** menu items and there should be a separator between the **Exit** menu item (placed at the bottom of the menu) and the rest of the menu items.
 * 2/2 Each of the five new menu items should be disabled if their action is not appropriate to the current application state. In particular, the **Save** menu item should be disabled if the composition has not been edited since the previous save.
 
-### Dialogs: 18/18 points
+### Dialogs: 19/18 points
 * 3/3 When the **About...** menu item is selected, a dialog box appears whose text includes the authors of the software.  The dialog should have only a **Close** or **OK** button.
-* 2/2 When the **Save as...** menu item is chosen, a dialog appears in which the user is asked for the name of the file into which the sounds in the composition panel are to be saved. If the user enters a legal name and presses the **OK** button in the dialog, then the file should be saved.  If the user presses the **Cancel** button in the dialog, then the dialog closes and no saving occurs.
+* 1/2 When the **Save as...** menu item is chosen, a dialog appears in which the user is asked for the name of the file into which the sounds in the composition panel are to be saved. If the user enters a legal name and presses the **OK** button in the dialog, then the file should be saved.  If the user presses the **Cancel** button in the dialog, then the dialog closes and no saving occurs.
+    * _Use file chooser dialog for improved usability._
 * 2/2 When the **Save** menu item is chosen for a composition that was not loaded from a file nor ever saved to a file, it behaves like the **Save as...** menu item. If the current composition was loaded from a file or previously saved to a file, then the composition is saved to that file. No dialog appears in that case.
 * 4/4 If the **New** menu item is chosen and the current composition has already been saved to a file, then the composition panel is cleared as if the application had just started up. If the current composition has been changed since it was last saved to a file, a dialog appears asking whether you want to save the composition before closing it. There should be 3 options: **Yes**, **No**, **Cancel**. If the user chooses **No** from the dialog, the current composition is disposed of and the composition panel is cleared.  If the user chooses **Cancel**, the dialog just disappears. If the user chooses **Yes**, the behavior is the same as if the **Save** menu item was chosen.
 * 3/3 If the **Open...** menu item is chosen, it behaves like the **New** menu item with regard to saving the current composition. Then, if the user hasn`t canceled, an dialog appears in which the user can select a file to open. If the user chooses a valid file, it is loaded into the composition pane. If the user cancels, the dialog disappears. If the user chooses an invalid file, an error message is displayed and the open dialog stays visible.
 * 4/4 If the **Exit** menu item is chosen and there have been changes made to the composition since it was last saved, then a dialog appears asking the user whether she wants to save the composition before exiting. If the user chooses **No** from the dialog, then the program exits.  If the user chooses **Cancel**, then the exiting is canceled and the application stays running. If the user chooses **Yes**, then the application behaves as if the **Save** menu item was chosen, after which the application exits.
-* 0/0 If the user clicks the window close button, the behavior should be the same as for the **Exit** menu item.
+* 2/0 If the user clicks the window close button, the behavior should be the same as for the **Exit** menu item.
 
-### Save/Open Implementation: 10/10 points
+### Save/Open Implementation: 8/10 points
 * 4/4 Saved files include complete information about all notes and gestures in plain text.
-* 4/4 Opening a saved file restores all notes and gestures from the saved composition.
+    * _You may want to choose another file extension more specific than .txt._
+* 2/4 Opening a saved file restores all notes and gestures from the saved composition.
+    * _BUG: When opening a saved composition, the composition pane is not cleared before adding notes from the saved composition, so that what appears is not an accurate representation of the saved file._
 * 2/2 Starting a new composition or opening a file should cause all undo/redo state to be cleared. You cannot undo the saving or loading of a file or a new composition.
 
 ### No regressions - 8/8 points
