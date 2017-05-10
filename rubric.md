@@ -1,4 +1,6 @@
-# GRADE: 64/64 
+# GRADE: 61.5/64 
+
+_Well done!_
 
 ## Functional and implementation requirements: 43/44 points 
 
