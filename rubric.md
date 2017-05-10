@@ -27,13 +27,17 @@
 ### Release tag - 2/2 points
 * 2/2 The release is tagged as project8-release.
 
-## Reflection and elegance - 20/20 points
+## Reflection and elegance - 19/20 points
 
 * 4/4 UML diagram is accurate and complete.
 * 2/2 Design overview addresses changes from Project 7 in general.
-* 1/1 Design overview explains which classes are responsible for saving and loading files, and how they interact with other classes.
-* 1/1 Design overview addresses which classes are responsible for composition state management (Does the composition have a filename? Has it changed since it was created, opened, or last saved?), and how they interact with other classes.
+    * _For project 9, please focus on telling me what's new! Delete stuff I've already read (or save it in another file)._
+* 1/1 Design overview explains which classes are responsible for saving and loading files, and how they interact with other classes. _- SaveActions, CompositionToFile_
+* 0/1 Design overview addresses which classes are responsible for composition state management (Does the composition have a filename? Has it changed since it was created, opened, or last saved?), and how they interact with other classes.
 * 6/6 Assessment of what is elegant and what is not thoughtfully addresses object-oriented design principles.
-* 2/2 Velocity is presented. 
+    * _I like your discussion of appropriate responsibilities and minimizing duplication._
+    * _I also appreciate your discussion of the Law of Demeter. I think you are noting a tradeoff between following that law and reducing direct coupling. To reduce indirect coupling, you may also think about whether it is appropriate to add some delegation methods to your main controller, to expose only the necessary methods of its composed objects.*
+    * _I also appreciate your reflecitons on design pattern applications - very timely.*
+* 2/2 Velocity is presented. _:-)_
 * 1/1 Team retrospective is presented.
 * 3/3 New classes/methods are reasonably self-explanatory.
