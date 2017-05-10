@@ -59,7 +59,6 @@ public class CopyPasteActions {
             copySelected();
         }
         String pastedNotes = CLIPBOARD.getString();
-        System.out.println(pastedNotes);
         
         mainController.compositionFileInteractions.notesFromString(pastedNotes);
         copySelected();
