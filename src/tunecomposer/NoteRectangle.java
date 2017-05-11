@@ -37,6 +37,7 @@ public class NoteRectangle {
     //link the class with mainController
     private MainController mainController;
     
+    
     /**
      * Initializes a NoteRectangle object.
      * @param x x-coordinate of upper-left hand corner of the rectangle
@@ -147,6 +148,7 @@ public class NoteRectangle {
     
     private boolean doDrag = false;
     
+    private boolean selectionMove = false;
     /**
      * Change the boolean value drag based on the current position of mouse
      * True if within the dragging rather than stretching zone
@@ -181,9 +183,11 @@ public class NoteRectangle {
         originalY.clear();
         originalWidth.clear();
         //reset the stretching operation to false
+        doDrag = false;
         drag = false;
         stretch = false;
-   
+        selectionMove = false;
+        
         //if a selected note is in a gesture, select other notes in that gesture
         ArrayList<NoteRectangle> selectNotes = new ArrayList<>();
         for (int i=0 ;i < mainController.gestureModelController.gestureNoteGroups.size();i++) {
@@ -205,7 +209,7 @@ public class NoteRectangle {
             } else {
                 selectedNotes.add(this);
             }
-            mainController.history.undoableAction();
+            selectionMove = true;
         } else {
             if (o.isControlDown()){
                 mainController.compositionController.deselectWhenControlDown(this);
@@ -346,9 +350,10 @@ public class NoteRectangle {
                 mainController.history.undoableAction();
             } else if (stretch) {
                 mainController.history.undoableAction();
+            } else if (selectionMove) {
+                mainController.history.undoableAction();
             }
-            
-            
+             
             xCoordinate = getX();
             yCoordinate = getY();
         }
