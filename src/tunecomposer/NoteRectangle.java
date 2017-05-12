@@ -141,16 +141,21 @@ public class NoteRectangle {
     //create a double variable to store the y position when mouse pressed
     protected static double yCoordinate;
     
-    //create a boolean variable to store whether the mouseEvent is for drag
+    //create a boolean variable to store whether the rectangle is dragged or not
     private boolean drag = false;
     
+    //create a boolean variable to store whether the rectangle is stretched or not
     private boolean stretch = false;
     
+    //create a boolean variable to store whether the mouseEvent is for stretch on the right edge
     private boolean rightStretch = false;
     
+    //create a boolean variable to store whether the mouseEvent is for drag
     private boolean doDrag = false;
     
+    //create a boolean variable to store whether the mouseEvent changed the selectNotes or not
     private boolean selectionMove = false;
+    
     /**
      * Change the boolean value drag based on the current position of mouse
      * True if within the dragging rather than stretching zone
@@ -173,6 +178,10 @@ public class NoteRectangle {
         return false;
     }
     
+    /**
+     * Change the boolean value drag based on the current position of mouse
+     * True if within the right stretch zone
+     */
     private boolean determineRightStretch() {
         for (int i=0; i<selectedNotes.size();i++) {
             //check whether the mouseposition is within the dragging zone
@@ -261,8 +270,8 @@ public class NoteRectangle {
     private final EventHandler<MouseEvent> rectangleOnMouseDraggedEventHandler = 
         new EventHandler<MouseEvent>() {
 
-        /**
-        * override the handle method in the EventHandler class to create event when
+       /**
+        * Override the handle method in the EventHandler class to create event when
         * the rectangle got dragged
         * @param t occurs on mouse drag event 
         */ 
@@ -288,10 +297,13 @@ public class NoteRectangle {
             //reset gestureRectangles
             mainController.gestureModelController.gestureNoteSelection(selectedNotes);
         }
-
-        
     };
 
+    /**
+     * Changes the rectangle according to the nature of the left stretch action.
+     * @param i the rectangle being acted on
+     * @param offsetX the distance the mouse moves horizontally
+     */
     private void doLeftStretchAction(double offsetX) {
         System.out.println(offsetX);
         for (int i=0; i<selectedNotes.size();i++) {
@@ -310,12 +322,12 @@ public class NoteRectangle {
                 selectedNotes.get(i).setWidth(Constants.STRETCHZONE);
             }
         }
-        
         //alerts MainController than an unsaved change has been made
         mainController.setIsSaved(Boolean.FALSE);
     }
+    
     /**
-     * Changes the rectangle according to the nature of the stretch action.
+     * Changes the rectangle according to the nature of the right stretch action.
      * @param i the rectangle being acted on
      * @param offsetX the distance the mouse moves horizontally
      */
