@@ -91,7 +91,7 @@ public class NoteRectangle {
      */
     private void onNoteRightClick(MouseEvent o) {
         if (o.getButton() == MouseButton.SECONDARY) { 
-            mainController.popUpMenu.showContextRect(notes, o.getSceneX(),o.getSceneY());
+            mainController.popUpMenu.showContextRect(notes, o.getScreenX(),o.getScreenY());
         }
     }
     

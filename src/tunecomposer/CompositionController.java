@@ -98,7 +98,7 @@ public class CompositionController {
                 mouseTranslateY = mouseInitialY-NoteRectangle.yCoordinate;
             }
         }
-        mainController.popUpMenu.showContextPane(rectAnchorPane, e.getSceneX(), e.getSceneY());
+        mainController.popUpMenu.showContextPane(rectAnchorPane, e.getScreenX(), e.getScreenY());
     }
 
     /**
