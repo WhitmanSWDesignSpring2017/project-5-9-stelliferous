@@ -282,6 +282,9 @@ public class MenuBarController  {
     @FXML 
     protected void handleBackAction(){
         mainController.resetEndcomp();
+        if(mainController.redLineController.redLine.getTranslateX()<=0){
+            return;
+        }
         mainController.redLineController.redLine.setTranslateX(mainController.redLineController.redLine.getTranslateX()-20);
         if(mainController.MidiComposition.isPlaying()){
             mainController.MidiComposition.stop();
