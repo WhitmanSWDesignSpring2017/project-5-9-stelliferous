@@ -146,6 +146,8 @@ public class NoteRectangle {
     
     private boolean stretch = false;
     
+    private boolean rightStretch = false;
+    
     private boolean doDrag = false;
     
     private boolean selectionMove = false;
@@ -156,9 +158,28 @@ public class NoteRectangle {
     private boolean determineDrag() {
         for (int i=0; i<selectedNotes.size();i++) {
             //check whether the mouseposition is within the dragging zone
-            if ( xCoordinate >= originalX.get(i)
+            if ( xCoordinate >= originalX.get(i) + Constants.STRETCHZONE
                  &&
                  xCoordinate <= (originalX.get(i)
+                                 +selectedNotes.get(i).getWidth()-Constants.STRETCHZONE)
+                 && 
+                 yCoordinate >= originalY.get(i)
+                 && yCoordinate <= (originalY.get(i)+Constants.HEIGHTRECTANGLE) ) 
+                {
+                 //if true, change the boolean value drag to true
+                return true;
+                }
+        }
+        return false;
+    }
+    
+    private boolean determineRightStretch() {
+        for (int i=0; i<selectedNotes.size();i++) {
+            //check whether the mouseposition is within the dragging zone
+            if ( xCoordinate <= originalX.get(i)
+                                 +selectedNotes.get(i).getWidth()
+                 &&
+                 xCoordinate >= (originalX.get(i)
                                  +selectedNotes.get(i).getWidth()-Constants.STRETCHZONE)
                  && 
                  yCoordinate >= originalY.get(i)
@@ -185,6 +206,7 @@ public class NoteRectangle {
         //reset the stretching operation to false
         doDrag = false;
         drag = false;
+        rightStretch = false;
         stretch = false;
         selectionMove = false;
         
@@ -227,6 +249,7 @@ public class NoteRectangle {
             originalWidth.add(selectedNotes.get(i).getWidth());
         }
         doDrag = determineDrag();
+        rightStretch = determineRightStretch();
         mainController.compositionController.selectRect();
     }
     
@@ -254,20 +277,49 @@ public class NoteRectangle {
                 doDragAction(offsetX,offsetY);
                 drag = true;
             } else {
-                doStretchAction(offsetX);
+                if (rightStretch) {
+                    doRightStretchAction(offsetX);
+                } else {
+                    doLeftStretchAction(offsetX);
+                }
                 stretch = true;
-            }
+            } 
+                
             //reset gestureRectangles
             mainController.gestureModelController.gestureNoteSelection(selectedNotes);
         }
+
+        
     };
 
+    private void doLeftStretchAction(double offsetX) {
+        System.out.println(offsetX);
+        for (int i=0; i<selectedNotes.size();i++) {
+            //get the width of rectangles.
+            double origwidth = originalWidth.get(i);
+            double origX = originalX.get(i);
+            
+            //if a 'note' rectangle is not 5px or more, change nothing
+            if (originalWidth.get(i)-offsetX >= Constants.STRETCHZONE ){
+                //set rectangle width and x
+                selectedNotes.get(i).setX(origX+offsetX);
+                selectedNotes.get(i).setWidth(origwidth-offsetX);
+            } else {
+                //if under 5px, change to 5px
+                selectedNotes.get(i).setX(origX+origwidth-Constants.STRETCHZONE);
+                selectedNotes.get(i).setWidth(Constants.STRETCHZONE);
+            }
+        }
+        
+        //alerts MainController than an unsaved change has been made
+        mainController.setIsSaved(Boolean.FALSE);
+    }
     /**
      * Changes the rectangle according to the nature of the stretch action.
      * @param i the rectangle being acted on
      * @param offsetX the distance the mouse moves horizontally
      */
-    private void doStretchAction(double offsetX) {
+    private void doRightStretchAction(double offsetX) {
         for (int i=0; i<selectedNotes.size();i++) {
             //get the width of rectangles.
             double origwidth = originalWidth.get(i);
