@@ -12,7 +12,7 @@ import javafx.scene.control.Alert;
  * @author Kaylin Jarriel
  * @author Zach Turner
  */
-public class CompositionFileInteractions {
+public class CompositionConversion {
     //allows access to the program's main controller
     private MainController mainController;
     
@@ -21,7 +21,7 @@ public class CompositionFileInteractions {
      * MainController upon creation.
      * @param aThis the mainController
      */
-    public CompositionFileInteractions(MainController aThis) {
+    public CompositionConversion(MainController aThis) {
         this.mainController = aThis;
     }
     
@@ -150,6 +150,8 @@ public class CompositionFileInteractions {
      */
     private void initializePasted(String[] notesAndGestures, ArrayList<NoteRectangle> pastedNotes) throws FileNotFoundException{     
        try {
+                       mainController.restart();
+
             //adds any gestures
             if(notesAndGestures.length > 1){
                 initializePastedGestures(notesAndGestures, pastedNotes);

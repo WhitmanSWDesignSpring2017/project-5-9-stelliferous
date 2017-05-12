@@ -35,7 +35,7 @@ public class CopyPasteActions {
     protected void copySelected(){
         mainController.menuBarController.leftCorner = mainController.currentState.leftCornerRect();
         content.put(DataFormat.PLAIN_TEXT, 
-                    mainController.compositionFileInteractions.notesToString(mainController.getSelectList(),
+                    mainController.compositionConversions.notesToString(mainController.getSelectList(),
                     mainController.gestureModelController.gestureNoteGroups,true));
         CLIPBOARD.setContent(content);
     }
@@ -45,7 +45,7 @@ public class CopyPasteActions {
      */
     protected void copyComposition(){
         content.put(DataFormat.PLAIN_TEXT, 
-                    mainController.compositionFileInteractions.notesToString(mainController.getRectList(),
+                    mainController.compositionConversions.notesToString(mainController.getRectList(),
                     mainController.gestureModelController.gestureNoteGroups,true));
         CLIPBOARD.setContent(content);
     }
@@ -60,7 +60,7 @@ public class CopyPasteActions {
         }
         String pastedNotes = CLIPBOARD.getString();
         
-        mainController.compositionFileInteractions.notesFromString(pastedNotes);
+        mainController.compositionConversions.notesFromString(pastedNotes);
         copySelected();
     }
 }
