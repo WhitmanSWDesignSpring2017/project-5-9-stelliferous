@@ -106,9 +106,6 @@ public class MidiPlayer {
      * immediately.
      */
     public void play() {
-        //altered library class below; starts playing at beginning of comp.
-        //sequencer.setTickPosition(0);
-        
         // this next line should be unnecessary, but seems to be needed
         sequencer.setTempoInBPM(beatsPerMinute);
         sequencer.start();

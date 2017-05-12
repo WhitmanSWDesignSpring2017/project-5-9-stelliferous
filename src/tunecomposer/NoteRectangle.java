@@ -208,10 +208,12 @@ public class NoteRectangle {
     private void onNotePress(MouseEvent o){
         xCoordinate = o.getX();
         yCoordinate = o.getY();
+        
         //clear all three arraylists, resets coordinates
         originalX.clear();
         originalY.clear();
         originalWidth.clear();
+        
         //reset the stretching operation to false
         doDrag = false;
         drag = false;

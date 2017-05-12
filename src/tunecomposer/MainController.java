@@ -192,9 +192,6 @@ public class MainController {
         //initialize a NoteRectangle object
         NoteRectangle rect;
         
-        //time into the note at which to start
-        
-        
         //iterates through all rectangles in the composition
         for(int i = 0; i < currentState.rectList.size(); i++){
             rect = currentState.rectList.get(i);

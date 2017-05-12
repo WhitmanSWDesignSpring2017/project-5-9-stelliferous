@@ -20,7 +20,7 @@ public class History {
     protected Stack<CompositionState> undoableStates = new Stack<>();
     protected Stack<CompositionState> redoableStates = new Stack<>();
     
-//ArrayList to store a collection of composition states that have been saved by user
+    //ArrayList to store a collection of composition states that have been saved by user
     protected ArrayList<CompositionState> markedStates = new ArrayList<>();
 
     /**

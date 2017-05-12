@@ -38,6 +38,7 @@ public class CompositionController {
     protected double mouseInitialY = 0;
     protected double mouseInitialX = 0;
 
+    //calculates distance moved by mouse
     protected double mouseTranslateX = 0;
     protected double mouseTranslateY = 0;
 
@@ -56,7 +57,6 @@ public class CompositionController {
      * @param e a mouse event (on-click, on-release, on-drag, etc)
      */
     private void reset_coordinates(MouseEvent e){
-        //resets mouse coordinates
         mouseInitialX = (int)e.getX();
         mouseInitialY = (int)e.getY();
 

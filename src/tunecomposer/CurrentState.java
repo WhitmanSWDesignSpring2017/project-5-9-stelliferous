@@ -19,7 +19,7 @@ public class CurrentState {
     
     /**
      * Finds the leftmost, top rectangle amongst selectedNotes
-     * @return 
+     * @return a NoteRectangle
      */
     protected NoteRectangle leftCornerRect() {
         NoteRectangle leftCorner = selectedNotes.get(0);

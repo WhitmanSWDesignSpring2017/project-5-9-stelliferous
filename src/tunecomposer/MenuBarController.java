@@ -62,6 +62,8 @@ public class MenuBarController  {
     @FXML MenuItem saveAsButton;
     @FXML MenuItem saveButton;
     @FXML MenuItem pauseButton;
+    @FXML MenuItem forwardButton;
+    @FXML MenuItem backButton;
 
     /**
      * Initializes the main controller. This method was necessary for the 
@@ -221,6 +223,7 @@ public class MenuBarController  {
         mainController.buildMidiComposition(0);
         mainController.redLineController.redLine.setEndX(0);
         mainController.redLineController.redLine.setStartX(0);
+        
         //defines end of the composition for the red line to stop at
         mainController.redLineController.lineTransition.setFromX(0);
         mainController.redLineController.lineTransition.setToX(mainController.endcomp);
@@ -618,12 +621,16 @@ public class MenuBarController  {
             saveAsButton.setDisable(true);
             pauseButton.setDisable(true);
             copyCompositionAction.setDisable(true);
+            forwardButton.setDisable(true);
+            backButton.setDisable(true);
         } else {
             selectAllAction.setDisable(false);
             playButton.setDisable(false);
             saveAsButton.setDisable(false);
             pauseButton.setDisable(false);
             copyCompositionAction.setDisable(false);
+            forwardButton.setDisable(false);
+            backButton.setDisable(false);
         }
         if (mainController.getSelectList().isEmpty()) {
             deleteAction.setDisable(true);
@@ -695,6 +702,8 @@ public class MenuBarController  {
         saveButton.setDisable(true);
         saveAsButton.setDisable(true);
         pauseButton.setDisable(true);
+        forwardButton.setDisable(true);
+        backButton.setDisable(true);
     }
     
     /**
