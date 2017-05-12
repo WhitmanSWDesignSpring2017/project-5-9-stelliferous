@@ -150,8 +150,6 @@ public class CompositionConversion {
      */
     private void initializePasted(String[] notesAndGestures, ArrayList<NoteRectangle> pastedNotes) throws FileNotFoundException{     
        try {
-                       mainController.restart();
-
             //adds any gestures
             if(notesAndGestures.length > 1){
                 initializePastedGestures(notesAndGestures, pastedNotes);
