@@ -305,7 +305,6 @@ public class NoteRectangle {
      * @param offsetX the distance the mouse moves horizontally
      */
     private void doLeftStretchAction(double offsetX) {
-        System.out.println(offsetX);
         for (int i=0; i<selectedNotes.size();i++) {
             //get the width of rectangles.
             double origwidth = originalWidth.get(i);
