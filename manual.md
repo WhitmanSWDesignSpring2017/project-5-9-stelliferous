@@ -1,7 +1,7 @@
 Stelliferous Project 9 Manual
 =============================
 
-Special Features
+New Special Features
 ------------------
 
 **Change the Instrument**
