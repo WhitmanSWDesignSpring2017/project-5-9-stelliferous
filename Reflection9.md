@@ -1,7 +1,7 @@
 Dear Professor Davis,
 
 >Give a concise overview of your design. How did you divide the code into classes and methods? How does your design for Project 9 differ from your design to Project 8? How did you respond to feedback? (If I get it to you in time.)
-____
+
 For the project 9, we focused on adding features which did not result in big changes of the whole structure for our program. We added one new class to implement the popup menu feature and for other features, we just added new methods and fields because these are just an development for the current performance, which can still be counted as the responsibilities for the existed classes.
 And all together, we implemented 6 new features.
 a) We have a new class called PopUpMenu, which included two context menus, one for NoteRectangles and one for the CompositionPane so that the users can click on the pane to decide the position they want the noteRectangles to be pasted to. 
@@ -12,19 +12,6 @@ e) We added a properties pane on the left side of the pane, just below the durat
 f) We opened the access of instrument to the user so that they are allowed to change the instrument for the exisited note. The user needs to select the instrument they want to change to first and then through the context menu for the rectangles, clicking the change instrument button and this actions would calls for the program to read from the radiobutton again and change the selected notes to that instrument from the NoteRectangle class.
 
 In the feedback we got from the project 8, there's no comment on the structure of the class and the design flaws we might possess, so we basically refactored the way we saw to be appropriate.
-
-____
-Our design includes one large package, tunecomposer, which contains all of our program's files. TuneComposer.java initializes the program on the whole, bringing up the stage and setting up other files. The MainController file coordinates the bulk of user interactivity, connecting all the other controllers to form one cohesive program, coordinate user actions, and give a visual display. Interaction with notes has now been moved to the CompositionController file, which allows their creation through clicking on a pane. That java file relies on the Constants files, which includes a list of constants, the Instrument file, which describes the information related to each type of instrument, and the NoteRectangle class, which defines the duration, location, and visual of created note rectangles (and allows their editing and movement). The Gesture class allows for the user's creation and deletion of gestures, along with the accompanying border around said gestures. The CompositionState class allows the user a concise way to store the state of the program and notes. The UndoRedoAction class does as its name implies, making Composition States available for undoing and redoing actions. MenuBarController also uses CopePasteActions, a class object that allows the user to copy, cut, and paste using the system clipboard, and copy/paste to/from txt files. MenuBarController uses a SaveActions object, which allows the user to save a Composition to a new file, save it to an existing file, and open a Composition from a txt file. Both CopyPasteActions and SaveActions use a CompositionToFile object, which converts Compositions or selected notes into a String, or 'decodes' a string to convert it into notes and gestures. Finally, package contains CSS for styling in the user interface, and many FXML files to lay out the user interface and areas for user interaction.
-
-We continued to keep the Single Responsibility principle in mind when we formed classes, this time breaking up the CopyPasteActions class into CopyPasteActions and SaveActions. Furthermore, we minimized duplication by creating new 'helper classes' like the CompositionToFile class that can decode and encode Strings. We looked to create cohesive classes, and moved some methods accordingly (for example, making MenuBarController delegate responsibilities to other classes rather than fulfilling them itself).
-
-As usual we began by fulfilling the functionality requirements, then moved towards refactoring. 
-
-To our knowledge, addressed the feedback given in the previous project (although there were no specific TODOs to fulfill). We did work on decomposing "scary" methods, as requested in Project 7 rubric feedback. Therefore, we mostly used the principles we've learned in class to improve our project and refactor. 
-
-Our design has improved in that we moved a lot of methods and fields into classes which better fit their responsibilities (moved responsibilities of savedActions and CopyPasteActions from MenuBarController into their respective, more fitting classes). We also split some of CopyPaste into CompositionToFile.java so that the notes-to-string and string-to-notes code could be reused.
-
-We're saving our stretching for Project 9, as I think is appropriate.
 
 >Explain why your way was the elegant way to do it. Address any improvements you made based on my feedback.
 
