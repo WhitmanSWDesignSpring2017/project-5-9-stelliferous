@@ -263,7 +263,7 @@ public class MenuBarController  {
     @FXML 
     protected void handleForwardAction(){
         mainController.resetEndcomp();
-        if(mainController.redLineController.redLine.getEndX()>= mainController.endcomp){
+        if(mainController.redLineController.redLine.getTranslateX()>= mainController.endcomp){
             return;
         }
         
