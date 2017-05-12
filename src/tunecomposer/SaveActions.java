@@ -17,6 +17,7 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 /**
@@ -93,25 +94,16 @@ public class SaveActions {
      * @throws IOException 
      */
     protected void chooseFileName() throws IOException{        
-        TextInputDialog dialog = new TextInputDialog("Choose File Name");
-
-        dialog.setTitle("File >> Save As");
-        dialog.setHeaderText("Save As");
-        dialog.setContentText("Please enter a valid file name:");
-        
-        Optional<String> result = dialog.showAndWait();
-                
-        if (result.isPresent() && isValidFileName(result.get())){
-            copyCompositionToFile(result.get()+".txt");
-        }  else if (result.isPresent() && !isValidFileName(result.get())){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Dialog");
-            alert.setHeaderText("Invalid File Name");
-            alert.setContentText("Do not include periods, slashes or the null character in file names.");
-
-            alert.showAndWait();
-            chooseFileName();
-        }      
+     Stage openStage = new Stage();   
+     FileChooser fileChooser = new FileChooser();
+     fileChooser.setTitle("Open Resource File");
+     fileChooser.getExtensionFilters().addAll(
+             new ExtensionFilter("Text Files", "*.txt")
+             );
+     File selectedFile = fileChooser.showOpenDialog(openStage);
+     if (selectedFile != null) {
+         copyCompositionToFile(selectedFile.toString());
+     }
     }
     
     /**
