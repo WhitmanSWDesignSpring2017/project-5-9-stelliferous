@@ -79,7 +79,7 @@ public class SaveActions {
             try (BufferedWriter out = new BufferedWriter(fstream)) {
                 out.flush();
                 fstream.flush();
-                out.write(mainController.compositionFileInteractions.notesToString(mainController.getRectList(),mainController.gestureModelController.gestureNoteGroups,false));
+                out.write(mainController.compositionConversions.notesToString(mainController.getRectList(),mainController.gestureModelController.gestureNoteGroups,false));
                 fileOperatedOn = (filename + ".txt");
                 mainController.setOperatingOnFile(filename);
                 mainController.setIsSaved(Boolean.TRUE);
@@ -139,7 +139,7 @@ public class SaveActions {
     protected void openFile() throws FileNotFoundException{
         String noteString = readFile();
         if (!noteString.isEmpty()){
-            mainController.compositionFileInteractions.notesFromString(noteString);
+            mainController.compositionConversions.notesFromString(noteString);
             mainController.setIsSaved(Boolean.TRUE);
         }
     }

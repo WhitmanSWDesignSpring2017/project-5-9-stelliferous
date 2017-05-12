@@ -76,7 +76,7 @@ public class MainController {
     protected SaveActions saveActions = new SaveActions(this);
     
     //create a compositionFileInteractions object
-    protected CompositionFileInteractions compositionFileInteractions = new CompositionFileInteractions(this);
+    protected CompositionConversion compositionConversions = new CompositionConversion(this);
     
     //create a copyPasteActions object
     protected CopyPasteActions copyPasteActions = new CopyPasteActions(this);
