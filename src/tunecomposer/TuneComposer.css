@@ -1,11 +1,7 @@
 /* 
-    Authors: Tyler Maule, Jingyuan Wang, Kaylin Jarriel
+    Authors: Tyler Maule, Jingyuan Wang, Kaylin Jarriel, Zach Turner
 */
 
-/* Determines background color of Tune Composition pane */
-.compositionPane {
-    -fx-background-color: lavender;
-}
 
 /* Determines the stroke for unselected rectangles. */
 .unselectedRect{
