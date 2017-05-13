@@ -28,6 +28,9 @@ public class RedLineController {
     //makes available redLine, which stores the line object.
     @FXML Line redLine; 
     
+    //stores the initial startX of the redLine when pressed
+    private double initialX;
+    
     /**
      * Initializes the main controller. This method was necessary for the 
      * class to work.
@@ -37,37 +40,36 @@ public class RedLineController {
         mainController = aThis; 
     }
     
-    
-    private double initialScreenX;
-    private double initialX;
+    /**
+     * Handle the press mouse action for the redLine.
+     * @param e MouseEvent for press action
+     */
     @FXML
     protected  void handlePressAction(MouseEvent e){
-        initialScreenX = e.getScreenX();
-        initialX = e.getX();
-        offsetX = 0;
-        System.out.println("Screen X" + initialScreenX);
-        System.out.println("getX" + initialX);
+        initialX = redLine.getStartX();
     }
-    
-    private double offsetX;
+
+    /**
+     * Handle the drag mouse action for the redLine.
+     * @param e MouseEvent for drag action
+     */
     @FXML
     protected  void handleDragAction(MouseEvent e){
-        offsetX = e.getScreenX()-initialScreenX;
-        System.out.println(e.getX());
+       
         redLine.setStartX(e.getX());
         redLine.setEndX(e.getX());
-        
     }
     
-    
+    /**
+     * Handle the release mouse action for the redLine.
+     * @param e MouseEvent for release action
+     */
     @FXML
     protected  void handleReleaseAction(MouseEvent e){
-        System.out.println(initialX);
         redLine.setStartX(initialX);
         redLine.setEndX(initialX);
-        redLine.setTranslateX(offsetX);
-        //System.out.println(redLine.getStartX());
-        mainController.menuBarController.playFromPoint(redLine.getTranslateX());
+        redLine.setTranslateX(redLine.getTranslateX()+e.getX());
+        mainController.menuBarController.handlePauseAction();
     }
     
      /**
