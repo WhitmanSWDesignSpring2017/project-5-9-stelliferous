@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.input.Clipboard;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -115,7 +116,7 @@ public class MainController {
         
         redLineController.initializeRedLine();
         popUpMenu = new PopUpMenu(this);
-        
+        colorPicker.setValue(Color.GREY);
         Text header = new Text("Properties");
         propertyPane.getChildren().add(header);
         //creates a new composition state for use with undo and redo

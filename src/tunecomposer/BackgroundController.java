@@ -37,6 +37,7 @@ public class BackgroundController implements Initializable{
     public void initialize(URL url, ResourceBundle rb) {
         //set up for drawing grey lines
         gc = linesCanvas.getGraphicsContext2D();
+        changeBackgroundColor(Color.GREY);
         drawLine(Color.BLACK);
     }
 
