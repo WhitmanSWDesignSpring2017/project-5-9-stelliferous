@@ -11,9 +11,11 @@ import javafx.scene.layout.VBox;
 import javax.sound.midi.ShortMessage;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.input.Clipboard;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -42,6 +44,8 @@ public class MainController {
     //makes available note duration slider
     @FXML Slider durationSlider;
     
+    @FXML ColorPicker colorPicker;
+    
     //makes available the controller for gestures
     @FXML GestureModelController gestureModelController = new GestureModelController();
     
@@ -53,6 +57,9 @@ public class MainController {
     
     //makes available the controller for the composition
     @FXML CompositionController compositionController = new CompositionController();
+    
+    //makes available the controller for the composition
+    @FXML BackgroundController backgroundController = new BackgroundController();
     
     //refers to the end of the current notes
     protected double endcomp = 0;
@@ -137,6 +144,10 @@ public class MainController {
         repeatTask.play();
     }
     
+    @FXML
+    private void handleColorPickerAction(ActionEvent e){
+        backgroundController.changeBackgroundColor(colorPicker.getValue());
+    }
     /**
      * gets all the names of existed saved composition states
      * @return a String that has all the saved names from user

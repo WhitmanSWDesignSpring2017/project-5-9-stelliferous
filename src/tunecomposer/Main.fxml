@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.TextFlow?>
 <?import javafx.scene.control.ToggleGroup?>
-
 <BorderPane stylesheets="@TuneComposer.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.MainController">
    <center>
       <ScrollPane fx:id="compositionScroll" prefHeight="1280.0" prefWidth="2000.0">
@@ -48,7 +47,7 @@
             <Label text="Note Duration (0-200):" />
             <Slider fx:id="durationSlider" max="200.0" min="5" onMouseReleased="#handleDurationSliderAction" value="100.0" />
             <Separator prefWidth="200.0" />
-            <ColorPicker />
+            <ColorPicker fx:id="colorPicker" onAction="#handleColorPickerAction" promptText="BackGroundColor" />
             <TextFlow fx:id="propertyPane" prefHeight="150.0" prefWidth="200.0" />
          </children>
       </VBox>         
