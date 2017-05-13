@@ -44,10 +44,10 @@
                     <items>
                         <MenuItem fx:id="playButton" accelerator="Shortcut+P" onAction="#handlePlayAction" text="Play" />
                         <MenuItem fx:id="stopButton" accelerator="Shortcut+T" onAction="#handleStopAction" text="Stop" />
+                        <SeparatorMenuItem />
                         <MenuItem fx:id="pauseButton" accelerator="K" onAction="#handlePauseAction" text="Pause // Unpause" />
                         <MenuItem fx:id="forwardButton" accelerator="L" onAction="#handleForwardAction" text="Forward" />
                         <MenuItem fx:id="backButton" accelerator="J" onAction="#handleBackAction" text="Backwards" />
-
                     </items>
                 </Menu>
                 <Menu text="Beats">
@@ -56,6 +56,11 @@
                         <MenuItem onAction = "#handleJumpingBeatAction" text = "Beat 2 -- Jumping" />
                         <MenuItem onAction = "#handleTanBeatAction" text = "Beat 3 -- Tan" />
                         <MenuItem onAction = "#handleSinBeatAction" text = "Beat 4 -- Sine" />
+                        <SeparatorMenuItem />
+                        <MenuItem fx:id="throwCoconuts" accelerator="Q" onAction="#handleThrowAction" text="Throw Coconuts" />
+                        <MenuItem fx:id="throwMoreCoconuts" accelerator="SHIFT+Q" onAction="#handleThrowMoreAction" text="Throw More Coconuts" />
+                        <MenuItem fx:id="throwMusicCoconuts" accelerator="W" onAction="#handleThrowMusicAction" text="Throw Music Coconuts" />
+                        <SeparatorMenuItem />
                         <MenuItem fx:id ="saveAsBeatAction" onAction = "#handleSaveAsBeat" text = "Save As Beat" />
                         <MenuItem fx:id ="savedBeatAction" onAction = "#handleSavedBeat" text = "Insert Saved Beat"/>
                     </items>

@@ -2,6 +2,7 @@ package tunecomposer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import static java.lang.Math.random;
 import static tunecomposer.Instrument.MARIMBA;
 import static tunecomposer.Instrument.BOTTLE;
 import static tunecomposer.Instrument.WOOD_BLOCK;
@@ -14,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
@@ -373,6 +375,43 @@ public class MenuBarController  {
         //reset gesture rectangles
         mainController.gestureModelController.gestureNoteSelection(mainController.getSelectList());
         mainController.history.undoableAction();
+    }
+    
+    
+    
+    @FXML
+    protected void handleThrowAction(ActionEvent e){
+        stopTune();
+        ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
+        for (int b = 0; b < 8000; b += mainController.noteLength){
+            mainController.compositionController.createBeat(Instrument.values()[(int)(random()*13)], b, (int)(random()*120), mainController.noteLength, beatGesture);
+        }
+        
+        addBeatGesture(beatGesture);
+    }
+    
+    @FXML
+    protected void handleThrowMoreAction(ActionEvent e){
+        stopTune();
+        ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
+        for (int b = 0; b < 8000; b += (int)(random() * 5)){
+            mainController.compositionController.createBeat(Instrument.values()[(int)(random()*13)], b, (int)(random()*120), (int)(random() * 50), beatGesture);
+        }
+        
+        addBeatGesture(beatGesture);
+    }
+    
+    @FXML
+    protected void handleThrowMusicAction(ActionEvent e){
+        stopTune();
+        RadioButton selectedButton = (RadioButton)mainController.instrumentsRadioButton.getSelectedToggle();
+        Instrument selectedInstrument = (Instrument)selectedButton.getUserData();
+        ArrayList<NoteRectangle> beatGesture = new ArrayList<>();
+        for (int b = 0; b < 8000; b += (int)(random() * 5)){
+            mainController.compositionController.createBeat(selectedInstrument, b, (int)(random()*120), (int)(random() * 50), beatGesture);
+        }
+        
+        addBeatGesture(beatGesture);
     }
     
     /**
