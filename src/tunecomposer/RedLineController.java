@@ -36,7 +36,7 @@ public class RedLineController {
     public void init(MainController aThis) {
         mainController = aThis; 
     }
-   /**
+   
     private double initialX = 0;
     private double initialY = 0;
     
@@ -44,19 +44,28 @@ public class RedLineController {
     protected  void handlePressAction(MouseEvent e){
         initialX = e.getX();
         initialY = e.getY();
-    }*/
+        offsetX = 0;
+        System.out.println(initialX);
+    }
     
+    private double offsetX;
     @FXML
     protected  void handleDragAction(MouseEvent e){
+        offsetX = e.getX()-initialX;
         redLine.setStartX(e.getX());
         redLine.setEndX(e.getX());
+        
     }
     
     
     @FXML
     protected  void handleReleaseAction(MouseEvent e){
-        mainController.menuBarController.playFromPoint(e.getX());
-        mainController.menuBarController.handlePauseAction();
+        
+        //redLine.setTranslateX(offsetX);
+        System.out.println(redLine.getStartX());
+        mainController.menuBarController.playFromPoint(redLine.getStartX());
+        initialX = 0;
+        initialY = 0;
     }
     
      /**

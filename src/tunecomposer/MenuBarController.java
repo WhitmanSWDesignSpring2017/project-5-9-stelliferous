@@ -303,9 +303,10 @@ public class MenuBarController  {
      * @param point the point at which the composition starts
      */
     protected void playFromPoint(double point){
+        mainController.resetEndcomp();
         mainController.MidiComposition.clear();
         mainController.buildMidiComposition(point);
-        mainController.redLineController.lineTransition.setDuration(Duration.seconds(abs(mainController.endcomp-point)).divide(100));
+        mainController.redLineController.lineTransition.setDuration(Duration.seconds(mainController.endcomp-point).divide(100));
         mainController.redLineController.lineTransition.setFromX(point);
 
         mainController.redLineController.lineTransition.setToX(mainController.endcomp);
