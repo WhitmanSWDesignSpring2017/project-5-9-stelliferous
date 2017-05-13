@@ -139,6 +139,8 @@ public class SaveActions {
     protected void openFile() throws FileNotFoundException{
         String noteString = readFile();
         if (!noteString.isEmpty()){
+                        mainController.restart();
+
             mainController.compositionConversions.notesFromString(noteString);
             mainController.setIsSaved(Boolean.TRUE);
         }
