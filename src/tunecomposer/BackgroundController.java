@@ -46,9 +46,6 @@ public class BackgroundController implements Initializable{
      */
     private void drawLine(Color value) {
         gc.setLineWidth(1.0);
-        //backgroundPane.setStyle("-fx-background-color: " + "rgb(" +.getRed()*256 + "," +Color.BLUE.getGreen()*256 + "," + Color.BLUE.getBlue()*256 + ")");
-        //backgroundPane.setStyle("-fx-background-color: BLUE");
-        //for loop to draw lines
         for (int y = 0; y < 1280; y+=10) {
             double y1 ;
             y1 = y + 0.5;
