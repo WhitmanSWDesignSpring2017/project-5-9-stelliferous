@@ -352,7 +352,7 @@ public class NoteRectangle {
         mainController.setIsSaved(Boolean.FALSE);
     }
         
-    /**
+   /**
      * Changes the rectangle according to the nature of the drag action.
      * @param i the rectangle being acted on
      * @param offsetX the distance the mouse moves horizontally
@@ -364,6 +364,19 @@ public class NoteRectangle {
         //based on the distance mouse moved
             double newTranslateX = originalX.get(i) + offsetX;
             double newTranslateY = originalY.get(i) + offsetY;
+            if (newTranslateX + (int) selectedNotes.get(i).getWidth() > 8000){
+                newTranslateX = 8000 - (int) selectedNotes.get(i).getWidth();
+            }
+            if (newTranslateX < 0){
+                newTranslateX = 0;
+            }
+            if (newTranslateY > 1280){
+                newTranslateY = 1280;
+            }
+            if (newTranslateY < 0){
+                newTranslateY = 0;
+            }
+            //width 2000 height 1280
             selectedNotes.get(i).setX(newTranslateX);
             selectedNotes.get(i).setY(newTranslateY);
         }
