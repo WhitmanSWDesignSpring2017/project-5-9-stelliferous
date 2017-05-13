@@ -37,6 +37,9 @@ time) backwards. Using the "L" key will pause the composition and move the red l
 When clicking on a note, look to the left pane to find out the details behind it. The "Properties" dialoge includes information 
 on a selected note's instrument, width, x-position, y-position, and how many groups you've selected.
 
+**Background Color**
+Use the color picker in the left pane to change the background color!
+
 Other Features
 --------------
 
