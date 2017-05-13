@@ -59,10 +59,9 @@ public class NoteRectangle {
         notes = new Rectangle(x,y,width,10);
         notes.getStyleClass().add("selectedRect");
         setAllMouseEvents();
-
+        setText();
         //creates a new rectangle object for visual representation
         notes.setFill(instrument.getDisplayColor()); 
-        setText();
     }
     
     protected void changeInstrument(Instrument instrument) {
@@ -413,8 +412,7 @@ public class NoteRectangle {
         */             
         @Override
         public void handle(MouseEvent t) {
-            setText();
-
+            
             for (int i=0; i<selectedNotes.size(); i++) {
                 //reset the position of rectangles to fit it between grey lines
                 double currentY = selectedNotes.get(i).getY();
@@ -423,7 +421,6 @@ public class NoteRectangle {
                 selectedNotes.get(i).setY(finalY);   
             }
             mainController.gestureModelController.gestureNoteSelection(selectedNotes);
-            
             if (drag) {
                 mainController.history.undoableAction();
             } else if (stretch) {
@@ -431,7 +428,7 @@ public class NoteRectangle {
             } else if (selectionMove) {
                 mainController.history.undoableAction();
             }
-             
+            setText();
             xCoordinate = getX();
             yCoordinate = getY();
         }
@@ -470,8 +467,14 @@ public class NoteRectangle {
         ArrayList<NoteRectangle> currentGest = new ArrayList<>();
         for (int i=0; i<mainController.gestureModelController.gestureNoteGroups.size();i++) {
             currentGest = mainController.gestureModelController.gestureNoteGroups.get(i);
-            if (currentGest.contains(this)) {
-                count++;
+            for (int j=0; j<currentGest.size();j++) {
+                if (currentGest.get(j).getX() == getX()
+                    && 
+                    currentGest.get(j).getY() == getY()
+                    && 
+                    currentGest.get(j).getWidth() == getWidth()) {
+                    count++;
+                }
             }
         }
         return count;

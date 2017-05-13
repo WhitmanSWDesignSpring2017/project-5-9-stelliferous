@@ -147,6 +147,7 @@ public class History {
             });
             mainController.gestureModelController.gestureNoteGroups.add(cloneArray);
         });
+        
     }
     
     /**
