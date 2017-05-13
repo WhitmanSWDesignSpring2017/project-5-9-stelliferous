@@ -378,7 +378,11 @@ public class MenuBarController  {
     }
     
     
-    
+    /**
+     * Adds a random series of notes to the composition; note duration
+     * is the current default note duration
+     * @param e an Action Event (menu item selected)
+     */
     @FXML
     protected void handleThrowAction(ActionEvent e){
         stopTune();
@@ -390,6 +394,11 @@ public class MenuBarController  {
         addBeatGesture(beatGesture);
     }
     
+    /**
+     * Adds a random series of notes to the composition; duration, position,
+     * instrument random
+     * @param e an Action Event (menu item selected)
+     */
     @FXML
     protected void handleThrowMoreAction(ActionEvent e){
         stopTune();
@@ -401,6 +410,11 @@ public class MenuBarController  {
         addBeatGesture(beatGesture);
     }
     
+    /**
+     * Adds a random series of notes to the composition; instrument is the 
+     * currently selected instrument.
+     * @param e an Action Event (menu item selected)
+     */
     @FXML
     protected void handleThrowMusicAction(ActionEvent e){
         stopTune();

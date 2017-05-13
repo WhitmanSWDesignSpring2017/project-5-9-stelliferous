@@ -57,9 +57,9 @@
                         <MenuItem onAction = "#handleTanBeatAction" text = "Beat 3 -- Tan" />
                         <MenuItem onAction = "#handleSinBeatAction" text = "Beat 4 -- Sine" />
                         <SeparatorMenuItem />
-                        <MenuItem fx:id="throwCoconuts" accelerator="Q" onAction="#handleThrowAction" text="Throw Coconuts" />
-                        <MenuItem fx:id="throwMoreCoconuts" accelerator="SHIFT+Q" onAction="#handleThrowMoreAction" text="Throw More Coconuts" />
-                        <MenuItem fx:id="throwMusicCoconuts" accelerator="W" onAction="#handleThrowMusicAction" text="Throw Music Coconuts" />
+                        <MenuItem  accelerator="Q" onAction="#handleThrowAction" text="Throw Confetti" />
+                        <MenuItem  accelerator="SHIFT+Q" onAction="#handleThrowMoreAction" text="Throw More Confetti" />
+                        <MenuItem  accelerator="W" onAction="#handleThrowMusicAction" text="Throw Musical Confetti" />
                         <SeparatorMenuItem />
                         <MenuItem fx:id ="saveAsBeatAction" onAction = "#handleSaveAsBeat" text = "Save As Beat" />
                         <MenuItem fx:id ="savedBeatAction" onAction = "#handleSavedBeat" text = "Insert Saved Beat"/>
