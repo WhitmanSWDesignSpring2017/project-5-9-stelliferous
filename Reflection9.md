@@ -33,7 +33,7 @@ We estimated that we would complete 22 story points, and actually ended up compl
 
 >Include a short summary of your team retrospective. What went well that your team will keep doing during the next project assignment? What will you improve? How?
 
-This did feel like a shorter assignment, which we appreciated (although unbeknownst to us, we'd completed part of it for our Project 8 stretch goals). Unfortunately, we didn't have a chance to meet until later in the week again, but we used our time productively and communicated well throughout. Everyone participated strongly, and contributed good ideas. We'll continue communicating well and being as proactive as possible. Hopefully we can improve our creative skills and bounce more ideas off one another in Project 9.
+As always, communication was the key to success (or what we hope is success!). We met early and (relatively) often, helping each other on our different features. We've certainly improved our use of GitHub, and learned a lot about the connection between GitHub and NetBeans over the course of this semester. Although this is the last project assignment of the semester, we'll take away a lot of experience in working with a team, and will keep in my the need to prioritize and 'play poker' with projects of all sorts and sizes. 
 
 Sincerely yours,
 
