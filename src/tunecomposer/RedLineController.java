@@ -36,22 +36,24 @@ public class RedLineController {
     public void init(MainController aThis) {
         mainController = aThis; 
     }
-   
-    private double initialX = 0;
-    private double initialY = 0;
     
+    
+    private double initialScreenX;
+    private double initialX;
     @FXML
     protected  void handlePressAction(MouseEvent e){
+        initialScreenX = e.getScreenX();
         initialX = e.getX();
-        initialY = e.getY();
         offsetX = 0;
-        System.out.println(initialX);
+        System.out.println("Screen X" + initialScreenX);
+        System.out.println("getX" + initialX);
     }
     
     private double offsetX;
     @FXML
     protected  void handleDragAction(MouseEvent e){
-        offsetX = e.getX()-initialX;
+        offsetX = e.getScreenX()-initialScreenX;
+        System.out.println(e.getX());
         redLine.setStartX(e.getX());
         redLine.setEndX(e.getX());
         
@@ -60,12 +62,12 @@ public class RedLineController {
     
     @FXML
     protected  void handleReleaseAction(MouseEvent e){
-        
-        //redLine.setTranslateX(offsetX);
-        System.out.println(redLine.getStartX());
-        mainController.menuBarController.playFromPoint(redLine.getStartX());
-        initialX = 0;
-        initialY = 0;
+        System.out.println(initialX);
+        redLine.setStartX(initialX);
+        redLine.setEndX(initialX);
+        redLine.setTranslateX(offsetX);
+        //System.out.println(redLine.getStartX());
+        mainController.menuBarController.playFromPoint(redLine.getTranslateX());
     }
     
      /**
