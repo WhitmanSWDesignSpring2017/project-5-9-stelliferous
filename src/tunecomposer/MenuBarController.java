@@ -259,7 +259,6 @@ public class MenuBarController  {
             stopButton.setDisable(true);
         }
         isPaused = !isPaused;
-        
     }
     
     /**
@@ -296,6 +295,7 @@ public class MenuBarController  {
             mainController.MidiComposition.stop();
             mainController.redLineController.lineTransition.pause();
         }
+        isPaused = true;
     }
     
     /**

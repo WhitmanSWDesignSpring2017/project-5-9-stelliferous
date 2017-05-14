@@ -69,6 +69,7 @@ public class RedLineController {
         redLine.setStartX(initialX);
         redLine.setEndX(initialX);
         redLine.setTranslateX(redLine.getTranslateX()+e.getX());
+        mainController.menuBarController.isPaused = false;
         mainController.menuBarController.handlePauseAction();
     }
     
