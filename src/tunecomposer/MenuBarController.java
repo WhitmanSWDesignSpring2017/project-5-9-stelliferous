@@ -2,6 +2,7 @@ package tunecomposer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import static java.lang.Math.abs;
 import static java.lang.Math.random;
 import static tunecomposer.Instrument.MARIMBA;
 import static tunecomposer.Instrument.BOTTLE;
@@ -258,7 +259,6 @@ public class MenuBarController  {
             stopButton.setDisable(true);
         }
         isPaused = !isPaused;
-        
     }
     
     /**
@@ -295,6 +295,7 @@ public class MenuBarController  {
             mainController.MidiComposition.stop();
             mainController.redLineController.lineTransition.pause();
         }
+        isPaused = true;
     }
     
     /**
@@ -302,6 +303,8 @@ public class MenuBarController  {
      * @param point the point at which the composition starts
      */
     protected void playFromPoint(double point){
+        mainController.resetEndcomp();
+        mainController.redLineController.redLine.setTranslateX(point);
         mainController.MidiComposition.clear();
         mainController.buildMidiComposition(point);
         mainController.redLineController.lineTransition.setDuration(Duration.seconds(mainController.endcomp-point).divide(100));

@@ -3,6 +3,7 @@ package tunecomposer;
 import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
 
 /**
@@ -27,6 +28,9 @@ public class RedLineController {
     //makes available redLine, which stores the line object.
     @FXML Line redLine; 
     
+    //stores the initial startX of the redLine when pressed
+    private double initialX;
+    
     /**
      * Initializes the main controller. This method was necessary for the 
      * class to work.
@@ -35,7 +39,40 @@ public class RedLineController {
     public void init(MainController aThis) {
         mainController = aThis; 
     }
-   
+    
+    /**
+     * Handle the press mouse action for the redLine.
+     * @param e MouseEvent for press action
+     */
+    @FXML
+    protected  void handlePressAction(MouseEvent e){
+        initialX = redLine.getStartX();
+    }
+
+    /**
+     * Handle the drag mouse action for the redLine.
+     * @param e MouseEvent for drag action
+     */
+    @FXML
+    protected  void handleDragAction(MouseEvent e){
+       
+        redLine.setStartX(e.getX());
+        redLine.setEndX(e.getX());
+    }
+    
+    /**
+     * Handle the release mouse action for the redLine.
+     * @param e MouseEvent for release action
+     */
+    @FXML
+    protected  void handleReleaseAction(MouseEvent e){
+        redLine.setStartX(initialX);
+        redLine.setEndX(initialX);
+        redLine.setTranslateX(redLine.getTranslateX()+e.getX());
+        mainController.menuBarController.isPaused = false;
+        mainController.menuBarController.handlePauseAction();
+    }
+    
      /**
      * Initializes red line's location, movement, constant speed, visibility.
      */
