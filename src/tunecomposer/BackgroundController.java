@@ -28,6 +28,8 @@ public class BackgroundController implements Initializable{
     //makes available the graphicsContext
     GraphicsContext gc;
     
+    String[] noteNames = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+    
     /**
      * Initializes the controller class. 
      * @param url placeholder/default/generic url
@@ -37,7 +39,6 @@ public class BackgroundController implements Initializable{
     public void initialize(URL url, ResourceBundle rb) {
         //set up for drawing grey lines
         gc = linesCanvas.getGraphicsContext2D();
-        changeBackgroundColor(Color.GREY);
         drawLine(Color.BLACK);
     }
 
@@ -46,6 +47,7 @@ public class BackgroundController implements Initializable{
      * "lines"
      */
     private void drawLine(Color value) {
+        int noteIndex = 0;
         gc.setLineWidth(1.0);
         for (int y = 0; y < 1280; y+=10) {
             double y1 ;
@@ -54,6 +56,10 @@ public class BackgroundController implements Initializable{
             gc.setStroke(value);
             gc.lineTo(8000, y1);
             gc.stroke();
+            for( int j = 5; j < 8000; j += 1000){
+                gc.strokeText(noteNames[noteIndex], j, y1);
+            }
+            noteIndex = (noteIndex + 1) % 12;
         }
     }
     
