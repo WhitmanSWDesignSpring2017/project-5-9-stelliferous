@@ -55,7 +55,9 @@ public class RedLineController {
      */
     @FXML
     protected  void handleDragAction(MouseEvent e){
-       
+        if (redLine.getTranslateX()+e.getX() > mainController.endcomp) {
+            return;
+        }
         redLine.setStartX(e.getX());
         redLine.setEndX(e.getX());
     }
@@ -68,7 +70,11 @@ public class RedLineController {
     protected  void handleReleaseAction(MouseEvent e){
         redLine.setStartX(initialX);
         redLine.setEndX(initialX);
-        redLine.setTranslateX(redLine.getTranslateX()+e.getX());
+        if (redLine.getTranslateX()+e.getX() > mainController.endcomp) {
+            redLine.setTranslateX(mainController.endcomp);
+        } else {
+            redLine.setTranslateX(redLine.getTranslateX()+e.getX());
+        }
         mainController.menuBarController.isPaused = false;
         mainController.menuBarController.handlePauseAction();
     }
