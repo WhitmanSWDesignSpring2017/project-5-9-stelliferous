@@ -46,6 +46,6 @@
 * 2/2 Design overview addresses changes from Project 8 in general.
 * 4/4 Design overview addresses implementation of each new feature.
 * 4/4 Assessment of what is elegant and what is not thoughtfully addresses object-oriented design principles.
-* 2/2 Velocity is presented. 
+* 2/2 Velocity is presented. - _You have some good insight into why your velocity was higher for this iteration._
 * 1/1 Team retrospective is presented.
 * 3/3 New classes/methods are reasonably self-explanatory.
