@@ -15,13 +15,20 @@
 * 4/4 It explains how to use each new feature.
 
 ## Ambition - 16/16 points
-* One difficult enhancement may be worth several easier enhancements.
+* There are several new features. 
+* Changing the background color is easy.
+* Drag-and-draw notes is a straightforward feature, but also a unique one.
+* Adding a default note duration is straightforward. (Several groups did this.)
+* Displaying note properties in the left sidebar is fairly straightforward as well. 
+* Beats are algorithmically straightforward and use existing facilities for programmatically adding notes to a composition.
+* Adding right-click or "context" menus required you to learn something new.
+* Pausing and scrubbing is a somewhat complex feature which also required you to learn new things. It would be nicer if you could actually drag the red line, in addition to using the keyboard. Are there menu items for scrubbing? 
 
 ## Execution -  38/38 points
 
 ### Implementation of new features - 28/28 points
 * All new features behave as described in the user manual.  If the description in the user manual is incomplete, then the behavior follows standard conventions and is otherwise unsurprising.
-* Thee are no uncaught exceptions from new features.
+* There are no uncaught exceptions from new features.
 * There is no debugging output from new features.
 
 ### No regressions - 8/8 points
