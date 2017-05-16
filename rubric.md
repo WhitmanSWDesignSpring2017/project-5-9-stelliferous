@@ -1,4 +1,4 @@
-# GRADE: 91/96 
+# GRADE: 90/96 
 
 _Nice work!_
 
@@ -7,7 +7,7 @@ _Nice work!_
 * 1/1 An original composition was played.
 * 1/1 All team members were included.
 
-## Original composition - 6/6 points
+## Original composition - 5/6 points
 * 3/3 The composition demonstrates the features of your software. - _Definitely._
 * 2/3 The composition is artistic. - _It's creative. I like that you slipped in Happy Birthday!_
 
