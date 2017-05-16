@@ -21,8 +21,8 @@
 * Adding a default note duration is straightforward. (Several groups did this.)
 * Displaying note properties in the left sidebar is fairly straightforward as well. 
 * Beats are algorithmically straightforward and use existing facilities for programmatically adding notes to a composition.
-* Adding right-click or "context" menus required you to learn something new.
-* Pausing and scrubbing is a somewhat complex feature which also required you to learn new things. It would be nicer if you could actually drag the red line, in addition to using the keyboard. Are there menu items for scrubbing? 
+* Adding right-click context menus required you to learn something new.
+* Pausing and scrubbing is a somewhat complex feature which also required you to learn new things. It would be nicer if you could actually drag the red line, in addition to using the keyboard. 
 
 ## Execution -  38/38 points
 
