@@ -6,8 +6,8 @@
 * 1/1 All team members were included.
 
 ## Original composition - 6/6 points
-* 4/4 The composition demonstrates the features of your software.
-* 2/2 The composition is artistic.
+* 3/3 The composition demonstrates the features of your software.
+* 3/3 The composition is artistic.
 
 ## User manual - 10/10 points
 * 2/2 There is a file named manual.md in the top-level directory.
@@ -26,12 +26,12 @@
 
 ## Execution -  38/38 points
 
-### Implementation of new features - 28/28 points
+### Implementation of new features - 24/24 points
 * All new features behave as described in the user manual.  If the description in the user manual is incomplete, then the behavior follows standard conventions and is otherwise unsurprising.
 * There are no uncaught exceptions from new features.
 * There is no debugging output from new features.
 
-### No regressions - 8/8 points
+### No regressions - 12/12 points
 * All prior requirements are met, unless they have been superseded by new requirements or are documented by the team as known bugs for this iteration.
 
 ### Release tag - 2/2 points
