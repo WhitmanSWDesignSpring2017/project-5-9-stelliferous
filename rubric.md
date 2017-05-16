@@ -14,7 +14,7 @@
 * 4/4 It describes each new feature added in Project 9.
 * 4/4 It explains how to use each new feature.
 
-## Feature selection - 16/16 points
+## Feature selection and design - 15/16 points
 * _There are several new features which are largely unconnected to each other. Most are fairly straightforward extensions, but you also learned some new things about MIDI sequences and JavaFX._
 * _Drag-and-draw notes is a straightforward feature, but also a unique one._
 * _Adding a default note duration is straightforward. (Several groups did this.) The separator takes up valuable space._
@@ -22,7 +22,7 @@
 * _Displaying note properties in the left sidebar is fairly straightforward as well. It might fit better in another location. _
 * _Beats are algorithmically straightforward and use existing facilities for programmatically adding notes to a composition. I'm not sure of the value of saving and inserting beats, versus copying and pasting gestures._
 * _Adding right-click context menus required you to learn something new._
-* _Pausing and scrubbing is a somewhat complex feature which also required you to learn new things. It is awesome that you can drag the read line. It would be nice if there were a standard play control panel with play, pause, stop, fast-forward, and rewind buttons. _
+* _Pausing and scrubbing is my favorite new feature. It is somewhat complex and required you to learn new things. It is awesome that you can drag the red line. It would be nice if there were a standard play control panel with play, pause, stop, fast-forward, and rewind buttons._
 
 ## Execution -  34/38 points
 
